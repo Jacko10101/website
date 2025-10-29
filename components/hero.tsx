@@ -1,20 +1,21 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Terminal } from "lucide-react";
+import { ArrowRight, Terminal as TerminalIcon } from "lucide-react";
 import { motion } from "framer-motion";
+import { Terminal } from "./terminal";
 
 export function Hero() {
   return (
     <section className="relative overflow-hidden border-b border-border">
       <div className="grid-background absolute inset-0 opacity-50" />
 
-      <div className="container relative px-4 py-24 md:px-6 md:py-32 lg:py-40">
+      <div className="container relative px-4 py-20 md:px-6 md:py-24 lg:py-32">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="mx-auto max-w-4xl text-center"
+          className="mx-auto max-w-5xl text-center"
         >
           {/* Badge */}
           <motion.div
@@ -23,7 +24,7 @@ export function Hero() {
             transition={{ delay: 0.1 }}
             className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-secondary px-4 py-2 text-sm"
           >
-            <Terminal className="h-4 w-4 text-primary" />
+            <TerminalIcon className="h-4 w-4 text-primary" />
             <span className="font-mono text-muted-foreground">
               Platform Engineering Excellence
             </span>
@@ -36,9 +37,9 @@ export function Hero() {
             transition={{ delay: 0.2 }}
             className="mb-6 text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl"
           >
-            Expert DevOps Consulting to{" "}
+            I Help Teams{" "}
             <span className="bg-gradient-to-r from-primary to-blue-400 bg-clip-text text-transparent">
-              Scale Your Infrastructure
+              Scale Their Infrastructure
             </span>
           </motion.h1>
 
@@ -49,9 +50,9 @@ export function Hero() {
             transition={{ delay: 0.3 }}
             className="mb-8 text-lg text-muted-foreground sm:text-xl md:text-2xl"
           >
-            Enterprise-grade Kubernetes, GitOps, observability, and CI/CD solutions.
+            From setting up Kubernetes clusters to building full observability stacks,
             <br className="hidden sm:block" />
-            Transform your infrastructure into a competitive advantage.
+            I&apos;ve been there and know what actually works in production.
           </motion.p>
 
           {/* CTAs */}
@@ -76,12 +77,15 @@ export function Hero() {
             </Link>
           </motion.div>
 
+          {/* Terminal Demo */}
+          <Terminal />
+
           {/* Stats */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="mt-16 grid grid-cols-2 gap-8 md:grid-cols-4"
+            transition={{ delay: 0.7 }}
+            className="mt-12 grid grid-cols-2 gap-6 md:grid-cols-4 md:gap-8"
           >
             <div>
               <div className="text-3xl font-bold text-primary">7500+</div>

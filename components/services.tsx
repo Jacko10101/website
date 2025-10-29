@@ -77,10 +77,10 @@ export function Services() {
           className="mb-12 text-center"
         >
           <h2 className="mb-4 text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-            Services
+            What I Do
           </h2>
           <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
-            Comprehensive DevOps and Platform Engineering solutions tailored to your infrastructure challenges.
+            I tackle the platform engineering challenges that keep your team from shipping fast.
           </p>
         </motion.div>
 

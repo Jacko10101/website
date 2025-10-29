@@ -4,8 +4,10 @@ const nextConfig: NextConfig = {
   images: {
     formats: ['image/avif', 'image/webp'],
   },
-  // Disable Turbopack due to OneDrive permissions
-  turbopack: false as any,
+  // Configure Turbopack root to avoid OneDrive permission issues
+  turbopack: {
+    root: '/Users/jackdevlin/Library/CloudStorage/OneDrive-LoweRental/Documents/personal/website',
+  },
 }
 
 export default nextConfig

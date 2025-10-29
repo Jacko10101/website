@@ -135,10 +135,11 @@ export default function ServicesPage() {
     <div className="container px-4 py-12 md:px-6 md:py-16">
       <div className="mb-12">
         <h1 className="mb-4 text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
-          Services
+          How I Can Help
         </h1>
         <p className="max-w-2xl text-lg text-muted-foreground">
-          Comprehensive DevOps and Platform Engineering solutions tailored to your infrastructure challenges.
+          I work across the entire platform stack—from infrastructure to observability to developer experience.
+          Here&apos;s what I can do for you.
         </p>
       </div>
 
@@ -171,9 +172,9 @@ export default function ServicesPage() {
       </div>
 
       <div className="mt-12 rounded-lg border border-border bg-gradient-to-br from-primary/10 via-background to-background p-8 text-center md:p-12">
-        <h2 className="mb-4 text-2xl font-bold">Ready to Get Started?</h2>
+        <h2 className="mb-4 text-2xl font-bold">Let&apos;s Talk</h2>
         <p className="mb-6 text-muted-foreground">
-          Let's discuss how these services can transform your infrastructure and accelerate your team.
+          Not sure what you need? No worries—reach out and we&apos;ll figure it out together.
         </p>
         <Link
           href="/contact"

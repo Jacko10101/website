@@ -8,7 +8,7 @@ export const metadata = {
 export default function ContactPage() {
   return (
     <div className="container px-4 py-12 md:px-6 md:py-16">
-      <div className="mx-auto max-w-2xl">
+      <div className="mx-auto max-w-4xl">
         <h1 className="mb-8 text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
           Get in Touch
         </h1>
@@ -16,13 +16,13 @@ export default function ContactPage() {
           Interested in working together? I'd love to hear about your infrastructure challenges and goals.
         </p>
 
-        <div className="space-y-8">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {/* Email */}
           <a
             href="mailto:jack@devlinops.com"
             className="group block rounded-lg border border-border bg-card p-6 transition-all hover:border-primary hover:shadow-lg"
           >
-            <div className="flex items-start gap-4">
+            <div className="flex flex-col gap-4">
               <div className="rounded-lg bg-primary/10 p-3">
                 <Mail className="h-6 w-6 text-primary" />
               </div>
@@ -47,7 +47,7 @@ export default function ContactPage() {
             rel="noopener noreferrer"
             className="group block rounded-lg border border-border bg-card p-6 transition-all hover:border-primary hover:shadow-lg"
           >
-            <div className="flex items-start gap-4">
+            <div className="flex flex-col gap-4">
               <div className="rounded-lg bg-primary/10 p-3">
                 <Github className="h-6 w-6 text-primary" />
               </div>
@@ -72,7 +72,7 @@ export default function ContactPage() {
             rel="noopener noreferrer"
             className="group block rounded-lg border border-border bg-card p-6 transition-all hover:border-primary hover:shadow-lg"
           >
-            <div className="flex items-start gap-4">
+            <div className="flex flex-col gap-4">
               <div className="rounded-lg bg-primary/10 p-3">
                 <Linkedin className="h-6 w-6 text-primary" />
               </div>

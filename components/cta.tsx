@@ -17,11 +17,11 @@ export function CTA() {
         >
           <div className="mx-auto max-w-3xl text-center">
             <h2 className="mb-4 text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-              Ready to Scale Your Infrastructure?
+              Let&apos;s Work Together
             </h2>
             <p className="mb-8 text-lg text-muted-foreground">
-              Let's discuss how DevlinOps can help modernize your platform, improve reliability,
-              and accelerate your team's velocity.
+              Whether you need help with Kubernetes, want to build out observability,
+              or just want to chat about platform engineering—I&apos;m here to help.
             </p>
             <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Link

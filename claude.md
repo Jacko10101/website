@@ -2,41 +2,128 @@
 
 **Date**: October 29, 2025
 **Project**: devlinops.com
-**Status**: Phase 1 Complete - MVP Built ✅
+**Status**: Phase 2 Complete - Case Studies Finalized ✅
 
 ---
 
-## Phase 1: MVP Complete
+## Phase 2: Content Refinement ✅ COMPLETE
 
 ### What's Built
 
 **Tech Stack (Cutting Edge)**:
-- Next.js 16 (latest, with Turbopack)
+- Next.js 16 (latest, with Turbopack disabled for OneDrive compatibility)
 - Tailwind CSS 4.x (OKLCH color space, modern CSS)
 - Framer Motion (smooth animations)
-- next-themes (dark mode with toggle)
+- next-themes (dark mode with working toggle)
 - TypeScript (strict mode)
-- Deployed at: `~/devlinops-site` (moved from OneDrive for compatibility)
+- Location: `OneDrive-LoweRental/Documents/personal/website`
 
 **Site Structure**:
 - **Homepage**: Hero, services grid, featured projects, CTA
 - **Services Page**: 7 comprehensive offerings with details
-- **Projects Page**: 3 case study previews + individual detail pages
+- **Projects Page**: 3 professional case studies with detailed implementations
 - **About Page**: Professional bio, tech stack, experience
 - **Contact Page**: Email, GitHub, LinkedIn
-- **Navigation**: Responsive with dark/light mode toggle
+- **Navigation**: Responsive with fixed dark/light mode toggle
 - **Footer**: Links and social media
 
-**Current Case Studies** (Phase 2 will replace):
-1. Engineering Intelligence Platform (DORA Metrics)
-2. Test Orchestration Modernization (ArgoCD PostSync Hooks)
-3. Feature Branch Automation (Self-service environments)
+**Professional Case Studies (FINALIZED)**:
+1. **CI/CD & GitOps Platform Engineering** - Enterprise pipeline architecture from greenfield to 400 deploys/month
+2. **DORA Metrics & Developer Experience Platform** - Business intelligence with metrics collector, pipeline reporter, and deployment gates
+3. **Enterprise Observability Stack** - Self-hosted Prometheus/Grafana/Loki at 95%+ cost savings
+
+---
+
+## Case Study Details
+
+### 1. CI/CD & GitOps Platform Engineering
+**Path**: `/projects/cicd-gitops/`
+
+**Story Arc**: Graduate QA → Platform Engineer building CI/CD from scratch
+
+**Key Highlights**:
+- **4-Phase Evolution**: Foundation → Standardization → Security → Test Orchestration
+- **Scale**: 20 microservices, 400 deploys/month, 4 environments
+- **Innovations**: Custom base image, Kustomize overlays, App-of-Apps pattern, 1100-line test orchestrator
+- **Business Impact**: ~5min builds, zero prod incidents, <1 day service onboarding
+
+**Technologies**: Bitbucket Pipelines, ArgoCD, Kubernetes, Kustomize, Docker, Maven, AWS ECR, Veracode, SourceClear, Bash, Newman, Cucumber, S3, Teams
+
+---
+
+### 2. DORA Metrics & Developer Experience Platform
+**Path**: `/projects/dora-devex/`
+
+**Story Arc**: Transforming engineering visibility from zero to complete deployment intelligence
+
+**3 Integrated Components**:
+1. **DORA Metrics Collector** (Python):
+   - Correlates GitOps repos, Bitbucket API, Jira API, ArgoCD API
+   - Exposes 15+ Prometheus metrics
+   - Tracks 413 deployments/month, lead times, deployment frequency
+
+2. **Pipeline Reporter** (Bash - 1000+ lines):
+   - Rich Teams Adaptive Cards with smart routing
+   - 4 channels: Platform Deployments, Security, PR Notifications, QA
+   - Easter eggs for build milestones and time-based messages
+   - ArgoCD/Veracode/Jira deep linking
+
+3. **Deployment Gates** (Bash):
+   - Jira Fix Version check preventing premature QA deployments
+   - Delta detection (only checks NEW commits)
+   - Actionable error messages with remediation steps
+
+**Business Impact**: 413 deploys tracked, 2-3 day lead times measured, 100% deployment visibility, zero incomplete QA releases, ~80% reduction in "what's in QA?" questions
+
+**Technologies**: Python, Bash, Prometheus, Grafana, ArgoCD API, Bitbucket API, Jira API, Teams Webhooks, Flask, Git, Kubernetes, Adaptive Cards
+
+---
+
+### 3. Enterprise Observability Stack
+**Path**: `/projects/observability/`
+
+**Story Arc**: Building production-grade observability in-house at <5% of cloud costs
+
+**Architecture**:
+- **Metrics**: Prometheus + Thanos (S3 long-term storage)
+- **Visualization**: Grafana (25+ dashboards)
+- **Logs**: Loki (microservices mode) + Promtail
+- **Alerting**: Alertmanager (50+ rules, Teams integration)
+- **Exporters**: Node, Kube State Metrics, Kafka, Postgres, Redis, CloudWatch
+
+**Key Implementations**:
+- **Alert Rules**: Node alerts (CPU/mem/disk), Kubernetes alerts (pod crashes, nodes not ready), network alerts (latency, drops), application-specific rules
+- **Smart Routing**: Dev (business hours only), QA (24/7), environment-specific channels
+- **Alert Inhibition**: Suppress low-severity when critical fires, node failures suppress pod alerts
+- **Service Instrumentation**: All 20 services exposing custom metrics for business intelligence
+- **Runbooks**: Comprehensive documentation for every alert with kubectl commands and resolution steps
+
+**Dashboards Created**:
+- Platform: Cluster health, infrastructure metrics, service mesh, database performance, Kafka health
+- Service-Specific: IoT gateway intelligence (throughput, connections, vendor rankings), multi-tenant analytics, integration performance
+- Business: Cost savings tracking, SLA monitoring, capacity planning
+
+**Business Impact**: <$5K/yr cost (vs $50K-150K), 25+ dashboards, 50+ alert rules, ~70% MTTD reduction, 100% service coverage
+
+**Technologies**: Prometheus, Grafana, Loki, Thanos, Alertmanager, Promtail, Kubernetes, Kustomize, Istio, Node Exporter, Kube State Metrics, Kafka Exporter, S3, PromQL, LogQL
+
+---
+
+## Content Sanitization ✅
+
+All case studies have been sanitized for professional presentation:
+- ✅ Company names removed (replaced with generic terms)
+- ✅ Service names anonymized (Service A, Service B, etc.)
+- ✅ Developer names templated ("Developer Name")
+- ✅ Ticket IDs genericized (PROJ-XXXX instead of GENX-XXXX)
+- ✅ URLs and AWS account numbers replaced with placeholders
+- ✅ No proprietary business information exposed
 
 ---
 
 ## Professional Analysis
 
-### Top 7 Service Offerings Identified
+### Top 7 Service Offerings
 
 1. **Kubernetes Platform Engineering & EKS Optimization**
 2. **Enterprise Observability Stack Implementation**
@@ -46,78 +133,163 @@
 6. **Data Platform & Streaming Infrastructure**
 7. **Developer Experience & Platform Tooling**
 
-### Key Competencies (from 7,536 Jira tickets analyzed)
+### Core Competencies
 
-**Core Technologies**:
-- AWS (EKS, S3, RDS, MSK, Lambda, VPC)
-- Kubernetes (1.30-1.32, upgrades, operators)
-- GitOps (ArgoCD, ApplicationSets, Kustomize)
-- Observability (Prometheus, Grafana, Loki, Tempo, Thanos)
-- Infrastructure as Code (AWS CDK, Terraform, CloudFormation)
-- CI/CD (Bitbucket Pipelines, GitHub Actions)
-- Security (Falco, Suricata, Veracode)
-- Service Mesh (Istio 1.20-1.26, EnvoyFilters)
-- Data Platforms (Kafka/MSK, Flink, TimescaleDB)
+**Platform Engineering**:
+- CI/CD architecture and implementation (Bitbucket Pipelines, GitHub Actions)
+- GitOps patterns with ArgoCD (ApplicationSets, App-of-Apps, sync hooks)
+- Kubernetes deployment and management (EKS, upgrades, operators)
+- Infrastructure as Code (AWS CDK, Terraform, CloudFormation, Kustomize)
 
-**Notable Projects**:
-- DORA Metrics collection service (Python, API integration, Grafana)
-- ArgoCD PostSync test orchestration (47 PRs, eliminated race conditions)
-- Feature branch namespace automation (ApplicationSets, self-service)
-- Istio upgrades (1.20 → 1.26, zero downtime)
-- EKS recovery and upgrades (CloudFormation troubleshooting)
-- Falco/Suricata security deployments
-- Enterprise observability implementation (430+ lines custom code)
+**Observability & Monitoring**:
+- Self-hosted observability stacks (Prometheus, Grafana, Loki, Thanos)
+- Metrics design and instrumentation (custom Prometheus metrics)
+- Alert engineering (Alertmanager, routing, inhibition)
+- Dashboard design for business intelligence
+- Log aggregation at scale (Loki microservices mode)
 
----
+**Developer Experience**:
+- DORA metrics collection and visualization
+- Intelligent notification systems (Teams webhooks, Adaptive Cards)
+- Automated deployment gates (Jira integration, validation)
+- Comprehensive runbook development
+- Pipeline optimization and standardization
 
-## Phase 2: Content Refinement (Next)
+**Security & Compliance**:
+- SAST/SCA integration (Veracode, SourceClear)
+- Security alert automation and routing
+- Compliance gates (Jira Fix Version checks)
+- Vulnerability tracking and remediation workflows
 
-### Case Studies to Replace
-
-**New Focus Areas**:
-1. **CI/CD & GitOps Excellence** - Pipeline modernization, ArgoCD patterns
-2. **Self-Hosted Monitoring Stack** - Complete Prometheus/Grafana/Loki deployment
-3. **DORA Metrics + DevEx Tooling** - Metrics collector, pipeline reporter, automation scripts
-
-### Tasks for Phase 2
-- [ ] Rewrite case study 1: CI/CD & GitOps
-- [ ] Rewrite case study 2: Self-hosted monitoring
-- [ ] Rewrite case study 3: DORA metrics + DevEx tools
-- [ ] Update homepage project previews
-- [ ] Refine service descriptions based on new case studies
-- [ ] Add any missing technical details or screenshots
+**API Integration & Automation**:
+- Multi-API correlation (Bitbucket, Jira, ArgoCD, Prometheus)
+- Retry logic with exponential backoff
+- Parallel processing and caching strategies
+- Webhook integrations (Teams, Power Automate)
 
 ---
 
 ## Technical Notes
 
 ### Issues Resolved
-- **OneDrive/Turbopack conflict**: Moved project to `~/devlinops-site`
-- **Tailwind 4.x migration**: Updated to `@tailwindcss/postcss`, OKLCH colors, `@theme` syntax
-- **Next.js 16 compatibility**: Configured for latest features
+- **OneDrive/Turbopack conflict**: Turbopack disabled via `TURBOPACK=0`, installed `@tailwindcss/postcss`
+- **Dark mode toggle**: Fixed positioning with `relative` class and `inset-0 m-auto` for icon overlay
+- **Git divergent branches**: Reset local main to match origin/main
+- **Tailwind 4.x compatibility**: Using `@tailwindcss/postcss` with proper configuration
+- **Next.js 16 compatibility**: Configured turbopack as object in next.config.ts
 
 ### Running Locally
 ```bash
-cd ~/devlinops-site
+cd "/Users/jackdevlin/Library/CloudStorage/OneDrive-LoweRental/Documents/personal/website"
 npm run dev
-# Opens on http://localhost:3001
+# Opens on http://localhost:3000
+```
+
+### Development Commands
+```bash
+# Install dependencies
+npm install
+
+# Run dev server
+npm run dev
+
+# Build for production
+npm run build
+
+# Start production server
+npm start
 ```
 
 ### Repository
 - **Remote**: https://github.com/Jacko10101/website.git
 - **Branch**: main
-- **Location**: ~/devlinops-site (primary), OneDrive backup
+- **Location**: OneDrive-LoweRental/Documents/personal/website
+
+---
+
+## File Structure
+
+```
+website/
+├── app/
+│   ├── layout.tsx                 # Root layout with theme provider
+│   ├── page.tsx                   # Homepage
+│   ├── about/page.tsx             # About page
+│   ├── contact/page.tsx           # Contact page
+│   ├── services/page.tsx          # Services listing
+│   ├── projects/
+│   │   ├── page.tsx               # Projects listing
+│   │   ├── cicd-gitops/page.tsx   # Case study 1
+│   │   ├── dora-devex/page.tsx    # Case study 2
+│   │   └── observability/page.tsx # Case study 3
+│   └── globals.css                # Global styles
+├── components/
+│   ├── navigation.tsx             # Header with theme toggle
+│   ├── hero.tsx                   # Homepage hero section
+│   ├── services-grid.tsx          # Services overview
+│   ├── projects-preview.tsx       # Featured projects
+│   └── footer.tsx                 # Footer component
+├── next.config.ts                 # Next.js configuration
+├── tailwind.config.ts             # Tailwind CSS configuration
+├── package.json                   # Dependencies
+└── CLAUDE.md                      # This file
+```
 
 ---
 
 ## Next Steps
 
-1. **Phase 2**: Refine case studies to match actual focus areas
-2. **Polish**: Fine-tune copy, add testimonials if available
-3. **Deploy**: Choose hosting (Vercel, Netlify, Cloudflare Pages, or self-hosted)
-4. **DNS**: Point devlinops.com to production
-5. **Email**: Set up jack@devlinops.com (Google Workspace or Proton)
+### Phase 3: Deployment & Launch
+1. **Choose Hosting Provider**:
+   - Vercel (recommended for Next.js)
+   - Netlify
+   - Cloudflare Pages
+   - Self-hosted (AWS/DO)
+
+2. **Domain & DNS**:
+   - Point devlinops.com to production
+   - Configure SSL/TLS certificates
+   - Set up www redirect
+
+3. **Professional Email**:
+   - jack@devlinops.com
+   - Options: Google Workspace, Proton Mail, Fastmail
+
+4. **SEO Optimization**:
+   - Submit sitemap to Google Search Console
+   - Add structured data (JSON-LD)
+   - Optimize meta descriptions
+   - Add Open Graph images
+
+5. **Analytics** (Optional):
+   - Google Analytics or privacy-focused alternative (Plausible, Fathom)
+   - Track page views, engagement metrics
+   - Monitor conversion rates (contact form)
+
+6. **Performance Optimization**:
+   - Image optimization (already using Next.js Image)
+   - Code splitting (automatic with Next.js)
+   - CDN configuration
+   - Lighthouse score > 95
 
 ---
 
-**Status**: Ready for Phase 2 content refinement 🚀
+## Portfolio Strengths
+
+**Technical Depth**: Case studies demonstrate deep platform engineering expertise with concrete metrics and business impact
+
+**Breadth of Skills**: Covers CI/CD, observability, developer experience, cost optimization, security integration
+
+**Business Acumen**: Every project tied to measurable business outcomes (cost savings, deployment velocity, MTTR reduction)
+
+**Problem-Solving**: Clear problem → solution → impact narrative showing strategic thinking
+
+**Scale**: 20 microservices, 400 deploys/month, 4 environments demonstrates enterprise-level experience
+
+**Innovation**: Custom tooling (DORA collector, pipeline reporter), architectural patterns (App-of-Apps, PostSync hooks)
+
+**Communication**: Technical details balanced with business context, suitable for both technical and non-technical audiences
+
+---
+
+**Status**: ✅ Ready for deployment! Portfolio showcases comprehensive platform engineering expertise with professional, sanitized case studies.

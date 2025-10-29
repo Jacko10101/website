@@ -6,28 +6,28 @@ import { ArrowRight, ExternalLink } from "lucide-react";
 
 const projects = [
   {
-    title: "Engineering Intelligence Platform",
-    subtitle: "DORA Metrics Collection Service",
+    title: "DORA Metrics & Developer Experience Platform",
+    subtitle: "Business Intelligence & DevEx Tooling",
     description:
-      "Built a centralized Python service correlating Bitbucket commits, Jira tickets, and ArgoCD deployments to provide automated DORA metrics and a 'State of the Union' dashboard for engineering insights.",
-    tags: ["Python", "ArgoCD", "Prometheus", "Grafana", "API Integration"],
-    href: "/projects/dora-metrics",
+      "Built comprehensive DevEx platform with DORA metrics collector, intelligent pipeline notifications, and automated deployment gates—transforming engineering visibility and developer productivity.",
+    tags: ["Python", "Bash", "Prometheus", "Grafana", "Teams", "Jira API"],
+    href: "/projects/dora-devex",
   },
   {
-    title: "Test Orchestration Modernization",
-    subtitle: "GitOps-Native Test Execution",
+    title: "CI/CD & GitOps Platform Engineering",
+    subtitle: "Enterprise Pipeline Architecture from Scratch",
     description:
-      "Refactored 47 PRs to eliminate race conditions by replacing imperative pipeline polling with declarative ArgoCD PostSync hooks, dramatically improving test reliability.",
-    tags: ["ArgoCD", "Kubernetes Jobs", "GitOps", "CI/CD", "Bash"],
-    href: "/projects/test-orchestration",
+      "Built production-grade CI/CD from greenfield microservices migration—evolved to 400 deploys/month across 20 services with enterprise security and GitOps automation.",
+    tags: ["GitOps", "ArgoCD", "Kubernetes", "SAST/SCA", "Bitbucket Pipelines"],
+    href: "/projects/cicd-gitops",
   },
   {
-    title: "Feature Branch Automation",
-    subtitle: "Self-Service Developer Environments",
+    title: "Enterprise Observability Stack",
+    subtitle: "Self-Hosted Monitoring Platform",
     description:
-      "Automated creation of isolated {service}-{branch-slug} namespaces with full observability on PR open, automatically cleaned up on merge. Eliminated shared dev environment conflicts.",
-    tags: ["ArgoCD ApplicationSets", "Kubernetes", "Prometheus", "Automation"],
-    href: "/projects/feature-branches",
+      "Built production-grade observability with Prometheus, Grafana, and Loki—achieving full-stack visibility for 20 services at 95%+ cost savings vs cloud solutions like Datadog.",
+    tags: ["Prometheus", "Grafana", "Loki", "Thanos", "Kubernetes", "Alertmanager"],
+    href: "/projects/observability",
   },
 ];
 
@@ -43,10 +43,10 @@ export function ProjectsPreview() {
           className="mb-12 text-center"
         >
           <h2 className="mb-4 text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-            Featured Projects
+            Featured Work
           </h2>
           <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
-            Real-world case studies demonstrating strategic thinking, technical depth, and measurable business impact.
+            Here are a few projects where I got to build something cool and make a real impact.
           </p>
         </motion.div>
 
