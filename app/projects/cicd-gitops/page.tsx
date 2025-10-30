@@ -5,7 +5,7 @@ import { CicdArchitecture } from "@/components/cicd-architecture";
 
 export const metadata = {
   title: "CI/CD & GitOps Platform Engineering | DevlinOps Case Study",
-  description: "Architecting enterprise-grade CI/CD from greenfield microservices migration to 400 deploys/month across 20 services.",
+  description: "Architecting production-ready CI/CD from greenfield microservices migration to 400 deploys/month across 20 services.",
 };
 
 export default function CicdGitopsPage() {
@@ -69,7 +69,7 @@ export default function CicdGitopsPage() {
             <h2 className="mb-4 text-2xl font-bold">The Evolution</h2>
             <div className="space-y-6">
               <p className="text-muted-foreground">
-                Over <strong className="text-foreground">2 years of iterative platform engineering</strong>, I transformed a basic build script into a sophisticated, enterprise-grade CI/CD platform. Here's how it evolved:
+                Over <strong className="text-foreground">2 years of iterative platform engineering</strong>, I transformed a basic build script into a sophisticated, production-ready CI/CD platform. Here's how it evolved:
               </p>
 
               <div className="space-y-6">
@@ -110,13 +110,13 @@ pipelines:
                 {/* Phase 2 */}
                 <div className="rounded-lg border border-border bg-card p-6">
                   <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
-                    <span className="text-primary">Phase 2:</span> Standardization & Reusability (Months 6-12)
+                    <span className="text-primary">Phase 2:</span> Standardisation & Reusability (Months 6-12)
                   </h3>
                   <div className="space-y-3 text-sm text-muted-foreground">
                     <p>Created reusable pipeline components and custom base images to eliminate duplication across services.</p>
                     <ul className="space-y-2 ml-4">
                       <li>• <strong className="text-foreground">Custom Base Image</strong> — Pre-built Maven image with kubectl, ArgoCD CLI, AWS CLI, jq</li>
-                      <li>• <strong className="text-foreground">Shared Pipeline Scripts</strong> — `pipeline_reporter.sh` for centralized notifications</li>
+                      <li>• <strong className="text-foreground">Shared Pipeline Scripts</strong> — `pipeline_reporter.sh` for centralised notifications</li>
                       <li>• <strong className="text-foreground">Kustomize Overlays</strong> — Environment-specific configuration management</li>
                       <li>• <strong className="text-foreground">App-of-Apps Pattern</strong> — Hierarchical ArgoCD application management</li>
                     </ul>
@@ -193,7 +193,7 @@ pipelines:
             <h2 className="mb-4 text-2xl font-bold">Current State: Production-Grade Platform</h2>
             <div className="space-y-4">
               <p className="text-muted-foreground">
-                Today's pipeline is a <strong className="text-foreground">fully standardized, enterprise-grade CI/CD platform</strong> supporting 20 microservices with sophisticated testing, security, and deployment automation.
+                Today's pipeline is a <strong className="text-foreground">fully standardised, production-ready CI/CD platform</strong> supporting 20 microservices with sophisticated testing, security, and deployment automation.
               </p>
 
               <div className="rounded-lg border border-primary/50 bg-primary/10 p-6">
@@ -213,7 +213,7 @@ pipelines:
                   </div>
                   <div className="flex gap-2">
                     <span className="text-primary font-bold">→</span>
-                    <span><strong className="text-foreground">Reusable Components:</strong> Custom base image, shared scripts, standardized Kustomize overlays</span>
+                    <span><strong className="text-foreground">Reusable Components:</strong> Custom base image, shared scripts, standardised Kustomize overlays</span>
                   </div>
                   <div className="flex gap-2">
                     <span className="text-primary font-bold">→</span>
@@ -324,13 +324,13 @@ pipelines:
               <div className="rounded-lg border border-primary/50 bg-primary/10 p-6">
                 <div className="mb-2 text-3xl font-bold text-primary">~5 min</div>
                 <p className="text-sm text-muted-foreground">
-                  Consistent build time with parallel test execution—optimized through iterative improvements
+                  Consistent build time with parallel test execution—optimised through iterative improvements
                 </p>
               </div>
               <div className="rounded-lg border border-primary/50 bg-primary/10 p-6">
                 <div className="mb-2 text-3xl font-bold text-primary">20</div>
                 <p className="text-sm text-muted-foreground">
-                  Microservices using standardized pipeline—"paved path" reduces onboarding to &lt;1 day
+                  Microservices using standardised pipeline—"paved path" reduces onboarding to &lt;1 day
                 </p>
               </div>
               <div className="rounded-lg border border-primary/50 bg-primary/10 p-6">
@@ -538,7 +538,7 @@ spec:
               </li>
               <li className="flex gap-3">
                 <span className="text-primary font-bold">→</span>
-                <span><strong className="text-foreground">Standardization is key to scale:</strong> Reusable components (base images, scripts) made onboarding new services trivial</span>
+                <span><strong className="text-foreground">Standardisation is key to scale:</strong> Reusable components (base images, scripts) made onboarding new services trivial</span>
               </li>
               <li className="flex gap-3">
                 <span className="text-primary font-bold">→</span>

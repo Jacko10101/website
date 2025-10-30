@@ -43,7 +43,7 @@ export default function AboutPage() {
               <Briefcase className="mb-4 h-10 w-10 text-primary" />
               <h3 className="mb-2 text-lg font-semibold">Experience</h3>
               <p className="text-sm text-muted-foreground">
-                750+ tickets delivered across enterprise-scale Kubernetes platforms
+                750+ tickets delivered across production Kubernetes platforms
               </p>
             </div>
             <div className="rounded-lg border border-border bg-card p-6">
@@ -57,7 +57,7 @@ export default function AboutPage() {
               <Award className="mb-4 h-10 w-10 text-primary" />
               <h3 className="mb-2 text-lg font-semibold">Approach</h3>
               <p className="text-sm text-muted-foreground">
-                Strategic thinking combined with hands-on implementation
+                Pragmatic solutions that actually solve problems
               </p>
             </div>
           </div>
@@ -69,15 +69,15 @@ export default function AboutPage() {
           <ul className="space-y-2 text-muted-foreground mb-8">
             <li className="flex gap-3">
               <span className="text-primary">→</span>
-              <span><strong className="text-foreground">Kubernetes Platform Engineering:</strong> EKS cluster design, upgrades, and optimization</span>
+              <span><strong className="text-foreground">Kubernetes Platform Engineering:</strong> EKS cluster design, upgrades, and optimisation</span>
             </li>
             <li className="flex gap-3">
               <span className="text-primary">→</span>
-              <span><strong className="text-foreground">Enterprise Observability:</strong> Complete Prometheus/Grafana/Loki/Tempo stack implementation</span>
+              <span><strong className="text-foreground">Observability Stacks:</strong> Prometheus/Grafana/Loki/Tempo implementation</span>
             </li>
             <li className="flex gap-3">
               <span className="text-primary">→</span>
-              <span><strong className="text-foreground">GitOps & CI/CD:</strong> ArgoCD implementation and pipeline modernization</span>
+              <span><strong className="text-foreground">GitOps & CI/CD:</strong> ArgoCD implementation and pipeline modernisation</span>
             </li>
             <li className="flex gap-3">
               <span className="text-primary">→</span>

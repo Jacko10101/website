@@ -83,7 +83,7 @@ export default function ObservabilityPage() {
                 <p className="text-xs text-muted-foreground">Prometheus + Thanos for long-term storage</p>
               </div>
               <div className="rounded-lg border border-primary/50 bg-primary/10 p-4">
-                <h3 className="font-semibold mb-2">Visualization</h3>
+                <h3 className="font-semibold mb-2">Visualisation</h3>
                 <p className="text-xs text-muted-foreground">Grafana with custom dashboards</p>
               </div>
               <div className="rounded-lg border border-primary/50 bg-primary/10 p-4">
@@ -131,7 +131,7 @@ export default function ObservabilityPage() {
               </div>
 
               <div className="rounded-lg border border-border bg-card p-4">
-                <h4 className="font-semibold mb-2 text-primary">3. Grafana (Visualization)</h4>
+                <h4 className="font-semibold mb-2 text-primary">3. Grafana (Visualisation)</h4>
                 <div className="text-sm text-muted-foreground space-y-2">
                   <p><strong>Deployment:</strong> Persistent storage with PVC for dashboard retention</p>
                   <p><strong>Data Sources:</strong> Prometheus (metrics), Loki (logs), AWS CloudWatch</p>
@@ -208,7 +208,7 @@ export default function ObservabilityPage() {
               <div className="rounded-lg border border-border bg-card p-4">
                 <h4 className="font-semibold mb-2">Platform Overview Dashboards</h4>
                 <ul className="text-sm text-muted-foreground space-y-1 ml-4">
-                  <li>• <strong>Kubernetes Cluster Health:</strong> Node status, pod health, resource utilization</li>
+                  <li>• <strong>Kubernetes Cluster Health:</strong> Node status, pod health, resource utilisation</li>
                   <li>• <strong>Infrastructure Metrics:</strong> CPU, memory, disk, network across all nodes</li>
                   <li>• <strong>Service Mesh:</strong> Istio traffic flow, success rates, latencies</li>
                   <li>• <strong>Database Performance:</strong> Postgres connections, query times, replication lag</li>
@@ -231,7 +231,7 @@ export default function ObservabilityPage() {
                 <div className="text-sm text-muted-foreground space-y-2">
                   <p><strong>Mission Control Section:</strong> Gateway throughput (20.7 req/s), active IoT connections (3), availability (100%), data pipeline success (100%)</p>
                   <p><strong>Business Intelligence:</strong> Retail chain telemetry ingestion trends, tenant activity rankings, multi-vendor integration performance</p>
-                  <p><strong>Cost Savings Tracking:</strong> Annual savings from optimizations ($750K+), vendor performance comparison</p>
+                  <p><strong>Cost Savings Tracking:</strong> Annual savings from optimisations ($750K+), vendor performance comparison</p>
                 </div>
               </div>
             </div>
@@ -250,7 +250,7 @@ export default function ObservabilityPage() {
                 },
                 {
                   title: "Kafka Consumer Lag & Topic Health",
-                  description: "Comprehensive Kafka monitoring showing consumer lag trends by group and topic, partition-level lag visualization, and topic size tracking. Essential for preventing data pipeline bottlenecks and ensuring message processing SLAs.",
+                  description: "Comprehensive Kafka monitoring showing consumer lag trends by group and topic, partition-level lag visualisation, and topic size tracking. Essential for preventing data pipeline bottlenecks and ensuring message processing SLAs.",
                   imagePath: "/dashboards/kafka-metrics.png",
                   category: "Data Platform"
                 },
@@ -438,8 +438,8 @@ kubectl delete pod service-a-abc123 -n production`}
               <li>• Metrics Design & Instrumentation</li>
               <li>• Log Aggregation at Scale</li>
               <li>• Alert Rule Engineering</li>
-              <li>• Dashboard Design & Visualization</li>
-              <li>• Cost Optimization</li>
+              <li>• Dashboard Design & Visualisation</li>
+              <li>• Cost Optimisation</li>
               <li>• Kubernetes Deployment</li>
               <li>• Runbook Development</li>
             </ul>

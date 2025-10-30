@@ -6,7 +6,7 @@ import { DoraArchitecture } from "@/components/dora-architecture";
 
 export const metadata = {
   title: "DORA Metrics & Developer Experience Platform | DevlinOps Case Study",
-  description: "Building business intelligence and developer experience tooling—from centralized DORA metrics to intelligent pipeline notifications.",
+  description: "Building business intelligence and developer experience tooling—from centralised DORA metrics to intelligent pipeline notifications.",
 };
 
 export default function DORADevExPage() {
@@ -103,7 +103,7 @@ export default function DORADevExPage() {
           <section>
             <h2 className="mb-4 text-2xl font-bold">Component 1: DORA Metrics Collector</h2>
             <p className="text-muted-foreground mb-4">
-              A Python service that acts as a <strong className="text-foreground">centralized correlation engine</strong> between disconnected systems.
+              A Python service that acts as a <strong className="text-foreground">centralised correlation engine</strong> between disconnected systems.
             </p>
 
             <h3 className="text-lg font-semibold mt-4 mb-3">Technical Architecture</h3>
@@ -422,7 +422,7 @@ The following 2 ticket(s) are missing Fix Version/s:
               </li>
               <li className="flex gap-3">
                 <span className="text-primary font-bold">✓</span>
-                <span>Deployed as Kubernetes service with Prometheus scraping and Grafana visualization</span>
+                <span>Deployed as Kubernetes service with Prometheus scraping and Grafana visualisation</span>
               </li>
               <li className="flex gap-3">
                 <span className="text-primary font-bold">✓</span>

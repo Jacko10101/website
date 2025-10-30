@@ -26,7 +26,7 @@ export function Hero() {
           >
             <TerminalIcon className="h-4 w-4 text-primary" />
             <span className="font-mono text-muted-foreground">
-              Platform Engineering Excellence
+              Platform Engineer & Kubernetes Specialist
             </span>
           </motion.div>
 
@@ -37,10 +37,11 @@ export function Hero() {
             transition={{ delay: 0.2 }}
             className="mb-6 text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl"
           >
-            I Help Teams{" "}
+            I Build{" "}
             <span className="bg-gradient-to-r from-primary to-blue-400 bg-clip-text text-transparent">
-              Scale Their Infrastructure
+              Kubernetes Platforms
             </span>
+            {" "}That Actually Work
           </motion.h1>
 
           {/* Subheading */}
@@ -50,9 +51,9 @@ export function Hero() {
             transition={{ delay: 0.3 }}
             className="mb-8 text-lg text-muted-foreground sm:text-xl md:text-2xl"
           >
-            From setting up Kubernetes clusters to building full observability stacks,
+            Spent the last few years wrangling Kubernetes, setting up observability stacks, and fixing CI/CD pipelines.
             <br className="hidden sm:block" />
-            I&apos;ve been there and know what actually works in production.
+            Now helping other teams do the same—without the 3am wake-up calls.
           </motion.p>
 
           {/* CTAs */}
@@ -66,14 +67,14 @@ export function Hero() {
               href="/contact"
               className="group inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-primary px-8 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/90 hover:gap-3"
             >
-              Get Started
+              Let's Chat
               <ArrowRight className="h-4 w-4 transition-all" />
             </Link>
             <Link
               href="/projects"
               className="inline-flex h-12 items-center justify-center rounded-lg border border-border bg-background px-8 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground"
             >
-              View Case Studies
+              See What I've Built
             </Link>
           </motion.div>
 

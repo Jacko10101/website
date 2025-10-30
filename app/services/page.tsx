@@ -12,52 +12,52 @@ import {
 
 export const metadata = {
   title: "Services | DevlinOps",
-  description: "Comprehensive DevOps and Platform Engineering services for scale-up and enterprise teams.",
+  description: "DevOps and Platform Engineering services for scale-ups and growing teams.",
 };
 
 const services = [
   {
     id: "kubernetes",
     icon: Cloud,
-    title: "Kubernetes Platform Engineering & EKS Optimization",
+    title: "Kubernetes Platform Engineering & EKS Optimisation",
     description:
       "End-to-end Kubernetes platform design and management for production workloads.",
     offerings: [
       "EKS cluster design, deployment, and architecture",
       "Zero-downtime Kubernetes upgrades (1.30 → 1.31 → 1.32+)",
       "Infrastructure as Code (AWS CDK, Terraform, CloudFormation)",
-      "Node group optimization and autoscaling strategies",
+      "Node group optimisation and autoscaling strategies",
       "Disaster recovery planning and backup strategies",
-      "Cost optimization and resource management",
+      "Cost optimisation and resource management",
       "CloudFormation stack recovery and troubleshooting",
     ],
   },
   {
     id: "observability",
     icon: LineChart,
-    title: "Enterprise Observability Stack Implementation",
+    title: "Observability Stack Setup",
     description:
-      "Complete observability platform setup for visibility, alerting, and proactive incident response.",
+      "Set up observability platforms for visibility, alerting, and faster incident response.",
     offerings: [
       "Prometheus + Grafana + Loki + Tempo stack deployment",
       "Custom business metrics design (DORA metrics, SLIs, SLOs)",
       "Distributed tracing implementation (OpenTelemetry)",
       "Alerting strategy, runbooks, and on-call workflows",
       "Log aggregation pipelines and retention policies",
-      "Dashboard development and visualization",
+      "Dashboard development and visualisation",
       "MTTR reduction through improved observability",
     ],
   },
   {
     id: "gitops",
     icon: GitBranch,
-    title: "GitOps & CI/CD Pipeline Modernization",
+    title: "GitOps & CI/CD Pipeline Modernisation",
     description:
       "Streamline deployments with GitOps best practices and automated pipelines.",
     offerings: [
       "ArgoCD implementation and migration strategies",
       "ApplicationSet automation for dynamic environments",
-      "Bitbucket/GitHub/GitLab pipeline optimization",
+      "Bitbucket/GitHub/GitLab pipeline optimisation",
       "Feature branch workflows and preview environments",
       "PostSync hooks for test orchestration",
       "Deployment automation and rollback strategies",
@@ -106,7 +106,7 @@ const services = [
       "Kafka/MSK cluster management and upgrades",
       "Stream processing architecture (Flink, Kafka Streams)",
       "Monitoring and alerting for data pipelines",
-      "Consumer lag management and optimization",
+      "Consumer lag management and optimisation",
       "TimescaleDB/PostgreSQL performance tuning",
       "Data migration strategies",
       "JMX metrics and exporter configuration",
@@ -117,7 +117,7 @@ const services = [
     icon: Wrench,
     title: "Developer Experience & Platform Tooling",
     description:
-      "Empower your engineers with self-service platforms and productivity tools.",
+      "Self-service platforms and productivity tools to make developers' lives easier.",
     offerings: [
       "Self-service developer platforms (internal developer portals)",
       "Feature branch environment automation",
