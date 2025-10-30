@@ -13,8 +13,7 @@ export function TransitionLink({
 
   const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
     // Check if browser supports View Transitions
-    // @ts-expect-error - View Transitions API is not yet in TypeScript DOM types
-    if (!document.startViewTransition) {
+    if (!(document as any).startViewTransition) {
       return; // Let Next.js handle it normally
     }
 
@@ -22,8 +21,7 @@ export function TransitionLink({
     e.preventDefault();
 
     // Start view transition
-    // @ts-expect-error - View Transitions API is not yet in TypeScript DOM types
-    document.startViewTransition(() => {
+    (document as any).startViewTransition(() => {
       router.push(href.toString());
     });
   };
