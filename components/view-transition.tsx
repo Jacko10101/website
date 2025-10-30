@@ -4,17 +4,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ComponentProps, MouseEvent } from "react";
 
-// Type guard for View Transition API support
-declare global {
-  interface Document {
-    startViewTransition?: (callback: () => void) => {
-      finished: Promise<void>;
-      ready: Promise<void>;
-      updateCallbackDone: Promise<void>;
-    };
-  }
-}
-
 export function TransitionLink({
   href,
   children,
@@ -24,6 +13,7 @@ export function TransitionLink({
 
   const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
     // Check if browser supports View Transitions
+    // @ts-expect-error - View Transitions API is not yet in TypeScript DOM types
     if (!document.startViewTransition) {
       return; // Let Next.js handle it normally
     }
@@ -32,6 +22,7 @@ export function TransitionLink({
     e.preventDefault();
 
     // Start view transition
+    // @ts-expect-error - View Transitions API is not yet in TypeScript DOM types
     document.startViewTransition(() => {
       router.push(href.toString());
     });
