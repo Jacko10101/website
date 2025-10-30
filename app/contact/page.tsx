@@ -1,4 +1,5 @@
 import { Mail, Github, Linkedin } from "lucide-react";
+import { ContactForm } from "@/components/contact-form";
 
 export const metadata = {
   title: "Contact | DevlinOps",
@@ -16,6 +17,14 @@ export default function ContactPage() {
           Interested in working together? I'd love to hear about your infrastructure challenges and goals.
         </p>
 
+        {/* Contact Form */}
+        <div className="mb-16 rounded-lg border border-border bg-card p-6 md:p-8">
+          <h2 className="mb-6 text-2xl font-bold">Send a Message</h2>
+          <ContactForm />
+        </div>
+
+        {/* Contact Methods */}
+        <h2 className="mb-6 text-2xl font-bold">Other Ways to Connect</h2>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {/* Email */}
           <a

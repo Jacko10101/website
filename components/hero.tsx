@@ -88,7 +88,7 @@ export function Hero() {
             className="mt-12 grid grid-cols-2 gap-6 md:grid-cols-4 md:gap-8"
           >
             <div>
-              <div className="text-3xl font-bold text-primary">7500+</div>
+              <div className="text-3xl font-bold text-primary">750+</div>
               <div className="text-sm text-muted-foreground">Tickets Delivered</div>
             </div>
             <div>

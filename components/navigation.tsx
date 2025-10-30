@@ -7,6 +7,7 @@ import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import { TransitionLink } from "./view-transition";
 
 const navItems = [
   { name: "Home", href: "/" },
@@ -28,7 +29,7 @@ export function Navigation() {
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between px-4 md:px-6">
-        <Link href="/" className="flex items-center space-x-3">
+        <TransitionLink href="/" className="flex items-center space-x-3">
           <Image
             src="/logo.png"
             alt="DevlinOps Logo"
@@ -37,12 +38,12 @@ export function Navigation() {
             className="rounded-md"
           />
           <span className="text-xl font-bold">DevlinOps</span>
-        </Link>
+        </TransitionLink>
 
         <div className="flex items-center gap-6">
           <div className="hidden md:flex md:gap-6">
             {navItems.map((item) => (
-              <Link
+              <TransitionLink
                 key={item.href}
                 href={item.href}
                 className={cn(
@@ -53,7 +54,7 @@ export function Navigation() {
                 )}
               >
                 {item.name}
-              </Link>
+              </TransitionLink>
             ))}
           </div>
 

@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { ArrowLeft, Calendar, Tag } from "lucide-react";
+import { ScrollProgress } from "@/components/scroll-progress";
+import { CicdArchitecture } from "@/components/cicd-architecture";
 
 export const metadata = {
   title: "CI/CD & GitOps Platform Engineering | DevlinOps Case Study",
@@ -9,6 +11,7 @@ export const metadata = {
 export default function CicdGitopsPage() {
   return (
     <article className="container px-4 py-12 md:px-6 md:py-16">
+      <ScrollProgress />
       <Link
         href="/projects"
         className="mb-8 inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
@@ -178,6 +181,11 @@ pipelines:
                 </div>
               </div>
             </div>
+          </section>
+
+          {/* Architecture Diagram */}
+          <section>
+            <CicdArchitecture />
           </section>
 
           {/* Current State */}
@@ -418,6 +426,104 @@ spec:
                   <p>• <strong className="text-foreground">Result Processing:</strong> Generates HTML index pages, uploads to S3 with pre-signed URLs</p>
                   <p>• <strong className="text-foreground">Notifications:</strong> Sends rich Teams webhooks with deployment context and test results</p>
                 </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Teams Notifications */}
+          <section>
+            <h2 className="mb-4 text-2xl font-bold">Intelligent Notifications & Smart Routing</h2>
+            <p className="text-sm text-muted-foreground mb-4">
+              Pipeline reporter sends rich Microsoft Teams Adaptive Cards with smart routing across 4 channels—Platform Deployments, Security Alerts, QA notifications, and PR reviews.
+            </p>
+
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="rounded-lg border border-blue-500/50 bg-blue-500/10 p-4">
+                <div className="mb-2 flex items-center gap-2">
+                  <span className="text-xl">✅</span>
+                  <h4 className="font-semibold text-foreground">Configuration Updated</h4>
+                </div>
+                <p className="text-xs text-muted-foreground mb-3">GitOps state synced to cluster</p>
+                <div className="space-y-1 text-xs">
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Build:</span>
+                    <span className="font-medium">#3888</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Environment:</span>
+                    <span className="font-medium">QA</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Developer:</span>
+                    <span className="font-medium">Gerard Downes</span>
+                  </div>
+                </div>
+                <div className="mt-3 flex gap-2">
+                  <span className="rounded bg-blue-500/20 px-2 py-1 text-[10px] font-medium">🚀 ArgoCD</span>
+                  <span className="rounded bg-blue-500/20 px-2 py-1 text-[10px] font-medium">View Pipeline</span>
+                </div>
+              </div>
+
+              <div className="rounded-lg border border-red-500/50 bg-red-500/10 p-4">
+                <div className="mb-2 flex items-center gap-2">
+                  <span className="text-xl">⚠️</span>
+                  <h4 className="font-semibold text-foreground">Security Alert: Identity API</h4>
+                </div>
+                <p className="text-xs text-muted-foreground mb-3">1 High vulnerability in dependencies</p>
+                <div className="space-y-1 text-xs">
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Build:</span>
+                    <span className="font-medium">#450</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Environment:</span>
+                    <span className="font-medium">PULL REQUEST</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Priority:</span>
+                    <span className="font-medium text-red-400">⚡ High</span>
+                  </div>
+                </div>
+                <div className="mt-3 flex gap-2">
+                  <span className="rounded bg-red-500/20 px-2 py-1 text-[10px] font-medium">📝 Create Jira</span>
+                  <span className="rounded bg-red-500/20 px-2 py-1 text-[10px] font-medium">🔍 Veracode</span>
+                </div>
+              </div>
+
+              <div className="rounded-lg border border-green-500/50 bg-green-500/10 p-4">
+                <div className="mb-2 flex items-center gap-2">
+                  <span className="text-xl">✅</span>
+                  <h4 className="font-semibold text-foreground">Smoke Tests Passed</h4>
+                </div>
+                <p className="text-xs text-muted-foreground mb-3">All automated tests completed successfully</p>
+                <div className="space-y-1 text-xs">
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">API Tests:</span>
+                    <span className="font-medium text-green-400">✅ Passed</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Cucumber:</span>
+                    <span className="font-medium text-green-400">✅ Passed</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Duration:</span>
+                    <span className="font-medium">73 minutes</span>
+                  </div>
+                </div>
+                <div className="mt-3 flex gap-2">
+                  <span className="rounded bg-green-500/20 px-2 py-1 text-[10px] font-medium">📊 Test Results</span>
+                  <span className="rounded bg-green-500/20 px-2 py-1 text-[10px] font-medium">🚀 ArgoCD</span>
+                </div>
+              </div>
+
+              <div className="rounded-lg border border-border bg-secondary/50 p-4">
+                <h4 className="font-semibold text-foreground mb-2">Smart Features</h4>
+                <ul className="space-y-1 text-xs text-muted-foreground">
+                  <li>• <strong className="text-foreground">Channel Routing:</strong> Platform, Security, QA, PR</li>
+                  <li>• <strong className="text-foreground">Deep Links:</strong> ArgoCD, Veracode, Jira, S3</li>
+                  <li>• <strong className="text-foreground">Auto Jira:</strong> Security alerts create stories</li>
+                  <li>• <strong className="text-foreground">Easter Eggs:</strong> Build milestones, Friday warnings</li>
+                </ul>
               </div>
             </div>
           </section>

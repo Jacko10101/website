@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { ArrowLeft, Calendar, Tag } from "lucide-react";
 import { MetricsShowcase } from "@/components/metrics-showcase";
+import { ScrollProgress } from "@/components/scroll-progress";
+import { ObservabilityArchitecture } from "@/components/observability-architecture";
 
 export const metadata = {
   title: "Enterprise Observability Stack | DevlinOps Case Study",
@@ -10,6 +12,7 @@ export const metadata = {
 export default function ObservabilityPage() {
   return (
     <article className="container px-4 py-12 md:px-6 md:py-16">
+      <ScrollProgress />
       <Link
         href="/projects"
         className="mb-8 inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
@@ -94,6 +97,11 @@ export default function ObservabilityPage() {
           <section>
             <h2 className="mb-4 text-2xl font-bold">Architecture & Implementation</h2>
 
+            {/* Architecture Diagram */}
+            <div className="mb-8">
+              <ObservabilityArchitecture />
+            </div>
+
             <h3 className="text-lg font-semibold mt-6 mb-3">Core Stack Components</h3>
             <div className="space-y-3">
               <div className="rounded-lg border border-border bg-card p-4">
@@ -146,7 +154,7 @@ export default function ObservabilityPage() {
                 <h4 className="font-semibold mb-2 text-primary">5. Alertmanager (Alert Routing)</h4>
                 <div className="text-sm text-muted-foreground space-y-2">
                   <p><strong>Integration:</strong> Teams webhooks via Power Automate workflows</p>
-                  <p><strong>Smart Routing:</strong> Environment-specific channels (Dev → business hours, QA → 24/7)</p>
+                  <p><strong>Smart Routing:</strong> Environment-specific channels (Dev → business hours, Prod → 24/7)</p>
                   <p><strong>Alert Inhibition:</strong> Suppress low-severity alerts when critical alerts fire</p>
                   <p><strong>Grouping:</strong> Batch alerts by namespace/service to reduce noise</p>
                 </div>

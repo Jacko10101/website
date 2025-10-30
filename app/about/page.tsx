@@ -43,7 +43,7 @@ export default function AboutPage() {
               <Briefcase className="mb-4 h-10 w-10 text-primary" />
               <h3 className="mb-2 text-lg font-semibold">Experience</h3>
               <p className="text-sm text-muted-foreground">
-                7,500+ tickets delivered across enterprise-scale Kubernetes platforms
+                750+ tickets delivered across enterprise-scale Kubernetes platforms
               </p>
             </div>
             <div className="rounded-lg border border-border bg-card p-6">

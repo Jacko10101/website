@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { ArrowLeft, Calendar, Tag } from "lucide-react";
 import { CodeSnippet } from "@/components/code-snippet";
+import { ScrollProgress } from "@/components/scroll-progress";
+import { DoraArchitecture } from "@/components/dora-architecture";
 
 export const metadata = {
   title: "DORA Metrics & Developer Experience Platform | DevlinOps Case Study",
@@ -10,6 +12,7 @@ export const metadata = {
 export default function DORADevExPage() {
   return (
     <article className="container px-4 py-12 md:px-6 md:py-16">
+      <ScrollProgress />
       <Link
         href="/projects"
         className="mb-8 inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
@@ -89,6 +92,11 @@ export default function DORADevExPage() {
                 <p className="text-xs text-muted-foreground">Automated quality checks preventing premature releases</p>
               </div>
             </div>
+          </section>
+
+          {/* Architecture Diagram */}
+          <section>
+            <DoraArchitecture />
           </section>
 
           {/* Component 1: DORA Metrics */}
@@ -269,7 +277,7 @@ get_current_qa_deployment() {
 
             <h3 className="text-lg font-semibold mt-6 mb-3">Example Notification</h3>
             <div className="rounded-lg border border-border bg-muted p-4 text-sm space-y-2">
-              <div className="font-semibold">✅ Configuration Updated: Service A - DEV [master]</div>
+              <div className="font-semibold">✅ Configuration Updated: Service A - DEV [Master Branch]</div>
               <div className="grid grid-cols-3 gap-4 text-xs mt-2">
                 <div><strong>Build:</strong> #3881</div>
                 <div><strong>Environment:</strong> DEV</div>
