@@ -76,7 +76,7 @@ export default function ContactPage() {
 
           {/* LinkedIn */}
           <a
-            href="https://linkedin.com/in/jack-devlin"
+            href="https://linkedin.com/in"
             target="_blank"
             rel="noopener noreferrer"
             className="group block rounded-lg border border-border bg-card p-6 transition-all hover:border-primary hover:shadow-lg"
