@@ -8,10 +8,37 @@ export const metadata = {
   description: "Architecting production-ready CI/CD from greenfield microservices migration to 400 deploys/month across 20 services.",
 };
 
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "CI/CD & GitOps Platform Engineering",
+  "description": "Building production-grade CI/CD infrastructure from scratch—evolving a greenfield microservices platform to 400 deploys/month with enterprise security",
+  "author": {
+    "@type": "Person",
+    "name": "Jack Devlin",
+    "url": "https://devlinops.com"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "DevlinOps",
+    "url": "https://devlinops.com"
+  },
+  "datePublished": "2025-01-01",
+  "dateModified": "2025-01-01",
+  "proficiencyLevel": "Expert",
+  "keywords": ["CI/CD", "GitOps", "ArgoCD", "Kubernetes", "Bitbucket Pipelines", "Platform Engineering"],
+  "dependencies": "Kubernetes, ArgoCD, Bitbucket Pipelines, Kustomize, Docker, AWS ECR"
+};
+
 export default function CicdGitopsPage() {
   return (
-    <article className="container px-4 py-12 md:px-6 md:py-16">
-      <ScrollProgress />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
+      <article className="container px-4 py-12 md:px-6 md:py-16">
+        <ScrollProgress />
       <Link
         href="/projects"
         className="mb-8 inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
@@ -644,5 +671,6 @@ spec:
         </aside>
       </div>
     </article>
+    </>
   );
 }

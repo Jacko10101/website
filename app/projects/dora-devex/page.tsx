@@ -9,10 +9,37 @@ export const metadata = {
   description: "Building business intelligence and developer experience tooling—from centralised DORA metrics to intelligent pipeline notifications.",
 };
 
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "DORA Metrics & Developer Experience Platform",
+  "description": "Building comprehensive business intelligence and developer experience tooling—automated metrics collection, intelligent notifications, and deployment gates",
+  "author": {
+    "@type": "Person",
+    "name": "Jack Devlin",
+    "url": "https://devlinops.com"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "DevlinOps",
+    "url": "https://devlinops.com"
+  },
+  "datePublished": "2025-01-01",
+  "dateModified": "2025-01-01",
+  "proficiencyLevel": "Expert",
+  "keywords": ["DORA Metrics", "Developer Experience", "Python", "Prometheus", "Grafana", "Jira API", "Bitbucket API"],
+  "dependencies": "Python, Prometheus, Grafana, ArgoCD API, Bitbucket API, Jira API, Teams Webhooks"
+};
+
 export default function DORADevExPage() {
   return (
-    <article className="container px-4 py-12 md:px-6 md:py-16">
-      <ScrollProgress />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
+      <article className="container px-4 py-12 md:px-6 md:py-16">
+        <ScrollProgress />
       <Link
         href="/projects"
         className="mb-8 inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
@@ -517,5 +544,6 @@ The following 2 ticket(s) are missing Fix Version/s:
         </aside>
       </div>
     </article>
+    </>
   );
 }

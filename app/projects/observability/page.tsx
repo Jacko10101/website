@@ -9,10 +9,37 @@ export const metadata = {
   description: "Building a production-grade, self-hosted observability platform with Prometheus, Grafana, Loki—delivering full-stack visibility at fraction of cloud costs.",
 };
 
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Enterprise Observability Stack",
+  "description": "Building production-grade, self-hosted observability with Prometheus, Grafana, and Loki—achieving full-stack visibility at a fraction of cloud costs",
+  "author": {
+    "@type": "Person",
+    "name": "Jack Devlin",
+    "url": "https://devlinops.com"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "DevlinOps",
+    "url": "https://devlinops.com"
+  },
+  "datePublished": "2025-01-01",
+  "dateModified": "2025-01-01",
+  "proficiencyLevel": "Expert",
+  "keywords": ["Observability", "Prometheus", "Grafana", "Loki", "Thanos", "Alertmanager", "Kubernetes", "Monitoring"],
+  "dependencies": "Prometheus, Grafana, Loki, Thanos, Alertmanager, Promtail, Kubernetes, Kustomize"
+};
+
 export default function ObservabilityPage() {
   return (
-    <article className="container px-4 py-12 md:px-6 md:py-16">
-      <ScrollProgress />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
+      <article className="container px-4 py-12 md:px-6 md:py-16">
+        <ScrollProgress />
       <Link
         href="/projects"
         className="mb-8 inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
@@ -487,5 +514,6 @@ kubectl delete pod service-a-abc123 -n production`}
         </aside>
       </div>
     </article>
+    </>
   );
 }

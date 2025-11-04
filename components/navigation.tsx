@@ -41,7 +41,7 @@ export function Navigation() {
   }, [mobileMenuOpen]);
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <nav className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 relative">
       <div className="container flex h-16 items-center justify-between px-4 md:px-6">
         <TransitionLink href="/" className="flex items-center space-x-3">
           <Image
@@ -102,15 +102,15 @@ export function Navigation() {
 
       {/* Mobile Menu Drawer */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 top-16 z-40 bg-background/95 backdrop-blur-sm md:hidden">
-          <div className="container flex flex-col gap-4 px-4 py-8">
+        <div className="absolute left-0 right-0 top-full border-b border-border bg-background shadow-lg md:hidden">
+          <div className="container flex flex-col px-4 py-6">
             {navItems.map((item) => (
               <TransitionLink
                 key={item.href}
                 href={item.href}
                 onClick={() => setMobileMenuOpen(false)}
                 className={cn(
-                  "text-lg font-medium transition-colors hover:text-primary py-2",
+                  "text-base font-medium transition-colors hover:text-primary py-3 border-b border-border/50 last:border-0",
                   pathname === item.href
                     ? "text-foreground"
                     : "text-muted-foreground"

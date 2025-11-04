@@ -57,8 +57,74 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": "https://devlinops.com/#person",
+        "name": "Jack Devlin",
+        "jobTitle": "Platform Engineer & Kubernetes Specialist",
+        "url": "https://devlinops.com",
+        "knowsAbout": [
+          "Kubernetes",
+          "Platform Engineering",
+          "AWS",
+          "ArgoCD",
+          "DevOps",
+          "GitOps",
+          "Observability",
+          "Prometheus",
+          "Grafana",
+          "Terraform",
+          "CI/CD"
+        ],
+        "hasOccupation": {
+          "@type": "Occupation",
+          "name": "Platform Engineer",
+          "skills": "Kubernetes, AWS EKS, ArgoCD, Terraform, CI/CD, Observability, GitOps"
+        }
+      },
+      {
+        "@type": "ProfessionalService",
+        "@id": "https://devlinops.com/#organization",
+        "name": "DevlinOps",
+        "url": "https://devlinops.com",
+        "logo": "https://devlinops.com/logo.png",
+        "description": "Expert DevOps and Platform Engineering consulting specialising in Kubernetes, observability, GitOps, and CI/CD solutions.",
+        "founder": {
+          "@id": "https://devlinops.com/#person"
+        },
+        "areaServed": "Worldwide",
+        "serviceType": [
+          "Platform Engineering",
+          "Kubernetes Consulting",
+          "DevOps Consulting",
+          "Cloud Infrastructure",
+          "Observability Stack Implementation",
+          "GitOps & CI/CD Pipeline Modernisation"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://devlinops.com/#website",
+        "url": "https://devlinops.com",
+        "name": "DevlinOps",
+        "publisher": {
+          "@id": "https://devlinops.com/#organization"
+        }
+      }
+    ]
+  };
+
   return (
     <html lang="en" suppressHydrationWarning className="view-transition">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
+      </head>
       <body className={inter.className}>
         <ThemeProvider
           attribute="class"
