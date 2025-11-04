@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowLeft, Calendar, Tag } from "lucide-react";
 import { ScrollProgress } from "@/components/scroll-progress";
 import { CicdArchitecture } from "@/components/cicd-architecture";
+import { BeforeAfterSlider } from "@/components/before-after-slider";
 
 export const metadata = {
   title: "CI/CD & GitOps Platform Engineering | DevlinOps Case Study",
@@ -379,6 +380,38 @@ pipelines:
                 </p>
               </div>
             </div>
+          </section>
+
+          {/* Before/After Transformation */}
+          <section>
+            <h2 className="mb-4 text-2xl font-bold">Transformation Metrics</h2>
+            <p className="mb-6 text-muted-foreground">
+              Drag the slider to see the dramatic transformation from manual processes to automated platform engineering.
+            </p>
+            <BeforeAfterSlider
+              metrics={[
+                {
+                  label: "Deployment Frequency",
+                  before: "2/week",
+                  after: "400/month",
+                },
+                {
+                  label: "Build Time",
+                  before: "15+ min",
+                  after: "~5 min",
+                },
+                {
+                  label: "Service Onboarding",
+                  before: "1 week",
+                  after: "<1 day",
+                },
+                {
+                  label: "Test Reliability",
+                  before: "60%",
+                  after: "95%+",
+                },
+              ]}
+            />
           </section>
 
           {/* Key Innovations */}

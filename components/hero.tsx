@@ -86,12 +86,8 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7 }}
-            className="mt-12 grid grid-cols-2 gap-6 md:grid-cols-4 md:gap-8"
+            className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-3 md:gap-8"
           >
-            <div>
-              <div className="text-3xl font-bold text-primary">750+</div>
-              <div className="text-sm text-muted-foreground">Tickets Delivered</div>
-            </div>
             <div>
               <div className="text-3xl font-bold text-primary">AWS + K8s</div>
               <div className="text-sm text-muted-foreground">Cloud Native</div>
