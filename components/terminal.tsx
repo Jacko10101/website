@@ -55,7 +55,7 @@ export function Terminal() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.6 }}
-      className="mx-auto max-w-3xl mt-8"
+      className="mx-auto max-w-3xl mt-8 px-4"
     >
       <div className="rounded-lg border border-border bg-card shadow-lg overflow-hidden">
         {/* Terminal Header */}
@@ -71,7 +71,7 @@ export function Terminal() {
         </div>
 
         {/* Terminal Body */}
-        <div className="bg-card p-6 font-mono text-sm min-h-[180px]">
+        <div className="bg-card p-4 sm:p-6 font-mono text-xs sm:text-sm">
           {commands.slice(0, currentCommand).map((cmd, idx) => (
             <div key={idx} className="mb-3">
               <div className="flex items-center gap-2">

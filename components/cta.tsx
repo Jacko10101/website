@@ -26,14 +26,14 @@ export function CTA() {
             <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Link
                 href="/contact"
-                className="group inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-primary px-8 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/90 hover:gap-3"
+                className="group inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-primary px-8 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/90 hover:gap-3 hover:scale-105"
               >
                 Get in Touch
                 <ArrowRight className="h-4 w-4 transition-all" />
               </Link>
               <Link
                 href="/about"
-                className="inline-flex h-12 items-center justify-center rounded-lg border border-border bg-background px-8 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground"
+                className="inline-flex h-12 items-center justify-center rounded-lg border border-border bg-background px-8 text-sm font-medium transition-all hover:bg-accent hover:text-accent-foreground hover:scale-105"
               >
                 Learn More About Me
               </Link>

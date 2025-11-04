@@ -6,6 +6,7 @@ import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { KonamiCode } from "@/components/konami-code";
 import { CliNavigation } from "@/components/cli-navigation";
+import { BackToTop } from "@/components/back-to-top";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -72,6 +73,7 @@ export default function RootLayout({
           </div>
           <KonamiCode />
           <CliNavigation />
+          <BackToTop />
         </ThemeProvider>
       </body>
     </html>

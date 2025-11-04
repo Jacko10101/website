@@ -10,7 +10,7 @@ export function Hero() {
     <section className="relative overflow-hidden border-b border-border">
       <div className="grid-background absolute inset-0 opacity-50" />
 
-      <div className="container relative px-4 py-20 md:px-6 md:py-24 lg:py-32">
+      <div className="container relative px-4 pt-8 pb-20 md:px-6 md:pt-12 md:pb-24 lg:pt-16 lg:pb-32">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -65,14 +65,14 @@ export function Hero() {
           >
             <Link
               href="/contact"
-              className="group inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-primary px-8 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/90 hover:gap-3"
+              className="group inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-primary px-8 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/90 hover:gap-3 hover:scale-105"
             >
               Let's Chat
               <ArrowRight className="h-4 w-4 transition-all" />
             </Link>
             <Link
               href="/projects"
-              className="inline-flex h-12 items-center justify-center rounded-lg border border-border bg-background px-8 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground"
+              className="inline-flex h-12 items-center justify-center rounded-lg border border-border bg-background px-8 text-sm font-medium transition-all hover:bg-accent hover:text-accent-foreground hover:scale-105"
             >
               See What I've Built
             </Link>

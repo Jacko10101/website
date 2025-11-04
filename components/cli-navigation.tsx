@@ -79,6 +79,19 @@ export function DevlinOps() {
     }
   }, [isOpen]);
 
+  // Prevent body scroll when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
   const executeCommand = (cmd: string) => {
     const trimmed = cmd.trim().toLowerCase();
     const parts = trimmed.split(" ");
