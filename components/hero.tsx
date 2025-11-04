@@ -8,7 +8,9 @@ import { Terminal } from "./terminal";
 export function Hero() {
   return (
     <section className="relative overflow-hidden border-b border-border">
-      <div className="grid-background absolute inset-0 opacity-50" />
+      {/* Animated Gradient Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-background to-orange-500/20 animate-gradient" />
+      <div className="grid-background absolute inset-0 opacity-30" />
 
       <div className="container relative px-4 pt-8 pb-20 md:px-6 md:pt-12 md:pb-24 lg:pt-16 lg:pb-32">
         <motion.div
