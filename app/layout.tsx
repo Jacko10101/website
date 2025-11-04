@@ -92,6 +92,10 @@ export default function RootLayout({
         "url": "https://devlinops.com",
         "logo": "https://devlinops.com/logo.png",
         "description": "Expert DevOps and Platform Engineering consulting specialising in Kubernetes, observability, GitOps, and CI/CD solutions.",
+        "address": {
+          "@type": "PostalAddress",
+          "addressCountry": "GB"
+        },
         "founder": {
           "@id": "https://devlinops.com/#person"
         },
