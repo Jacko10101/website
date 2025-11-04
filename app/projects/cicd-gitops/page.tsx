@@ -407,7 +407,7 @@ pipelines:
                 },
                 {
                   label: "Test Reliability",
-                  before: "60%",
+                  before: "?%",
                   after: "95%+",
                 },
               ]}
@@ -515,7 +515,7 @@ spec:
                   </div>
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Developer:</span>
-                    <span className="font-medium">Gerard Downes</span>
+                    <span className="font-medium">Dohn Joe</span>
                   </div>
                 </div>
                 <div className="mt-3 flex gap-2">
@@ -567,7 +567,7 @@ spec:
                   </div>
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Duration:</span>
-                    <span className="font-medium">73 minutes</span>
+                    <span className="font-medium">7 minutes</span>
                   </div>
                 </div>
                 <div className="mt-3 flex gap-2">
