@@ -13,9 +13,8 @@ export function CliNavigation() {
 
   // Routes
   const routes: Record<string, { path: string; description: string }> = {
-    "/": { path: "/", description: "Homepage with hero and services" },
+    "/": { path: "/", description: "Homepage" },
     "/about": { path: "/about", description: "About Jack Devlin" },
-    "/services": { path: "/services", description: "Platform engineering services" },
     "/projects": { path: "/projects", description: "Case studies and portfolio" },
     "/projects/cicd-gitops": { path: "/projects/cicd-gitops", description: "CI/CD & GitOps case study" },
     "/projects/dora-devex": { path: "/projects/dora-devex", description: "DORA Metrics & DevEx case study" },
@@ -111,20 +110,34 @@ export function DevlinOps() {
     switch (command) {
       case "help":
         output = `Available commands:
-  ls [path]              List available routes
-  cd <path>              Navigate to path
-  cat <path>             Navigate to path
-  cat .secrets           Show easter eggs
-  pwd                    Show current path
-  clear                  Clear terminal
-  kubectl <args>         Kubernetes commands (try: get pods, get nodes)
-  docker <args>          Docker commands (try: ps, images)
-  terraform <args>       Terraform commands (try: plan, apply)
-  argocd <args>          ArgoCD commands (try: app list)
-  vim [file]             Open vim editor (just for fun)
-  whoami                 Display user info
-  history                Show command history
-  help                   Show this help message`;
+
+  Navigation:
+    ls [path]              List available routes
+    cd <path>              Navigate to path
+    pwd                    Show current path
+
+  DevOps Tools:
+    kubectl <args>         Kubernetes commands (try: get pods, get nodes)
+    docker <args>          Docker commands (try: ps, images)
+    terraform <args>       Terraform commands (try: plan, apply)
+    argocd <args>          ArgoCD commands (try: app list)
+    git <args>             Git commands (try: status, log)
+
+  Fun Stuff:
+    snake                  🐍 Play kubectl snake
+    neofetch               Display system info
+    vim                    Open vim (good luck exiting)
+    cowsay <msg>           Make a cow say something
+    cat .secrets           Show easter eggs
+
+  Other:
+    whoami                 Display user info
+    hire                   Get in touch
+    sudo <cmd>             Try it...
+    rm -rf /               Don't do it...
+    clear                  Clear terminal
+    exit                   Close terminal
+    help                   Show this help message`;
         break;
 
       case "ls":
@@ -322,6 +335,174 @@ Shell: bash (with way too many aliases)`;
         setHistory([]);
         setInput("");
         return;
+
+      case "exit":
+      case "quit":
+        setIsOpen(false);
+        setInput("");
+        return;
+
+      case "snake":
+      case "play":
+        if (command === "play" && arg !== "snake") {
+          output = `play: unknown game '${arg}'\nTry: play snake`;
+          break;
+        }
+        output = `🐍 Launching kubectl snake...
+
+To play, close this terminal (ESC) and enter the Konami code:
+↑ ↑ ↓ ↓ ← → ← → B A
+
+Good luck collecting those pods!`;
+        break;
+
+      case "neofetch":
+        output = `
+       ████████████████████        jack@devlinops
+    ████████████████████████████   ──────────────────
+  ██████████████████████████████   OS: DevlinOps Platform v2.0
+ █████████     ████     █████████  Host: devlinops.com
+████████  ████  ███  ███  ████████ Kernel: Next.js 16.1.0
+████████  ████  ███  ███  ████████ Uptime: since Oct 2025
+████████  ████  ███  ███  ████████ Packages: 113 (npm)
+████████  ████  ███  ███  ████████ Shell: bash 5.0
+████████  ████  ███  ███  ████████ Terminal: cli-navigation.tsx
+ █████████     ████     █████████  CPU: 100% Coffee-Powered
+  ██████████████████████████████   Memory: 750K+ saved
+    ████████████████████████████   Disk: 400+ deploys/month
+       ████████████████████
+                                   Stack: K8s, ArgoCD, AWS, Terraform
+                                   Status: Available for projects`;
+        break;
+
+      case "git":
+        if (!arg || arg === "status") {
+          output = `On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes staged for commit:
+  modified:   infrastructure/terraform/main.tf
+  modified:   k8s/deployments/frontend.yaml
+
+Changes not staged:
+  modified:   README.md (added more buzzwords)
+
+Untracked files:
+  .env.local.backup.old.dontdelete
+  TODO-fix-later.md`;
+        } else if (arg === "log" || arg === "log --oneline") {
+          output = `a1b2c3d fix: it works now (hopefully)
+f4e5d6c feat: add feature that PM asked for 3 times
+7890abc refactor: make it "enterprise-ready"
+bcd1234 fix: undo the thing that broke prod
+e5f6789 chore: Friday 5pm deploy (YOLO)
+0123456 docs: update README to match reality
+abc7890 fix: the REAL fix this time
+def4567 feat: microservices go brrr`;
+        } else if (arg === "blame") {
+          output = `Not me. Definitely not me.
+Check with the guy who left last month.`;
+        } else {
+          output = `git: '${arg}' is not a git command.\nTry: status, log, blame`;
+        }
+        break;
+
+      case "sudo":
+        if (arg === "rm -rf /" || arg === "rm -rf /*") {
+          output = `[sudo] password for jack: ********
+rm: cannot remove '/': Permission denied
+rm: cannot remove '/home': Nice try
+rm: cannot remove '/etc': Nope
+rm: cannot remove '/var': Still no
+
+Just kidding. This is a portfolio website. 😄`;
+        } else if (arg === "make me a sandwich") {
+          output = `🥪 Okay.`;
+        } else if (arg) {
+          output = `[sudo] password for jack: ********
+Sorry, user jack is not allowed to execute '${arg}' as root.
+(But nice try!)`;
+        } else {
+          output = `usage: sudo <command>\nTry: sudo make me a sandwich`;
+        }
+        break;
+
+      case "rm":
+        if (arg === "-rf /" || arg === "-rf /*" || arg === "-rf /home") {
+          output = `rm: cannot remove: Operation not permitted
+(This is a website, not your production server... right?)`;
+        } else {
+          output = `rm: missing operand\nTry 'rm --help' for more information.`;
+        }
+        break;
+
+      case "hire":
+      case "contact":
+        router.push("/contact");
+        output = `📧 Great choice! Redirecting to contact page...
+
+Looking forward to hearing from you!`;
+        setTimeout(() => setIsOpen(false), 1000);
+        break;
+
+      case "cowsay":
+        const message = arg || "Moo! Hire Jack!";
+        output = ` ${"_".repeat(message.length + 2)}
+< ${message} >
+ ${"-".repeat(message.length + 2)}
+        \\   ^__^
+         \\  (oo)\\_______
+            (__)\\       )\\/\\
+                ||----w |
+                ||     ||`;
+        break;
+
+      case "ping":
+        output = `PING devlinops.com (76.76.21.21): 56 data bytes
+64 bytes from 76.76.21.21: icmp_seq=0 ttl=64 time=0.042 ms
+64 bytes from 76.76.21.21: icmp_seq=1 ttl=64 time=0.037 ms
+64 bytes from 76.76.21.21: icmp_seq=2 ttl=64 time=0.035 ms
+--- devlinops.com ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss
+round-trip min/avg/max/stddev = 0.035/0.038/0.042/0.003 ms
+
+Status: All systems operational ✓`;
+        break;
+
+      case "curl":
+        if (arg?.includes("devlinops") || !arg) {
+          output = `HTTP/2 200 OK
+server: Vercel
+content-type: text/html
+x-powered-by: Next.js, Coffee, and Determination
+x-hiring-status: Available
+x-easter-egg: You found one!
+
+<!DOCTYPE html>...`;
+        } else {
+          output = `curl: try 'curl devlinops.com'`;
+        }
+        break;
+
+      case "npm":
+        if (arg === "run dev") {
+          output = `> devlinops@2.0.0 dev
+> next dev
+
+  ▲ Next.js 16.1.0
+  - Local:        http://localhost:3000
+  - Ready in 1.2s
+
+✓ Compiled in 420ms`;
+        } else if (arg === "install" || arg === "i") {
+          output = `added 113 packages in 2.3s
+
+47 packages are looking for funding
+  run \`npm fund\` for details`;
+        } else {
+          output = `npm: try 'npm run dev' or 'npm install'`;
+        }
+        break;
 
       case "":
         return;

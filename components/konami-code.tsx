@@ -470,7 +470,7 @@ export function KonamiCode() {
                       style={{ background: "linear-gradient(135deg, #4ade80, #22c55e)", color: "#000" }}
                     >✓</div>
                     <span className="text-green-400">Running</span>
-                    <span className="text-green-600">+20 pts</span>
+                    <span className="text-green-600">+10 pts</span>
                   </div>
                   <div className="flex flex-col items-center gap-2 rounded-lg bg-yellow-500/5 p-3 border border-yellow-500/10">
                     <div
@@ -478,7 +478,7 @@ export function KonamiCode() {
                       style={{ background: "linear-gradient(135deg, #facc15, #eab308)", color: "#000" }}
                     >?</div>
                     <span className="text-yellow-400">Pending</span>
-                    <span className="text-yellow-600">+10 pts</span>
+                    <span className="text-yellow-600">+5 pts</span>
                   </div>
                   <div className="flex flex-col items-center gap-2 rounded-lg bg-red-500/5 p-3 border border-red-500/10">
                     <div
