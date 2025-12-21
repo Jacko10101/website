@@ -113,7 +113,7 @@ export function Footer() {
               <span className="text-xl font-bold text-white">DevlinOps</span>
             </Link>
             <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
-              Platform Engineering & DevOps consulting. Building reliable systems that actually work.
+              Platform Engineering & DevOps consulting.
             </p>
           </div>
 
