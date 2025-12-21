@@ -35,7 +35,7 @@ const journey = [
     color: "#8b5cf6",
   },
   {
-    year: "2026",
+    year: "Now",
     title: "MSc AI + Consulting",
     description: "Pursuing a Masters in AI while consulting on platform engineering. Exploring the intersection of ML and infrastructure automation.",
     color: "#f59e0b",
@@ -162,10 +162,10 @@ function AboutHero() {
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="text-xl text-muted-foreground mb-8 leading-relaxed"
               >
-                I&apos;m a platform engineer who builds infrastructure that{" "}
-                <span className="text-foreground font-medium">just works</span>.
-                I help teams wrangle Kubernetes, set up observability that actually helps,
-                and build CI/CD pipelines that don&apos;t make developers cry.
+                I&apos;m a platform engineer who builds{" "}
+                <span className="text-foreground font-medium">internal tools from scratch</span>.
+                DORA metrics platforms, test orchestration systems, observability stacks—
+                the stuff that makes 400 deploys/month actually work.
               </motion.p>
 
               <motion.div
