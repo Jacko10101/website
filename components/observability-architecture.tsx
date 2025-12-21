@@ -40,7 +40,7 @@ export function ObservabilityArchitecture() {
     },
     grafana: {
       title: "Grafana",
-      description: "25+ dashboards for metrics, logs, and traces - unified observability interface",
+      description: "10+ custom dashboards for metrics, logs, and traces - unified observability interface",
     },
     alertmanager: {
       title: "Alertmanager",
@@ -357,7 +357,7 @@ export function ObservabilityArchitecture() {
               Grafana
             </text>
             <text x="570" y="328" textAnchor="middle" className="fill-muted-foreground text-[9px]">
-              25+ dashboards
+              10+ custom dashboards
             </text>
             <text x="570" y="341" textAnchor="middle" className="fill-muted-foreground text-[9px]">
               Metrics + Logs
@@ -477,7 +477,7 @@ export function ObservabilityArchitecture() {
               <tspan className="fill-primary font-semibold">&lt;$5K/year</tspan> self-hosted cost vs <tspan className="fill-muted-foreground line-through">$50K-150K</tspan> cloud solutions (95%+ savings)
             </text>
             <text x="470" y="673" textAnchor="middle" className="fill-muted-foreground text-[9px]">
-              25+ Grafana dashboards • 50+ alert rules • 100% service coverage • ~70% MTTD reduction • Full-stack tracing
+              10+ custom dashboards • 50+ alert rules • 6 exporters • Full LGTM stack • OpenTelemetry tracing
             </text>
             <text x="470" y="689" textAnchor="middle" className="fill-muted-foreground text-[8px]">
               Platform: Cluster health, infrastructure, service mesh • Service: IoT gateway, multi-tenant analytics • Business: Cost tracking, SLA monitoring

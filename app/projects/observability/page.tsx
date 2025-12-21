@@ -280,7 +280,7 @@ export default function ObservabilityPage() {
             >
               <p className="text-muted-foreground mb-6">
                 Created{" "}
-                <strong className="text-foreground">25+ Grafana dashboards</strong> providing
+                <strong className="text-foreground">10+ custom Grafana dashboards</strong> providing
                 comprehensive visibility from infrastructure to business metrics.
               </p>
 
@@ -414,10 +414,10 @@ kubectl delete pod service-a-abc123 -n production`}
                 color="#e6522c"
                 stats={[
                   { value: "<$5K/yr", label: "Total cost (vs $50K-150K for cloud solutions)" },
-                  { value: "25+", label: "Grafana dashboards for platform-wide visibility" },
+                  { value: "10+", label: "Custom Grafana dashboards built from scratch" },
                   { value: "50+", label: "Alert rules covering infrastructure and apps" },
-                  { value: "~70%", label: "Reduction in mean time to detect (MTTD)" },
-                  { value: "100%", label: "Service coverage across all 20 microservices" },
+                  { value: "6", label: "Prometheus exporters deployed across stack" },
+                  { value: "100%", label: "Service coverage across all microservices" },
                   { value: "4", label: "Environments with consistent observability" },
                 ]}
               />
@@ -486,9 +486,9 @@ kubectl delete pod service-a-abc123 -n production`}
               "Runbook Development",
             ]}
             metrics={[
-              { label: "Services Monitored", value: "20 microservices" },
+              { label: "Services Monitored", value: "20+ microservices" },
               { label: "Environments", value: "4 (Dev, QA, PreProd, Prod)" },
-              { label: "Dashboards Created", value: "25+ Grafana dashboards" },
+              { label: "Dashboards Created", value: "10+ custom dashboards" },
               { label: "Cost Savings", value: "95%+ vs cloud solutions" },
             ]}
             relatedProjects={[

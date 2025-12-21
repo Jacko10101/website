@@ -178,7 +178,7 @@ export default function DORADevExPage() {
                     <li className="flex gap-2">
                       <span className="text-primary">•</span>
                       <strong className="text-foreground">Jira API</strong> — Ticket enrichment
-                      (status, fix versions, sprint)
+                      (status, release versions, sprint)
                     </li>
                   </ul>
                 </GlassCard>
@@ -237,57 +237,83 @@ export default function DORADevExPage() {
                   </div>
                 </GlassCard>
 
-                <GlassCard className="p-6">
+                <GlassCard className="p-6 border-amber-500/30">
                   <h4 className="font-semibold mb-3 text-amber-400">Easter Eggs & DevEx Enhancements</h4>
-                  <ul className="text-sm text-muted-foreground space-y-1">
-                    <li className="flex gap-2">
-                      <span className="text-primary">•</span>
-                      <strong className="text-foreground">Special Build Messages:</strong> Build #42,
-                      #404, #1337, milestone builds
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="text-primary">•</span>
-                      <strong className="text-foreground">Time-Based Messages:</strong> &quot;May the
-                      Fourth be with this code&quot;
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="text-primary">•</span>
-                      <strong className="text-foreground">Friday Evening Prod Deploys:</strong>{" "}
-                      &quot;Bold.&quot; acknowledgment
-                    </li>
-                  </ul>
+                  <p className="text-xs text-muted-foreground mb-3">
+                    Because developer experience means making the boring stuff enjoyable:
+                  </p>
+                  <div className="space-y-2 font-mono text-xs">
+                    <div className="flex gap-3 items-start">
+                      <span className="text-amber-400 shrink-0">Build #42:</span>
+                      <span className="text-muted-foreground italic">&quot;The answer to life, the universe, and this deployment&quot;</span>
+                    </div>
+                    <div className="flex gap-3 items-start">
+                      <span className="text-amber-400 shrink-0">Build #404:</span>
+                      <span className="text-muted-foreground italic">&quot;This build was not found... wait, yes it was&quot;</span>
+                    </div>
+                    <div className="flex gap-3 items-start">
+                      <span className="text-amber-400 shrink-0">Friday 5pm:</span>
+                      <span className="text-muted-foreground italic">&quot;Bold.&quot;</span>
+                    </div>
+                    <div className="flex gap-3 items-start">
+                      <span className="text-amber-400 shrink-0">May 4th:</span>
+                      <span className="text-muted-foreground italic">&quot;May the Fourth be with this code&quot;</span>
+                    </div>
+                  </div>
                 </GlassCard>
 
                 {/* Example notification */}
                 <GlassCard className="p-6">
-                  <h4 className="font-semibold mb-4 text-amber-400">Example Notification</h4>
-                  <div className="rounded-lg border border-green-500/30 bg-green-500/5 p-4 text-sm space-y-2">
-                    <div className="font-semibold flex items-center gap-2">
-                      <span className="text-green-400">✅</span>
-                      Configuration Updated: Service A - DEV [Master Branch]
-                    </div>
-                    <div className="grid grid-cols-3 gap-4 text-xs mt-3">
+                  <h4 className="font-semibold mb-4 text-amber-400">Example Test Results Notification</h4>
+                  <div className="rounded-lg border border-red-500/30 bg-gradient-to-b from-red-900/40 to-card overflow-hidden text-sm">
+                    {/* Header */}
+                    <div className="bg-red-900/60 px-4 py-3 flex items-center gap-3">
+                      <span className="text-red-400 text-xl">✕</span>
                       <div>
-                        <strong>Build:</strong> #3881
-                      </div>
-                      <div>
-                        <strong>Environment:</strong> DEV
-                      </div>
-                      <div>
-                        <strong>Commit:</strong> b7ffa920
+                        <div className="font-semibold text-foreground">Harmony • DEV</div>
+                        <div className="text-xs text-red-400">Tests Failed</div>
                       </div>
                     </div>
-                    <div className="mt-3 p-2 bg-secondary/50 rounded text-xs">
-                      <div className="font-semibold">Developer Name</div>
-                      <div className="italic mt-1">
-                        PROJ-1234 add dev deployment summary, change to short commit hash
+                    {/* Stats */}
+                    <div className="p-4">
+                      <div className="grid grid-cols-4 gap-4 text-center mb-4">
+                        <div>
+                          <div className="text-2xl font-bold text-green-400">88</div>
+                          <div className="text-xs text-green-400">Passed</div>
+                        </div>
+                        <div>
+                          <div className="text-2xl font-bold text-red-400">27</div>
+                          <div className="text-xs text-red-400">Failed</div>
+                        </div>
+                        <div>
+                          <div className="text-2xl font-bold text-foreground">119</div>
+                          <div className="text-xs text-muted-foreground">Total</div>
+                        </div>
+                        <div>
+                          <div className="text-2xl font-bold text-foreground">74%</div>
+                          <div className="text-xs text-muted-foreground">Success</div>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex gap-2 mt-3">
-                      <span className="px-3 py-1 bg-green-500/20 text-green-400 rounded text-xs font-medium">
-                        View in ArgoCD
-                      </span>
-                      <span className="px-3 py-1 bg-secondary rounded text-xs">View Pipeline</span>
+                      {/* Test Breakdown */}
+                      <div className="space-y-1 text-xs mb-3">
+                        <div className="font-semibold text-muted-foreground">Test Breakdown</div>
+                        <div><strong className="text-foreground">API Tests</strong>   87/113 passed (4 skipped)</div>
+                        <div><strong className="text-foreground">UI Tests</strong>    1/6 passed</div>
+                      </div>
+                      {/* Meta */}
+                      <div className="text-xs text-muted-foreground space-y-0.5">
+                        <div>Version: a5ece15-b4280</div>
+                        <div>Tags: api-smoke, harmony, @ui-sanity</div>
+                      </div>
+                      {/* Buttons */}
+                      <div className="flex gap-2 mt-4">
+                        <span className="px-3 py-1.5 bg-purple-500/20 text-purple-300 rounded text-xs font-medium flex items-center gap-1">
+                          <span>◉</span> Open in ArgoCD
+                        </span>
+                        <span className="px-3 py-1.5 bg-blue-500/20 text-blue-300 rounded text-xs font-medium flex items-center gap-1">
+                          <span>📊</span> View Test Report
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </GlassCard>
@@ -307,10 +333,10 @@ export default function DORADevExPage() {
 
               <GlassCard className="p-6">
                 <h4 className="font-semibold mb-4 text-amber-400">
-                  Jira Fix Version Check (QA Gate)
+                  Jira Release Version Check (QA Gate)
                 </h4>
                 <p className="text-sm text-muted-foreground mb-4">
-                  A Bash script that enforces Jira Fix Version assignment before QA deployment,
+                  A Bash script that enforces Jira Release Version assignment before QA deployment,
                   preventing incomplete releases from reaching QA.
                 </p>
 
@@ -329,7 +355,7 @@ export default function DORADevExPage() {
                     matching on commit messages
                   </p>
                   <p>
-                    4. <strong className="text-foreground">Validate Fix Versions:</strong> Queries
+                    4. <strong className="text-foreground">Validate Release Versions:</strong> Queries
                     Jira API to check each ticket
                   </p>
                   <p>
@@ -345,7 +371,7 @@ export default function DORADevExPage() {
 ❌ QA DEPLOYMENT BLOCKED
 ════════════════════════════════════════════════════
 
-The following 2 ticket(s) are missing Fix Version/s:
+The following 2 ticket(s) are missing Release Version/s:
 
   🎫 PROJ-1001
      https://company.atlassian.net/browse/PROJ-1001
@@ -356,7 +382,7 @@ The following 2 ticket(s) are missing Fix Version/s:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 📋 ACTION REQUIRED:
 1. Open each ticket above in Jira
-2. Set the 'Fix Version/s' field
+2. Set the 'Release Version/s' field
 3. Re-run this QA deployment pipeline`}
                   />
                 </div>
@@ -368,12 +394,12 @@ The following 2 ticket(s) are missing Fix Version/s:
               <StatsGrid
                 color="#f59e0b"
                 stats={[
-                  { value: "413", label: "Deployments tracked per month" },
+                  { value: "400+", label: "Deployments tracked per month" },
                   { value: "2-3 days", label: "Average lead time measured" },
                   { value: "100%", label: "Deployment visibility for leadership" },
                   { value: "4", label: "Smart notification channels" },
                   { value: "Zero", label: "Incomplete QA releases" },
-                  { value: "~80%", label: "Fewer 'what version?' questions" },
+                  { value: "Self-serve", label: "Release visibility for all stakeholders" },
                 ]}
               />
             </CaseStudySection>
@@ -390,7 +416,7 @@ The following 2 ticket(s) are missing Fix Version/s:
                   intelligence layer
                 </LessonItem>
                 <LessonItem>
-                  Designed 15+ custom Prometheus metrics enabling comprehensive DORA dashboards
+                  Designed 50+ custom Prometheus metrics enabling comprehensive DORA dashboards
                 </LessonItem>
                 <LessonItem>
                   Implemented sophisticated Bash scripting (1000+ lines) for rich Teams notifications
@@ -433,9 +459,9 @@ The following 2 ticket(s) are missing Fix Version/s:
             ]}
             metrics={[
               { label: "Components Built", value: "3 integrated tools" },
-              { label: "Code Volume", value: "~2000 lines (Python + Bash)" },
+              { label: "Code Volume", value: "~8000 lines (Python + Bash)" },
               { label: "APIs Integrated", value: "4 (Bitbucket, Jira, ArgoCD, Prometheus)" },
-              { label: "Metrics Exposed", value: "15+ Prometheus metrics" },
+              { label: "Metrics Exposed", value: "50+ Prometheus metrics" },
             ]}
             relatedProjects={[
               { title: "CI/CD & GitOps Platform", href: "/projects/cicd-gitops" },

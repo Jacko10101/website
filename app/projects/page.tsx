@@ -21,14 +21,14 @@ const projects = [
     longDescription:
       "A multi-layered intelligence platform consisting of a Python metrics collector, a 1000+ line Bash pipeline reporter, and automated Jira-integrated deployment gates.",
     stats: [
-      { value: "413", label: "deploys tracked/month" },
+      { value: "400+", label: "deploys tracked/month" },
       { value: "2-3 days", label: "lead time measured" },
       { value: "80%", label: "fewer status questions" },
     ],
     tags: ["Python", "Prometheus", "Grafana", "Jira API", "Teams", "Bash"],
     href: "/projects/dora-devex",
     color: "#f59e0b",
-    year: "2024",
+    year: "2025",
     icon: <TrendingUp className="w-6 h-6" />,
   },
   {
@@ -66,7 +66,7 @@ const projects = [
     tags: ["Prometheus", "Grafana", "Loki", "Thanos", "Alertmanager"],
     href: "/projects/observability",
     color: "#e6522c",
-    year: "2024",
+    year: "2023-2025",
     icon: <Calendar className="w-6 h-6" />,
   },
 ];

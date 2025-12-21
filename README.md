@@ -1,130 +1,39 @@
-# DevlinOps Portfolio Website
+# devlinops.com
 
-Professional portfolio website for Jack Devlin - Platform Engineering & DevOps Consulting.
+My portfolio site. Not your typical "here's my CV in website form" - this one builds itself.
 
-🌐 **Live Site**: [devlinops.com](https://devlinops.com) (pending deployment)
+**[devlinops.com](https://devlinops.com)**
 
-## Tech Stack
+## The Fun Bits
 
-- **Framework**: Next.js 16 (App Router)
-- **Styling**: Tailwind CSS 4.x with OKLCH color space
-- **Animations**: Framer Motion
-- **Theme**: next-themes (dark/light mode)
-- **Language**: TypeScript (strict mode)
-- **Deployment**: TBD (Vercel recommended)
+**First visit?** Watch the site compile and deploy in a terminal before your eyes. Return visitors get a cheeky "Served from edge cache • 23ms" toast instead.
 
-## Features
+**Press `/` anywhere.** Opens a fully functional terminal. Try `kubectl get pods` or `vim` (yes, you'll need to `:q` to exit).
 
-### 🎨 Unique Design Elements
+**Find the 404 page.** It's a Kubernetes pod stuck in CrashLoopBackOff with live restart counters.
 
-- **Animated Terminal Component**: Auto-typing terminal showing real DevOps commands (`kubectl`, `argocd`, `helm`, `terraform`)
-- **Tech Stack Showcase**: 8 animated technology icons with hover effects
-- **Interactive Dashboard Gallery**: Click-to-expand modals for Grafana dashboard screenshots
-- **Code Snippets**: Real production code samples with copy-to-clipboard functionality
-- **Smooth Animations**: Page transitions and scroll-triggered animations throughout
+**Know the Konami Code?** ↑↑↓↓←→←→BA
 
-### 📄 Pages
+## What's Inside
 
-- **Homepage**: Hero with terminal, services overview, tech stack, featured projects, CTA
-- **Services**: 7 comprehensive platform engineering offerings with detailed descriptions
-- **Projects**: 3 in-depth case studies:
-  - CI/CD & GitOps Platform Engineering (400 deploys/month)
-  - DORA Metrics & Developer Experience Platform (Python + Bash)
-  - Enterprise Observability Stack (Prometheus, Grafana, Loki)
-- **About**: Personal bio, education (MSc AI in progress, BSc CS), tech stack, working philosophy
-- **Contact**: Email, GitHub, LinkedIn with helpful messaging guidelines
+Three case studies from my platform engineering work - CI/CD pipelines doing 400+ deploys/month, a DORA metrics platform I built from scratch (~8000 lines of Python + Bash), and a self-hosted observability stack that saves 95% vs Datadog/New Relic.
 
-### 🎯 Personalization
+All figures verified against the actual source code. No "reduced deployment time by 300%" nonsense.
 
-- **Human Copy**: Conversational, authentic tone - no corporate jargon
-- **Real Code**: Production script snippets from actual projects
-- **Education Highlight**: MSc in AI studies showcased with AI+Platform Engineering angle
-- **Current Status**: "What I'm Up To Now" section showing active learning
-- **Personal Photo**: Professional headshot on About page
+## Tech
 
-### 🚀 Performance
+Next.js 16, Tailwind CSS 4, Framer Motion. Dark mode only because light mode is for documentation sites.
 
-- **Full-Width Layout**: Custom container configuration for optimal space usage
-- **Responsive Design**: Mobile-first, scales from phone to 4K displays
-- **Dark Mode**: Working theme toggle with proper hydration handling
-- **Optimized Images**: Next.js Image component with proper sizing
-- **Type Safety**: Strict TypeScript throughout
+Previously had Three.js for a fancy 3D background - ripped it out for an 82% bundle reduction. The terminal animation is more on-brand anyway.
 
-## Project Structure
-
-```
-website/
-├── app/
-│   ├── layout.tsx              # Root layout with theme provider
-│   ├── page.tsx                # Homepage
-│   ├── about/page.tsx          # About page with photo
-│   ├── contact/page.tsx        # Contact page
-│   ├── services/page.tsx       # Services listing
-│   ├── projects/
-│   │   ├── page.tsx            # Projects overview
-│   │   ├── cicd-gitops/        # Case study 1
-│   │   ├── dora-devex/         # Case study 2 (with code snippets)
-│   │   └── observability/      # Case study 3 (with dashboard gallery)
-│   └── globals.css             # Global styles + dark mode
-├── components/
-│   ├── navigation.tsx          # Header with theme toggle
-│   ├── hero.tsx                # Homepage hero
-│   ├── terminal.tsx            # Animated terminal component
-│   ├── tech-stack.tsx          # Animated tech icons
-│   ├── services.tsx            # Services grid
-│   ├── projects-preview.tsx    # Featured projects
-│   ├── cta.tsx                 # Call-to-action section
-│   ├── footer.tsx              # Footer component
-│   ├── code-snippet.tsx        # Code display with copy button
-│   ├── metrics-showcase.tsx    # Dashboard image gallery
-│   └── theme-provider.tsx      # next-themes wrapper
-├── public/
-│   ├── logo.png                # Site logo
-│   ├── jack-photo.jpg          # Personal photo
-│   └── dashboards/             # Dashboard screenshots
-│       ├── iot-gateway.png
-│       ├── kafka-metrics.png
-│       └── node-exporter.png
-└── tailwind.config.ts          # Tailwind configuration
-```
-
-## Development
+## Run Locally
 
 ```bash
-# Install dependencies
-npm install
-
-# Run dev server
-npm run dev
-
-# Build for production
-npm run build
-
-# Start production server
-npm start
+npm install && npm run dev
 ```
 
-## Deployment Checklist
-
-- [ ] Add personal photo (`public/jack-photo.jpg`)
-- [ ] Add dashboard screenshots to `public/dashboards/`
-- [ ] Configure domain DNS (devlinops.com)
-- [ ] Deploy to Vercel/Netlify
-- [ ] Set up professional email (jack@devlinops.com)
-- [ ] Submit sitemap to Google Search Console
-- [ ] Add analytics (optional)
-
-## Key Decisions
-
-- **No Turbopack**: Disabled due to OneDrive compatibility issues
-- **Custom Container**: Overrode Tailwind's default max-widths for full-width layouts
-- **OKLCH Colors**: Modern color space for better dark mode handling
-- **Minimal Dependencies**: Only essential packages to keep bundle small
-
-## Future Enhancements
-
-See "Next-Level Improvements" section below for advanced feature ideas.
+Clear `localStorage.removeItem("build-seen")` in console to re-watch the build sequence.
 
 ---
 
-**Built by Jack Devlin** | Platform Engineering & DevOps Consulting
+**[See it live →](https://devlinops.com)**

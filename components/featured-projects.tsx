@@ -12,7 +12,7 @@ const projects = [
     description:
       "Built comprehensive DevEx platform with DORA metrics collector, intelligent pipeline notifications, and automated deployment gates. Transformed engineering visibility from zero to complete deployment intelligence.",
     stats: [
-      { value: "413", label: "deploys tracked/month" },
+      { value: "400+", label: "deploys tracked/month" },
       { value: "2-3 days", label: "lead time measured" },
       { value: "80%", label: "fewer status questions" },
     ],
@@ -21,7 +21,7 @@ const projects = [
     color: "#f59e0b",
     terminal: [
       { cmd: "$ dora-metrics status", color: "text-gray-500" },
-      { cmd: "Deployment Frequency: 413/month", color: "text-green-400" },
+      { cmd: "Deployment Frequency: 400+/month", color: "text-green-400" },
       { cmd: "Lead Time: 2.3 days avg", color: "text-cyan-400" },
       { cmd: "Change Failure Rate: 2.1%", color: "text-amber-400" },
     ],

@@ -254,8 +254,8 @@ pipelines:
                       </li>
                       <li className="flex gap-2">
                         <span className="text-primary">•</span>
-                        <strong className="text-foreground">Automated Test Suites</strong> — Newman
-                        (API), Cucumber (BDD) as Kubernetes Jobs
+                        <strong className="text-foreground">Automated Test Suites</strong> — JUnit
+                        (API), Cucumber + Playwright (UI) as Kubernetes Jobs
                       </li>
                       <li className="flex gap-2">
                         <span className="text-primary">•</span>
@@ -263,6 +263,15 @@ pipelines:
                         tracking deployment frequency, lead time, MTTR
                       </li>
                     </ul>
+
+                    <div className="mt-4 p-3 rounded-lg bg-amber-500/10 border border-amber-500/30">
+                      <h5 className="text-sm font-semibold text-amber-400 mb-2">Why PostSync {">"} Pipeline Testing</h5>
+                      <p className="text-xs text-muted-foreground">
+                        Pipeline tests run <em>before</em> pods are healthy, causing false negatives when services aren&apos;t ready.
+                        PostSync hooks wait for ArgoCD sync completion, then validate pods are ready before running tests —
+                        eliminating an entire class of flaky failures.
+                      </p>
+                    </div>
                   </PhaseCard>
                 </StaggerItem>
               </StaggerContainer>
@@ -299,7 +308,7 @@ pipelines:
                     <div className="flex gap-2">
                       <span className="text-primary font-bold">→</span>
                       <span>
-                        <strong className="text-foreground">Jira Integration:</strong> Fix Version
+                        <strong className="text-foreground">Jira Integration:</strong> Release Version
                         validation prevents premature QA deployments
                       </span>
                     </div>
@@ -322,8 +331,8 @@ pipelines:
                 stats={[
                   { value: "400+", label: "Deployments per month across all environments" },
                   { value: "~5 min", label: "Consistent build time with parallel testing" },
-                  { value: "20", label: "Microservices using standardised pipeline" },
-                  { value: "Zero", label: "Production incidents from deployment failures" },
+                  { value: "20+", label: "Microservices using standardised pipeline" },
+                  { value: "50+", label: "Alert rules for rapid incident response" },
                   { value: "~90%", label: "Reduction in false test results" },
                   { value: "100%", label: "Security scan coverage on all PRs" },
                 ]}

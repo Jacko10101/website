@@ -17,25 +17,25 @@ import {
 // Journey timeline data
 const journey = [
   {
-    year: "2021",
-    title: "Graduate QA Engineer",
-    description: "Started at the ground floor during a massive monolith → microservices migration. Built the first CI/CD pipelines from scratch.",
+    year: "2023",
+    title: "QA Engineer",
+    description: "Graduated with a BSc in Computer Science. Jumped straight into a massive monolith → microservices migration, building the first CI/CD pipelines from scratch.",
     color: "#22c55e",
   },
   {
-    year: "2022",
-    title: "DevOps Engineer",
-    description: "Took ownership of the platform. Built observability from zero, implemented GitOps with ArgoCD, and designed deployment automation.",
+    year: "2024",
+    title: "Platform Engineer",
+    description: "Took ownership of the platform. Built observability from zero, implemented GitOps with ArgoCD, and designed deployment automation for 20+ services.",
     color: "#06b6d4",
   },
   {
-    year: "2023",
-    title: "Platform Engineer",
-    description: "Led platform initiatives. Created DORA metrics tooling, security automation, and developer experience improvements across 20 services.",
+    year: "2025",
+    title: "Site Reliability Engineer",
+    description: "Led platform initiatives. Created DORA metrics tooling, security automation, and developer experience improvements. 400+ deploys/month.",
     color: "#8b5cf6",
   },
   {
-    year: "2024",
+    year: "2026",
     title: "MSc AI + Consulting",
     description: "Pursuing a Masters in AI while consulting on platform engineering. Exploring the intersection of ML and infrastructure automation.",
     color: "#f59e0b",

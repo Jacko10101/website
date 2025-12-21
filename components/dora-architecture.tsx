@@ -16,7 +16,7 @@ export function DoraArchitecture() {
     },
     jira: {
       title: "Jira API",
-      description: "Issue tracking, Fix Version validation, ticket lifecycle for MTTR metrics",
+      description: "Issue tracking, Release Version validation, ticket lifecycle for MTTR metrics",
     },
     argocd: {
       title: "ArgoCD API",
@@ -162,7 +162,7 @@ export function DoraArchitecture() {
               Jira API
             </text>
             <text x="515" y="82" textAnchor="middle" className="fill-muted-foreground text-[9px]">
-              Issues • Fix Versions
+              Issues • Release Versions
             </text>
             <text x="515" y="95" textAnchor="middle" className="fill-muted-foreground text-[8px]">
               MTTR metrics
