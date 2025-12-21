@@ -3,15 +3,12 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Moon, Sun, Menu, X } from "lucide-react";
-import { useTheme } from "next-themes";
+import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
-import { TransitionLink } from "./view-transition";
 
 const navItems = [
   { name: "Home", href: "/" },
-  { name: "Services", href: "/services" },
   { name: "Projects", href: "/projects" },
   { name: "About", href: "/about" },
   { name: "Contact", href: "/contact" },
@@ -19,105 +16,107 @@ const navItems = [
 
 export function Navigation() {
   const pathname = usePathname();
-  const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
     if (mobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     }
 
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     };
   }, [mobileMenuOpen]);
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 relative">
+    <nav
+      className={cn(
+        "fixed top-0 left-0 right-0 z-50 transition-colors duration-200",
+        scrolled
+          ? "bg-black/80 backdrop-blur-xl border-b border-gray-800/50"
+          : "bg-transparent"
+      )}
+    >
       <div className="container flex h-16 items-center justify-between px-4 md:px-6">
-        <TransitionLink href="/" className="flex items-center space-x-3">
+        <Link href="/" className="flex items-center space-x-3">
           <Image
             src="/logo.png"
             alt="DevlinOps Logo"
-            width={40}
-            height={40}
-            className="rounded-md"
+            width={36}
+            height={36}
+            className="rounded-lg"
+            priority
           />
-          <span className="text-xl font-bold">DevlinOps</span>
-        </TransitionLink>
+          <span className="text-lg font-bold text-white">
+            DevlinOps
+          </span>
+        </Link>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
           {/* Desktop Navigation */}
-          <div className="hidden md:flex md:gap-6">
+          <div className="hidden md:flex md:gap-1">
             {navItems.map((item) => (
-              <TransitionLink
+              <Link
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "text-sm font-medium transition-colors hover:text-primary",
+                  "relative px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-150",
                   pathname === item.href
-                    ? "text-foreground"
-                    : "text-muted-foreground"
+                    ? "text-green-400 bg-green-500/10"
+                    : "text-gray-400 hover:text-white hover:bg-white/5"
                 )}
               >
                 {item.name}
-              </TransitionLink>
+              </Link>
             ))}
           </div>
-
-          {/* Theme Toggle */}
-          {mounted && (
-            <button
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="relative rounded-md p-2 hover:bg-accent"
-              aria-label="Toggle theme"
-            >
-              <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-              <Moon className="absolute inset-0 m-auto h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-            </button>
-          )}
 
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden rounded-md p-2 hover:bg-accent"
+            className="md:hidden w-10 h-10 rounded-lg bg-white/5 border border-gray-700 flex items-center justify-center text-gray-400"
             aria-label="Toggle menu"
           >
             {mobileMenuOpen ? (
-              <X className="h-6 w-6" />
+              <X className="h-5 w-5" />
             ) : (
-              <Menu className="h-6 w-6" />
+              <Menu className="h-5 w-5" />
             )}
           </button>
         </div>
       </div>
 
-      {/* Mobile Menu Drawer */}
+      {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="absolute left-0 right-0 top-full border-b border-border bg-background shadow-lg md:hidden">
-          <div className="container flex flex-col px-4 py-6">
+        <div className="md:hidden bg-black/95 backdrop-blur-xl border-b border-gray-800">
+          <div className="container px-4 py-4 flex flex-col gap-1">
             {navItems.map((item) => (
-              <TransitionLink
+              <Link
                 key={item.href}
                 href={item.href}
                 onClick={() => setMobileMenuOpen(false)}
                 className={cn(
-                  "text-base font-medium transition-colors hover:text-primary py-3 border-b border-border/50 last:border-0",
+                  "block px-4 py-3 text-base font-medium rounded-lg transition-colors duration-150",
                   pathname === item.href
-                    ? "text-foreground"
-                    : "text-muted-foreground"
+                    ? "text-green-400 bg-green-500/10"
+                    : "text-gray-300 hover:text-white hover:bg-white/5"
                 )}
               >
                 {item.name}
-              </TransitionLink>
+              </Link>
             ))}
           </div>
         </div>

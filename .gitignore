@@ -10,7 +10,8 @@
 /.next/
 /out/
 
-claude.md
+CLAUDE.md
+.npmrc
 
 # production
 /build

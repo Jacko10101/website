@@ -1,17 +1,15 @@
-import { Hero } from "@/components/hero";
-import { Services } from "@/components/services";
-import { TechStack } from "@/components/tech-stack";
-import { ProjectsPreview } from "@/components/projects-preview";
-import { CTA } from "@/components/cta";
+import { HeroJourney } from "@/components/hero-journey";
+import { WhatIDo } from "@/components/what-i-do";
+import { FeaturedProjects } from "@/components/featured-projects";
+import { CTASection } from "@/components/cta-section";
 
 export default function Home() {
   return (
     <>
-      <Hero />
-      <Services />
-      <TechStack />
-      <ProjectsPreview />
-      <CTA />
+      <HeroJourney />
+      <WhatIDo />
+      <FeaturedProjects />
+      <CTASection />
     </>
   );
 }

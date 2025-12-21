@@ -11,6 +11,7 @@ import { BackToTop } from "@/components/back-to-top";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://devlinops.com"),
   title: "DevlinOps | Expert DevOps & Platform Engineering Consulting",
   description: "Enterprise-grade Kubernetes, observability, GitOps, and CI/CD solutions. Scale your infrastructure with confidence.",
   keywords: ["DevOps", "Kubernetes", "AWS", "EKS", "Platform Engineering", "GitOps", "ArgoCD", "Observability"],
@@ -133,7 +134,7 @@ export default function RootLayout({
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
-          enableSystem
+          forcedTheme="dark"
           disableTransitionOnChange
         >
           <div className="relative flex min-h-screen flex-col">
