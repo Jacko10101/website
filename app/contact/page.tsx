@@ -1,4 +1,4 @@
-import { Mail, Github, Linkedin } from "lucide-react";
+import { Mail, Github } from "lucide-react";
 import { ContactForm } from "@/components/contact-form";
 
 export const metadata = {
@@ -14,7 +14,7 @@ export default function ContactPage() {
           Get in Touch
         </h1>
         <p className="mb-12 text-lg text-muted-foreground">
-          Interested in working together? I'd love to hear about your infrastructure challenges and goals.
+          Got a platform that needs work? Let&apos;s talk.
         </p>
 
         {/* Contact Form */}
@@ -25,7 +25,7 @@ export default function ContactPage() {
 
         {/* Contact Methods */}
         <h2 className="mb-6 text-2xl font-bold">Other Ways to Connect</h2>
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-2">
           {/* Email */}
           <a
             href="mailto:jack@devlinops.com"
@@ -40,7 +40,7 @@ export default function ContactPage() {
                   Email
                 </h2>
                 <p className="text-sm text-muted-foreground mb-2">
-                  Best for project inquiries and consultations
+                  For anything work-related
                 </p>
                 <p className="text-sm font-medium text-primary">
                   jack@devlinops.com
@@ -65,35 +65,10 @@ export default function ContactPage() {
                   GitHub
                 </h2>
                 <p className="text-sm text-muted-foreground mb-2">
-                  View my open source contributions and projects
+                  See what I&apos;ve been building
                 </p>
                 <p className="text-sm font-medium text-primary">
                   @Jacko10101
-                </p>
-              </div>
-            </div>
-          </a>
-
-          {/* LinkedIn */}
-          <a
-            href="https://linkedin.com/in"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group block rounded-lg border border-border bg-card p-6 transition-all hover:border-primary hover:shadow-lg"
-          >
-            <div className="flex flex-col gap-4">
-              <div className="rounded-lg bg-primary/10 p-3">
-                <Linkedin className="h-6 w-6 text-primary" />
-              </div>
-              <div>
-                <h2 className="mb-1 text-xl font-semibold group-hover:text-primary transition-colors">
-                  LinkedIn
-                </h2>
-                <p className="text-sm text-muted-foreground mb-2">
-                  Connect with me professionally
-                </p>
-                <p className="text-sm font-medium text-primary">
-                  Jack Devlin
                 </p>
               </div>
             </div>

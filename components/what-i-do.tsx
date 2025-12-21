@@ -70,27 +70,24 @@ const skills = [
     gradient: "from-purple-500 to-violet-400",
   },
   {
-    id: "service-mesh",
-    title: "Service",
-    subtitle: "Mesh",
-    description: "Istio, traffic management, mTLS, observability integration",
+    id: "aws",
+    title: "AWS",
+    subtitle: "Cloud",
+    description: "EKS, IAM, VPC, Route 53, S3, MSK, RDS—production infrastructure",
     icon: (
       <svg viewBox="0 0 32 32" className="w-full h-full">
-        <circle cx="6" cy="16" r="3" fill="currentColor" />
-        <circle cx="16" cy="6" r="3" fill="currentColor" />
-        <circle cx="26" cy="16" r="3" fill="currentColor" />
-        <circle cx="16" cy="26" r="3" fill="currentColor" />
-        <circle cx="16" cy="16" r="4" fill="currentColor" />
         <path
-          stroke="currentColor"
-          strokeWidth="1.5"
-          fill="none"
-          d="M9 16h4M19 16h4M16 9v4M16 19v4M9 9l4 4M19 9l-4 4M9 23l4-4M19 23l-4-4"
+          fill="currentColor"
+          d="M9.2 22.7c-2.5-1.8-4-4.7-4-7.9 0-5.4 4.4-9.8 9.8-9.8 3.9 0 7.3 2.3 8.9 5.6l2.3-1c-2-4.1-6.2-6.9-11.1-6.9C8.4 2.7 3 8.1 3 14.8c0 4.1 2 7.7 5.1 9.9l1.1-2zM27 19.5c-.5 2.7-2.1 5-4.4 6.5l1.1 2c2.9-1.9 5-4.9 5.6-8.4l-2.3-.1zM16 27.3c-1.4 0-2.7-.2-4-.7l-.8 2.2c1.5.5 3.1.8 4.8.8 1.3 0 2.6-.2 3.8-.5l-.7-2.2c-1 .3-2 .4-3.1.4z"
+        />
+        <path
+          fill="currentColor"
+          d="M20.8 14.2l-3.3 7.3-2.8-4.8-4.2 4.8h10.5l3.2-7.3z"
         />
       </svg>
     ),
-    color: "#06b6d4",
-    gradient: "from-cyan-500 to-teal-400",
+    color: "#FF9900",
+    gradient: "from-orange-500 to-yellow-400",
   },
   {
     id: "data",
@@ -229,8 +226,7 @@ function SectionTitle() {
 
       {/* Subtitle */}
       <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-        The platform engineering challenges that keep your team from shipping fast.
-        I tackle them so you don&apos;t have to.
+        The stuff nobody wants to build but everybody needs.
       </p>
     </motion.div>
   );
@@ -292,7 +288,7 @@ export function WhatIDo() {
           className="mt-16 text-center"
         >
           <p className="text-gray-500 mb-6">
-            Want to see these skills in action?
+            Or just look at what I&apos;ve shipped.
           </p>
           <a
             href="/projects"

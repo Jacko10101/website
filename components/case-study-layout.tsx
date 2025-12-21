@@ -30,7 +30,7 @@ export function CaseStudyHero({
   return (
     <motion.header
       style={{ opacity }}
-      className="relative pt-8 pb-24 md:pt-12 md:pb-32 overflow-hidden"
+      className="relative pt-28 pb-24 md:pt-32 md:pb-32 overflow-hidden"
     >
       <GridPattern opacity={0.02} />
       <GradientOrb className="-top-32 -right-32" color="green" size="xl" />

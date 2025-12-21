@@ -8,6 +8,7 @@ export function CliNavigation() {
   const [input, setInput] = useState("");
   const [history, setHistory] = useState<{ command: string; output: string }[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
+  const outputRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
   // Routes
@@ -48,8 +49,8 @@ export function DevlinOps() {
 
   return (
     <div>
-      <h1>Platform Engineering Excellence</h1>
-      <p>Building infrastructure that just works.</p>
+      <h1>Platform Engineering</h1>
+      <p>Internal tools, from scratch.</p>
     </div>
   );
 }`);
@@ -78,6 +79,13 @@ export function DevlinOps() {
       inputRef.current.focus();
     }
   }, [isOpen]);
+
+  // Auto-scroll to bottom when history changes
+  useEffect(() => {
+    if (outputRef.current) {
+      outputRef.current.scrollTop = outputRef.current.scrollHeight;
+    }
+  }, [history]);
 
   // Prevent body scroll when modal is open
   useEffect(() => {
@@ -417,7 +425,7 @@ Shell: bash (with way too many aliases)`;
           </div>
 
           {/* Terminal output */}
-          <div className="mb-4 max-h-96 overflow-y-auto font-mono text-sm">
+          <div ref={outputRef} className="mb-4 max-h-96 overflow-y-auto font-mono text-sm">
             {history.length === 0 && (
               <div className="mb-4 text-green-400">
                 <p>DevlinOps Terminal - Interactive Navigation</p>

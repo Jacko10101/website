@@ -1,48 +1,47 @@
 "use client";
 
 import { useState } from "react";
-import { Send } from "lucide-react";
+import { Send, Loader2, CheckCircle, AlertCircle } from "lucide-react";
 
 export function ContactForm() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
-  });
-  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setStatus("submitting");
+    setErrorMessage("");
 
-    // Create mailto link with form data
-    const mailtoLink = `mailto:jack@devlinops.com?subject=${encodeURIComponent(
-      formData.subject || "Project Inquiry"
-    )}&body=${encodeURIComponent(
-      `Name: ${formData.name}\nEmail: ${formData.email}\n\n${formData.message}`
-    )}`;
+    const form = e.currentTarget;
+    const formData = new FormData(form);
 
-    window.location.href = mailtoLink;
-    setStatus("success");
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData,
+      });
 
-    // Reset form after a delay
-    setTimeout(() => {
-      setFormData({ name: "", email: "", subject: "", message: "" });
-      setStatus("idle");
-    }, 2000);
-  };
+      const data = await response.json();
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
+      if (data.success) {
+        setStatus("success");
+        form.reset();
+      } else {
+        setStatus("error");
+        setErrorMessage(data.message || "Something went wrong. Please try again.");
+      }
+    } catch {
+      setStatus("error");
+      setErrorMessage("Failed to send message. Please email jack@devlinops.com directly.");
+    }
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      <input type="hidden" name="access_key" value={process.env.NEXT_PUBLIC_WEB3FORMS_KEY} />
+      <input type="hidden" name="subject" value="New contact from DevlinOps" />
+      <input type="hidden" name="from_name" value="DevlinOps Contact Form" />
+
       <div className="grid gap-6 sm:grid-cols-2">
         <div>
           <label
@@ -55,10 +54,9 @@ export function ContactForm() {
             type="text"
             id="name"
             name="name"
-            value={formData.name}
-            onChange={handleChange}
             required
-            className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+            disabled={status === "submitting"}
+            className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
             placeholder="John Doe"
           />
         </div>
@@ -74,10 +72,9 @@ export function ContactForm() {
             type="email"
             id="email"
             name="email"
-            value={formData.email}
-            onChange={handleChange}
             required
-            className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+            disabled={status === "submitting"}
+            className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
             placeholder="john@company.com"
           />
         </div>
@@ -94,10 +91,9 @@ export function ContactForm() {
           type="text"
           id="subject"
           name="subject"
-          value={formData.subject}
-          onChange={handleChange}
           required
-          className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+          disabled={status === "submitting"}
+          className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
           placeholder="Platform Engineering Consultation"
         />
       </div>
@@ -112,28 +108,47 @@ export function ContactForm() {
         <textarea
           id="message"
           name="message"
-          value={formData.message}
-          onChange={handleChange}
           required
+          disabled={status === "submitting"}
           rows={8}
-          className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 resize-y"
+          className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 resize-y disabled:opacity-50"
           placeholder="Tell me about your infrastructure challenges, current tech stack, team size, and timeline..."
         />
       </div>
 
-      <button
-        type="submit"
-        className="group inline-flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-primary px-8 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/90 hover:gap-3 sm:w-auto"
-      >
-        Send Message
-        <Send className="h-4 w-4 transition-all" />
-      </button>
+      <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+        <button
+          type="submit"
+          disabled={status === "submitting"}
+          className="group inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-primary px-8 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/90 hover:gap-3 disabled:opacity-50 disabled:cursor-not-allowed sm:w-auto"
+        >
+          {status === "submitting" ? (
+            <>
+              Sending...
+              <Loader2 className="h-4 w-4 animate-spin" />
+            </>
+          ) : (
+            <>
+              Send Message
+              <Send className="h-4 w-4 transition-all" />
+            </>
+          )}
+        </button>
 
-      {status === "success" && (
-        <p className="text-sm text-green-600 dark:text-green-400">
-          Opening your email client...
-        </p>
-      )}
+        {status === "success" && (
+          <div className="flex items-center gap-2 text-sm text-green-400">
+            <CheckCircle className="h-4 w-4" />
+            Message sent! I'll get back to you soon.
+          </div>
+        )}
+
+        {status === "error" && (
+          <div className="flex items-center gap-2 text-sm text-red-400">
+            <AlertCircle className="h-4 w-4" />
+            {errorMessage}
+          </div>
+        )}
+      </div>
     </form>
   );
 }

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { KonamiCode } from "@/components/konami-code";
@@ -123,7 +122,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en" suppressHydrationWarning className="view-transition">
+    <html lang="en" className="dark view-transition">
       <head>
         <script
           type="application/ld+json"
@@ -131,21 +130,14 @@ export default function RootLayout({
         />
       </head>
       <body className={inter.className}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          forcedTheme="dark"
-          disableTransitionOnChange
-        >
-          <div className="relative flex min-h-screen flex-col">
-            <Navigation />
-            <main className="flex-1">{children}</main>
-            <Footer />
-          </div>
-          <KonamiCode />
-          <CliNavigation />
-          <BackToTop />
-        </ThemeProvider>
+        <div className="relative flex min-h-screen flex-col">
+          <Navigation />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </div>
+        <KonamiCode />
+        <CliNavigation />
+        <BackToTop />
       </body>
     </html>
   );

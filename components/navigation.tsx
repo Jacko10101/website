@@ -50,17 +50,17 @@ export function Navigation() {
           : "bg-transparent"
       )}
     >
-      <div className="container flex h-16 items-center justify-between px-4 md:px-6">
-        <Link href="/" className="flex items-center space-x-3">
+      <div className="container flex h-24 items-center justify-between px-4 md:px-6">
+        <Link href="/" className="flex items-center space-x-4">
           <Image
             src="/logo.png"
             alt="DevlinOps Logo"
-            width={36}
-            height={36}
-            className="rounded-lg"
+            width={56}
+            height={56}
+            className="rounded-xl"
             priority
           />
-          <span className="text-lg font-bold text-white">
+          <span className="text-2xl font-bold text-white tracking-tight">
             DevlinOps
           </span>
         </Link>

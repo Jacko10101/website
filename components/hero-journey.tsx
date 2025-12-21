@@ -267,9 +267,19 @@ export function HeroJourney() {
               initial={{ opacity: 0, y: 20 }}
               animate={shouldAnimate ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.8, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
-              className="text-xl sm:text-2xl text-muted-foreground mb-8 font-light"
+              className="text-xl sm:text-2xl text-muted-foreground mb-3 font-light"
             >
               Building platforms that let developers focus on what matters
+            </motion.p>
+
+            {/* Target audience */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={shouldAnimate ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+              transition={{ duration: 0.8, delay: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              className="text-base text-muted-foreground/70 mb-8 font-light"
+            >
+              Helping early-stage and growth companies scale their infrastructure
             </motion.p>
 
             {/* Key focus areas */}
@@ -279,7 +289,7 @@ export function HeroJourney() {
               transition={{ duration: 0.8, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
               className="flex flex-wrap justify-center gap-3 mb-12"
             >
-              {["Kubernetes", "GitOps", "Observability", "CI/CD", "Platform Engineering"].map((tag, i) => (
+              {["Kubernetes", "AWS", "GitOps", "Observability", "CI/CD"].map((tag, i) => (
                 <motion.span
                   key={tag}
                   initial={{ opacity: 0, scale: 0.8 }}
