@@ -24,7 +24,6 @@ All figures verified against the actual source code. No "reduced deployment time
 
 Next.js 16, Tailwind CSS 4, Framer Motion. Dark mode only because light mode is for documentation sites.
 
-Previously had Three.js for a fancy 3D background - ripped it out for an 82% bundle reduction. The terminal animation is more on-brand anyway.
 
 ## Run Locally
 
