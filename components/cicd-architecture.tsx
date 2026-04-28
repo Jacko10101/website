@@ -2,66 +2,103 @@
 
 import { useState } from "react";
 
-export function CicdArchitecture() {
-  const [activeNode, setActiveNode] = useState<string | null>(null);
+type NodeKey =
+  | "service"
+  | "shared"
+  | "scripts"
+  | "bitbucket"
+  | "ecr"
+  | "buildjson"
+  | "updater"
+  | "gitops"
+  | "argocd"
+  | "k8s"
+  | "postsync"
+  | "sentry";
 
-  const nodes = {
-    bitbucket: {
-      title: "Bitbucket Pipelines",
-      description: "CI/CD orchestration with parallel testing (unit, integration, SAST, SCA)",
-    },
-    tests: {
-      title: "Parallel Tests",
-      description: "Unit tests, Integration tests, Veracode SAST, SourceClear SCA (~5min total)",
-    },
-    docker: {
-      title: "Docker Build",
-      description: "Multi-stage builds with custom base image (Maven + kubectl + ArgoCD CLI)",
-    },
-    ecr: {
-      title: "AWS ECR",
-      description: "Container registry with image scanning and lifecycle policies",
-    },
-    gitops: {
-      title: "GitOps Repo",
-      description: "Kustomize overlays updated via script (dev/qa/preprod/prod)",
-    },
-    argocd: {
-      title: "ArgoCD",
-      description: "GitOps continuous delivery with App-of-Apps pattern and PostSync hooks",
-    },
-    k8s: {
-      title: "Kubernetes",
-      description: "EKS cluster with 4 environments (Dev, QA, PreProd, Prod)",
-    },
-    postsync: {
-      title: "PostSync Tests",
-      description: "Automated test jobs (Newman API + Cucumber BDD) triggered after deployment",
-    },
-    teams: {
-      title: "Teams Notifications",
-      description: "Rich Adaptive Cards with deployment status, test results, and ArgoCD links",
-    },
-    reporter: {
-      title: "Pipeline Reporter",
-      description: "Bash script in custom Docker image - sends Teams notifications at each stage",
-    },
-  };
+const nodeInfo: Record<NodeKey, { title: string; description: string }> = {
+  service: {
+    title: "Service repo",
+    description:
+      "Per-service config is a single .ci/builds.yaml — name, runtime, dockerfile, image repo, build commands. That's all a service author has to write.",
+  },
+  shared: {
+    title: "Shared pipelines (java + node)",
+    description:
+      "Two library repos that export Bitbucket selectors. Service repos import them by tag (e.g. java-shared-pipeline:1.4.0:main-java). Semver-tagged so services adopt new versions on their own schedule.",
+  },
+  scripts: {
+    title: "shared-scripts",
+    description:
+      "Reusable commands the shared pipelines call into — tagging, ECR push, scan helpers. Where the useful bits of the old 1000-line bash reporter ended up.",
+  },
+  bitbucket: {
+    title: "Bitbucket Pipelines",
+    description:
+      "Runs the imported steps. Optional gates (Veracode SAST, SourceClear SCA, Jira Fix Version) are env-gated in the same library — toggled per service via env, not template-forked.",
+  },
+  ecr: {
+    title: "AWS ECR",
+    description:
+      "Tagged image. Build tag (commit + build number), semver tag from VERSION, digest-date tag.",
+  },
+  buildjson: {
+    title: "build.json",
+    description:
+      "Output contract: commit, image, digest, tags, build_url written to .ci/out/build.json. Consumed downstream by Heimdall and Sentry.",
+  },
+  updater: {
+    title: "ArgoCD Image Updater",
+    description:
+      "Watches ECR. When a new tag matches a service's policy, opens a commit on the GitOps repo. The pipeline doesn't push to GitOps any more.",
+  },
+  gitops: {
+    title: "GitOps repo",
+    description:
+      "Kustomize overlays per environment. Source of truth for what's meant to be deployed where.",
+  },
+  argocd: {
+    title: "ArgoCD",
+    description:
+      "Syncs the GitOps repo to the cluster. Notifications controller posts deploy reporting, replacing the old bash reporter.",
+  },
+  k8s: {
+    title: "Kubernetes",
+    description: "Four environments: dev, qa, preprod, prod.",
+  },
+  postsync: {
+    title: "PostSync → test-infra",
+    description:
+      "An ArgoCD PostSync hook triggers a test job after the deploy is healthy. Tests live in their own repo, not in the pipeline.",
+  },
+  sentry: {
+    title: "Sentry",
+    description:
+      "Fleet test-health dashboard. Aggregates POSTSYNC and CONTINUOUS test runs, surfaces pass rates per service, links to per-run Allure reports.",
+  },
+};
+
+export function CicdArchitecture() {
+  const [active, setActive] = useState<NodeKey | null>(null);
+  const isActive = (key: NodeKey) => active === key;
 
   return (
     <div className="rounded-lg border border-border bg-card p-6">
-      <h3 className="mb-4 text-lg font-semibold">CI/CD & GitOps Architecture</h3>
+      <h3 className="mb-1 text-lg font-semibold">Pipeline platform — system overview</h3>
+      <p className="mb-4 text-xs text-muted-foreground">
+        Hover any node for a one-line explanation.
+      </p>
+
       <div className="relative">
         <svg
           viewBox="0 0 900 600"
           className="w-full"
           role="img"
-          aria-label="Enterprise CI/CD GitOps architecture diagram showing Bitbucket Pipelines, Docker build pipeline, AWS ECR container registry, ArgoCD GitOps deployment, Kubernetes cluster orchestration, and automated testing with Teams notifications"
+          aria-label="CI/CD architecture: a service repo and two shared pipeline libraries feed Bitbucket Pipelines, which produces an ECR image and build metadata; ArgoCD Image Updater promotes via the GitOps repo, ArgoCD syncs to Kubernetes, and a PostSync hook triggers the test infra repo with results aggregated in Sentry."
         >
-          {/* Flow paths */}
           <defs>
             <marker
-              id="arrowhead"
+              id="arrow-cicd"
               markerWidth="10"
               markerHeight="10"
               refX="9"
@@ -72,344 +109,435 @@ export function CicdArchitecture() {
             </marker>
           </defs>
 
-          {/* Developer commit */}
-          <g>
-            <circle cx="50" cy="100" r="25" className="fill-secondary stroke-border" strokeWidth="2" />
-            <text x="50" y="105" textAnchor="middle" className="fill-foreground text-xs font-medium">
-              Dev
-            </text>
-            <text x="50" y="145" textAnchor="middle" className="fill-muted-foreground text-[10px]">
-              Commit
-            </text>
-          </g>
+          <text x="20" y="30" className="fill-muted-foreground text-[10px] font-mono">
+            inputs
+          </text>
 
-          {/* Bitbucket Pipelines */}
-          <g
-            onMouseEnter={() => setActiveNode("bitbucket")}
-            onMouseLeave={() => setActiveNode(null)}
-            className="cursor-pointer"
-          >
-            <rect
-              x="120"
-              y="60"
-              width="140"
-              height="80"
-              rx="8"
-              className={`stroke-border ${
-                activeNode === "bitbucket" ? "fill-primary/20" : "fill-card"
-              }`}
-              strokeWidth="2"
+          {/* Row 1 — three input boxes */}
+          {(
+            [
+              {
+                key: "service",
+                x: 60,
+                w: 200,
+                label: "Service repo",
+                sub: ".ci/builds.yaml",
+              },
+              {
+                key: "shared",
+                x: 350,
+                w: 200,
+                label: "Shared pipelines",
+                sub: "java + node, semver-tagged",
+              },
+              {
+                key: "scripts",
+                x: 640,
+                w: 200,
+                label: "shared-scripts",
+                sub: "reusable commands",
+              },
+            ] as const
+          ).map((n) => (
+            <g
+              key={n.key}
+              onMouseEnter={() => setActive(n.key)}
+              onMouseLeave={() => setActive(null)}
+              className="cursor-pointer"
+            >
+              <rect
+                x={n.x}
+                y="50"
+                width={n.w}
+                height="60"
+                rx="8"
+                className={`stroke-border ${
+                  isActive(n.key) ? "fill-primary/20" : "fill-secondary"
+                }`}
+                strokeWidth="2"
+              />
+              <text
+                x={n.x + n.w / 2}
+                y="75"
+                textAnchor="middle"
+                className="fill-foreground text-sm font-semibold"
+              >
+                {n.label}
+              </text>
+              <text
+                x={n.x + n.w / 2}
+                y="93"
+                textAnchor="middle"
+                className="fill-muted-foreground text-[10px]"
+              >
+                {n.sub}
+              </text>
+            </g>
+          ))}
+
+          {/* Inputs → Bitbucket */}
+          {[160, 450, 740].map((x) => (
+            <line
+              key={x}
+              x1={x}
+              y1="110"
+              x2="450"
+              y2="170"
+              className="stroke-primary"
+              strokeWidth="1.5"
+              markerEnd="url(#arrow-cicd)"
+              opacity="0.5"
             />
-            <text x="190" y="90" textAnchor="middle" className="fill-foreground text-sm font-semibold">
-              Bitbucket
-            </text>
-            <text x="190" y="110" textAnchor="middle" className="fill-muted-foreground text-xs">
-              Pipelines
-            </text>
-            <text x="190" y="125" textAnchor="middle" className="fill-muted-foreground text-[10px]">
-              Tests • Build • Deploy
-            </text>
-          </g>
+          ))}
 
-          {/* Tests (parallel) */}
+          <text x="20" y="200" className="fill-muted-foreground text-[10px] font-mono">
+            ci
+          </text>
+
+          {/* Row 2 — Bitbucket Pipelines */}
           <g
-            onMouseEnter={() => setActiveNode("tests")}
-            onMouseLeave={() => setActiveNode(null)}
+            onMouseEnter={() => setActive("bitbucket")}
+            onMouseLeave={() => setActive(null)}
             className="cursor-pointer"
           >
             <rect
-              x="120"
-              y="170"
-              width="140"
+              x="240"
+              y="180"
+              width="420"
               height="60"
-              rx="8"
+              rx="10"
               className={`stroke-border ${
-                activeNode === "tests" ? "fill-primary/20" : "fill-secondary"
+                isActive("bitbucket") ? "fill-primary/20" : "fill-card"
               }`}
-              strokeWidth="2"
+              strokeWidth="3"
             />
-            <text x="190" y="195" textAnchor="middle" className="fill-foreground text-xs font-semibold">
-              Parallel Tests
+            <text
+              x="450"
+              y="206"
+              textAnchor="middle"
+              className="fill-foreground text-base font-bold"
+            >
+              Bitbucket Pipelines
             </text>
-            <text x="190" y="210" textAnchor="middle" className="fill-muted-foreground text-[9px]">
-              Unit • Integration
-            </text>
-            <text x="190" y="222" textAnchor="middle" className="fill-muted-foreground text-[9px]">
-              SAST • SCA
+            <text
+              x="450"
+              y="225"
+              textAnchor="middle"
+              className="fill-muted-foreground text-[11px]"
+            >
+              imports shared selectors · builds · pushes
             </text>
           </g>
 
-          {/* Docker Build */}
-          <g
-            onMouseEnter={() => setActiveNode("docker")}
-            onMouseLeave={() => setActiveNode(null)}
-            className="cursor-pointer"
-          >
-            <rect
-              x="310"
-              y="75"
-              width="120"
-              height="50"
-              rx="8"
-              className={`stroke-border ${
-                activeNode === "docker" ? "fill-primary/20" : "fill-card"
-              }`}
-              strokeWidth="2"
-            />
-            <text x="370" y="95" textAnchor="middle" className="fill-foreground text-sm font-semibold">
-              Docker Build
-            </text>
-            <text x="370" y="112" textAnchor="middle" className="fill-muted-foreground text-[10px]">
-              Custom Base Image
-            </text>
-          </g>
+          {/* Pipelines → outputs */}
+          <line
+            x1="350"
+            y1="240"
+            x2="280"
+            y2="280"
+            className="stroke-primary"
+            strokeWidth="2"
+            markerEnd="url(#arrow-cicd)"
+          />
+          <line
+            x1="550"
+            y1="240"
+            x2="630"
+            y2="280"
+            className="stroke-primary"
+            strokeWidth="2"
+            markerEnd="url(#arrow-cicd)"
+          />
 
-          {/* ECR */}
+          {/* Outputs */}
           <g
-            onMouseEnter={() => setActiveNode("ecr")}
-            onMouseLeave={() => setActiveNode(null)}
+            onMouseEnter={() => setActive("ecr")}
+            onMouseLeave={() => setActive(null)}
             className="cursor-pointer"
           >
             <rect
-              x="480"
-              y="75"
-              width="100"
+              x="160"
+              y="280"
+              width="180"
               height="50"
               rx="8"
               className={`stroke-border ${
-                activeNode === "ecr" ? "fill-primary/20" : "fill-card"
+                isActive("ecr") ? "fill-primary/20" : "fill-card"
               }`}
               strokeWidth="2"
             />
-            <text x="530" y="95" textAnchor="middle" className="fill-foreground text-sm font-semibold">
+            <text
+              x="250"
+              y="302"
+              textAnchor="middle"
+              className="fill-foreground text-sm font-semibold"
+            >
               AWS ECR
             </text>
-            <text x="530" y="112" textAnchor="middle" className="fill-muted-foreground text-[10px]">
-              Container Registry
+            <text
+              x="250"
+              y="318"
+              textAnchor="middle"
+              className="fill-muted-foreground text-[10px]"
+            >
+              image · multi-tagged
             </text>
           </g>
 
-          {/* GitOps Repo */}
           <g
-            onMouseEnter={() => setActiveNode("gitops")}
-            onMouseLeave={() => setActiveNode(null)}
+            onMouseEnter={() => setActive("buildjson")}
+            onMouseLeave={() => setActive(null)}
             className="cursor-pointer"
           >
             <rect
-              x="630"
-              y="60"
-              width="120"
-              height="80"
-              rx="8"
-              className={`stroke-border ${
-                activeNode === "gitops" ? "fill-primary/20" : "fill-card"
-              }`}
-              strokeWidth="2"
-            />
-            <text x="690" y="85" textAnchor="middle" className="fill-foreground text-sm font-semibold">
-              GitOps Repo
-            </text>
-            <text x="690" y="102" textAnchor="middle" className="fill-muted-foreground text-[10px]">
-              Kustomize Overlays
-            </text>
-            <text x="690" y="117" textAnchor="middle" className="fill-muted-foreground text-[9px]">
-              dev • qa • preprod • prod
-            </text>
-            <text x="690" y="130" textAnchor="middle" className="fill-primary text-[9px] font-medium">
-              Auto: dev, qa
-            </text>
-          </g>
-
-          {/* ArgoCD */}
-          <g
-            onMouseEnter={() => setActiveNode("argocd")}
-            onMouseLeave={() => setActiveNode(null)}
-            className="cursor-pointer"
-          >
-            <rect
-              x="630"
-              y="180"
-              width="120"
-              height="60"
-              rx="8"
-              className={`stroke-border ${
-                activeNode === "argocd" ? "fill-primary/20" : "fill-card"
-              }`}
-              strokeWidth="2"
-            />
-            <text x="690" y="200" textAnchor="middle" className="fill-foreground text-sm font-semibold">
-              ArgoCD
-            </text>
-            <text x="690" y="217" textAnchor="middle" className="fill-muted-foreground text-[10px]">
-              GitOps Sync
-            </text>
-            <text x="690" y="230" textAnchor="middle" className="fill-muted-foreground text-[9px]">
-              App-of-Apps Pattern
-            </text>
-          </g>
-
-          {/* Kubernetes */}
-          <g
-            onMouseEnter={() => setActiveNode("k8s")}
-            onMouseLeave={() => setActiveNode(null)}
-            className="cursor-pointer"
-          >
-            <rect
-              x="630"
+              x="560"
               y="280"
-              width="120"
-              height="60"
+              width="180"
+              height="50"
               rx="8"
               className={`stroke-border ${
-                activeNode === "k8s" ? "fill-primary/20" : "fill-card"
+                isActive("buildjson") ? "fill-primary/20" : "fill-card"
               }`}
               strokeWidth="2"
             />
-            <text x="690" y="300" textAnchor="middle" className="fill-foreground text-sm font-semibold">
-              Kubernetes
+            <text
+              x="650"
+              y="302"
+              textAnchor="middle"
+              className="fill-foreground text-sm font-semibold"
+            >
+              build.json
             </text>
-            <text x="690" y="317" textAnchor="middle" className="fill-muted-foreground text-[10px]">
-              EKS Cluster
-            </text>
-            <text x="690" y="330" textAnchor="middle" className="fill-muted-foreground text-[9px]">
-              4 Environments
+            <text
+              x="650"
+              y="318"
+              textAnchor="middle"
+              className="fill-muted-foreground text-[10px]"
+            >
+              metadata · output contract
             </text>
           </g>
 
-          {/* PostSync Tests */}
-          <g
-            onMouseEnter={() => setActiveNode("postsync")}
-            onMouseLeave={() => setActiveNode(null)}
-            className="cursor-pointer"
-          >
-            <rect
-              x="630"
-              y="380"
-              width="120"
-              height="60"
-              rx="8"
-              className={`stroke-border ${
-                activeNode === "postsync" ? "fill-primary/20" : "fill-secondary"
-              }`}
+          <text x="20" y="365" className="fill-muted-foreground text-[10px] font-mono">
+            delivery
+          </text>
+
+          {/* Row 3 — delivery chain */}
+          {(
+            [
+              {
+                key: "updater",
+                x: 40,
+                w: 180,
+                label: "Image Updater",
+                sub: "watches ECR",
+              },
+              {
+                key: "gitops",
+                x: 250,
+                w: 160,
+                label: "GitOps repo",
+                sub: "kustomize bump",
+              },
+              {
+                key: "argocd",
+                x: 440,
+                w: 140,
+                label: "ArgoCD",
+                sub: "sync",
+              },
+              {
+                key: "k8s",
+                x: 610,
+                w: 180,
+                label: "Kubernetes",
+                sub: "dev · qa · preprod · prod",
+              },
+            ] as const
+          ).map((n) => (
+            <g
+              key={n.key}
+              onMouseEnter={() => setActive(n.key)}
+              onMouseLeave={() => setActive(null)}
+              className="cursor-pointer"
+            >
+              <rect
+                x={n.x}
+                y="380"
+                width={n.w}
+                height="60"
+                rx="8"
+                className={`stroke-border ${
+                  isActive(n.key) ? "fill-primary/20" : "fill-card"
+                }`}
+                strokeWidth="2"
+              />
+              <text
+                x={n.x + n.w / 2}
+                y="405"
+                textAnchor="middle"
+                className="fill-foreground text-sm font-semibold"
+              >
+                {n.label}
+              </text>
+              <text
+                x={n.x + n.w / 2}
+                y="423"
+                textAnchor="middle"
+                className="fill-muted-foreground text-[10px]"
+              >
+                {n.sub}
+              </text>
+            </g>
+          ))}
+
+          {/* ECR → Image Updater */}
+          <line
+            x1="190"
+            y1="330"
+            x2="130"
+            y2="380"
+            className="stroke-primary"
+            strokeWidth="2"
+            markerEnd="url(#arrow-cicd)"
+          />
+
+          {/* delivery chain arrows */}
+          {[
+            { x1: 220, x2: 250 },
+            { x1: 410, x2: 440 },
+            { x1: 580, x2: 610 },
+          ].map((arr) => (
+            <line
+              key={arr.x1}
+              x1={arr.x1}
+              y1="410"
+              x2={arr.x2}
+              y2="410"
+              className="stroke-primary"
               strokeWidth="2"
+              markerEnd="url(#arrow-cicd)"
             />
-            <text x="690" y="400" textAnchor="middle" className="fill-foreground text-xs font-semibold">
-              PostSync Tests
-            </text>
-            <text x="690" y="415" textAnchor="middle" className="fill-muted-foreground text-[9px]">
-              Newman API Tests
-            </text>
-            <text x="690" y="427" textAnchor="middle" className="fill-muted-foreground text-[9px]">
-              Cucumber BDD
-            </text>
-          </g>
+          ))}
 
-          {/* Teams Notifications */}
-          <g
-            onMouseEnter={() => setActiveNode("teams")}
-            onMouseLeave={() => setActiveNode(null)}
-            className="cursor-pointer"
-          >
-            <rect
-              x="310"
-              y="280"
-              width="120"
-              height="60"
-              rx="8"
-              className={`stroke-border ${
-                activeNode === "teams" ? "fill-primary/20" : "fill-card"
-              }`}
-              strokeWidth="2"
-            />
-            <text x="370" y="300" textAnchor="middle" className="fill-foreground text-sm font-semibold">
-              Teams
-            </text>
-            <text x="370" y="317" textAnchor="middle" className="fill-muted-foreground text-[10px]">
-              Adaptive Cards
-            </text>
-            <text x="370" y="330" textAnchor="middle" className="fill-muted-foreground text-[9px]">
-              Rich Notifications
-            </text>
-          </g>
+          <text x="20" y="485" className="fill-muted-foreground text-[10px] font-mono">
+            verify
+          </text>
 
-          {/* Pipeline Reporter */}
+          {/* Row 4 — verify */}
           <g
-            onMouseEnter={() => setActiveNode("reporter")}
-            onMouseLeave={() => setActiveNode(null)}
+            onMouseEnter={() => setActive("postsync")}
+            onMouseLeave={() => setActive(null)}
             className="cursor-pointer"
           >
             <rect
               x="120"
-              y="280"
-              width="140"
+              y="500"
+              width="280"
               height="60"
               rx="8"
               className={`stroke-border ${
-                activeNode === "reporter" ? "fill-primary/20" : "fill-secondary/50"
+                isActive("postsync") ? "fill-primary/20" : "fill-secondary"
               }`}
               strokeWidth="2"
-              strokeDasharray="5,5"
             />
-            <text x="190" y="300" textAnchor="middle" className="fill-foreground text-xs font-semibold">
-              Pipeline Reporter
+            <text
+              x="260"
+              y="525"
+              textAnchor="middle"
+              className="fill-foreground text-sm font-semibold"
+            >
+              PostSync → test-infra
             </text>
-            <text x="190" y="315" textAnchor="middle" className="fill-muted-foreground text-[9px]">
-              Bash Script (1000+ lines)
-            </text>
-            <text x="190" y="327" textAnchor="middle" className="fill-muted-foreground text-[9px]">
-              Baked into Base Image
+            <text
+              x="260"
+              y="543"
+              textAnchor="middle"
+              className="fill-muted-foreground text-[10px]"
+            >
+              tests run after the deploy is healthy
             </text>
           </g>
 
-          {/* Flow arrows */}
-          <line x1="75" y1="100" x2="120" y2="100" className="stroke-primary" strokeWidth="2" markerEnd="url(#arrowhead)" />
-          <line x1="190" y1="140" x2="190" y2="170" className="stroke-primary" strokeWidth="2" markerEnd="url(#arrowhead)" />
-          <line x1="260" y1="100" x2="310" y2="100" className="stroke-primary" strokeWidth="2" markerEnd="url(#arrowhead)" />
-          <line x1="430" y1="100" x2="480" y2="100" className="stroke-primary" strokeWidth="2" markerEnd="url(#arrowhead)" />
-          <line x1="580" y1="100" x2="630" y2="100" className="stroke-primary" strokeWidth="2" markerEnd="url(#arrowhead)" />
-          <line x1="690" y1="140" x2="690" y2="180" className="stroke-primary" strokeWidth="2" markerEnd="url(#arrowhead)" />
-          <line x1="690" y1="240" x2="690" y2="280" className="stroke-primary" strokeWidth="2" markerEnd="url(#arrowhead)" />
-          <line x1="690" y1="340" x2="690" y2="380" className="stroke-primary" strokeWidth="2" markerEnd="url(#arrowhead)" />
+          <g
+            onMouseEnter={() => setActive("sentry")}
+            onMouseLeave={() => setActive(null)}
+            className="cursor-pointer"
+          >
+            <rect
+              x="500"
+              y="500"
+              width="280"
+              height="60"
+              rx="8"
+              className={`stroke-border ${
+                isActive("sentry") ? "fill-primary/20" : "fill-secondary"
+              }`}
+              strokeWidth="2"
+            />
+            <text
+              x="640"
+              y="525"
+              textAnchor="middle"
+              className="fill-foreground text-sm font-semibold"
+            >
+              Sentry
+            </text>
+            <text
+              x="640"
+              y="543"
+              textAnchor="middle"
+              className="fill-muted-foreground text-[10px]"
+            >
+              fleet test health · per-run Allure reports
+            </text>
+          </g>
 
-          {/* GitOps update to Reporter */}
-          <line x1="690" y1="140" x2="260" y2="280" className="stroke-blue-500" strokeWidth="2" markerEnd="url(#arrowhead)" strokeDasharray="3,3" />
+          {/* k8s → postsync */}
+          <line
+            x1="650"
+            y1="440"
+            x2="320"
+            y2="500"
+            className="stroke-primary"
+            strokeWidth="2"
+            markerEnd="url(#arrow-cicd)"
+            opacity="0.6"
+          />
 
-          {/* Reporter to Teams */}
-          <line x1="260" y1="310" x2="310" y2="310" className="stroke-blue-500" strokeWidth="2" markerEnd="url(#arrowhead)" strokeDasharray="3,3" />
+          {/* postsync → sentry */}
+          <line
+            x1="400"
+            y1="530"
+            x2="500"
+            y2="530"
+            className="stroke-primary"
+            strokeWidth="2"
+            markerEnd="url(#arrow-cicd)"
+          />
 
-          {/* PostSync to Teams */}
-          <line x1="630" y1="410" x2="430" y2="340" className="stroke-blue-500" strokeWidth="2" markerEnd="url(#arrowhead)" />
-
-          {/* Labels */}
-          <text x="85" y="92" className="fill-muted-foreground text-[9px]">git push</text>
-          <text x="275" y="92" className="fill-muted-foreground text-[9px]">build</text>
-          <text x="445" y="92" className="fill-muted-foreground text-[9px]">push</text>
-          <text x="595" y="92" className="fill-muted-foreground text-[9px]">update</text>
-          <text x="420" y="200" className="fill-blue-500 text-[8px]">config updated</text>
-          <text x="695" y="165" className="fill-muted-foreground text-[9px]">sync</text>
-          <text x="695" y="265" className="fill-muted-foreground text-[9px]">deploy</text>
-          <text x="695" y="365" className="fill-muted-foreground text-[9px]">test</text>
+          {/* build.json → sentry (dashed, metadata) */}
+          <line
+            x1="650"
+            y1="330"
+            x2="650"
+            y2="500"
+            className="stroke-primary"
+            strokeWidth="1.5"
+            strokeDasharray="4 4"
+            markerEnd="url(#arrow-cicd)"
+            opacity="0.4"
+          />
         </svg>
 
-        {/* Hover info panel */}
-        {activeNode && (
-          <div className="mt-4 rounded-lg border border-primary/50 bg-primary/10 p-4">
-            <h4 className="mb-1 font-semibold text-foreground">
-              {nodes[activeNode as keyof typeof nodes].title}
-            </h4>
-            <p className="text-sm text-muted-foreground">
-              {nodes[activeNode as keyof typeof nodes].description}
+        {active && (
+          <div className="mt-4 rounded-lg border border-primary/40 bg-primary/5 p-4">
+            <h4 className="mb-1 font-semibold text-foreground">{nodeInfo[active].title}</h4>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              {nodeInfo[active].description}
             </p>
           </div>
         )}
-      </div>
-
-      <div className="mt-4 text-xs text-muted-foreground">
-        <p>
-          <strong>Flow:</strong> Developer commits → Bitbucket runs parallel tests → Docker builds
-          with custom base image → Pushes to ECR → Updates GitOps repo → ArgoCD syncs → Deploys to
-          K8s → PostSync tests run → Teams notifications at each stage
-        </p>
       </div>
     </div>
   );

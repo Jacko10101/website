@@ -8,8 +8,18 @@ import { BuildSequence } from "./build-sequence";
 // Cache indicator for return visitors
 function CacheIndicator() {
   const [visible, setVisible] = useState(true);
+  const [ttfb, setTtfb] = useState<string | null>(null);
 
   useEffect(() => {
+    if (typeof window !== "undefined" && window.performance) {
+      const nav = performance.getEntriesByType(
+        "navigation"
+      )[0] as PerformanceNavigationTiming | undefined;
+      if (nav) {
+        const t = Math.round(nav.responseStart - nav.startTime);
+        if (t > 0 && t < 5000) setTtfb(`${t}ms`);
+      }
+    }
     const timer = setTimeout(() => setVisible(false), 4000);
     return () => clearTimeout(timer);
   }, []);
@@ -29,7 +39,7 @@ function CacheIndicator() {
             <span className="text-gray-400">
               Served from <span className="text-green-400">edge cache</span>
             </span>
-            <span className="text-gray-600">• 23ms</span>
+            {ttfb && <span className="text-gray-600">• {ttfb}</span>}
           </div>
         </motion.div>
       )}
@@ -256,7 +266,7 @@ export function HeroJourney() {
               transition={{ duration: 0.8, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
               className="text-xl sm:text-2xl text-muted-foreground mb-3 font-light"
             >
-              Building platforms that let developers focus on what matters
+              I build the tools engineers open every morning.
             </motion.p>
 
             {/* Target audience */}
@@ -266,7 +276,8 @@ export function HeroJourney() {
               transition={{ duration: 0.8, delay: 0.8, ease: [0.22, 1, 0.36, 1] }}
               className="text-base text-muted-foreground/70 mb-8 font-light"
             >
-              Helping early-stage and growth companies scale their infrastructure
+              Platform engineer working on deployment intelligence, GitOps and observability.
+              <span className="text-green-400/80"> Open to roles for summer 2026.</span>
             </motion.p>
 
             {/* Key focus areas */}
@@ -296,12 +307,12 @@ export function HeroJourney() {
               transition={{ duration: 0.8, delay: 1.4, ease: [0.22, 1, 0.36, 1] }}
               className="flex flex-col sm:flex-row gap-4 justify-center items-center"
             >
-              <MagneticButton href="/projects" variant="primary">
-                View Case Studies
+              <MagneticButton href="/projects/dora-devex" variant="primary">
+                See Heimdall
               </MagneticButton>
 
               <MagneticButton href="/contact" variant="secondary">
-                Get in Touch
+                Say hello
               </MagneticButton>
             </motion.div>
           </div>

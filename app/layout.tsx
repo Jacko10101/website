@@ -11,9 +11,23 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://devlinops.com"),
-  title: "DevlinOps | Expert DevOps & Platform Engineering Consulting",
-  description: "Enterprise-grade Kubernetes, observability, GitOps, and CI/CD solutions. Scale your infrastructure with confidence.",
-  keywords: ["DevOps", "Kubernetes", "AWS", "EKS", "Platform Engineering", "GitOps", "ArgoCD", "Observability"],
+  title: {
+    default: "Jack Devlin — Platform Engineer",
+    template: "%s — Jack Devlin",
+  },
+  description:
+    "Platform engineer. Heimdall (deployment intelligence), GitOps, observability. Open to roles for summer 2026.",
+  keywords: [
+    "Platform Engineer",
+    "SRE",
+    "DevOps",
+    "Kubernetes",
+    "ArgoCD",
+    "GitOps",
+    "Observability",
+    "Heimdall",
+    "Jack Devlin",
+  ],
   authors: [{ name: "Jack Devlin" }],
   icons: {
     icon: [
@@ -30,24 +44,26 @@ export const metadata: Metadata = {
     ],
   },
   openGraph: {
-    title: "DevlinOps | Expert DevOps & Platform Engineering Consulting",
-    description: "Enterprise-grade Kubernetes, observability, GitOps, and CI/CD solutions.",
+    title: "Jack Devlin — Platform Engineer",
+    description:
+      "Platform engineer. Heimdall (deployment intelligence), GitOps, observability. Open to roles for summer 2026.",
     url: "https://devlinops.com",
-    siteName: "DevlinOps",
+    siteName: "Jack Devlin",
     type: "website",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "DevlinOps - Platform Engineering Excellence",
+        alt: "Jack Devlin — Platform Engineer",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "DevlinOps | Expert DevOps & Platform Engineering Consulting",
-    description: "Enterprise-grade Kubernetes, observability, GitOps, and CI/CD solutions.",
+    title: "Jack Devlin — Platform Engineer",
+    description:
+      "Platform engineer. Heimdall (deployment intelligence), GitOps, observability. Open to roles for summer 2026.",
     images: ["/og-image.png"],
   },
 };
@@ -64,61 +80,46 @@ export default function RootLayout({
         "@type": "Person",
         "@id": "https://devlinops.com/#person",
         "name": "Jack Devlin",
-        "jobTitle": "Platform Engineer & Kubernetes Specialist",
+        "jobTitle": "Platform Engineer",
         "url": "https://devlinops.com",
+        "email": "jack@devlinops.com",
+        "address": {
+          "@type": "PostalAddress",
+          "addressCountry": "GB",
+        },
+        "sameAs": [
+          "https://github.com/Jacko10101",
+          "https://linkedin.com/in/jack-devlin-5a0902148",
+        ],
         "knowsAbout": [
-          "Kubernetes",
           "Platform Engineering",
-          "AWS",
+          "Site Reliability Engineering",
+          "Kubernetes",
           "ArgoCD",
-          "DevOps",
           "GitOps",
           "Observability",
           "Prometheus",
           "Grafana",
-          "Terraform",
-          "CI/CD"
+          "AWS",
+          "CI/CD",
         ],
         "hasOccupation": {
           "@type": "Occupation",
           "name": "Platform Engineer",
-          "skills": "Kubernetes, AWS EKS, ArgoCD, Terraform, CI/CD, Observability, GitOps"
-        }
-      },
-      {
-        "@type": "ProfessionalService",
-        "@id": "https://devlinops.com/#organization",
-        "name": "DevlinOps",
-        "url": "https://devlinops.com",
-        "logo": "https://devlinops.com/logo.png",
-        "description": "Expert DevOps and Platform Engineering consulting specialising in Kubernetes, observability, GitOps, and CI/CD solutions.",
-        "address": {
-          "@type": "PostalAddress",
-          "addressCountry": "GB"
+          "skills":
+            "Kubernetes, AWS, ArgoCD, GitOps, CI/CD, Observability, Python",
         },
-        "founder": {
-          "@id": "https://devlinops.com/#person"
-        },
-        "areaServed": "Worldwide",
-        "serviceType": [
-          "Platform Engineering",
-          "Kubernetes Consulting",
-          "DevOps Consulting",
-          "Cloud Infrastructure",
-          "Observability Stack Implementation",
-          "GitOps & CI/CD Pipeline Modernisation"
-        ]
       },
       {
         "@type": "WebSite",
         "@id": "https://devlinops.com/#website",
         "url": "https://devlinops.com",
-        "name": "DevlinOps",
+        "name": "Jack Devlin",
         "publisher": {
-          "@id": "https://devlinops.com/#organization"
-        }
-      }
-    ]
+          "@id": "https://devlinops.com/#person",
+        },
+      },
+    ],
   };
 
   return (

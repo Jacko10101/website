@@ -1,27 +1,25 @@
 "use client";
 
+import Image from "next/image";
+import { ReactNode } from "react";
 import { CicdArchitecture } from "@/components/cicd-architecture";
-import { BeforeAfterSlider } from "@/components/before-after-slider";
 import {
   CaseStudyLayout,
   CaseStudyHero,
   CaseStudySection,
-  ChallengeBox,
   StatsGrid,
-  PhaseCard,
-  EnhancedCodeBlock,
   TechSidebar,
-  LessonItem,
+  EnhancedCodeBlock,
   CaseStudyCTA,
 } from "@/components/case-study-layout";
-import { GlassCard, FadeUp, StaggerContainer, StaggerItem } from "@/components/scroll-reveal";
+import { GlassCard, FadeUp } from "@/components/scroll-reveal";
 
 const articleSchema = {
   "@context": "https://schema.org",
   "@type": "TechArticle",
-  headline: "CI/CD & GitOps Platform Engineering",
+  headline: "Pipeline Platform — Shared CI/CD and ArgoCD-Driven Delivery",
   description:
-    "Building production-grade CI/CD infrastructure from scratch—evolving a greenfield microservices platform to 400 deploys/month with enterprise security",
+    "One shared Bitbucket pipeline library imported by every Java and Node service. Tests, reporting and promotion all decoupled. Used across 20 services with ~400 deploys/month.",
   author: {
     "@type": "Person",
     name: "Jack Devlin",
@@ -33,393 +31,346 @@ const articleSchema = {
     url: "https://devlinops.com",
   },
   datePublished: "2025-01-01",
-  dateModified: "2025-01-01",
+  dateModified: "2026-04-25",
   proficiencyLevel: "Expert",
   keywords: [
     "CI/CD",
     "GitOps",
+    "Bitbucket Shared Pipelines",
     "ArgoCD",
+    "ArgoCD Image Updater",
+    "ArgoCD Notifications",
     "Kubernetes",
-    "Bitbucket Pipelines",
     "Platform Engineering",
+    "Sentry",
+    "Allure",
   ],
-  dependencies:
-    "Kubernetes, ArgoCD, Bitbucket Pipelines, Kustomize, Docker, AWS ECR",
 };
+
+function Screenshot({
+  src,
+  alt,
+  caption,
+  label,
+  width,
+  height,
+}: {
+  src: string;
+  alt: string;
+  caption: ReactNode;
+  label: string;
+  width: number;
+  height: number;
+}) {
+  return (
+    <FadeUp>
+      <GlassCard className="p-0 overflow-hidden">
+        <div className="px-5 py-3 border-b border-border bg-secondary/30 flex items-center gap-3">
+          <div className="flex items-center gap-1.5">
+            <div className="w-2 h-2 rounded-full bg-red-500/60" />
+            <div className="w-2 h-2 rounded-full bg-yellow-500/60" />
+            <div className="w-2 h-2 rounded-full bg-green-500/60" />
+          </div>
+          <span className="text-xs font-mono text-muted-foreground">{label}</span>
+        </div>
+        <div className="bg-black">
+          <Image
+            src={src}
+            alt={alt}
+            width={width}
+            height={height}
+            className="w-full h-auto"
+            sizes="(max-width: 1024px) 100vw, 800px"
+          />
+        </div>
+        <div className="px-5 py-4 border-t border-border bg-secondary/20 text-sm text-muted-foreground leading-relaxed">
+          {caption}
+        </div>
+      </GlassCard>
+    </FadeUp>
+  );
+}
 
 export default function CicdGitopsPage() {
   return (
     <CaseStudyLayout schema={articleSchema}>
       <CaseStudyHero
-        title="CI/CD & GitOps Platform"
-        subtitle="Enterprise Pipeline Architecture"
-        description="Building production-grade CI/CD infrastructure from scratch—evolving a greenfield microservices platform to 400 deploys/month with enterprise security"
-        date="2023-2025 (2-year evolution)"
-        metrics="20 Microservices • 400 Deploys/Month"
+        title="Pipeline platform"
+        subtitle="Shared CI/CD library"
+        description="One Bitbucket pipeline library, imported by every Java and Node service. Tests live in their own repo. Promotion and reporting belong to ArgoCD."
+        date="2023 → ongoing"
+        metrics="20 services, ~400 deploys/month"
         color="#22c55e"
       />
 
       <div className="container px-4">
         <div className="grid gap-8 lg:grid-cols-[2fr_1fr] max-w-7xl mx-auto">
-          {/* Main content */}
           <div className="space-y-12">
-            {/* Challenge */}
-            <CaseStudySection eyebrow="// the challenge" title="The Challenge">
-              <ChallengeBox
-                callout={{
-                  type: "info",
-                  text: "Zero existing infrastructure—build everything from scratch for a massive monolith to microservices migration.",
-                }}
-              >
-                <p>
-                  I joined as a{" "}
-                  <strong className="text-foreground">Graduate QA Engineer</strong> at the very
-                  beginning of a massive architectural transformation:{" "}
-                  <strong className="text-foreground">
-                    migrating from a legacy monolith to a modern Kubernetes-based microservices
-                    platform
-                  </strong>
-                  .
-                </p>
-                <p>
-                  With no existing CI/CD infrastructure and a blank canvas, I was tasked with
-                  designing and implementing the entire deployment pipeline that would serve{" "}
-                  <strong className="text-foreground">
-                    20+ microservices across 4 environments
-                  </strong>{" "}
-                  (Dev, QA, Pre-Prod, Production).
-                </p>
-
-                <div className="mt-6 p-4 rounded-lg bg-secondary/30 border border-border">
-                  <h4 className="font-semibold text-foreground mb-3">Initial Requirements</h4>
-                  <ul className="space-y-2 text-sm">
-                    <li className="flex gap-2">
-                      <span className="text-primary">•</span>
-                      <span>
-                        <strong className="text-foreground">Zero existing infrastructure</strong> —
-                        build everything from scratch
-                      </span>
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="text-primary">•</span>
-                      <span>
-                        <strong className="text-foreground">Multi-environment strategy</strong> —
-                        Dev, QA, Pre-Prod, Prod with different promotion rules
-                      </span>
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="text-primary">•</span>
-                      <span>
-                        <strong className="text-foreground">Security-first approach</strong> —
-                        SAST/SCA scanning, compliance gates
-                      </span>
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="text-primary">•</span>
-                      <span>
-                        <strong className="text-foreground">GitOps-native</strong> — declarative
-                        deployments with ArgoCD
-                      </span>
-                    </li>
-                  </ul>
-                </div>
-              </ChallengeBox>
+            <CaseStudySection eyebrow="// the shape that broke" title="Twenty pipelines that drifted">
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                Twenty services each shipped their own bitbucket-pipelines.yml.
+                Same rough shape — build, test, scan, push, deploy — but each
+                one slightly different. A change in the build pattern meant a
+                PR to twenty repos.
+              </p>
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                A 1000-line bash pipeline reporter lived in the base image and
+                posted to Teams at every stage. It worked. Nobody wanted to
+                touch it.
+              </p>
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                Tests ran inside the pipeline, before pods were healthy. They
+                were flaky and most failures weren&apos;t real.
+              </p>
+              <p className="text-muted-foreground leading-relaxed">
+                Jira gates, Veracode and SourceClear were copy-pasted into
+                every yaml.
+              </p>
             </CaseStudySection>
 
-            {/* Evolution */}
-            <CaseStudySection eyebrow="// the evolution" title="The Evolution">
-              <p className="text-muted-foreground mb-8">
-                Over{" "}
-                <strong className="text-foreground">2 years of iterative platform engineering</strong>,
-                I transformed a basic build script into a sophisticated, production-ready CI/CD
-                platform. Here&apos;s how it evolved:
+            <CaseStudySection eyebrow="// the pipeline" title="One library, imported by every service">
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                The pipeline lives in two repos now:{" "}
+                <code className="text-foreground">java-shared-pipeline</code>{" "}
+                and <code className="text-foreground">node-shared-pipeline</code>.
+                Each exports a set of Bitbucket selectors using Bitbucket&apos;s
+                Shared Pipelines Configuration. Service repos import them by
+                tag.
+              </p>
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                Per-service config is one file. Name, runtime, dockerfile,
+                image repo, build commands. That&apos;s all a service author
+                has to know about CI.
               </p>
 
-              <StaggerContainer className="space-y-6">
-                <StaggerItem>
-                  <PhaseCard
-                    phase="Phase 1"
-                    title="Foundation (Months 1-6)"
-                    color="#22c55e"
-                    highlight="Established GitOps pattern with ArgoCD for declarative deployments"
-                  >
-                    <p>
-                      Built the initial pipeline architecture with basic Maven builds, Docker image
-                      creation, and manual ECR pushes.
-                    </p>
-                    <EnhancedCodeBlock
-                      title="Early Pipeline (bitbucket-pipelines.yml)"
-                      code={`image: maven:3.9.6
-pipelines:
+              <div className="space-y-4 mb-6">
+                <EnhancedCodeBlock
+                  title=".ci/builds.yaml — the per-service surface"
+                  language="yaml"
+                  code={`service:
+  name: payments-api
+  type: java           # java | node
+  dockerfile: Dockerfile
+  image:
+    repository: payments-api
+build:
+  java:
+    maven_cmd: "mvn -B -ntp test"
+gitops:
+  repo: platform/gitops-apps
+  base_branch: main
+  app_path: apps/payments-api
+  strategy: kustomize`}
+                />
+
+                <EnhancedCodeBlock
+                  title="bitbucket-pipelines.yml — the import"
+                  language="yaml"
+                  code={`pipelines:
+  pull-requests:
+    '**':
+      import: java-shared-pipeline:1.4.0:feature-java
   branches:
-    master:
-      - step:
-          name: Build, Test, and Push Docker Image
-          script:
-            - mvn clean install
-            - mvn test
-            - docker build -t $IMAGE_NAME:$IMAGE_TAG .
-            - pipe: atlassian/aws-ecr-push-image:2.2.0
+    main:
+      import: java-shared-pipeline:1.4.0:main-java`}
+                />
+              </div>
 
-      - step:
-          name: Deploy to Dev
-          script:
-            - git clone git@bitbucket.org:company/argocd-apps.git
-            - ./scripts/update_tag.sh
-            - git push origin master`}
-                    />
-                  </PhaseCard>
-                </StaggerItem>
-
-                <StaggerItem>
-                  <PhaseCard
-                    phase="Phase 2"
-                    title="Standardisation & Reusability (Months 6-12)"
-                    color="#06b6d4"
-                    highlight="Custom Docker base image reducing pipeline config by ~40%"
-                  >
-                    <p>
-                      Created reusable pipeline components and custom base images to eliminate
-                      duplication across services.
-                    </p>
-                    <ul className="space-y-2 mt-3">
-                      <li className="flex gap-2">
-                        <span className="text-primary">•</span>
-                        <strong className="text-foreground">Custom Base Image</strong> — Pre-built
-                        Maven image with kubectl, ArgoCD CLI, AWS CLI, jq
-                      </li>
-                      <li className="flex gap-2">
-                        <span className="text-primary">•</span>
-                        <strong className="text-foreground">Shared Pipeline Scripts</strong> —
-                        Centralised notifications via pipeline_reporter.sh
-                      </li>
-                      <li className="flex gap-2">
-                        <span className="text-primary">•</span>
-                        <strong className="text-foreground">Kustomize Overlays</strong> —
-                        Environment-specific configuration management
-                      </li>
-                      <li className="flex gap-2">
-                        <span className="text-primary">•</span>
-                        <strong className="text-foreground">App-of-Apps Pattern</strong> —
-                        Hierarchical ArgoCD application management
-                      </li>
-                    </ul>
-                  </PhaseCard>
-                </StaggerItem>
-
-                <StaggerItem>
-                  <PhaseCard
-                    phase="Phase 3"
-                    title="Security & Quality Gates (Months 12-18)"
-                    color="#8b5cf6"
-                    highlight="100% security scan coverage on all PRs"
-                  >
-                    <p>
-                      Integrated enterprise security scanning and quality gates directly into the
-                      pipeline.
-                    </p>
-                    <div className="grid gap-3 sm:grid-cols-2 mt-4">
-                      <GlassCard className="p-4">
-                        <h4 className="font-semibold text-foreground mb-1">SAST (Veracode)</h4>
-                        <p className="text-xs">
-                          Static code analysis blocking critical/high vulnerabilities
-                        </p>
-                      </GlassCard>
-                      <GlassCard className="p-4">
-                        <h4 className="font-semibold text-foreground mb-1">SCA (SourceClear)</h4>
-                        <p className="text-xs">
-                          Dependency vulnerability scanning with automated reporting
-                        </p>
-                      </GlassCard>
-                    </div>
-                  </PhaseCard>
-                </StaggerItem>
-
-                <StaggerItem>
-                  <PhaseCard
-                    phase="Phase 4"
-                    title="Test Orchestration & Observability (Months 18-24)"
-                    color="#f59e0b"
-                    highlight="Reduced false test results by ~90%"
-                  >
-                    <p>
-                      Migrated from brittle pipeline-based testing to robust ArgoCD PostSync hooks
-                      with comprehensive observability.
-                    </p>
-                    <ul className="space-y-2 mt-3">
-                      <li className="flex gap-2">
-                        <span className="text-primary">•</span>
-                        <strong className="text-foreground">PostSync Hook Architecture</strong> —
-                        Tests run AFTER deployment completes
-                      </li>
-                      <li className="flex gap-2">
-                        <span className="text-primary">•</span>
-                        <strong className="text-foreground">Automated Test Suites</strong> — JUnit
-                        (API), Cucumber + Playwright (UI) as Kubernetes Jobs
-                      </li>
-                      <li className="flex gap-2">
-                        <span className="text-primary">•</span>
-                        <strong className="text-foreground">DORA Metrics</strong> — Custom collector
-                        tracking deployment frequency, lead time, MTTR
-                      </li>
-                    </ul>
-
-                    <div className="mt-4 p-3 rounded-lg bg-amber-500/10 border border-amber-500/30">
-                      <h5 className="text-sm font-semibold text-amber-400 mb-2">Why PostSync {">"} Pipeline Testing</h5>
-                      <p className="text-xs text-muted-foreground">
-                        Pipeline tests run <em>before</em> pods are healthy, causing false negatives when services aren&apos;t ready.
-                        PostSync hooks wait for ArgoCD sync completion, then validate pods are ready before running tests —
-                        eliminating an entire class of flaky failures.
-                      </p>
-                    </div>
-                  </PhaseCard>
-                </StaggerItem>
-              </StaggerContainer>
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                Optional gates — Veracode SAST, SourceClear SCA, Jira Fix
+                Version validation — are env-gated in the same library. One
+                library handles services that need them and services that
+                don&apos;t. The difference is an env var on the import, not a
+                fork of the pipeline.
+              </p>
+              <p className="text-muted-foreground leading-relaxed">
+                The library is semver-tagged. Services adopt a new version on
+                their own schedule by bumping the tag. Old tags stay around as
+                long as anyone is still on them.
+              </p>
             </CaseStudySection>
 
-            {/* Architecture */}
-            <CaseStudySection eyebrow="// architecture" title="Architecture">
+            <CaseStudySection eyebrow="// tests, extracted" title="Tests are not pipeline steps">
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                Test infra is its own repo now. The pipeline builds and pushes
+                the image, then stops. A separate ArgoCD PostSync hook runs
+                the test job after the deploy is actually healthy, so the
+                tests run against the real running thing rather than half a
+                pod.
+              </p>
+              <p className="text-muted-foreground leading-relaxed mb-6">
+                Allure reports per run. Pass/fail published to a result store.
+                Sentry — a small dashboard I built on top — is where you go to
+                ask &quot;is the fleet green?&quot;.
+              </p>
+
+              <div className="space-y-6">
+                <Screenshot
+                  label="sentry — fleet"
+                  src="/sentry/fleet-dashboard.png"
+                  width={2376}
+                  height={1746}
+                  alt="Sentry fleet dashboard with platform foundation tiles and per-service test cards"
+                  caption={
+                    <>
+                      Eleven services green, four red. Platform Foundation
+                      across the top — cluster, Kafka, databases, secrets —
+                      lives separately from per-service test health, because
+                      &quot;the cluster is broken&quot; and &quot;Data Flow has
+                      a flaky test&quot; are different conversations. POSTSYNC
+                      and CONTINUOUS triggers are tagged so it&apos;s obvious
+                      what kind of run produced the result.
+                    </>
+                  }
+                />
+
+                <Screenshot
+                  label="sentry — per service"
+                  src="/sentry/test-results.png"
+                  width={2576}
+                  height={1538}
+                  alt="Sentry per-service test results page for cloudbridge in preprod"
+                  caption={
+                    <>
+                      Drilldown for a single service. The full Allure report is
+                      one click away; the recent runs table on the bottom makes
+                      regressions obvious without anyone having to dig into a
+                      pipeline.
+                    </>
+                  }
+                />
+              </div>
+            </CaseStudySection>
+
+            <CaseStudySection eyebrow="// reporting & promotion" title="ArgoCD took over the rest">
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                The bash reporter is gone. The bits worth keeping moved into a
+                shared-scripts repo. The rest retired when ArgoCD&apos;s
+                Notifications controller took over deploy reporting.
+              </p>
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                Promotion is decoupled from build. The pipeline emits{" "}
+                <code className="text-foreground">.ci/out/build.json</code> —
+                commit, image, digest, tags, build url — and stops. ArgoCD
+                Image Updater watches ECR and opens the GitOps bump itself
+                when it sees a new tag.
+              </p>
+              <p className="text-muted-foreground leading-relaxed">
+                Build does one thing. Promote does another. The pipeline
+                doesn&apos;t know which environment its image will land in.
+              </p>
+            </CaseStudySection>
+
+            <CaseStudySection eyebrow="// architecture" title="How it fits together">
+              <p className="text-muted-foreground mb-6 leading-relaxed">
+                Four layers, top to bottom: a service repo and the shared
+                libraries it imports; a Bitbucket run that produces an image
+                and a metadata file; an Image-Updater-driven promotion that
+                ends in a Kubernetes deploy; and a PostSync hook that closes
+                the loop with a test result in Sentry.
+              </p>
+
               <CicdArchitecture />
             </CaseStudySection>
 
-            {/* Current State */}
-            <CaseStudySection
-              eyebrow="// current state"
-              title="Current State: Production-Grade Platform"
-            >
-              <FadeUp>
-                <GlassCard className="p-8 border-primary/30">
-                  <h3 className="text-xl font-semibold mb-4 text-primary">Pipeline Architecture</h3>
-                  <div className="space-y-3 text-muted-foreground">
-                    <div className="flex gap-2">
-                      <span className="text-primary font-bold">→</span>
-                      <span>
-                        <strong className="text-foreground">Parallel Test Execution:</strong> Unit,
-                        integration, SAST, SCA run concurrently (~5min total)
-                      </span>
-                    </div>
-                    <div className="flex gap-2">
-                      <span className="text-primary font-bold">→</span>
-                      <span>
-                        <strong className="text-foreground">Automated Deployments:</strong> Master →
-                        Dev (auto), QA (auto w/ Jira gate), Pre-Prod (manual), Prod (manual)
-                      </span>
-                    </div>
-                    <div className="flex gap-2">
-                      <span className="text-primary font-bold">→</span>
-                      <span>
-                        <strong className="text-foreground">Jira Integration:</strong> Release Version
-                        validation prevents premature QA deployments
-                      </span>
-                    </div>
-                    <div className="flex gap-2">
-                      <span className="text-primary font-bold">→</span>
-                      <span>
-                        <strong className="text-foreground">PostSync Testing:</strong> Kubernetes
-                        Jobs execute tests after ArgoCD sync completion
-                      </span>
-                    </div>
-                  </div>
+            <CaseStudySection eyebrow="// design" title="A few decisions worth flagging">
+              <div className="space-y-5">
+                <GlassCard className="p-6">
+                  <h3 className="font-semibold text-foreground mb-2">
+                    Optional gates are env-gated, not template-forked
+                  </h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    Some services run Veracode and Jira gates. Some don&apos;t.
+                    Both kinds use the same shared pipeline tag — the
+                    difference is an env var, not a different selector. The
+                    library stays a singleton, and the diff between two
+                    services&apos; CI is something you can read in their{" "}
+                    <code className="text-foreground">.ci/builds.yaml</code>{" "}
+                    rather than tracing through forks.
+                  </p>
                 </GlassCard>
-              </FadeUp>
+
+                <GlassCard className="p-6">
+                  <h3 className="font-semibold text-foreground mb-2">
+                    Build doesn&apos;t promote
+                  </h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    The pipeline emits build metadata and stops. ArgoCD Image
+                    Updater handles the GitOps bump separately. The upshot:
+                    a service can&apos;t break its own deploy by misconfiguring
+                    its yaml, and a fix to promotion behaviour doesn&apos;t
+                    need a new pipeline release.
+                  </p>
+                </GlassCard>
+
+                <GlassCard className="p-6">
+                  <h3 className="font-semibold text-foreground mb-2">
+                    Tests are not pipeline steps
+                  </h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    Pipelines that fail before pods are healthy lie. PostSync
+                    runs tests against the actual running deploy, and Sentry
+                    surfaces the result independently of whether anyone was
+                    watching the pipeline. Most of the &quot;flaky test&quot;
+                    bucket evaporated when the readiness assumption stopped
+                    being implicit.
+                  </p>
+                </GlassCard>
+              </div>
             </CaseStudySection>
 
-            {/* Business Impact */}
-            <CaseStudySection eyebrow="// impact" title="Business Impact">
+            <CaseStudySection eyebrow="// impact" title="What changed">
               <StatsGrid
                 color="#22c55e"
                 stats={[
-                  { value: "400+", label: "Deployments per month across all environments" },
-                  { value: "~5 min", label: "Consistent build time with parallel testing" },
-                  { value: "20+", label: "Microservices using standardised pipeline" },
-                  { value: "50+", label: "Alert rules for rapid incident response" },
-                  { value: "~90%", label: "Reduction in false test results" },
-                  { value: "100%", label: "Security scan coverage on all PRs" },
+                  { value: "20", label: "services on one shared library" },
+                  { value: "~400", label: "deploys per month" },
+                  { value: "~5 min", label: "build time" },
+                  { value: "1 file", label: "to onboard a new service" },
                 ]}
               />
-            </CaseStudySection>
 
-            {/* Before/After */}
-            <CaseStudySection
-              eyebrow="// transformation"
-              title="Transformation Metrics"
-            >
-              <p className="text-muted-foreground mb-6">
-                Drag the slider to see the dramatic transformation from manual processes to
-                automated platform engineering.
+              <p className="text-muted-foreground mt-6 leading-relaxed">
+                The change I care about most isn&apos;t in the table. Onboarding
+                a new service used to mean copy-pasting somebody else&apos;s
+                yaml and quietly hoping. Now it&apos;s a builds.yaml and a
+                tag. The diff between two services&apos; CI is small,
+                readable and intentional.
               </p>
-              <BeforeAfterSlider
-                metrics={[
-                  { label: "Deployment Frequency", before: "2/week", after: "400/month" },
-                  { label: "Build Time", before: "15+ min", after: "~5 min" },
-                  { label: "Service Onboarding", before: "1 week", after: "<1 day" },
-                  { label: "Test Reliability", before: "?%", after: "95%+" },
-                ]}
-              />
-            </CaseStudySection>
-
-            {/* Lessons Learned */}
-            <CaseStudySection eyebrow="// lessons" title="Lessons Learned">
-              <ul className="space-y-4">
-                <LessonItem highlight="Iterative improvement beats big-bang rewrites">
-                  Each phase built on the previous, allowing production usage throughout
-                </LessonItem>
-                <LessonItem highlight="Standardisation is key to scale">
-                  Reusable components (base images, scripts) made onboarding new services trivial
-                </LessonItem>
-                <LessonItem highlight="GitOps eliminates deployment drift">
-                  Declarative configs in Git provided audit trail and rollback capability
-                </LessonItem>
-                <LessonItem highlight="Testing architecture matters">
-                  Moving from pipeline polling to PostSync hooks eliminated an entire class of
-                  flaky tests
-                </LessonItem>
-                <LessonItem highlight="Observability from day one">
-                  DORA metrics, deployment notifications, and test reporting enabled data-driven
-                  improvements
-                </LessonItem>
-              </ul>
             </CaseStudySection>
           </div>
 
-          {/* Sidebar */}
           <TechSidebar
             technologies={[
-              "Bitbucket Pipelines",
+              "Bitbucket Shared Pipelines",
               "ArgoCD",
+              "ArgoCD Image Updater",
+              "ArgoCD Notifications",
               "Kubernetes",
               "Kustomize",
-              "Docker",
-              "Maven",
               "AWS ECR",
-              "Veracode (SAST)",
-              "SourceClear (SCA)",
+              "Veracode",
+              "SourceClear",
+              "Allure",
+              "Jira",
               "Bash",
-              "Newman",
-              "Cucumber",
-              "S3",
-              "Teams Webhooks",
             ]}
             skills={[
-              "Platform Engineering",
-              "CI/CD Architecture Design",
-              "GitOps Implementation",
-              "Container Orchestration",
-              "Security Integration (SAST/SCA)",
-              "Test Automation",
-              "Infrastructure as Code",
-              "Observability & Metrics",
-              "Developer Experience",
+              "Extracting shared concerns into versioned libraries",
+              "Decoupling build from promotion",
+              "Env-gated optional steps",
+              "Fleet observability for tests",
+              "Internal tooling as a product",
             ]}
             metrics={[
-              { label: "Timeline", value: "24 months of iterative development" },
-              { label: "Scale", value: "20 microservices, 4 environments" },
-              { label: "Deployment Velocity", value: "400+ deploys/month" },
-              { label: "Build Performance", value: "~5 minutes (parallel testing)" },
+              { label: "Status", value: "Live, ongoing" },
+              { label: "Pipeline library", value: "java + node, semver-tagged" },
+              { label: "Per-service config", value: "one .ci/builds.yaml" },
+              { label: "Deploys", value: "~400/month across 4 envs" },
             ]}
             relatedProjects={[
-              { title: "DORA Metrics & DevEx", href: "/projects/dora-devex" },
-              { title: "Observability Stack", href: "/projects/observability" },
+              { title: "Heimdall — deployment intelligence", href: "/projects/dora-devex" },
+              { title: "Observability stack", href: "/projects/observability" },
             ]}
           />
         </div>

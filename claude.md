@@ -1,303 +1,142 @@
-# DevlinOps Portfolio Website - Build Log
+# DevlinOps Portfolio Website — Build Log
 
-**Date**: October 30, 2025 → December 20, 2025
-**Project**: devlinops.com
-**Status**: 🚀 **LIVE IN PRODUCTION** - https://devlinops.com ✅
-
----
-
-## Phase 5: "Site Compiles" Intro Experience ✅ COMPLETE
-
-**Date**: December 20, 2025
-
-### Concept: The Site Builds Itself
-
-Instead of a traditional hero or video-style animation, first-time visitors experience the site literally building and deploying in front of them via a terminal interface.
-
-**The Experience**:
-```
-First visit → Terminal appears → Shows git clone, npm install, npm run build, deploy →
-Terminal fades up → Hero content reveals beneath with staggered animations →
-localStorage remembers → Return visits show "Served from edge cache" toast
-```
-
-**Implementation**:
-- `components/build-sequence.tsx` - Terminal animation with realistic build output
-- `components/hero-journey.tsx` - Orchestrates the experience, handles phases
-- Phases: `loading` → `building` → `revealing` → `complete`
-- Staggered hero animations (eyebrow → headline → subheading → tags → CTAs → scroll indicator)
-- ~3 second build sequence, ~2.5 second reveal
-- Return visitors see instant load + "Served from edge cache • 23ms" toast
-
-**Why This Works**:
-- ✅ Unique - Haven't seen a portfolio that "builds itself"
-- ✅ On-brand - Literally demonstrates CI/CD expertise
-- ✅ Fast - Only ~5 seconds total, not annoying
-- ✅ Clever - Return visitor cache message is a nice touch
-- ✅ Lightweight - No Three.js, just Framer Motion
+**Owner**: Jack Devlin (jack@devlinops.com)
+**Live**: https://devlinops.com
+**Repo**: https://github.com/Jacko10101/website
+**Status**: Live in production, ongoing work to showcase Heimdall as the lead project for the 2026 job search.
 
 ---
 
-## Phase 6: Future - Incident Response Game 🎮 PLANNED
+## Why this site exists
 
-### Concept: Interactive Debugging Experience
+Portfolio + case studies for platform / SRE / DevOps roles. Aimed at hiring managers and engineers who can recognise good systems-design choices in 90 seconds of skimming.
 
-A gamified incident response simulation where visitors become the on-call engineer.
-
-**The Vision**:
-- Site starts in a "broken" state with alerts firing
-- Visitors run commands to diagnose and fix issues
-- Timer tracks resolution speed
-- Reveals portfolio content as systems are "fixed"
-- Optional leaderboard for competitive element
-
-**Potential Mechanics**:
-1. **Alert appears**: `CRITICAL: PodCrashLoopBackOff in production`
-2. **Visitor types**: `kubectl get pods` → sees failing pod
-3. **Visitor types**: `kubectl logs <pod>` → sees error
-4. **Visitor types**: `kubectl rollback` → fixes issue
-5. **System recovers** → Next section of portfolio reveals
-
-**Why This Would Work**:
-- Interactive and memorable
-- Showcases incident response expertise
-- Gamification encourages exploration
-- Unique in the portfolio space
-- Could be a standalone `/incident` page or main experience
-
-**Status**: Concept stage, planned for future implementation
+The site itself is intended to demonstrate the discipline it advertises:
+- The "site compiles" intro literally shows a build pipeline.
+- The 404 is a crashed pod with live restart counters.
+- The footer surfaces commit hash, build time, uptime.
+- Pressing `/` opens a CLI navigator. Konami code triggers Matrix rain.
 
 ---
 
-## Phase 4: Polish & Performance ✅ COMPLETE
+## Lead project: Heimdall
 
-**Date**: December 20, 2025
+`/projects/dora-devex` is the Heimdall case study (URL kept for sitemap stability — internal page id is still `dora-devex`).
 
-### Security & Performance Improvements
+**What it is**: A Python/Flask SRE dashboard stitching GitOps, ArgoCD, Thanos, Bitbucket, JIRA and Sentry into one answer to "where is my ticket right now?". Used daily by 20+ engineers across 17 services.
 
-**Security Headers Added** (`next.config.ts`):
-- ✅ X-Frame-Options: SAMEORIGIN
-- ✅ X-Content-Type-Options: nosniff
-- ✅ Referrer-Policy: strict-origin-when-cross-origin
-- ✅ Permissions-Policy (camera, microphone, geolocation disabled)
-- ✅ Content-Security-Policy
+**The case study covers**:
+1. Why it exists (one question, twenty places to look)
+2. Six-screen product tour (real screenshots in `public/heimdall/`)
+3. Architecture — one writer, sixteen readers (`components/heimdall-architecture.tsx`)
+4. Concurrency: snapshot pattern + GIL-atomic pointer swap with code excerpt
+5. Failure detection: six classes the pod-level classifier recognises
+6. Data layer: zero-downtime JSONL → TimescaleDB migration behind a flag
+7. Operability: one-curl health check, two-layer config, runbook
+8. Impact stats and lessons
 
-**Bundle Size Optimization**:
-- Removed Three.js and related packages (was 1.2MB chunk)
-- Removed unused gsap and lenis packages
-- New largest chunk: ~220KB (82% reduction)
-- Removed 70 packages total
-
-**Build Improvements**:
-- Fixed metadataBase warning
-- Updated sitemap (removed deleted /services page)
-- Next.js upgraded to 16.1.0 (security fix)
-- npm registry configured for public packages (`.npmrc`)
-
-### Visual Enhancements
-
-**Subtle Noise Texture** (`globals.css`):
-- SVG-based noise overlay at 1.5% opacity
-- Adds film grain/texture without distraction
-- Fixed position, covers entire viewport
-
-**Custom 404 Page** (`app/not-found.tsx`):
-- Full Kubernetes "CrashLoopBackOff" theme
-- Live restart counter that increments
-- Live "age" timer
-- kubectl output with pod status table
-- Events and logs sections
-- "kubectl apply -f homepage.yaml" CTA
-
-**Footer Build Info** (`components/footer.tsx`):
-- Shows commit hash (from Vercel env vars)
-- Shows branch name
-- Live page load time (Performance API)
-- Site uptime counter since launch
-- "All systems operational" status indicator
+**Source material** lives in Heimdall's own README + `docs/ARCHITECTURE.md` — the case study is grounded in those, not invented.
 
 ---
 
-## Phase 3: Polish, Deploy & Launch ✅ COMPLETE
+## Other case studies
 
-### What Was Built (October 30, 2025)
-
-**Interactive Features**:
-- ✅ **CLI Navigation** - Press `/` to open terminal navigation
-  - `kubectl get pods` - Shows humorous pod names
-  - `docker ps` - Container list with funny names
-  - `terraform plan/apply` - Fake Terraform output
-  - `argocd app list` - ArgoCD applications
-  - `vim` - Vim simulator with :q to exit
-  - `whoami` - ASCII tree bio
-  - `history` - Command history
-
-- ✅ **Konami Code Easter Egg** - Matrix rain animation (↑↑↓↓←→←→BA)
-
-- ✅ **View Transitions API** - Smooth page transitions via template.tsx + CSS
-
-**Visual Polish**:
-- ✅ Favicons and OG images complete
-- ✅ British English throughout
-- ✅ Authentic, personal tone (no corporate speak)
-
-**Deployment**:
-- ✅ Vercel with automatic deployments
-- ✅ Custom domain: devlinops.com
-- ✅ SSL/HTTPS automatic
+- `/projects/cicd-gitops` — GitOps pipeline platform. ~~Originally referenced bash reporter + deployment gates as separate things; those are now folded into the standardised pipelines architecture and need a refresh.~~ **TODO: rewrite with current pipeline architecture.**
+- `/projects/observability` — self-hosted Prometheus/Grafana/Loki stack.
 
 ---
 
-## Tech Stack
+## Tech stack
 
-**Current (Lightweight)**:
-- Next.js 16.1.0 (Turbopack disabled for OneDrive)
-- Tailwind CSS 4.x (OKLCH color space)
-- Framer Motion (animations)
-- TypeScript (strict mode)
+- Next.js 16.x (App Router, Turbopack)
+- React 19, TypeScript strict
+- Tailwind CSS 4
+- Framer Motion (only animation library — no GSAP/Lenis/Three.js)
 - Dark mode only (forced theme)
-
-**Removed**:
-- ~~Three.js / @react-three/fiber~~ (replaced with CSS animations)
-- ~~gsap~~ (unused)
-- ~~lenis~~ (unused)
-- ~~next-themes~~ (dark only now)
+- Static export, deployed on Vercel
 
 ---
 
-## File Structure
+## Local development
+
+```bash
+cd /Users/jackdevlin/personal/website
+npm install      # uses .npmrc → public registry, NOT work CodeArtifact
+npm run dev      # http://localhost:3000
+npm run build    # production build, all pages prerender static
+```
+
+**Important**: there's a `~/.npmrc` from work pointing at AWS CodeArtifact. The project-level `.npmrc` overrides it back to the public registry. Don't delete `.npmrc`.
+
+The dev server uses Turbopack. `next.config.ts` sets `turbopack.root = path.resolve(__dirname)` to silence the "multiple lockfiles" warning caused by an unrelated `~/package-lock.json`.
+
+### Re-running the build sequence
+
+```javascript
+// Browser console
+localStorage.removeItem("build-seen")
+// Then refresh
+```
+
+---
+
+## File structure
 
 ```
 website/
 ├── app/
-│   ├── layout.tsx              # Root layout with metadata
-│   ├── page.tsx                # Homepage
-│   ├── template.tsx            # Page transitions (Framer Motion)
-│   ├── not-found.tsx           # Custom 404 (crashed pod theme)
-│   ├── globals.css             # Global styles + noise texture
-│   ├── robots.ts               # Robots.txt generation
-│   ├── sitemap.ts              # Sitemap generation
+│   ├── layout.tsx              Root layout, metadata
+│   ├── page.tsx                Homepage
+│   ├── template.tsx            Page transitions
+│   ├── not-found.tsx           Crashed-pod 404
+│   ├── globals.css             Global styles + noise texture
 │   ├── about/page.tsx
 │   ├── contact/page.tsx
 │   └── projects/
 │       ├── page.tsx
 │       ├── cicd-gitops/page.tsx
-│       ├── dora-devex/page.tsx
+│       ├── dora-devex/page.tsx       ← Heimdall case study
 │       └── observability/page.tsx
 ├── components/
-│   ├── build-sequence.tsx      # Terminal "site compiles" animation
-│   ├── hero-journey.tsx        # Hero with build sequence orchestration
-│   ├── navigation.tsx          # Header nav
-│   ├── footer.tsx              # Footer with build info
-│   ├── cli-navigation.tsx      # Terminal navigation (press /)
-│   ├── konami-code.tsx         # Easter egg
-│   ├── scroll-reveal.tsx       # Shared animation components
-│   ├── case-study-layout.tsx   # Case study page components
-│   ├── featured-projects.tsx   # Homepage projects section
-│   ├── what-i-do.tsx           # Homepage services section
-│   ├── cta-section.tsx         # Call to action
-│   ├── contact-form.tsx        # Contact page form
-│   ├── cicd-architecture.tsx   # SVG architecture diagram
-│   ├── dora-architecture.tsx   # SVG architecture diagram
+│   ├── build-sequence.tsx           "Site compiles" intro
+│   ├── hero-journey.tsx             Hero orchestration
+│   ├── navigation.tsx
+│   ├── footer.tsx                   Commit / load time / uptime
+│   ├── cli-navigation.tsx           Press `/`
+│   ├── konami-code.tsx              Matrix rain
+│   ├── case-study-layout.tsx        Hero, sections, sidebar, CTA
+│   ├── heimdall-architecture.tsx    Heimdall topology SVG (replaces dora-architecture)
+│   ├── cicd-architecture.tsx
 │   ├── observability-architecture.tsx
-│   ├── metrics-showcase.tsx    # Dashboard screenshots
-│   ├── code-snippet.tsx        # Code blocks
-│   └── back-to-top.tsx
+│   ├── featured-projects.tsx        Homepage projects (Heimdall first)
+│   ├── what-i-do.tsx                Skills grid
+│   ├── scroll-reveal.tsx            FadeUp / Stagger / GlassCard
+│   ├── code-snippet.tsx
+│   └── ...
 ├── public/
-│   ├── dashboards/             # Dashboard screenshots
-│   ├── favicon files
-│   └── og-image.png
-├── .npmrc                      # Public npm registry
-├── next.config.ts              # Next.js config + security headers
-├── package.json
-└── CLAUDE.md                   # This file
+│   ├── heimdall/                    Six product screenshots
+│   ├── dashboards/                  Grafana screenshots
+│   └── ...
+├── .npmrc                           Public registry override
+├── next.config.ts                   Security headers + turbopack root
+└── CLAUDE.md
 ```
 
 ---
 
-## Case Studies
+## Editorial principles
 
-### 1. CI/CD & GitOps Platform Engineering
-**Path**: `/projects/cicd-gitops/`
-- Graduate QA → Platform Engineer journey
-- 20 microservices, 400 deploys/month, 4 environments
-- ArgoCD, Kustomize, App-of-Apps pattern
-- ~5min builds, zero prod incidents
-
-### 2. DORA Metrics & Developer Experience Platform
-**Path**: `/projects/dora-devex/`
-- Python metrics collector + Bash pipeline reporter
-- 413 deployments tracked/month
-- Jira-integrated deployment gates
-- 80% reduction in status questions
-
-### 3. Enterprise Observability Stack
-**Path**: `/projects/observability/`
-- Self-hosted Prometheus/Grafana/Loki
-- <$5K/yr vs $150K cloud solutions
-- 25+ dashboards, 50+ alert rules
-- 70% MTTD reduction
+1. **British English** — "optimise", "behaviour", "centralised".
+2. **No corporate speak** — "Helping early-stage companies scale their infrastructure" is banned. Lead with concrete things: 17 services, 20+ engineers, single-thread collector.
+3. **Pull from primary sources** — Heimdall case study borrows voice from its own README. Don't invent metrics; if it isn't in the README/architecture doc, it isn't on the page.
+4. **One claim per sentence** — case study writing should read like the README does, not like a CV bullet point.
+5. **No fake terminal mockups** when real screenshots exist. The DORA case study used to render a fake Teams notification in HTML — don't reintroduce that pattern.
 
 ---
 
-## Development
+## Roadmap
 
-### Running Locally
-```bash
-cd "/Users/jackdevlin/Library/CloudStorage/OneDrive-LoweRental/Documents/personal/website"
-npm run dev
-# Opens on http://localhost:3000
-```
-
-### Testing Build Sequence
-```javascript
-// In browser console - clears the "seen" flag
-localStorage.removeItem("build-seen")
-// Then refresh to see the build animation again
-```
-
-### Commands
-```bash
-npm install    # Install dependencies
-npm run dev    # Dev server
-npm run build  # Production build
-npm start      # Start production server
-```
-
-### Repository
-- **Remote**: https://github.com/Jacko10101/website.git
-- **Branch**: main
-
----
-
-## Design Principles
-
-1. **Dark Mode Only** - No light mode toggle, consistent experience
-2. **Terminal Aesthetic** - Green/cyan accents, monospace where appropriate
-3. **Playful + Professional** - Easter eggs and personality, but quality content
-4. **Performance First** - No heavy libraries, lazy load where possible
-5. **British English** - "Optimise" not "optimize"
-6. **No Corporate Speak** - Authentic voice, no buzzwords
-
----
-
-## What Makes This Portfolio Stand Out
-
-1. **"Site Compiles" Intro** - Literally watch the site build and deploy
-2. **CLI Navigation** - Press `/` for a full terminal experience
-3. **Crashed Pod 404** - On-brand error page with live counters
-4. **Build Info Footer** - Shows commit, load time, uptime
-5. **Konami Code** - Matrix rain easter egg
-6. **Interactive Architecture Diagrams** - Hover states, animations
-7. **Real Metrics** - Actual business impact numbers
-8. **Future: Incident Response Game** - Gamified debugging experience
-
----
-
-## Summary
-
-**Status**: 🚀 **LIVE IN PRODUCTION** at https://devlinops.com
-
-The portfolio demonstrates platform engineering expertise through both content AND experience. The site itself is a showcase of the skills it describes - CI/CD (build sequence), observability (build info), infrastructure (terminal aesthetic), and developer experience (smooth interactions).
-
-Goal: Award-worthy, memorable, and genuinely fun to visit.
+- [x] Phase 0: Heimdall screenshots + case study rewrite + featured-projects reorder + about-page 2026 update + hero refresh
+- [ ] Phase 1: refresh `/projects/cicd-gitops` for the standardised pipelines architecture (bash reporter and gates moved in there)
+- [ ] Phase 2: public sanitised Heimdall demo at `heimdall.devlinops.com` (likely static-export Jinja from `make dev-ui` fixtures)
+- [ ] Phase 3: hero positioning round 2 — depending on the kind of role I'm closing in on

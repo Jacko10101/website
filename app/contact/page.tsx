@@ -2,37 +2,37 @@ import { Mail, Github } from "lucide-react";
 import { ContactForm } from "@/components/contact-form";
 
 export const metadata = {
-  title: "Contact | DevlinOps",
-  description: "Get in touch with DevlinOps for DevOps and Platform Engineering consulting.",
+  title: "Contact",
+  description:
+    "Drop Jack Devlin a note. Platform engineer, open to roles for summer 2026.",
 };
 
 export default function ContactPage() {
   return (
     <div className="container px-4 py-12 md:px-6 md:py-16">
       <div className="mx-auto max-w-4xl">
-        <h1 className="mb-8 text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
-          Get in Touch
+        <h1 className="mb-6 text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
+          Want to chat?
         </h1>
-        <p className="mb-12 text-lg text-muted-foreground">
-          Got a platform that needs work? Let&apos;s talk.
+        <p className="mb-12 text-lg text-muted-foreground leading-relaxed">
+          The fastest way to reach me is the form below or just an email. Open
+          to platform / SRE / DevOps roles starting summer 2026, and always
+          happy to talk shop about anything in this area.
         </p>
 
-        {/* Contact Form */}
         <div className="mb-16 rounded-lg border border-border bg-card p-6 md:p-8">
-          <h2 className="mb-6 text-2xl font-bold">Send a Message</h2>
+          <h2 className="mb-6 text-2xl font-bold">Send a message</h2>
           <ContactForm />
         </div>
 
-        {/* Contact Methods */}
-        <h2 className="mb-6 text-2xl font-bold">Other Ways to Connect</h2>
+        <h2 className="mb-6 text-2xl font-bold">Or find me elsewhere</h2>
         <div className="grid gap-6 md:grid-cols-2">
-          {/* Email */}
           <a
             href="mailto:jack@devlinops.com"
             className="group block rounded-lg border border-border bg-card p-6 transition-all hover:border-primary hover:shadow-lg"
           >
             <div className="flex flex-col gap-4">
-              <div className="rounded-lg bg-primary/10 p-3">
+              <div className="rounded-lg bg-primary/10 p-3 w-fit">
                 <Mail className="h-6 w-6 text-primary" />
               </div>
               <div>
@@ -40,7 +40,7 @@ export default function ContactPage() {
                   Email
                 </h2>
                 <p className="text-sm text-muted-foreground mb-2">
-                  For anything work-related
+                  Best for anything substantial.
                 </p>
                 <p className="text-sm font-medium text-primary">
                   jack@devlinops.com
@@ -49,7 +49,6 @@ export default function ContactPage() {
             </div>
           </a>
 
-          {/* GitHub */}
           <a
             href="https://github.com/Jacko10101"
             target="_blank"
@@ -57,7 +56,7 @@ export default function ContactPage() {
             className="group block rounded-lg border border-border bg-card p-6 transition-all hover:border-primary hover:shadow-lg"
           >
             <div className="flex flex-col gap-4">
-              <div className="rounded-lg bg-primary/10 p-3">
+              <div className="rounded-lg bg-primary/10 p-3 w-fit">
                 <Github className="h-6 w-6 text-primary" />
               </div>
               <div>
@@ -65,40 +64,16 @@ export default function ContactPage() {
                   GitHub
                 </h2>
                 <p className="text-sm text-muted-foreground mb-2">
-                  See what I&apos;ve been building
+                  Side projects and the occasional dotfile.
                 </p>
-                <p className="text-sm font-medium text-primary">
-                  @Jacko10101
-                </p>
+                <p className="text-sm font-medium text-primary">@Jacko10101</p>
               </div>
             </div>
           </a>
         </div>
 
-        <div className="mt-12 rounded-lg border border-border bg-muted p-6">
-          <h2 className="mb-4 text-lg font-semibold">What to Include in Your Message</h2>
-          <ul className="space-y-2 text-sm text-muted-foreground">
-            <li className="flex gap-3">
-              <span className="text-primary">→</span>
-              <span>Brief description of your current infrastructure</span>
-            </li>
-            <li className="flex gap-3">
-              <span className="text-primary">→</span>
-              <span>Challenges you're facing or goals you want to achieve</span>
-            </li>
-            <li className="flex gap-3">
-              <span className="text-primary">→</span>
-              <span>Timeline and team size</span>
-            </li>
-            <li className="flex gap-3">
-              <span className="text-primary">→</span>
-              <span>Preferred engagement model (contract, consulting, advisory)</span>
-            </li>
-          </ul>
-        </div>
-
-        <p className="mt-8 text-center text-sm text-muted-foreground">
-          Typically respond within 24 hours
+        <p className="mt-12 text-center text-sm text-muted-foreground">
+          I usually reply within a day.
         </p>
       </div>
     </div>

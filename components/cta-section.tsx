@@ -56,14 +56,14 @@ export function CTASection() {
             </span>
 
             <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6">
-              <span className="text-foreground">Need a </span>
+              <span className="text-foreground">Let&apos;s </span>
               <span className="bg-gradient-to-r from-green-400 via-emerald-400 to-cyan-400 bg-clip-text text-transparent">
-                Platform?
+                talk.
               </span>
             </h2>
 
             <p className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto mb-12">
-              I&apos;ve done this at scale. Happy to chat about yours.
+              About a role, a project, or anything in this orbit. I usually reply within a day.
             </p>
           </motion.div>
 
@@ -79,7 +79,7 @@ export function CTASection() {
               className="group relative px-10 py-5 bg-gradient-to-r from-green-500 to-emerald-500 text-black font-semibold rounded-xl hover:shadow-[0_0_50px_rgba(34,197,94,0.4)] transition-all duration-300"
             >
               <span className="relative z-10 flex items-center gap-2">
-                <span>Get in Touch</span>
+                <span>Say hello</span>
                 <svg
                   className="w-5 h-5 group-hover:translate-x-1 transition-transform"
                   fill="none"
@@ -132,7 +132,7 @@ export function CTASection() {
           >
             <span className="inline-flex items-center gap-2 text-sm text-gray-500">
               <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-              Currently available for new projects
+              Open to roles · summer 2026
             </span>
           </motion.div>
         </div>

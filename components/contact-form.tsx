@@ -94,7 +94,7 @@ export function ContactForm() {
           required
           disabled={status === "submitting"}
           className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
-          placeholder="Platform Engineering Consultation"
+          placeholder="Quick question / role / general"
         />
       </div>
 
@@ -112,7 +112,7 @@ export function ContactForm() {
           disabled={status === "submitting"}
           rows={8}
           className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 resize-y disabled:opacity-50"
-          placeholder="Tell me about your infrastructure challenges, current tech stack, team size, and timeline..."
+          placeholder="Hi Jack — saw your site, would love to chat about..."
         />
       </div>
 

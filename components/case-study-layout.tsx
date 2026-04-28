@@ -415,15 +415,12 @@ export function CaseStudyCTA() {
         className="container px-4 relative z-10"
       >
         <GlassCard className="p-8 md:p-12 text-center max-w-3xl mx-auto">
-          <h2 className="text-3xl font-bold mb-4">
-            <span className="text-foreground">Want Similar </span>
-            <span className="bg-gradient-to-r from-green-400 to-cyan-400 bg-clip-text text-transparent">
-              Results?
-            </span>
+          <h2 className="text-3xl font-bold mb-4 text-foreground">
+            Thanks for reading.
           </h2>
           <p className="text-muted-foreground mb-8">
-            I&apos;d love to bring this same approach to your platform engineering challenges.
-            Let&apos;s discuss how I can help your team.
+            If any of this resonates — or you want to dig into the parts I didn&apos;t
+            write up — drop me a note. Always happy to talk shop.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -432,7 +429,7 @@ export function CaseStudyCTA() {
                 href="/contact"
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-green-500 to-emerald-500 text-black font-semibold hover:shadow-[0_0_40px_rgba(34,197,94,0.4)] transition-all duration-300"
               >
-                Get in Touch
+                Say hello
                 <ArrowRight className="w-5 h-5" />
               </Link>
             </motion.div>
@@ -442,7 +439,7 @@ export function CaseStudyCTA() {
                 href="/projects"
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl border-2 border-green-500/50 text-green-400 font-semibold hover:bg-green-500/10 hover:border-green-400 transition-all duration-300"
               >
-                View More Projects
+                Other case studies
               </Link>
             </motion.div>
           </div>

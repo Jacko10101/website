@@ -7,56 +7,56 @@ import Link from "next/link";
 const projects = [
   {
     id: "dora-devex",
-    title: "DORA Metrics Platform",
-    subtitle: "Developer Experience & Business Intelligence",
+    title: "Heimdall",
+    subtitle: "Deployment intelligence platform",
     description:
-      "Built comprehensive DevEx platform with DORA metrics collector, intelligent pipeline notifications, and automated deployment gates. Transformed engineering visibility from zero to complete deployment intelligence.",
+      "The dashboard the platform team checks every morning. Answers one question: where is my ticket right now? Used daily by 20+ engineers across 17 services.",
     stats: [
-      { value: "400+", label: "deploys tracked/month" },
-      { value: "2-3 days", label: "lead time measured" },
-      { value: "80%", label: "fewer status questions" },
+      { value: "17", label: "services tracked" },
+      { value: "20+", label: "engineers daily" },
+      { value: "10 min", label: "data freshness" },
     ],
-    tags: ["Python", "Prometheus", "Grafana", "Jira API", "Teams"],
+    tags: ["Python", "Flask", "TimescaleDB", "Prometheus", "ArgoCD", "Kubernetes"],
     href: "/projects/dora-devex",
     color: "#f59e0b",
     terminal: [
-      { cmd: "$ dora-metrics status", color: "text-gray-500" },
-      { cmd: "Deployment Frequency: 400+/month", color: "text-green-400" },
-      { cmd: "Lead Time: 2.3 days avg", color: "text-cyan-400" },
-      { cmd: "Change Failure Rate: 2.1%", color: "text-amber-400" },
+      { cmd: "$ curl heimdall/api/v1/debug | jq .", color: "text-gray-500" },
+      { cmd: "collection.age_seconds: 142", color: "text-green-400" },
+      { cmd: "db_pool.checked_out: 2 / 10", color: "text-cyan-400" },
+      { cmd: "circuit_breakers: all closed", color: "text-amber-400" },
     ],
   },
   {
     id: "cicd-gitops",
-    title: "CI/CD & GitOps Platform",
-    subtitle: "Enterprise Pipeline Architecture",
+    title: "Pipeline Platform",
+    subtitle: "Shared CI/CD library",
     description:
-      "Built production-grade CI/CD from greenfield to 400 deploys/month across 20 services. Implemented ArgoCD GitOps, enterprise security scanning, and a 1100-line test orchestrator.",
+      "One Bitbucket pipeline library, imported by every Java and Node service. Tests live in their own repo, promotion belongs to ArgoCD. ~400 deploys/month across 20 services on a single .ci/builds.yaml.",
     stats: [
-      { value: "~5min", label: "build times" },
-      { value: "400+", label: "deploys/month" },
-      { value: "<1 day", label: "service onboarding" },
+      { value: "20", label: "services, one library" },
+      { value: "~400", label: "deploys/month" },
+      { value: "1 file", label: "to onboard" },
     ],
-    tags: ["ArgoCD", "Kubernetes", "Bitbucket Pipelines", "Kustomize", "Veracode"],
+    tags: ["Bitbucket Shared Pipelines", "ArgoCD", "Image Updater", "Kubernetes", "Kustomize"],
     href: "/projects/cicd-gitops",
     color: "#22c55e",
     terminal: [
-      { cmd: "$ argocd app list", color: "text-gray-500" },
-      { cmd: "20 apps synced", color: "text-green-400" },
-      { cmd: "0 pending", color: "text-green-400" },
-      { cmd: "142 pods running", color: "text-cyan-400" },
+      { cmd: "$ cat .ci/builds.yaml", color: "text-gray-500" },
+      { cmd: "service: payments-api", color: "text-green-400" },
+      { cmd: "import: java-shared-pipeline:1.4.0", color: "text-cyan-400" },
+      { cmd: "→ Image Updater handles the rest", color: "text-amber-400" },
     ],
   },
   {
     id: "observability",
-    title: "Enterprise Observability",
-    subtitle: "Self-Hosted Monitoring Stack",
+    title: "Observability Stack",
+    subtitle: "Self-hosted monitoring",
     description:
-      "Built production-grade observability with Prometheus, Grafana, and Loki. Achieved full-stack visibility for 20 services at 95%+ cost savings vs cloud solutions.",
+      "Prometheus, Grafana and Loki for 20 services across four environments. Built it ourselves because the commercial quotes were ~£100k and we already had the cluster capacity.",
     stats: [
-      { value: "<$5K/yr", label: "vs $150K cloud" },
-      { value: "25+", label: "dashboards" },
-      { value: "70%", label: "MTTD reduction" },
+      { value: "~£5k/yr", label: "vs ~£100k commercial" },
+      { value: "~25", label: "dashboards" },
+      { value: "50+", label: "alerts, runbook each" },
     ],
     tags: ["Prometheus", "Grafana", "Loki", "Thanos", "Alertmanager"],
     href: "/projects/observability",
@@ -211,8 +211,8 @@ export function FeaturedProjects() {
             </span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Real projects, real impact. Here&apos;s where I got to build something cool
-            and make a measurable difference.
+            Three things I&apos;ve owned end-to-end. What they are, what
+            changed, and a few decisions worth flagging.
           </p>
         </motion.div>
 

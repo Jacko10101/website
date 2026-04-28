@@ -6,21 +6,18 @@ import {
   CaseStudyLayout,
   CaseStudyHero,
   CaseStudySection,
-  ChallengeBox,
   StatsGrid,
-  EnhancedCodeBlock,
   TechSidebar,
-  LessonItem,
   CaseStudyCTA,
 } from "@/components/case-study-layout";
-import { GlassCard, FadeUp, StaggerContainer, StaggerItem } from "@/components/scroll-reveal";
+import { GlassCard } from "@/components/scroll-reveal";
 
 const articleSchema = {
   "@context": "https://schema.org",
   "@type": "TechArticle",
-  headline: "Enterprise Observability Stack",
+  headline: "Self-hosted observability stack",
   description:
-    "Building production-grade, self-hosted observability with Prometheus, Grafana, and Loki—achieving full-stack visibility at a fraction of cloud costs",
+    "Prometheus, Grafana, Loki and Alertmanager monitoring 20 services across four environments. Built in-house at a fraction of the commercial alternatives.",
   author: {
     "@type": "Person",
     name: "Jack Devlin",
@@ -31,8 +28,8 @@ const articleSchema = {
     name: "DevlinOps",
     url: "https://devlinops.com",
   },
-  datePublished: "2025-01-01",
-  dateModified: "2025-01-01",
+  datePublished: "2024-09-01",
+  dateModified: "2026-04-25",
   proficiencyLevel: "Expert",
   keywords: [
     "Observability",
@@ -42,312 +39,80 @@ const articleSchema = {
     "Thanos",
     "Alertmanager",
     "Kubernetes",
-    "Monitoring",
   ],
-  dependencies:
-    "Prometheus, Grafana, Loki, Thanos, Alertmanager, Promtail, Kubernetes, Kustomize",
 };
 
 export default function ObservabilityPage() {
   return (
     <CaseStudyLayout schema={articleSchema}>
       <CaseStudyHero
-        title="Enterprise Observability Stack"
-        subtitle="Self-Hosted Monitoring Platform"
-        description="Building production-grade, self-hosted observability with Prometheus, Grafana, and Loki—achieving full-stack visibility at a fraction of cloud costs"
-        date="2024-2025"
-        metrics="20+ Services • 4 Environments"
+        title="Observability stack"
+        subtitle="Self-hosted monitoring"
+        description="Prometheus, Grafana, Loki and Alertmanager monitoring 20 services across four environments. Built in-house, because the commercial quotes were a bit silly."
+        date="2024 → 2025"
+        metrics="20 services, 4 environments"
         color="#e6522c"
       />
 
       <div className="container px-4">
         <div className="grid gap-8 lg:grid-cols-[2fr_1fr] max-w-7xl mx-auto">
-          {/* Main content */}
           <div className="space-y-12">
-            {/* Challenge */}
-            <CaseStudySection eyebrow="// the challenge" title="The Challenge">
-              <ChallengeBox
-                callout={{
-                  type: "warning",
-                  text: "Cloud observability solutions (Datadog, New Relic, Splunk) would cost $50K-150K/year for our scale—prohibitively expensive for the budget",
-                }}
-              >
-                <p>
-                  The platform had{" "}
-                  <strong className="text-foreground">zero observability</strong> across 20
-                  microservices running on Kubernetes. Critical operational questions remained
-                  unanswered:
-                </p>
-                <ul className="list-disc list-inside space-y-2 ml-4 mt-4">
-                  <li>&quot;Which service is causing the 500 errors?&quot;</li>
-                  <li>&quot;Why did the pod restart 5 times in the last hour?&quot;</li>
-                  <li>&quot;What&apos;s our Kafka consumer lag right now?&quot;</li>
-                  <li>&quot;Are we hitting CPU/memory limits?&quot;</li>
-                  <li>&quot;Where are the logs for that failed deployment?&quot;</li>
-                </ul>
-                <p className="mt-4">
-                  <strong className="text-foreground">The mandate:</strong> Build enterprise-grade
-                  observability in-house at minimal cost while maintaining production reliability
-                </p>
-              </ChallengeBox>
-            </CaseStudySection>
-
-            {/* Solution Overview */}
-            <CaseStudySection
-              eyebrow="// the solution"
-              title="The Solution: Self-Hosted Observability Platform"
-            >
-              <p className="text-muted-foreground mb-6">
-                I architected and deployed a{" "}
-                <strong className="text-foreground">complete self-hosted observability stack</strong>{" "}
-                using open-source tooling, achieving enterprise-grade monitoring at &lt;5% of cloud
-                costs.
+            <CaseStudySection eyebrow="// the setup" title="No dashboards, no logs, no alerts">
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                Twenty microservices on Kubernetes and not a Grafana panel between
+                them. The first sign something was wrong was usually a customer
+                noticing. Datadog quoted somewhere in the £100k/year range, which
+                wasn&apos;t happening.
               </p>
-
-              <StaggerContainer className="grid gap-4 md:grid-cols-3">
-                <StaggerItem>
-                  <GlassCard className="p-6 h-full border-orange-500/30">
-                    <div className="text-orange-400 font-mono text-sm mb-2">Metrics</div>
-                    <h3 className="font-semibold text-foreground mb-2">Prometheus + Thanos</h3>
-                    <p className="text-xs text-muted-foreground">
-                      Time-series metrics with S3 long-term storage
-                    </p>
-                  </GlassCard>
-                </StaggerItem>
-                <StaggerItem>
-                  <GlassCard className="p-6 h-full border-orange-500/30">
-                    <div className="text-orange-400 font-mono text-sm mb-2">Visualisation</div>
-                    <h3 className="font-semibold text-foreground mb-2">Grafana</h3>
-                    <p className="text-xs text-muted-foreground">25+ custom dashboards</p>
-                  </GlassCard>
-                </StaggerItem>
-                <StaggerItem>
-                  <GlassCard className="p-6 h-full border-orange-500/30">
-                    <div className="text-orange-400 font-mono text-sm mb-2">Logs</div>
-                    <h3 className="font-semibold text-foreground mb-2">Loki + Promtail</h3>
-                    <p className="text-xs text-muted-foreground">Microservices mode with S3</p>
-                  </GlassCard>
-                </StaggerItem>
-              </StaggerContainer>
+              <p className="text-muted-foreground leading-relaxed">
+                So I built it ourselves. The stack is unsurprising: Prometheus and
+                Thanos for metrics, Loki for logs, Alertmanager for paging, Grafana
+                for everyone to actually look at. Standard pieces. The interesting
+                bit was wiring them together so the people who needed them could
+                actually find what they were after when something broke.
+              </p>
             </CaseStudySection>
 
-            {/* Architecture */}
-            <CaseStudySection eyebrow="// architecture" title="Architecture">
+            <CaseStudySection eyebrow="// architecture" title="How it fits together">
               <ObservabilityArchitecture />
-            </CaseStudySection>
 
-            {/* Stack Components */}
-            <CaseStudySection eyebrow="// implementation" title="Core Stack Components">
-              <div className="space-y-4">
-                <GlassCard className="p-6">
-                  <h4 className="font-semibold mb-3 text-orange-400">1. Prometheus (Metrics Collection)</h4>
-                  <div className="text-sm text-muted-foreground space-y-2">
-                    <p>
-                      <strong className="text-foreground">Configuration:</strong> Kustomize base +
-                      environment overlays (dev, qa, preprod, prod)
-                    </p>
-                    <p>
-                      <strong className="text-foreground">Service Discovery:</strong> Kubernetes SD
-                      for automatic service detection
-                    </p>
-                    <p>
-                      <strong className="text-foreground">Long-term Storage:</strong> Thanos sidecar
-                      → S3 for historical data
-                    </p>
-                    <p>
-                      <strong className="text-foreground">Retention:</strong> 15 days local,
-                      unlimited S3 storage
-                    </p>
-                  </div>
-                </GlassCard>
-
-                <GlassCard className="p-6">
-                  <h4 className="font-semibold mb-3 text-orange-400">2. Exporters (Data Sources)</h4>
-                  <div className="text-sm text-muted-foreground">
-                    <p className="mb-3">Deployed comprehensive exporters for full-stack visibility:</p>
-                    <ul className="space-y-1">
-                      <li className="flex gap-2">
-                        <span className="text-primary">•</span>
-                        <strong className="text-foreground">Node Exporter:</strong> CPU, memory,
-                        disk, network from EC2 instances
-                      </li>
-                      <li className="flex gap-2">
-                        <span className="text-primary">•</span>
-                        <strong className="text-foreground">Kube State Metrics:</strong> Kubernetes
-                        object state (pods, deployments, nodes)
-                      </li>
-                      <li className="flex gap-2">
-                        <span className="text-primary">•</span>
-                        <strong className="text-foreground">Kafka Exporter:</strong> MSK consumer
-                        lag, partition offsets, topic metrics
-                      </li>
-                      <li className="flex gap-2">
-                        <span className="text-primary">•</span>
-                        <strong className="text-foreground">Postgres Exporter:</strong> Database
-                        connections, query performance
-                      </li>
-                      <li className="flex gap-2">
-                        <span className="text-primary">•</span>
-                        <strong className="text-foreground">CloudWatch Exporter:</strong> AWS
-                        service metrics (RDS, MSK, ELB)
-                      </li>
-                    </ul>
-                  </div>
-                </GlassCard>
-
-                <GlassCard className="p-6">
-                  <h4 className="font-semibold mb-3 text-orange-400">3. Loki (Log Aggregation)</h4>
-                  <div className="text-sm text-muted-foreground space-y-2">
-                    <p>
-                      <strong className="text-foreground">Architecture:</strong> Microservices mode
-                      (distributor, ingester, querier, query-frontend, compactor)
-                    </p>
-                    <p>
-                      <strong className="text-foreground">Storage:</strong> S3 backend for
-                      cost-effective log storage
-                    </p>
-                    <p>
-                      <strong className="text-foreground">Collection:</strong> Promtail DaemonSet
-                      scraping pod logs
-                    </p>
-                    <p>
-                      <strong className="text-foreground">Indexing:</strong> Label-based indexing
-                      (namespace, pod, container)
-                    </p>
-                  </div>
-                </GlassCard>
-
-                <GlassCard className="p-6">
-                  <h4 className="font-semibold mb-3 text-orange-400">4. Alertmanager (Alert Routing)</h4>
-                  <div className="text-sm text-muted-foreground space-y-2">
-                    <p>
-                      <strong className="text-foreground">Integration:</strong> Teams webhooks via
-                      Power Automate workflows
-                    </p>
-                    <p>
-                      <strong className="text-foreground">Smart Routing:</strong> Environment-specific
-                      channels (Dev → business hours, Prod → 24/7)
-                    </p>
-                    <p>
-                      <strong className="text-foreground">Alert Inhibition:</strong> Suppress
-                      low-severity alerts when critical alerts fire
-                    </p>
-                    <p>
-                      <strong className="text-foreground">Grouping:</strong> Batch alerts by
-                      namespace/service to reduce noise
-                    </p>
-                  </div>
-                </GlassCard>
-              </div>
-            </CaseStudySection>
-
-            {/* Alert Rules */}
-            <CaseStudySection eyebrow="// alerting" title="Alert Rules Implemented">
-              <GlassCard className="p-6">
-                <div className="grid gap-4 text-sm">
-                  <div>
-                    <strong className="text-orange-400">Node Alerts:</strong>
-                    <span className="text-muted-foreground ml-2">
-                      High CPU/Memory/Disk (85% warning, 95% critical)
-                    </span>
-                  </div>
-                  <div>
-                    <strong className="text-orange-400">Kubernetes Alerts:</strong>
-                    <span className="text-muted-foreground ml-2">
-                      Pod crash loops, nodes not ready, replica mismatches, PV usage
-                    </span>
-                  </div>
-                  <div>
-                    <strong className="text-orange-400">Network Alerts:</strong>
-                    <span className="text-muted-foreground ml-2">
-                      High latency, dropped packets, interface errors
-                    </span>
-                  </div>
-                  <div>
-                    <strong className="text-orange-400">Application Alerts:</strong>
-                    <span className="text-muted-foreground ml-2">
-                      Service-specific metrics (HTTP errors, consumer lag, query latency)
-                    </span>
-                  </div>
-                </div>
-              </GlassCard>
-            </CaseStudySection>
-
-            {/* Dashboards */}
-            <CaseStudySection
-              eyebrow="// visualisation"
-              title="Business Intelligence Dashboards"
-            >
-              <p className="text-muted-foreground mb-6">
-                Created{" "}
-                <strong className="text-foreground">10+ custom Grafana dashboards</strong> providing
-                comprehensive visibility from infrastructure to business metrics.
+              <p className="text-muted-foreground mt-6 leading-relaxed">
+                Prometheus scrapes everything, hands the long tail off to Thanos in
+                S3 so we&apos;re not paying for hot storage on data nobody queries.
+                Loki runs in microservices mode for the same reason — logs are cheap
+                to generate and expensive to store, so we lean on S3 and let the
+                ingesters do the work. Alertmanager routes by environment: prod
+                pages, dev gets a Teams message during business hours.
               </p>
+            </CaseStudySection>
 
-              <div className="space-y-4 mb-8">
-                <GlassCard className="p-6">
-                  <h4 className="font-semibold mb-3 text-orange-400">Platform Overview Dashboards</h4>
-                  <ul className="text-sm text-muted-foreground space-y-1">
-                    <li className="flex gap-2">
-                      <span className="text-primary">•</span>
-                      <strong className="text-foreground">Kubernetes Cluster Health:</strong> Node
-                      status, pod health, resource utilisation
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="text-primary">•</span>
-                      <strong className="text-foreground">Infrastructure Metrics:</strong> CPU,
-                      memory, disk, network across all nodes
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="text-primary">•</span>
-                      <strong className="text-foreground">Message Queue Health:</strong> Kafka
-                      consumer lag, partition metrics, throughput
-                    </li>
-                  </ul>
-                </GlassCard>
-
-                <GlassCard className="p-6">
-                  <h4 className="font-semibold mb-3 text-orange-400">Service-Specific Dashboards</h4>
-                  <ul className="text-sm text-muted-foreground space-y-1">
-                    <li className="flex gap-2">
-                      <span className="text-primary">•</span>
-                      <strong className="text-foreground">IoT Gateway Intelligence:</strong> Throughput
-                      (req/s), active connections, vendor performance ranking
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="text-primary">•</span>
-                      <strong className="text-foreground">Multi-Tenant Analytics:</strong> Tenant
-                      activity championship, ingestion rates by tenant
-                    </li>
-                    <li className="flex gap-2">
-                      <span className="text-primary">•</span>
-                      <strong className="text-foreground">Integration Performance:</strong> Vendor
-                      system performance, $750K+ annual savings tracking
-                    </li>
-                  </ul>
-                </GlassCard>
-              </div>
+            <CaseStudySection eyebrow="// dashboards" title="What people actually look at">
+              <p className="text-muted-foreground mb-6 leading-relaxed">
+                We ended up with a couple of dozen dashboards, but most of the
+                traffic goes to maybe five. The rest exist for the once-a-quarter
+                question they answer perfectly. Three I&apos;m happy with:
+              </p>
 
               <MetricsShowcase
                 metrics={[
                   {
-                    title: "IoT Gateway Mission Control",
+                    title: "IoT Gateway throughput",
                     description:
-                      "Real-time gateway throughput (61.9 req/s), active IoT connections, availability tracking, and data pipeline success rates.",
+                      "Live request rate, connected devices, vendor-by-vendor performance. The first place anyone looks when an integration partner says something's broken.",
                     imagePath: "/dashboards/iot-gateway.png",
-                    category: "Service Metrics",
+                    category: "Service",
                   },
                   {
-                    title: "Kafka Consumer Lag & Topic Health",
+                    title: "Kafka consumer lag",
                     description:
-                      "Comprehensive Kafka monitoring showing consumer lag trends by group and topic, partition-level lag visualisation.",
+                      "Per-topic, per-group lag with sensible thresholds. Replaced about a dozen ad-hoc kafka-cli queries that used to live in someone's bash history.",
                     imagePath: "/dashboards/kafka-metrics.png",
-                    category: "Data Platform",
+                    category: "Data",
                   },
                   {
-                    title: "Node Exporter Infrastructure Metrics",
+                    title: "Node infrastructure",
                     description:
-                      "System-level monitoring via Node Exporter showing CPU pressure, memory usage, disk I/O, network traffic.",
+                      "CPU, memory, disk, network. The boring one that nobody looks at until they need it, then it earns its keep.",
                     imagePath: "/dashboards/node-exporter.png",
                     category: "Infrastructure",
                   },
@@ -355,108 +120,87 @@ export default function ObservabilityPage() {
               />
             </CaseStudySection>
 
-            {/* Runbooks */}
-            <CaseStudySection eyebrow="// operations" title="Operational Runbooks">
-              <p className="text-muted-foreground mb-6">
-                Created comprehensive runbooks for every alert, enabling{" "}
-                <strong className="text-foreground">rapid incident response</strong> and knowledge
-                sharing.
+            <CaseStudySection eyebrow="// alerts" title="Alerts that don&apos;t cry wolf">
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                Every alert has to pass two tests: a human has to be able to do
+                something about it, and the runbook has to exist before the rule
+                ships. The runbook isn&apos;t fancy — symptom, what to check, common
+                fixes, who to escalate to. Just enough that the on-call engineer
+                isn&apos;t starting from zero at 3am.
               </p>
-
-              <GlassCard className="p-6">
-                <h4 className="font-semibold mb-4 text-orange-400">Runbook Structure</h4>
-                <div className="space-y-3 text-sm text-muted-foreground">
-                  <div>
-                    <strong className="text-foreground">1. Symptom:</strong>
-                    <p className="ml-4">Clear description of what triggered the alert</p>
-                  </div>
-                  <div>
-                    <strong className="text-foreground">2. Investigation Steps:</strong>
-                    <p className="ml-4">
-                      Decision tree with kubectl commands, log queries, metric queries
-                    </p>
-                  </div>
-                  <div>
-                    <strong className="text-foreground">3. Common Resolution Commands:</strong>
-                    <p className="ml-4">
-                      Copy-paste commands for typical fixes (restart pods, scale deployment)
-                    </p>
-                  </div>
-                  <div>
-                    <strong className="text-foreground">4. Escalation Path:</strong>
-                    <p className="ml-4">Who to contact if standard resolution doesn&apos;t work</p>
-                  </div>
-                </div>
-
-                <div className="mt-6">
-                  <EnhancedCodeBlock
-                    title="Example: Pod Crash Loop Runbook"
-                    code={`# Check pod status
-kubectl get pods -l app=service-a -n production
-
-# View recent logs
-kubectl logs service-a-abc123 --tail=100
-
-# Check events
-kubectl describe pod service-a-abc123 -n production
-
-# Common fixes:
-kubectl rollout restart deployment/service-a -n production
-kubectl delete pod service-a-abc123 -n production`}
-                  />
-                </div>
-              </GlassCard>
+              <p className="text-muted-foreground leading-relaxed">
+                Routing is by environment more than by severity. Prod fires
+                straight to the on-call channel. Dev waits until business hours.
+                Inhibition rules suppress the cascade of follow-on alerts when one
+                root cause takes out a dozen things downstream — without that, the
+                first incident I would&apos;ve trained people to ignore alerts.
+              </p>
             </CaseStudySection>
 
-            {/* Business Impact */}
-            <CaseStudySection eyebrow="// impact" title="Business Impact">
+            <CaseStudySection eyebrow="// design" title="A few decisions worth flagging">
+              <div className="space-y-5">
+                <GlassCard className="p-6">
+                  <h3 className="font-semibold text-foreground mb-2">
+                    Self-hosting was the right call here
+                  </h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    The cost gap between &quot;we run it&quot; and &quot;they run
+                    it&quot; was an order of magnitude. We had the cluster
+                    capacity, we had Kubernetes expertise on the team, and the
+                    operational overhead has been small. I&apos;d make the opposite
+                    call at a 3-person startup — but at our scale, the maths was
+                    obvious.
+                  </p>
+                </GlassCard>
+
+                <GlassCard className="p-6">
+                  <h3 className="font-semibold text-foreground mb-2">
+                    Cheap storage, expensive compute
+                  </h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    Thanos for metrics, S3-backed Loki for logs. Both push the
+                    cold data to object storage so we&apos;re only paying premium
+                    prices for the recent stuff people actually query. This is
+                    where most homegrown stacks get expensive — getting it right
+                    early kept the bill flat as the data grew.
+                  </p>
+                </GlassCard>
+
+                <GlassCard className="p-6">
+                  <h3 className="font-semibold text-foreground mb-2">
+                    Dashboards as documentation
+                  </h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    A dashboard is the answer to a recurring question. If nobody&apos;s
+                    asking it, the dashboard&apos;s clutter. I do an annual cull —
+                    open the audit log, delete anything no one&apos;s viewed in a
+                    quarter. Engineering teams accumulate dashboards the way attics
+                    accumulate boxes; both benefit from a periodic clear-out.
+                  </p>
+                </GlassCard>
+              </div>
+            </CaseStudySection>
+
+            <CaseStudySection eyebrow="// impact" title="The numbers">
               <StatsGrid
                 color="#e6522c"
                 stats={[
-                  { value: "<$5K/yr", label: "Total cost (vs $50K-150K for cloud solutions)" },
-                  { value: "10+", label: "Custom Grafana dashboards built from scratch" },
-                  { value: "50+", label: "Alert rules covering infrastructure and apps" },
-                  { value: "6", label: "Prometheus exporters deployed across stack" },
-                  { value: "100%", label: "Service coverage across all microservices" },
-                  { value: "4", label: "Environments with consistent observability" },
+                  { value: "20", label: "services covered, every environment" },
+                  { value: "~£5k/yr", label: "running cost (vs ~£100k commercial)" },
+                  { value: "50+", label: "alerts, every one with a runbook" },
+                  { value: "~25", label: "dashboards (we cull the rest annually)" },
                 ]}
               />
-            </CaseStudySection>
 
-            {/* Technical Highlights */}
-            <CaseStudySection eyebrow="// highlights" title="Technical Highlights">
-              <ul className="space-y-4">
-                <LessonItem>
-                  Deployed complete self-hosted stack (Prometheus, Grafana, Loki, Alertmanager) with
-                  Kustomize
-                </LessonItem>
-                <LessonItem>
-                  Configured Loki microservices architecture for scalable log aggregation
-                </LessonItem>
-                <LessonItem>
-                  Integrated Thanos for long-term metrics storage in S3 (cost-effective historical
-                  data)
-                </LessonItem>
-                <LessonItem>
-                  Deployed 6+ specialised exporters for comprehensive infrastructure monitoring
-                </LessonItem>
-                <LessonItem>
-                  Created 50+ alert rules with smart routing and inhibition logic
-                </LessonItem>
-                <LessonItem>
-                  Instrumented all 20 microservices with custom Prometheus metrics
-                </LessonItem>
-                <LessonItem>
-                  Authored comprehensive runbooks for rapid incident response
-                </LessonItem>
-                <LessonItem>
-                  Achieved 95%+ cost savings vs commercial observability solutions
-                </LessonItem>
-              </ul>
+              <p className="text-muted-foreground mt-6 leading-relaxed">
+                The cost saving is the headline, but the better outcome is harder
+                to put on a slide: incidents now start with someone pasting a
+                Grafana link instead of asking &quot;is it just me?&quot;. That&apos;s
+                the bar I was aiming for.
+              </p>
             </CaseStudySection>
           </div>
 
-          {/* Sidebar */}
           <TechSidebar
             technologies={[
               "Prometheus",
@@ -467,33 +211,26 @@ kubectl delete pod service-a-abc123 -n production`}
               "Promtail",
               "Kubernetes",
               "Kustomize",
-              "Istio",
-              "Node Exporter",
-              "Kube State Metrics",
-              "Kafka Exporter",
               "S3",
               "PromQL",
               "LogQL",
             ]}
             skills={[
-              "Observability Architecture",
-              "Metrics Design & Instrumentation",
-              "Log Aggregation at Scale",
-              "Alert Rule Engineering",
-              "Dashboard Design & Visualisation",
-              "Cost Optimisation",
-              "Kubernetes Deployment",
-              "Runbook Development",
+              "Designing observability for a real team",
+              "Running open-source stacks in production",
+              "Cost-aware architecture",
+              "Alert design and runbook authoring",
+              "Dashboard design (and pruning)",
             ]}
             metrics={[
-              { label: "Services Monitored", value: "20+ microservices" },
-              { label: "Environments", value: "4 (Dev, QA, PreProd, Prod)" },
-              { label: "Dashboards Created", value: "10+ custom dashboards" },
-              { label: "Cost Savings", value: "95%+ vs cloud solutions" },
+              { label: "Services covered", value: "20 across 4 environments" },
+              { label: "Annual cost", value: "~£5k all-in" },
+              { label: "Alerts", value: "50+, runbook per rule" },
+              { label: "Dashboards", value: "~25 active" },
             ]}
             relatedProjects={[
+              { title: "Heimdall — deployment intelligence", href: "/projects/dora-devex" },
               { title: "CI/CD & GitOps Platform", href: "/projects/cicd-gitops" },
-              { title: "DORA Metrics & DevEx", href: "/projects/dora-devex" },
             ]}
           />
         </div>

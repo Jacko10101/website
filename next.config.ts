@@ -1,4 +1,5 @@
 import type { NextConfig } from 'next'
+import path from 'node:path'
 
 const securityHeaders = [
   {
@@ -39,9 +40,8 @@ const nextConfig: NextConfig = {
   images: {
     formats: ['image/avif', 'image/webp'],
   },
-  // Configure Turbopack root to avoid OneDrive permission issues
   turbopack: {
-    root: '/Users/jackdevlin/Library/CloudStorage/OneDrive-LoweRental/Documents/personal/website',
+    root: path.resolve(__dirname),
   },
   async headers() {
     return [

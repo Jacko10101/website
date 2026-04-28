@@ -31,34 +31,38 @@ const journey = [
   {
     year: "2025",
     title: "Site Reliability Engineer",
-    description: "Led platform initiatives. Created DORA metrics tooling, security automation, and developer experience improvements. 400+ deploys/month.",
+    description: "Standardised the pipeline platform onto one shared library across every service. Started the deployment-metrics tooling that became Heimdall.",
     color: "#8b5cf6",
   },
   {
-    year: "Now",
-    title: "MSc AI + Consulting",
-    description: "Pursuing a Masters in AI while consulting on platform engineering. Exploring the intersection of ML and infrastructure automation.",
+    year: "2026",
+    title: "Contractor + MSc AI",
+    description: "Stayed on as a contractor to ship Heimdall — the deployment intelligence dashboard now used daily by 20+ engineers. Pursuing an MSc in AI alongside, exploring ML applied to platform tooling.",
     color: "#f59e0b",
   },
 ];
 
-// Philosophy items
+// Things I've come to believe after a few years on platform teams
 const philosophy = [
   {
-    title: "Pragmatic over Perfect",
-    description: "I build what actually solves your problem, not what looks good in a Medium article. Working software beats theoretical perfection.",
+    title: "Build for the morning standup",
+    description:
+      "If a tool doesn't have a place to look, it doesn't get used. Most of my best work has been adding a UI to something that was already running headless.",
   },
   {
-    title: "Business Impact First",
-    description: "Faster deploys and fewer incidents matter more than cool tech. Every decision should trace back to real value.",
+    title: "Boring is a compliment",
+    description:
+      "The ideal platform fades into the background. Engineers shouldn't have to think about it any more than they think about the office wifi.",
   },
   {
-    title: "End-to-End Ownership",
-    description: "I don't just consult and disappear. I stick around to make sure it works, iterate, and hand over properly.",
+    title: "Operability is a feature",
+    description:
+      "If a teammate can't tell whether your service is healthy in under a minute, you haven't finished it yet. I default to one-curl health checks and a runbook.",
   },
   {
-    title: "GitOps Everything",
-    description: "If it's not in Git, it doesn't exist. Declarative configs, audit trails, and the ability to recreate anything from source.",
+    title: "Ship the diff, not the rewrite",
+    description:
+      "Every project I'm proud of started as a small thing that quietly became load-bearing. Big-bang plans almost never survive contact with reality.",
   },
 ];
 
@@ -125,7 +129,7 @@ function AboutHero() {
                 >
                   <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-sm font-mono">
                     <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                    Available for projects
+                    Open to roles · summer 2026
                   </span>
                 </motion.div>
               </div>
@@ -162,10 +166,12 @@ function AboutHero() {
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="text-xl text-muted-foreground mb-8 leading-relaxed"
               >
-                I&apos;m a platform engineer who builds{" "}
-                <span className="text-foreground font-medium">internal tools from scratch</span>.
-                DORA metrics platforms, test orchestration systems, observability stacks—
-                the stuff that makes 400 deploys/month actually work.
+                Platform engineer based in the UK. I&apos;ve spent the last few years
+                building the tools my team actually uses every day:{" "}
+                <span className="text-foreground font-medium">Heimdall</span>, a
+                deployment dashboard 20+ engineers open every morning; a GitOps
+                platform that took us from a handful of deploys a month to four
+                hundred; and the observability stack underneath all of it.
               </motion.p>
 
               <motion.div
@@ -297,7 +303,7 @@ function PhilosophySection() {
             </span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Not about buzzwords or over-engineering. Here&apos;s what I actually believe.
+            A few things I&apos;ve come to believe after a few years on platform teams.
           </p>
         </FadeUp>
 
@@ -343,11 +349,11 @@ function TechStackSection() {
           <h2 className="text-4xl sm:text-5xl font-bold mb-6">
             <span className="text-foreground">Tech </span>
             <span className="bg-gradient-to-r from-green-400 to-cyan-400 bg-clip-text text-transparent">
-              Arsenal
+              Stack
             </span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            The tools I reach for when building platforms that scale.
+            What I work with day to day.
           </p>
         </FadeUp>
 
@@ -404,23 +410,28 @@ function CurrentlySection() {
 
                 <div className="flex items-start gap-6">
                   <div className="flex-shrink-0 w-16 h-16 rounded-xl bg-amber-500/10 flex items-center justify-center">
-                    <span className="text-3xl">🎓</span>
+                    <span className="text-3xl">⚙️</span>
                   </div>
 
                   <div>
                     <h3 className="text-2xl font-bold text-foreground mb-2">
-                      Currently Studying
+                      Right now
                     </h3>
                     <p className="text-xl text-amber-400 font-medium mb-4">
-                      MSc in Artificial Intelligence
+                      Shipping Heimdall · MSc in AI · Open to roles
                     </p>
                     <p className="text-muted-foreground leading-relaxed mb-4">
-                      Building on my BSc in Computer Science to explore the intersection of AI and platform engineering.
-                      Excited about applying ML/AI to infrastructure automation, anomaly detection in observability systems,
-                      and intelligent platform tooling.
+                      Continuing as a contractor on the platform team I helped build.
+                      Heimdall is the main piece of ongoing work — a deployment
+                      intelligence dashboard used daily by 20+ engineers across 17
+                      services.
+                    </p>
+                    <p className="text-muted-foreground leading-relaxed mb-4">
+                      An MSc in AI alongside it, looking at ML applied to incident
+                      response and platform tooling.
                     </p>
                     <p className="text-sm text-muted-foreground/60">
-                      Still taking on platform engineering consulting alongside studies.
+                      Open to platform / SRE / DevOps roles starting summer 2026.
                     </p>
                   </div>
                 </div>
@@ -451,14 +462,14 @@ function CTASection() {
           className="max-w-2xl mx-auto text-center"
         >
           <h2 className="text-4xl sm:text-5xl font-bold mb-6">
-            <span className="text-foreground">Sound Like </span>
+            <span className="text-foreground">Still </span>
             <span className="bg-gradient-to-r from-green-400 to-cyan-400 bg-clip-text text-transparent">
-              a Fit?
+              reading?
             </span>
           </h2>
           <p className="text-muted-foreground text-lg mb-10">
-            If you&apos;re dealing with Kubernetes chaos, missing observability, or slow deployments—
-            let&apos;s chat. I&apos;d love to hear about what you&apos;re building.
+            That&apos;s probably a good sign. Drop me a line — about a role, a
+            project, or anything that overlaps with the work above.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -467,7 +478,7 @@ function CTASection() {
                 href="/contact"
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-green-500 to-emerald-500 text-black font-semibold hover:shadow-[0_0_40px_rgba(34,197,94,0.4)] transition-all duration-300"
               >
-                Get in Touch
+                Say hello
                 <ArrowRight className="w-5 h-5" />
               </Link>
             </motion.div>
@@ -477,7 +488,7 @@ function CTASection() {
                 href="/projects"
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl border-2 border-green-500/50 text-green-400 font-semibold hover:bg-green-500/10 hover:border-green-400 transition-all duration-300"
               >
-                View My Work
+                See the projects
               </Link>
             </motion.div>
           </div>

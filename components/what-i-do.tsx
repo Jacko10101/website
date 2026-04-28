@@ -9,7 +9,7 @@ const skills = [
     id: "kubernetes",
     title: "Kubernetes",
     subtitle: "& EKS",
-    description: "Production-grade clusters, zero-downtime upgrades, cost optimisation",
+    description: "Cluster operations, zero-downtime upgrades, right-sizing for cost",
     icon: (
       <svg viewBox="0 0 32 32" className="w-full h-full">
         <path
@@ -73,7 +73,7 @@ const skills = [
     id: "aws",
     title: "AWS",
     subtitle: "Cloud",
-    description: "EKS, IAM, VPC, Route 53, S3, MSK, RDS—production infrastructure",
+    description: "EKS, IAM, VPC, Route 53, S3, MSK, RDS — the boring fundamentals",
     icon: (
       <svg viewBox="0 0 32 32" className="w-full h-full">
         <path

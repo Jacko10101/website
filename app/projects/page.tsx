@@ -14,59 +14,59 @@ import {
 const projects = [
   {
     id: "dora-devex",
-    title: "DORA Metrics Platform",
-    subtitle: "Developer Experience & Business Intelligence",
+    title: "Heimdall",
+    subtitle: "Deployment intelligence platform",
     description:
-      "Built comprehensive DevEx platform with DORA metrics collector, intelligent pipeline notifications, and automated deployment gates. Transformed engineering visibility from zero to complete deployment intelligence.",
+      "The dashboard the platform team checks every morning. Answers one question — where is my ticket right now? — across 17 services and four environments.",
     longDescription:
-      "A multi-layered intelligence platform consisting of a Python metrics collector, a 1000+ line Bash pipeline reporter, and automated Jira-integrated deployment gates.",
+      "An internal tool I designed and built end-to-end, now used daily by 20+ engineers. Replaces about five tabs and most of the kubectl-output-pasted-into-Slack ritual.",
     stats: [
-      { value: "400+", label: "deploys tracked/month" },
-      { value: "2-3 days", label: "lead time measured" },
-      { value: "80%", label: "fewer status questions" },
+      { value: "17", label: "services tracked" },
+      { value: "20+", label: "engineers daily" },
+      { value: "10 min", label: "data freshness" },
     ],
-    tags: ["Python", "Prometheus", "Grafana", "Jira API", "Teams", "Bash"],
+    tags: ["Python", "Flask", "TimescaleDB", "Prometheus", "ArgoCD", "Thanos"],
     href: "/projects/dora-devex",
     color: "#f59e0b",
-    year: "2025",
+    year: "2025 → ongoing",
     icon: <TrendingUp className="w-6 h-6" />,
   },
   {
     id: "cicd-gitops",
-    title: "CI/CD & GitOps Platform",
-    subtitle: "Enterprise Pipeline Architecture",
+    title: "Pipeline Platform",
+    subtitle: "Shared CI/CD library",
     description:
-      "Built production-grade CI/CD from greenfield to 400 deploys/month across 20 services. Implemented ArgoCD GitOps, enterprise security scanning, and PostSync hook test orchestration.",
+      "One Bitbucket pipeline library, imported by every Java and Node service. Tests live in their own repo. Promotion and reporting belong to ArgoCD.",
     longDescription:
-      "A 2-year evolution from basic build scripts to a sophisticated, production-ready CI/CD platform supporting 20 microservices with standardised deployment automation.",
+      "Twenty drifted pipelines became one semver-tagged library. The bash reporter retired, tests moved out of the pipeline, and ArgoCD Image Updater took over promotion. ~400 deploys/month across 20 services.",
     stats: [
-      { value: "~5min", label: "build times" },
-      { value: "400+", label: "deploys/month" },
-      { value: "<1 day", label: "service onboarding" },
+      { value: "20", label: "services, one library" },
+      { value: "~400", label: "deploys/month" },
+      { value: "1 file", label: "to onboard" },
     ],
-    tags: ["ArgoCD", "Kubernetes", "Bitbucket Pipelines", "Kustomize", "Veracode"],
+    tags: ["Bitbucket Shared Pipelines", "ArgoCD", "Image Updater", "Kubernetes", "Kustomize"],
     href: "/projects/cicd-gitops",
     color: "#22c55e",
-    year: "2023-2025",
+    year: "2023 → ongoing",
     icon: <Layers className="w-6 h-6" />,
   },
   {
     id: "observability",
-    title: "Enterprise Observability",
-    subtitle: "Self-Hosted Monitoring Stack",
+    title: "Observability Stack",
+    subtitle: "Self-hosted monitoring",
     description:
-      "Built production-grade observability with Prometheus, Grafana, and Loki. Achieved full-stack visibility for 20 services at 95%+ cost savings vs cloud solutions.",
+      "Prometheus, Grafana and Loki for 20 services across four environments. Built it ourselves because the commercial quotes were ~£100k and we already had the cluster capacity.",
     longDescription:
-      "Complete self-hosted observability platform including metrics, logs, and alerting with 25+ dashboards and 50+ alert rules.",
+      "Self-hosted metrics, logs and alerts on the platform. ~25 dashboards, 50+ alerts each with a runbook, ~£5k/yr all-in.",
     stats: [
-      { value: "<$5K/yr", label: "vs $150K cloud" },
-      { value: "25+", label: "dashboards" },
-      { value: "70%", label: "MTTD reduction" },
+      { value: "~£5k/yr", label: "vs ~£100k commercial" },
+      { value: "~25", label: "dashboards" },
+      { value: "50+", label: "alerts, runbook each" },
     ],
     tags: ["Prometheus", "Grafana", "Loki", "Thanos", "Alertmanager"],
     href: "/projects/observability",
     color: "#e6522c",
-    year: "2023-2025",
+    year: "2024 → 2025",
     icon: <Calendar className="w-6 h-6" />,
   },
 ];
@@ -117,8 +117,8 @@ function ProjectsHero() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-xl text-muted-foreground max-w-2xl mx-auto"
           >
-            Real projects with measurable impact. Each case study dives deep into
-            the technical challenges, solutions, and business outcomes.
+            Three things I&apos;ve owned end-to-end. What they are, what changed,
+            and a few decisions worth flagging.
           </motion.p>
         </div>
       </motion.div>
@@ -268,49 +268,6 @@ function ProjectCard({ project, index }: { project: typeof projects[0]; index: n
   );
 }
 
-// Summary stats section
-function StatsSection() {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
-
-  const stats = [
-    { value: "20", suffix: "+", label: "Microservices Managed" },
-    { value: "400", suffix: "+", label: "Deploys per Month" },
-    { value: "95", suffix: "%", label: "Cost Savings" },
-    { value: "2", suffix: "", label: "Years of Evolution" },
-  ];
-
-  return (
-    <section ref={ref} className="py-24 relative overflow-hidden">
-      <GradientOrb className="top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" color="green" size="xl" />
-
-      <div className="container px-4 relative z-10">
-        <div className="max-w-4xl mx-auto">
-          <GlassCard className="p-8 md:p-12">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-              {stats.map((stat, index) => (
-                <motion.div
-                  key={stat.label}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="text-center"
-                >
-                  <div className="text-4xl md:text-5xl font-bold font-mono text-primary mb-2">
-                    {stat.value}
-                    <span className="text-primary/70">{stat.suffix}</span>
-                  </div>
-                  <div className="text-sm text-muted-foreground">{stat.label}</div>
-                </motion.div>
-              ))}
-            </div>
-          </GlassCard>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 // CTA section
 function CTASection() {
   return (
@@ -320,14 +277,13 @@ function CTASection() {
       <div className="container px-4 relative z-10">
         <FadeUp className="max-w-2xl mx-auto text-center">
           <h2 className="text-4xl font-bold mb-6">
-            <span className="text-foreground">Like What </span>
+            <span className="text-foreground">Want to </span>
             <span className="bg-gradient-to-r from-green-400 to-cyan-400 bg-clip-text text-transparent">
-              You See?
+              chat?
             </span>
           </h2>
           <p className="text-muted-foreground text-lg mb-10">
-            I&apos;d love to bring this same level of platform engineering expertise
-            to your team. Let&apos;s chat about what you&apos;re building.
+            About a role, a project, or anything that overlaps. I usually reply within a day.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -336,7 +292,7 @@ function CTASection() {
                 href="/contact"
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-green-500 to-emerald-500 text-black font-semibold hover:shadow-[0_0_40px_rgba(34,197,94,0.4)] transition-all duration-300"
               >
-                Get in Touch
+                Say hello
                 <ArrowRight className="w-5 h-5" />
               </Link>
             </motion.div>
@@ -346,7 +302,7 @@ function CTASection() {
                 href="/about"
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl border-2 border-green-500/50 text-green-400 font-semibold hover:bg-green-500/10 hover:border-green-400 transition-all duration-300"
               >
-                Learn More About Me
+                More about me
               </Link>
             </motion.div>
           </div>
@@ -372,7 +328,6 @@ export default function ProjectsPage() {
         </div>
       </section>
 
-      <StatsSection />
       <CTASection />
     </div>
   );
