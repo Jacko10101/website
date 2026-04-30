@@ -113,7 +113,7 @@ export function Footer() {
               <span className="text-xl font-bold text-white">DevlinOps</span>
             </Link>
             <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
-              Jack Devlin&apos;s portfolio. Platform engineering, write-ups, and the things I build.
+              Jack Devlin. Platform &amp; MLOps engineering. Independent B2B contractor.
             </p>
           </div>
 
@@ -196,7 +196,7 @@ export function Footer() {
           </p>
           <div className="flex items-center gap-2 text-gray-500 text-sm">
             <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-            <span>Open to roles · summer 2026</span>
+            <span>Available for fully remote B2B contracts · September 2026</span>
           </div>
         </div>
       </div>

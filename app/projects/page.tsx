@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import Link from "next/link";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
-import { ArrowRight, Calendar, Layers, TrendingUp } from "lucide-react";
+import { ArrowRight, Calendar, Layers, TrendingUp, Home, Brain } from "lucide-react";
 import {
   FadeUp,
   GradientOrb,
@@ -11,7 +11,22 @@ import {
   GlassCard,
 } from "@/components/scroll-reveal";
 
-const projects = [
+type Project = {
+  id: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  longDescription: string;
+  stats: { value: string; label: string }[];
+  tags: string[];
+  href?: string;
+  color: string;
+  year: string;
+  icon: React.ReactNode;
+  status?: "live" | "planned";
+};
+
+const projects: Project[] = [
   {
     id: "dora-devex",
     title: "Heimdall",
@@ -30,6 +45,7 @@ const projects = [
     color: "#f59e0b",
     year: "2025 → ongoing",
     icon: <TrendingUp className="w-6 h-6" />,
+    status: "live",
   },
   {
     id: "cicd-gitops",
@@ -49,6 +65,7 @@ const projects = [
     color: "#22c55e",
     year: "2023 → ongoing",
     icon: <Layers className="w-6 h-6" />,
+    status: "live",
   },
   {
     id: "observability",
@@ -68,6 +85,46 @@ const projects = [
     color: "#e6522c",
     year: "2024 → 2025",
     icon: <Calendar className="w-6 h-6" />,
+    status: "live",
+  },
+  {
+    id: "smart-home",
+    title: "Smart Home on K3s",
+    subtitle: "Self-hosted home automation",
+    description:
+      "Single-node K3s cluster on a Raspberry Pi 5 running Home Assistant, ArgoCD, Prometheus and Grafana. Twenty-plus lights, plugs and sensors monitored end-to-end. Zero ports exposed to the internet.",
+    longDescription:
+      "Every config change goes through git, every metric flows into Prometheus, every remote connection rides Tailscale. Same discipline as the platform at work, sized to a flat.",
+    stats: [
+      { value: "Single-node", label: "K3s control plane" },
+      { value: "20+", label: "lights, plugs and sensors" },
+      { value: "0", label: "ports exposed to the internet" },
+    ],
+    tags: ["K3s", "ArgoCD", "Home Assistant", "Zigbee2MQTT", "Prometheus", "Tailscale"],
+    href: "/projects/smart-home",
+    color: "#06b6d4",
+    year: "2024 → ongoing",
+    icon: <Home className="w-6 h-6" />,
+    status: "live",
+  },
+  {
+    id: "ml-scheduler",
+    title: "Predictive Job Scheduling",
+    subtitle: "MSc dissertation · in progress",
+    description:
+      "Deep learning models in PyTorch applied to compute resource allocation. The same scheduling problems I keep hitting on the platform side, framed as a research question.",
+    longDescription:
+      "Placeholder while the work is in flight. Submission August 2026. The plan: train models on historical job traces to predict resource needs and inform scheduler placement decisions, with the goal of reducing wasted GPU and CPU time on shared clusters.",
+    stats: [
+      { value: "Aug 2026", label: "submission" },
+      { value: "PyTorch", label: "framework" },
+      { value: "GPU", label: "scheduling focus" },
+    ],
+    tags: ["PyTorch", "Python", "Deep Learning", "Kubernetes Scheduler", "MLOps"],
+    color: "#ec4899",
+    year: "2026 → in progress",
+    icon: <Brain className="w-6 h-6" />,
+    status: "planned",
   },
 ];
 
@@ -117,8 +174,8 @@ function ProjectsHero() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-xl text-muted-foreground max-w-2xl mx-auto"
           >
-            Three things I&apos;ve owned end-to-end. What they are, what changed,
-            and a few decisions worth flagging.
+            Four projects shipped end-to-end and one in flight. What they are,
+            what changed, and a few decisions worth flagging.
           </motion.p>
         </div>
       </motion.div>
@@ -127,20 +184,14 @@ function ProjectsHero() {
 }
 
 // Individual project card with enhanced interactivity
-function ProjectCard({ project, index }: { project: typeof projects[0]; index: number }) {
+function ProjectCard({ project, index }: { project: Project; index: number }) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const isPlanned = project.status === "planned";
 
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 50 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-      transition={{ duration: 0.6, delay: index * 0.15 }}
-    >
-      <Link href={project.href} className="block group">
-        <GlassCard className="p-0 overflow-hidden">
-          <div className="flex flex-col lg:flex-row">
+  const cardInner = (
+    <GlassCard className="p-0 overflow-hidden">
+      <div className="flex flex-col lg:flex-row">
             {/* Visual side */}
             <div
               className="relative lg:w-2/5 aspect-[16/10] lg:aspect-auto lg:min-h-[400px] overflow-hidden"
@@ -252,18 +303,41 @@ function ProjectCard({ project, index }: { project: typeof projects[0]; index: n
               </div>
 
               {/* CTA */}
-              <div className="flex items-center gap-2 text-primary font-medium">
-                <span>Read Case Study</span>
-                <motion.div
-                  className="group-hover:translate-x-2 transition-transform"
+              {isPlanned ? (
+                <div
+                  className="flex items-center gap-2 font-medium text-sm font-mono"
+                  style={{ color: project.color }}
                 >
-                  <ArrowRight className="w-5 h-5" />
-                </motion.div>
-              </div>
+                  <span className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: project.color }} />
+                  <span>Planned · write-up to follow</span>
+                </div>
+              ) : (
+                <div className="flex items-center gap-2 text-primary font-medium">
+                  <span>Read Case Study</span>
+                  <motion.div className="group-hover:translate-x-2 transition-transform">
+                    <ArrowRight className="w-5 h-5" />
+                  </motion.div>
+                </div>
+              )}
             </div>
           </div>
-        </GlassCard>
-      </Link>
+    </GlassCard>
+  );
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 50 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+      transition={{ duration: 0.6, delay: index * 0.15 }}
+    >
+      {isPlanned || !project.href ? (
+        <div className="block">{cardInner}</div>
+      ) : (
+        <Link href={project.href} className="block group">
+          {cardInner}
+        </Link>
+      )}
     </motion.div>
   );
 }
@@ -283,7 +357,8 @@ function CTASection() {
             </span>
           </h2>
           <p className="text-muted-foreground text-lg mb-10">
-            About a role, a project, or anything that overlaps. I usually reply within a day.
+            About a B2B engagement, an AI infrastructure problem, or anything
+            that overlaps. I usually reply within a day.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

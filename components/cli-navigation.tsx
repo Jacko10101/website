@@ -16,9 +16,10 @@ export function CliNavigation() {
     "/": { path: "/", description: "Homepage" },
     "/about": { path: "/about", description: "About Jack Devlin" },
     "/projects": { path: "/projects", description: "Case studies and portfolio" },
-    "/projects/cicd-gitops": { path: "/projects/cicd-gitops", description: "CI/CD & GitOps case study" },
-    "/projects/dora-devex": { path: "/projects/dora-devex", description: "DORA Metrics & DevEx case study" },
-    "/projects/observability": { path: "/projects/observability", description: "Observability Stack case study" },
+    "/projects/dora-devex": { path: "/projects/dora-devex", description: "Heimdall — deployment intelligence" },
+    "/projects/cicd-gitops": { path: "/projects/cicd-gitops", description: "Pipeline platform — shared CI/CD" },
+    "/projects/observability": { path: "/projects/observability", description: "Self-hosted observability stack" },
+    "/projects/smart-home": { path: "/projects/smart-home", description: "Smart home on K3s" },
     "/contact": { path: "/contact", description: "Get in touch" },
   };
 
@@ -309,11 +310,11 @@ Health Status:      Healthy`;
 
       case "whoami":
         output = `jack@devlinops
-├─ Platform Engineer
+├─ Platform & MLOps Engineer
 ├─ Kubernetes Enthusiast
 ├─ Coffee-Driven Developer
 ├─ GitOps Advocate
-├─ MSc AI Student
+├─ MSc AI (finishing Aug 2026)
 └─ "It works on my machine" Survivor
 
 Current status: Probably debugging something
@@ -371,8 +372,8 @@ Good luck collecting those pods!`;
   ██████████████████████████████   Memory: 750K+ saved
     ████████████████████████████   Disk: 400+ deploys/month
        ████████████████████
-                                   Stack: K8s, ArgoCD, AWS, Terraform
-                                   Status: Available for projects`;
+                                   Stack: K8s, ArgoCD, AWS, PyTorch, Terraform
+                                   Status: B2B contracts, Sept 2026`;
         break;
 
       case "git":

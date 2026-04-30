@@ -68,6 +68,27 @@ const projects = [
       { cmd: "50+ alert rules configured", color: "text-cyan-400" },
     ],
   },
+  {
+    id: "smart-home",
+    title: "Smart Home on K3s",
+    subtitle: "Self-hosted home automation",
+    description:
+      "Single-node Kubernetes cluster on a Raspberry Pi 5, GitOps-reconciled by ArgoCD, observable end-to-end through Prometheus and Grafana. Twenty-plus lights, plugs and sensors. Zero ports exposed to the internet. Same discipline I apply at work, sized to a flat.",
+    stats: [
+      { value: "Single-node", label: "K3s + ArgoCD + Prometheus" },
+      { value: "20+", label: "lights, plugs and sensors" },
+      { value: "0", label: "ports exposed to the internet" },
+    ],
+    tags: ["K3s", "ArgoCD", "Home Assistant", "Zigbee2MQTT", "Prometheus", "Grafana", "Tailscale"],
+    href: "/projects/smart-home",
+    color: "#06b6d4",
+    terminal: [
+      { cmd: "$ kubectl get apps -n argocd", color: "text-gray-500" },
+      { cmd: "home-assistant      Synced  Healthy", color: "text-green-400" },
+      { cmd: "zigbee2mqtt         Synced  Healthy", color: "text-green-400" },
+      { cmd: "prometheus + grafana  Synced  Healthy", color: "text-cyan-400" },
+    ],
+  },
 ];
 
 function ProjectCard({
@@ -211,7 +232,7 @@ export function FeaturedProjects() {
             </span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Three things I&apos;ve owned end-to-end. What they are, what
+            Four things I&apos;ve owned end-to-end. What they are, what
             changed, and a few decisions worth flagging.
           </p>
         </motion.div>

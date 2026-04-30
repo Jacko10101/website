@@ -252,7 +252,7 @@ export function HeroJourney() {
               transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
               className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-6 tracking-tight"
             >
-              <span className="text-foreground">Platform</span>
+              <span className="text-foreground">Platform &amp; MLOps</span>
               <br />
               <span className="bg-gradient-to-r from-green-400 via-emerald-400 to-cyan-400 bg-clip-text text-transparent">
                 Engineer
@@ -266,7 +266,7 @@ export function HeroJourney() {
               transition={{ duration: 0.8, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
               className="text-xl sm:text-2xl text-muted-foreground mb-3 font-light"
             >
-              I build the tools engineers open every morning.
+              The bridge between data science and production.
             </motion.p>
 
             {/* Target audience */}
@@ -274,10 +274,10 @@ export function HeroJourney() {
               initial={{ opacity: 0, y: 20 }}
               animate={shouldAnimate ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.8, delay: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              className="text-base text-muted-foreground/70 mb-8 font-light"
+              className="text-base text-muted-foreground/70 mb-8 font-light max-w-2xl mx-auto"
             >
-              Platform engineer working on deployment intelligence, GitOps and observability.
-              <span className="text-green-400/80"> Open to roles for summer 2026.</span>
+              I build the resilient infrastructure AI workloads and modern distributed systems run on — Kubernetes, GPU scheduling, GitOps, observability. MSc AI finishing August 2026.
+              <span className="text-green-400/80 block mt-2">Available for fully remote B2B contracts starting September 2026.</span>
             </motion.p>
 
             {/* Key focus areas */}
@@ -287,7 +287,7 @@ export function HeroJourney() {
               transition={{ duration: 0.8, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
               className="flex flex-wrap justify-center gap-3 mb-12"
             >
-              {["Kubernetes", "AWS", "GitOps", "Observability", "CI/CD"].map((tag, i) => (
+              {["Kubernetes", "MLOps", "AWS", "GitOps", "Observability", "PyTorch"].map((tag, i) => (
                 <motion.span
                   key={tag}
                   initial={{ opacity: 0, scale: 0.8 }}

@@ -63,7 +63,7 @@ export function CTASection() {
             </h2>
 
             <p className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto mb-12">
-              About a role, a project, or anything in this orbit. I usually reply within a day.
+              For teams that need specialised infrastructure for AI workloads, GPU-aware Kubernetes, or a platform that holds up under production load. Outside IR35 or international B2B equivalent. I usually reply within a day.
             </p>
           </motion.div>
 
@@ -132,7 +132,7 @@ export function CTASection() {
           >
             <span className="inline-flex items-center gap-2 text-sm text-gray-500">
               <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-              Open to roles · summer 2026
+              Available for fully remote B2B contracts starting September 2026
             </span>
           </motion.div>
         </div>

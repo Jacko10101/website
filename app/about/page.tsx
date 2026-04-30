@@ -36,8 +36,8 @@ const journey = [
   },
   {
     year: "2026",
-    title: "Contractor + MSc AI",
-    description: "Stayed on as a contractor to ship Heimdall — the deployment intelligence dashboard now used daily by 20+ engineers. Pursuing an MSc in AI alongside, exploring ML applied to platform tooling.",
+    title: "Platform & MLOps · MSc AI",
+    description: "Pivoting toward AI infrastructure. Finishing an MSc in Artificial Intelligence (August 2026). Operating as an independent B2B contractor, focused on the gap between data science and production.",
     color: "#f59e0b",
   },
 ];
@@ -69,6 +69,7 @@ const philosophy = [
 // Tech stack with categories
 const techStack = [
   { category: "Orchestration", items: ["Kubernetes", "EKS", "ArgoCD", "Helm", "Kustomize"] },
+  { category: "MLOps & AI", items: ["PyTorch", "MLflow", "KubeFlow", "NVIDIA GPU Operator", "Triton"] },
   { category: "Observability", items: ["Prometheus", "Grafana", "Loki", "Tempo", "Thanos"] },
   { category: "Cloud & IaC", items: ["AWS", "Terraform", "AWS CDK", "CloudFormation"] },
   { category: "Languages", items: ["Python", "Bash", "TypeScript", "Go"] },
@@ -129,7 +130,7 @@ function AboutHero() {
                 >
                   <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-sm font-mono">
                     <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                    Open to roles · summer 2026
+                    B2B contracts · September 2026
                   </span>
                 </motion.div>
               </div>
@@ -166,12 +167,13 @@ function AboutHero() {
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="text-xl text-muted-foreground mb-8 leading-relaxed"
               >
-                Platform engineer based in the UK. I&apos;ve spent the last few years
-                building the tools my team actually uses every day:{" "}
-                <span className="text-foreground font-medium">Heimdall</span>, a
-                deployment dashboard 20+ engineers open every morning; a GitOps
-                platform that took us from a handful of deploys a month to four
-                hundred; and the observability stack underneath all of it.
+                Independent B2B contractor based in the UK. I sit between data
+                science and production, and I build the platforms that get models
+                and services off a laptop and onto a Kubernetes cluster that
+                doesn&apos;t fall over. Day job: Heimdall, a deployment dashboard
+                20+ engineers open every morning, a shared CI/CD library across
+                20 services, and the observability stack underneath. Night job:
+                MSc in Artificial Intelligence, finishing August 2026.
               </motion.p>
 
               <motion.div
@@ -180,7 +182,7 @@ function AboutHero() {
                 transition={{ duration: 0.6, delay: 0.3 }}
                 className="flex flex-wrap gap-3 justify-center lg:justify-start"
               >
-                {["Platform Engineering", "Kubernetes", "Observability", "GitOps"].map((tag, i) => (
+                {["Platform Engineering", "MLOps", "Kubernetes", "AI Infrastructure", "Observability"].map((tag, i) => (
                   <motion.span
                     key={tag}
                     initial={{ opacity: 0, scale: 0.8 }}
@@ -418,20 +420,24 @@ function CurrentlySection() {
                       Right now
                     </h3>
                     <p className="text-xl text-amber-400 font-medium mb-4">
-                      Shipping Heimdall · MSc in AI · Open to roles
+                      Shipping Heimdall · Finishing the MSc · Lining up September 2026
                     </p>
                     <p className="text-muted-foreground leading-relaxed mb-4">
-                      Continuing as a contractor on the platform team I helped build.
-                      Heimdall is the main piece of ongoing work — a deployment
+                      Wrapping up my current contract on the platform team I helped
+                      build. Heimdall is still the centre of gravity — a deployment
                       intelligence dashboard used daily by 20+ engineers across 17
                       services.
                     </p>
                     <p className="text-muted-foreground leading-relaxed mb-4">
-                      An MSc in AI alongside it, looking at ML applied to incident
-                      response and platform tooling.
+                      Finishing an MSc in Artificial Intelligence in August 2026.
+                      The dissertation looks at deep learning applied to compute
+                      resource allocation — the same problem I keep running into on
+                      the platform side, so the two halves are converging.
                     </p>
                     <p className="text-sm text-muted-foreground/60">
-                      Open to platform / SRE / DevOps roles starting summer 2026.
+                      Available for fully remote B2B contracts (Outside IR35 or
+                      international equivalent) starting September 2026. Platform
+                      engineering, SRE, and MLOps / AI infrastructure work.
                     </p>
                   </div>
                 </div>
@@ -468,8 +474,8 @@ function CTASection() {
             </span>
           </h2>
           <p className="text-muted-foreground text-lg mb-10">
-            That&apos;s probably a good sign. Drop me a line — about a role, a
-            project, or anything that overlaps with the work above.
+            Drop me a note. About a B2B engagement, an AI infrastructure problem,
+            or anything that overlaps with the work above.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

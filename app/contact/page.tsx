@@ -4,7 +4,7 @@ import { ContactForm } from "@/components/contact-form";
 export const metadata = {
   title: "Contact",
   description:
-    "Drop Jack Devlin a note. Platform engineer, open to roles for summer 2026.",
+    "Drop Jack Devlin a note. Platform & MLOps engineer, available for fully remote B2B contracts from September 2026.",
 };
 
 export default function ContactPage() {
@@ -14,10 +14,16 @@ export default function ContactPage() {
         <h1 className="mb-6 text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
           Want to chat?
         </h1>
+        <p className="mb-4 text-lg text-muted-foreground leading-relaxed">
+          The fastest way to reach me is the form below or just an email.
+          Available for fully remote B2B contracts (Outside IR35 or
+          international equivalent) starting September 2026.
+        </p>
         <p className="mb-12 text-lg text-muted-foreground leading-relaxed">
-          The fastest way to reach me is the form below or just an email. Open
-          to platform / SRE / DevOps roles starting summer 2026, and always
-          happy to talk shop about anything in this area.
+          Best fit: teams running AI workloads on Kubernetes, platforms that
+          need observability or GitOps brought up to a real standard, or
+          anywhere the gap between data science and production is causing pain.
+          Always happy to talk shop.
         </p>
 
         <div className="mb-16 rounded-lg border border-border bg-card p-6 md:p-8">

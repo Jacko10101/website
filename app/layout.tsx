@@ -12,20 +12,25 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   metadataBase: new URL("https://devlinops.com"),
   title: {
-    default: "Jack Devlin — Platform Engineer",
+    default: "Jack Devlin — Platform & MLOps Engineer",
     template: "%s — Jack Devlin",
   },
   description:
-    "Platform engineer. Heimdall (deployment intelligence), GitOps, observability. Open to roles for summer 2026.",
+    "Platform & MLOps engineer. Resilient infrastructure for AI workloads and distributed systems. Kubernetes, GPU scheduling, GitOps, observability. Available for fully remote B2B contracts from September 2026.",
   keywords: [
     "Platform Engineer",
+    "MLOps Engineer",
+    "AI Infrastructure",
     "SRE",
-    "DevOps",
     "Kubernetes",
+    "GPU Scheduling",
+    "PyTorch",
     "ArgoCD",
     "GitOps",
     "Observability",
     "Heimdall",
+    "B2B Contractor",
+    "Outside IR35",
     "Jack Devlin",
   ],
   authors: [{ name: "Jack Devlin" }],
@@ -44,9 +49,9 @@ export const metadata: Metadata = {
     ],
   },
   openGraph: {
-    title: "Jack Devlin — Platform Engineer",
+    title: "Jack Devlin — Platform & MLOps Engineer",
     description:
-      "Platform engineer. Heimdall (deployment intelligence), GitOps, observability. Open to roles for summer 2026.",
+      "Platform & MLOps engineer. Resilient infrastructure for AI workloads and distributed systems. Available for fully remote B2B contracts from September 2026.",
     url: "https://devlinops.com",
     siteName: "Jack Devlin",
     type: "website",
@@ -55,15 +60,15 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Jack Devlin — Platform Engineer",
+        alt: "Jack Devlin — Platform & MLOps Engineer",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Jack Devlin — Platform Engineer",
+    title: "Jack Devlin — Platform & MLOps Engineer",
     description:
-      "Platform engineer. Heimdall (deployment intelligence), GitOps, observability. Open to roles for summer 2026.",
+      "Platform & MLOps engineer. Resilient infrastructure for AI workloads and distributed systems. Available for fully remote B2B contracts from September 2026.",
     images: ["/og-image.png"],
   },
 };
@@ -80,7 +85,7 @@ export default function RootLayout({
         "@type": "Person",
         "@id": "https://devlinops.com/#person",
         "name": "Jack Devlin",
-        "jobTitle": "Platform Engineer",
+        "jobTitle": "Platform & MLOps Engineer",
         "url": "https://devlinops.com",
         "email": "jack@devlinops.com",
         "address": {
@@ -93,21 +98,26 @@ export default function RootLayout({
         ],
         "knowsAbout": [
           "Platform Engineering",
+          "MLOps",
+          "AI Infrastructure",
           "Site Reliability Engineering",
           "Kubernetes",
+          "GPU Scheduling on Kubernetes",
           "ArgoCD",
           "GitOps",
           "Observability",
           "Prometheus",
           "Grafana",
           "AWS",
+          "PyTorch",
+          "Python",
           "CI/CD",
         ],
         "hasOccupation": {
           "@type": "Occupation",
-          "name": "Platform Engineer",
+          "name": "Platform & MLOps Engineer",
           "skills":
-            "Kubernetes, AWS, ArgoCD, GitOps, CI/CD, Observability, Python",
+            "Kubernetes, MLOps, GPU scheduling, AWS, ArgoCD, GitOps, CI/CD, Observability, Python, PyTorch",
         },
       },
       {

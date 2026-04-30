@@ -9,7 +9,7 @@ const skills = [
     id: "kubernetes",
     title: "Kubernetes",
     subtitle: "& EKS",
-    description: "Cluster operations, zero-downtime upgrades, right-sizing for cost",
+    description: "Cluster operations, GPU node pools, zero-downtime upgrades, right-sizing for cost",
     icon: (
       <svg viewBox="0 0 32 32" className="w-full h-full">
         <path
@@ -90,10 +90,39 @@ const skills = [
     gradient: "from-orange-500 to-yellow-400",
   },
   {
+    id: "mlops",
+    title: "MLOps",
+    subtitle: "& AI Infrastructure",
+    description: "Model serving on K8s, GPU scheduling, reproducible training pipelines, drift monitoring",
+    icon: (
+      <svg viewBox="0 0 32 32" className="w-full h-full">
+        <path
+          d="M16 11v3M11.5 14.5l4 1.5M20.5 14.5l-4 1.5M16 18v3"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          fill="none"
+        />
+        <circle cx="16" cy="7" r="2.5" fill="currentColor" />
+        <circle cx="7" cy="16" r="2.5" fill="currentColor" />
+        <circle cx="25" cy="16" r="2.5" fill="currentColor" />
+        <circle cx="16" cy="25" r="2.5" fill="currentColor" />
+        <path
+          d="M16 9.5v3.5M9.5 16h3M22.5 16h-3M16 18.5v3"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          fill="none"
+          opacity="0.6"
+        />
+      </svg>
+    ),
+    color: "#ec4899",
+    gradient: "from-pink-500 to-fuchsia-400",
+  },
+  {
     id: "data",
     title: "Data",
     subtitle: "Platforms",
-    description: "Kafka, stream processing, data migrations, monitoring",
+    description: "Kafka, stream processing, training data pipelines, schema evolution",
     icon: (
       <svg viewBox="0 0 32 32" className="w-full h-full">
         <ellipse cx="16" cy="8" rx="10" ry="4" fill="currentColor" />
@@ -226,7 +255,7 @@ function SectionTitle() {
 
       {/* Subtitle */}
       <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-        The stuff nobody wants to build but everybody needs.
+        Resilient infrastructure for distributed systems and AI workloads. The boring fundamentals, done well.
       </p>
     </motion.div>
   );
