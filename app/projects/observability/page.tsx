@@ -229,8 +229,8 @@ export default function ObservabilityPage() {
               { label: "Dashboards", value: "~25 active" },
             ]}
             relatedProjects={[
-              { title: "Heimdall — deployment intelligence", href: "/projects/dora-devex" },
-              { title: "CI/CD & GitOps Platform", href: "/projects/cicd-gitops" },
+              { title: "Heimdall — deployment intelligence", href: "/projects/heimdall" },
+              { title: "Pipeline Platform — shared CI/CD", href: "/projects/pipeline-platform" },
             ]}
           />
         </div>

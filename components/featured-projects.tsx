@@ -6,7 +6,7 @@ import Link from "next/link";
 
 const projects = [
   {
-    id: "dora-devex",
+    id: "heimdall",
     title: "Heimdall",
     subtitle: "Deployment intelligence platform",
     description:
@@ -17,7 +17,7 @@ const projects = [
       { value: "10 min", label: "data freshness" },
     ],
     tags: ["Python", "Flask", "TimescaleDB", "Prometheus", "ArgoCD", "Kubernetes"],
-    href: "/projects/dora-devex",
+    href: "/projects/heimdall",
     color: "#f59e0b",
     terminal: [
       { cmd: "$ curl heimdall/api/v1/debug | jq .", color: "text-gray-500" },
@@ -27,7 +27,7 @@ const projects = [
     ],
   },
   {
-    id: "cicd-gitops",
+    id: "pipeline-platform",
     title: "Pipeline Platform",
     subtitle: "Shared CI/CD library",
     description:
@@ -38,7 +38,7 @@ const projects = [
       { value: "1 file", label: "to onboard" },
     ],
     tags: ["Bitbucket Shared Pipelines", "ArgoCD", "Image Updater", "Kubernetes", "Kustomize"],
-    href: "/projects/cicd-gitops",
+    href: "/projects/pipeline-platform",
     color: "#22c55e",
     terminal: [
       { cmd: "$ cat .ci/builds.yaml", color: "text-gray-500" },

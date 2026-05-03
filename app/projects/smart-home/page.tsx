@@ -270,7 +270,7 @@ node-exporter         Synced        Healthy`}
               { label: "Remote access", value: "Tailscale only" },
             ]}
             relatedProjects={[
-              { title: "Heimdall — deployment intelligence", href: "/projects/dora-devex" },
+              { title: "Heimdall — deployment intelligence", href: "/projects/heimdall" },
               { title: "Observability stack", href: "/projects/observability" },
             ]}
           />

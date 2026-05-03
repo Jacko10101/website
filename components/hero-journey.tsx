@@ -5,7 +5,6 @@ import { motion, useScroll, useTransform, useSpring, AnimatePresence } from "fra
 import Link from "next/link";
 import { BuildSequence } from "./build-sequence";
 
-// Cache indicator for return visitors
 function CacheIndicator() {
   const [visible, setVisible] = useState(true);
   const [ttfb, setTtfb] = useState<string | null>(null);
@@ -47,7 +46,6 @@ function CacheIndicator() {
   );
 }
 
-// Magnetic button component for premium feel
 function MagneticButton({
   children,
   href,
@@ -105,7 +103,6 @@ function MagneticButton({
   return content;
 }
 
-// Floating orb background element
 function FloatingOrbs() {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -155,7 +152,6 @@ function FloatingOrbs() {
   );
 }
 
-// Animated grid background
 function GridBackground() {
   return (
     <div className="absolute inset-0 overflow-hidden">
@@ -182,9 +178,8 @@ function GridBackground() {
   );
 }
 
-// Main hero component
 export function HeroJourney() {
-  const [phase, setPhase] = useState<"loading" | "building" | "revealing" | "complete">("loading");
+  const [showBuildSequence, setShowBuildSequence] = useState(false);
   const [showCacheIndicator, setShowCacheIndicator] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -197,131 +192,91 @@ export function HeroJourney() {
   useEffect(() => {
     const seen = localStorage.getItem("build-seen");
     if (seen === "true") {
-      setPhase("complete");
       setShowCacheIndicator(true);
     } else {
-      setPhase("building");
+      setShowBuildSequence(true);
     }
   }, []);
 
   const handleBuildComplete = () => {
-    setPhase("revealing");
     localStorage.setItem("build-seen", "true");
-    // Longer reveal time for smoother transition
-    setTimeout(() => {
-      setPhase("complete");
-    }, 1500);
+    setShowBuildSequence(false);
   };
-
-  // Only animate hero content when revealing or complete
-  const shouldAnimate = phase === "revealing" || phase === "complete";
-
-  // Show nothing until we know what to display (prevents flash)
-  if (phase === "loading") {
-    return <div className="min-h-screen bg-black" />;
-  }
 
   return (
     <>
-      {/* Build sequence overlay */}
-      {phase === "building" && <BuildSequence onComplete={handleBuildComplete} />}
+      {showBuildSequence && <BuildSequence onComplete={handleBuildComplete} />}
 
-      {/* Cache indicator for return visitors */}
-      {showCacheIndicator && phase === "complete" && <CacheIndicator />}
+      {showCacheIndicator && <CacheIndicator />}
 
-      {/* Main hero content - always rendered but animated based on phase */}
       <motion.section
         ref={containerRef}
-        style={{ opacity: phase === "complete" ? opacity : 1, scale: phase === "complete" ? scale : 1 }}
+        style={{ opacity, scale }}
         className="relative min-h-screen flex items-center justify-center bg-black overflow-hidden"
       >
-        {/* Background layers */}
         <GridBackground />
         <FloatingOrbs />
 
-        {/* Main content */}
         <motion.div
-          style={{ y: phase === "complete" ? springY : 0 }}
+          style={{ y: springY }}
           className="container px-4 relative z-10"
         >
           <div className="max-w-5xl mx-auto text-center">
-            {/* Main headline */}
-            <motion.h1
-              initial={{ opacity: 0, y: 40 }}
-              animate={shouldAnimate ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-              transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-6 tracking-tight"
-            >
+            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-6 tracking-tight">
               <span className="text-foreground">Platform &amp; MLOps</span>
               <br />
               <span className="bg-gradient-to-r from-green-400 via-emerald-400 to-cyan-400 bg-clip-text text-transparent">
                 Engineer
               </span>
-            </motion.h1>
+            </h1>
 
-            {/* Subheading */}
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={shouldAnimate ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              transition={{ duration: 0.8, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
-              className="text-xl sm:text-2xl text-muted-foreground mb-3 font-light"
-            >
-              The bridge between data science and production.
-            </motion.p>
+            <p className="text-xl sm:text-2xl text-muted-foreground mb-3 font-light">
+              I get models off laptops and onto clusters that don&apos;t fall over.
+            </p>
 
-            {/* Target audience */}
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={shouldAnimate ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              transition={{ duration: 0.8, delay: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              className="text-base text-muted-foreground/70 mb-8 font-light max-w-2xl mx-auto"
-            >
-              I build the resilient infrastructure AI workloads and modern distributed systems run on — Kubernetes, GPU scheduling, GitOps, observability. MSc AI finishing August 2026.
+            <p className="text-base text-muted-foreground/70 mb-8 font-light max-w-2xl mx-auto">
+              Production infrastructure for AI workloads and distributed systems — Kubernetes, GPU scheduling, GitOps, observability. MSc AI finishing August 2026.
               <span className="text-green-400/80 block mt-2">Available for fully remote B2B contracts starting September 2026.</span>
-            </motion.p>
+            </p>
 
-            {/* Key focus areas */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={shouldAnimate ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              transition={{ duration: 0.8, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
-              className="flex flex-wrap justify-center gap-3 mb-12"
-            >
-              {["Kubernetes", "MLOps", "AWS", "GitOps", "Observability", "PyTorch"].map((tag, i) => (
-                <motion.span
+            <div className="flex flex-wrap justify-center gap-3 mb-12">
+              {["Kubernetes", "MLOps", "AWS", "GitOps", "Observability", "PyTorch"].map((tag) => (
+                <span
                   key={tag}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={shouldAnimate ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-                  transition={{ duration: 0.5, delay: 1.0 + i * 0.08, ease: [0.22, 1, 0.36, 1] }}
                   className="px-4 py-2 text-sm font-medium rounded-full bg-secondary text-secondary-foreground border border-border"
                 >
                   {tag}
-                </motion.span>
+                </span>
               ))}
-            </motion.div>
+            </div>
 
-            {/* CTA buttons */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={shouldAnimate ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              transition={{ duration: 0.8, delay: 1.4, ease: [0.22, 1, 0.36, 1] }}
-              className="flex flex-col sm:flex-row gap-4 justify-center items-center"
-            >
-              <MagneticButton href="/projects/dora-devex" variant="primary">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <MagneticButton href="/projects/heimdall" variant="primary">
                 See Heimdall
               </MagneticButton>
 
               <MagneticButton href="/contact" variant="secondary">
                 Say hello
               </MagneticButton>
-            </motion.div>
+
+              <a
+                href="/cv.pdf"
+                className="inline-flex items-center gap-2 px-6 py-4 text-sm font-medium text-gray-400 hover:text-white transition-colors"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Download CV
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V3" />
+                </svg>
+              </a>
+            </div>
           </div>
         </motion.div>
 
-        {/* Scroll indicator */}
         <motion.div
           initial={{ opacity: 0 }}
-          animate={shouldAnimate ? { opacity: 1 } : { opacity: 0 }}
+          animate={{ opacity: 1 }}
           transition={{ delay: 1.8, duration: 0.8 }}
           className="absolute bottom-8 left-1/2 -translate-x-1/2"
         >

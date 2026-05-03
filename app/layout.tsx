@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Navigation } from "@/components/navigation";
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
     template: "%s — Jack Devlin",
   },
   description:
-    "Platform & MLOps engineer. Resilient infrastructure for AI workloads and distributed systems. Kubernetes, GPU scheduling, GitOps, observability. Available for fully remote B2B contracts from September 2026.",
+    "Platform & MLOps engineer. Production infrastructure for AI workloads and distributed systems — Kubernetes, GPU scheduling, GitOps, observability. Available for fully remote B2B contracts from September 2026.",
   keywords: [
     "Platform Engineer",
     "MLOps Engineer",
@@ -51,7 +52,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Jack Devlin — Platform & MLOps Engineer",
     description:
-      "Platform & MLOps engineer. Resilient infrastructure for AI workloads and distributed systems. Available for fully remote B2B contracts from September 2026.",
+      "Platform & MLOps engineer. Production infrastructure for AI workloads and distributed systems. Available for fully remote B2B contracts from September 2026.",
     url: "https://devlinops.com",
     siteName: "Jack Devlin",
     type: "website",
@@ -68,7 +69,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Jack Devlin — Platform & MLOps Engineer",
     description:
-      "Platform & MLOps engineer. Resilient infrastructure for AI workloads and distributed systems. Available for fully remote B2B contracts from September 2026.",
+      "Platform & MLOps engineer. Production infrastructure for AI workloads and distributed systems. Available for fully remote B2B contracts from September 2026.",
     images: ["/og-image.png"],
   },
 };
@@ -139,11 +140,23 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
+        <Script
+          defer
+          data-domain="devlinops.com"
+          src="https://plausible.io/js/script.js"
+          strategy="afterInteractive"
+        />
       </head>
       <body className={inter.className}>
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:rounded-lg focus:bg-green-500 focus:text-black focus:font-semibold"
+        >
+          Skip to content
+        </a>
         <div className="relative flex min-h-screen flex-col">
           <Navigation />
-          <main className="flex-1">{children}</main>
+          <main id="main-content" className="flex-1">{children}</main>
           <Footer />
         </div>
         <KonamiCode />

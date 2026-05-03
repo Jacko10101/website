@@ -24,19 +24,25 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/projects/cicd-gitops`,
+      url: `${baseUrl}/projects/heimdall`,
       lastModified: currentDate,
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/projects/dora-devex`,
+      url: `${baseUrl}/projects/pipeline-platform`,
       lastModified: currentDate,
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
       url: `${baseUrl}/projects/observability`,
+      lastModified: currentDate,
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/projects/smart-home`,
       lastModified: currentDate,
       changeFrequency: 'monthly',
       priority: 0.8,

@@ -28,7 +28,7 @@ type Project = {
 
 const projects: Project[] = [
   {
-    id: "dora-devex",
+    id: "heimdall",
     title: "Heimdall",
     subtitle: "Deployment intelligence platform",
     description:
@@ -41,14 +41,14 @@ const projects: Project[] = [
       { value: "10 min", label: "data freshness" },
     ],
     tags: ["Python", "Flask", "TimescaleDB", "Prometheus", "ArgoCD", "Thanos"],
-    href: "/projects/dora-devex",
+    href: "/projects/heimdall",
     color: "#f59e0b",
     year: "2025 → ongoing",
     icon: <TrendingUp className="w-6 h-6" />,
     status: "live",
   },
   {
-    id: "cicd-gitops",
+    id: "pipeline-platform",
     title: "Pipeline Platform",
     subtitle: "Shared CI/CD library",
     description:
@@ -61,7 +61,7 @@ const projects: Project[] = [
       { value: "1 file", label: "to onboard" },
     ],
     tags: ["Bitbucket Shared Pipelines", "ArgoCD", "Image Updater", "Kubernetes", "Kustomize"],
-    href: "/projects/cicd-gitops",
+    href: "/projects/pipeline-platform",
     color: "#22c55e",
     year: "2023 → ongoing",
     icon: <Layers className="w-6 h-6" />,

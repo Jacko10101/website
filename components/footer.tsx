@@ -187,6 +187,9 @@ export function Footer() {
               <span className="text-green-400">all systems operational</span>
             </div>
           </div>
+          <div className="mt-3 pt-3 border-t border-gray-800/50 text-center text-gray-600">
+            press <kbd className="px-1.5 py-0.5 mx-1 rounded bg-gray-800/80 border border-gray-700 text-gray-400 text-[10px]">/</kbd> for the CLI · <kbd className="px-1.5 py-0.5 mx-1 rounded bg-gray-800/80 border border-gray-700 text-gray-400 text-[10px]">↑↑↓↓←→←→BA</kbd> for the other thing
+          </div>
         </div>
 
         {/* Bottom bar */}

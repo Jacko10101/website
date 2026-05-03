@@ -330,7 +330,7 @@ export default function HeimdallPage() {
               { label: "Data freshness", value: "Every 10 minutes" },
             ]}
             relatedProjects={[
-              { title: "CI/CD & GitOps Platform", href: "/projects/cicd-gitops" },
+              { title: "Pipeline Platform — shared CI/CD", href: "/projects/pipeline-platform" },
               { title: "Observability Stack", href: "/projects/observability" },
             ]}
           />
