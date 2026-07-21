@@ -51,22 +51,48 @@ const nodeInfo: Record<NodeKey, { title: string; description: string }> = {
   },
 };
 
+const ACTIVE_FILL = "oklch(0.72 0.19 150 / 0.1)";
+
 export function HeimdallArchitecture() {
-  const [active, setActive] = useState<NodeKey | null>(null);
+  const [selected, setSelected] = useState<NodeKey | null>(null);
+  const [hovered, setHovered] = useState<NodeKey | null>(null);
+  const active = hovered ?? selected;
   const isActive = (key: NodeKey) => active === key;
+
+  const toggle = (key: NodeKey) =>
+    setSelected((prev) => (prev === key ? null : key));
+
+  const nodeProps = (key: NodeKey) => ({
+    tabIndex: 0,
+    role: "button" as const,
+    "aria-label": `${nodeInfo[key].title} — show details`,
+    "aria-pressed": selected === key,
+    onClick: () => toggle(key),
+    onKeyDown: (e: React.KeyboardEvent<SVGGElement>) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        toggle(key);
+      }
+    },
+    onMouseEnter: () => setHovered(key),
+    onMouseLeave: () => setHovered(null),
+    onFocus: () => setHovered(key),
+    onBlur: () => setHovered(null),
+    className: "cursor-pointer outline-none",
+  });
 
   return (
     <div className="rounded-lg border border-border bg-card p-6">
       <h3 className="mb-1 text-lg font-semibold">Heimdall — system overview</h3>
       <p className="mb-4 text-xs text-muted-foreground">
-        Hover any node for a one-line explanation.
+        Click, tap or hover any node for a one-line explanation.
       </p>
 
       <div className="relative">
         <svg
           viewBox="0 0 900 540"
           className="w-full"
-          role="img"
+          role="group"
           aria-label="Heimdall architecture: four upstream sources feed a background collector, which writes to a database and an in-memory cache. A web app reads from both."
         >
           <defs>
@@ -94,21 +120,17 @@ export function HeimdallArchitecture() {
               { key: "jira", x: 690, label: "JIRA", sub: "tickets" },
             ] as const
           ).map((n) => (
-            <g
-              key={n.key}
-              onMouseEnter={() => setActive(n.key)}
-              onMouseLeave={() => setActive(null)}
-              className="cursor-pointer"
-            >
+            <g key={n.key} {...nodeProps(n.key)}>
               <rect
                 x={n.x}
                 y="50"
                 width="150"
                 height="60"
                 rx="8"
-                className={`stroke-border ${
-                  isActive(n.key) ? "fill-primary/20" : "fill-secondary"
+                className={`fill-secondary ${
+                  isActive(n.key) ? "stroke-primary" : "stroke-border"
                 }`}
+                style={isActive(n.key) ? { fill: ACTIVE_FILL } : undefined}
                 strokeWidth="2"
               />
               <text
@@ -148,20 +170,17 @@ export function HeimdallArchitecture() {
             background work
           </text>
 
-          <g
-            onMouseEnter={() => setActive("collector")}
-            onMouseLeave={() => setActive(null)}
-            className="cursor-pointer"
-          >
+          <g {...nodeProps("collector")}>
             <rect
               x="270"
               y="200"
               width="360"
               height="70"
               rx="10"
-              className={`stroke-border ${
-                isActive("collector") ? "fill-primary/20" : "fill-card"
+              className={`fill-card ${
+                isActive("collector") ? "stroke-primary" : "stroke-border"
               }`}
+              style={isActive("collector") ? { fill: ACTIVE_FILL } : undefined}
               strokeWidth="3"
             />
             <text
@@ -205,20 +224,17 @@ export function HeimdallArchitecture() {
             stores
           </text>
 
-          <g
-            onMouseEnter={() => setActive("database")}
-            onMouseLeave={() => setActive(null)}
-            className="cursor-pointer"
-          >
+          <g {...nodeProps("database")}>
             <rect
               x="120"
               y="345"
               width="240"
               height="70"
               rx="8"
-              className={`stroke-border ${
-                isActive("database") ? "fill-primary/20" : "fill-card"
+              className={`fill-card ${
+                isActive("database") ? "stroke-primary" : "stroke-border"
               }`}
+              style={isActive("database") ? { fill: ACTIVE_FILL } : undefined}
               strokeWidth="2"
             />
             <text
@@ -239,20 +255,17 @@ export function HeimdallArchitecture() {
             </text>
           </g>
 
-          <g
-            onMouseEnter={() => setActive("cache")}
-            onMouseLeave={() => setActive(null)}
-            className="cursor-pointer"
-          >
+          <g {...nodeProps("cache")}>
             <rect
               x="540"
               y="345"
               width="240"
               height="70"
               rx="8"
-              className={`stroke-border ${
-                isActive("cache") ? "fill-primary/20" : "fill-card"
+              className={`fill-card ${
+                isActive("cache") ? "stroke-primary" : "stroke-border"
               }`}
+              style={isActive("cache") ? { fill: ACTIVE_FILL } : undefined}
               strokeWidth="2"
             />
             <text
@@ -296,20 +309,17 @@ export function HeimdallArchitecture() {
             web
           </text>
 
-          <g
-            onMouseEnter={() => setActive("web")}
-            onMouseLeave={() => setActive(null)}
-            className="cursor-pointer"
-          >
+          <g {...nodeProps("web")}>
             <rect
               x="270"
               y="465"
               width="360"
               height="55"
               rx="10"
-              className={`stroke-border ${
-                isActive("web") ? "fill-primary/20" : "fill-card"
+              className={`fill-card ${
+                isActive("web") ? "stroke-primary" : "stroke-border"
               }`}
+              style={isActive("web") ? { fill: ACTIVE_FILL } : undefined}
               strokeWidth="3"
             />
             <text

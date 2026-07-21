@@ -3,12 +3,21 @@
 import { useState } from "react";
 import { Send, Loader2, CheckCircle, AlertCircle } from "lucide-react";
 
+const WEB3FORMS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_KEY;
+
 export function ContactForm() {
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!WEB3FORMS_KEY) {
+      setStatus("error");
+      setErrorMessage("The form isn't configured right now — please email jack@devlinops.com directly.");
+      return;
+    }
+
     setStatus("submitting");
     setErrorMessage("");
 
@@ -26,6 +35,8 @@ export function ContactForm() {
       if (data.success) {
         setStatus("success");
         form.reset();
+        // Re-enable the form after a moment so a second message can be sent.
+        setTimeout(() => setStatus("idle"), 6000);
       } else {
         setStatus("error");
         setErrorMessage(data.message || "Something went wrong. Please try again.");
@@ -38,9 +49,18 @@ export function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <input type="hidden" name="access_key" value={process.env.NEXT_PUBLIC_WEB3FORMS_KEY} />
-      <input type="hidden" name="subject" value="New contact from DevlinOps" />
+      <input type="hidden" name="access_key" value={WEB3FORMS_KEY} />
       <input type="hidden" name="from_name" value="DevlinOps Contact Form" />
+
+      {/* Honeypot — hidden from real users, bots tend to fill it. Web3forms drops any submission where this is set. */}
+      <input
+        type="checkbox"
+        name="botcheck"
+        tabIndex={-1}
+        autoComplete="off"
+        className="hidden"
+        aria-hidden="true"
+      />
 
       <div className="grid gap-6 sm:grid-cols-2">
         <div>
@@ -57,7 +77,7 @@ export function ContactForm() {
             required
             disabled={status === "submitting"}
             className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
-            placeholder="John Doe"
+            placeholder="Your name"
           />
         </div>
 
@@ -75,7 +95,7 @@ export function ContactForm() {
             required
             disabled={status === "submitting"}
             className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
-            placeholder="john@company.com"
+            placeholder="you@company.com"
           />
         </div>
       </div>
@@ -112,7 +132,7 @@ export function ContactForm() {
           disabled={status === "submitting"}
           rows={8}
           className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 resize-y disabled:opacity-50"
-          placeholder="Hi Jack — saw your site, would love to chat about..."
+          placeholder="What you're working on, what's broken, or just hello."
         />
       </div>
 
@@ -129,25 +149,27 @@ export function ContactForm() {
             </>
           ) : (
             <>
-              Send Message
+              Send message
               <Send className="h-4 w-4 transition-all" />
             </>
           )}
         </button>
 
-        {status === "success" && (
-          <div className="flex items-center gap-2 text-sm text-green-400">
-            <CheckCircle className="h-4 w-4" />
-            Message sent! I'll get back to you soon.
-          </div>
-        )}
+        <div aria-live="polite" role="status">
+          {status === "success" && (
+            <div className="flex items-center gap-2 text-sm text-primary">
+              <CheckCircle className="h-4 w-4" />
+              Message sent. I usually reply within a day.
+            </div>
+          )}
 
-        {status === "error" && (
-          <div className="flex items-center gap-2 text-sm text-red-400">
-            <AlertCircle className="h-4 w-4" />
-            {errorMessage}
-          </div>
-        )}
+          {status === "error" && (
+            <div className="flex items-center gap-2 text-sm text-error">
+              <AlertCircle className="h-4 w-4" />
+              {errorMessage}
+            </div>
+          )}
+        </div>
       </div>
     </form>
   );

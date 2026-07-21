@@ -1,15 +1,22 @@
-import { HeroJourney } from "@/components/hero-journey";
-import { WhatIDo } from "@/components/what-i-do";
+import { Hero } from "@/components/hero";
+import { StatusTicker } from "@/components/status-ticker";
+import { PipelineStory, PipelineStoryMobile } from "@/components/pipeline-story";
+import { SystemMap } from "@/components/system-map";
 import { FeaturedProjects } from "@/components/featured-projects";
-import { CTASection } from "@/components/cta-section";
+import { ContactCTA } from "@/components/contact-cta";
+import { TestimonialBlock } from "@/components/testimonial";
 
 export default function Home() {
   return (
     <>
-      <HeroJourney />
-      <WhatIDo />
+      <Hero />
+      <StatusTicker />
+      <PipelineStory />
+      <PipelineStoryMobile />
+      <SystemMap />
       <FeaturedProjects />
-      <CTASection />
+      <TestimonialBlock />
+      <ContactCTA />
     </>
   );
 }

@@ -2,8 +2,12 @@
 
 import { useState } from "react";
 
+const ACTIVE_FILL = "oklch(0.72 0.19 150 / 0.1)";
+
 export function ObservabilityArchitecture() {
-  const [activeNode, setActiveNode] = useState<string | null>(null);
+  const [selected, setSelected] = useState<string | null>(null);
+  const [hovered, setHovered] = useState<string | null>(null);
+  const activeNode = hovered ?? selected;
 
   const nodes = {
     services: {
@@ -52,14 +56,45 @@ export function ObservabilityArchitecture() {
     },
   };
 
+  const toggle = (key: string) =>
+    setSelected((prev) => (prev === key ? null : key));
+
+  const nodeProps = (key: keyof typeof nodes) => ({
+    tabIndex: 0,
+    role: "button" as const,
+    "aria-label": `${nodes[key].title} — show details`,
+    "aria-pressed": selected === key,
+    onClick: () => toggle(key),
+    onKeyDown: (e: React.KeyboardEvent<SVGGElement>) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        toggle(key);
+      }
+    },
+    onMouseEnter: () => setHovered(key),
+    onMouseLeave: () => setHovered(null),
+    onFocus: () => setHovered(key),
+    onBlur: () => setHovered(null),
+    className: "cursor-pointer outline-none",
+  });
+
+  const isActive = (key: string) => activeNode === key;
+  const rectClass = (key: string, base: string) =>
+    `${base} ${isActive(key) ? "stroke-primary" : "stroke-border"}`;
+  const rectStyle = (key: string) =>
+    isActive(key) ? { fill: ACTIVE_FILL } : undefined;
+
   return (
     <div className="rounded-lg border border-border bg-card p-6">
-      <h3 className="mb-4 text-lg font-semibold">Enterprise Observability Stack Architecture</h3>
+      <h3 className="mb-1 text-lg font-semibold">Observability stack — system overview</h3>
+      <p className="mb-4 text-xs text-muted-foreground">
+        Click, tap or hover any node for a one-line explanation.
+      </p>
       <div className="relative">
         <svg
           viewBox="0 0 950 720"
           className="w-full"
-          role="img"
+          role="group"
           aria-label="Enterprise observability platform architecture diagram showing Prometheus metrics scraping from Kubernetes microservices and infrastructure exporters, Thanos long-term storage on AWS S3, Loki log aggregation with Promtail collectors, Tempo distributed tracing with OpenTelemetry, Grafana unified visualization dashboards for metrics logs and traces, Alertmanager alert routing with smart inhibition, and Microsoft Teams notification integration for DevOps incident management"
         >
           <defs>
@@ -74,42 +109,37 @@ export function ObservabilityArchitecture() {
               <polygon points="0 0, 10 3, 0 6" className="fill-primary" />
             </marker>
             <marker
-              id="arrowhead-green"
+              id="arrowhead-muted"
               markerWidth="10"
               markerHeight="10"
               refX="9"
               refY="3"
               orient="auto"
             >
-              <polygon points="0 0, 10 3, 0 6" className="fill-green-500" />
+              <polygon points="0 0, 10 3, 0 6" className="fill-muted-foreground" />
             </marker>
             <marker
-              id="arrowhead-purple"
+              id="arrowhead-error"
               markerWidth="10"
               markerHeight="10"
               refX="9"
               refY="3"
               orient="auto"
             >
-              <polygon points="0 0, 10 3, 0 6" className="fill-purple-500" />
+              <polygon points="0 0, 10 3, 0 6" className="fill-error" />
             </marker>
           </defs>
 
           {/* Data Sources - Left Side */}
-          <g
-            onMouseEnter={() => setActiveNode("exporters")}
-            onMouseLeave={() => setActiveNode(null)}
-            className="cursor-pointer"
-          >
+          <g {...nodeProps("exporters")}>
             <rect
               x="50"
               y="80"
               width="160"
               height="100"
               rx="8"
-              className={`stroke-border ${
-                activeNode === "exporters" ? "fill-primary/20" : "fill-secondary"
-              }`}
+              className={rectClass("exporters", "fill-secondary")}
+              style={rectStyle("exporters")}
               strokeWidth="2"
             />
             <text x="130" y="105" textAnchor="middle" className="fill-foreground text-sm font-semibold">
@@ -129,20 +159,15 @@ export function ObservabilityArchitecture() {
             </text>
           </g>
 
-          <g
-            onMouseEnter={() => setActiveNode("services")}
-            onMouseLeave={() => setActiveNode(null)}
-            className="cursor-pointer"
-          >
+          <g {...nodeProps("services")}>
             <rect
               x="50"
               y="200"
               width="160"
               height="80"
               rx="8"
-              className={`stroke-border ${
-                activeNode === "services" ? "fill-primary/20" : "fill-secondary"
-              }`}
+              className={rectClass("services", "fill-secondary")}
+              style={rectStyle("services")}
               strokeWidth="2"
             />
             <text x="130" y="225" textAnchor="middle" className="fill-foreground text-sm font-semibold">
@@ -160,20 +185,15 @@ export function ObservabilityArchitecture() {
           </g>
 
           {/* Metrics Path - Center */}
-          <g
-            onMouseEnter={() => setActiveNode("prometheus")}
-            onMouseLeave={() => setActiveNode(null)}
-            className="cursor-pointer"
-          >
+          <g {...nodeProps("prometheus")}>
             <rect
               x="280"
               y="130"
               width="160"
               height="90"
               rx="8"
-              className={`stroke-border ${
-                activeNode === "prometheus" ? "fill-primary/20" : "fill-card"
-              }`}
+              className={rectClass("prometheus", "fill-card")}
+              style={rectStyle("prometheus")}
               strokeWidth="3"
             />
             <text x="360" y="160" textAnchor="middle" className="fill-foreground text-base font-bold">
@@ -190,20 +210,15 @@ export function ObservabilityArchitecture() {
             </text>
           </g>
 
-          <g
-            onMouseEnter={() => setActiveNode("thanos")}
-            onMouseLeave={() => setActiveNode(null)}
-            className="cursor-pointer"
-          >
+          <g {...nodeProps("thanos")}>
             <rect
               x="500"
               y="130"
               width="140"
               height="70"
               rx="8"
-              className={`stroke-border ${
-                activeNode === "thanos" ? "fill-primary/20" : "fill-card"
-              }`}
+              className={rectClass("thanos", "fill-card")}
+              style={rectStyle("thanos")}
               strokeWidth="2"
             />
             <text x="570" y="155" textAnchor="middle" className="fill-foreground text-sm font-semibold">
@@ -217,20 +232,15 @@ export function ObservabilityArchitecture() {
             </text>
           </g>
 
-          <g
-            onMouseEnter={() => setActiveNode("s3")}
-            onMouseLeave={() => setActiveNode(null)}
-            className="cursor-pointer"
-          >
+          <g {...nodeProps("s3")}>
             <rect
               x="700"
               y="130"
               width="140"
               height="70"
               rx="8"
-              className={`stroke-border ${
-                activeNode === "s3" ? "fill-primary/20" : "fill-secondary"
-              }`}
+              className={rectClass("s3", "fill-secondary")}
+              style={rectStyle("s3")}
               strokeWidth="2"
             />
             <text x="770" y="155" textAnchor="middle" className="fill-foreground text-sm font-semibold">
@@ -245,20 +255,15 @@ export function ObservabilityArchitecture() {
           </g>
 
           {/* Logs Path - Bottom Left */}
-          <g
-            onMouseEnter={() => setActiveNode("promtail")}
-            onMouseLeave={() => setActiveNode(null)}
-            className="cursor-pointer"
-          >
+          <g {...nodeProps("promtail")}>
             <rect
               x="50"
               y="380"
               width="160"
               height="80"
               rx="8"
-              className={`stroke-border ${
-                activeNode === "promtail" ? "fill-primary/20" : "fill-secondary"
-              }`}
+              className={rectClass("promtail", "fill-secondary")}
+              style={rectStyle("promtail")}
               strokeWidth="2"
             />
             <text x="130" y="405" textAnchor="middle" className="fill-foreground text-sm font-semibold">
@@ -275,20 +280,15 @@ export function ObservabilityArchitecture() {
             </text>
           </g>
 
-          <g
-            onMouseEnter={() => setActiveNode("loki")}
-            onMouseLeave={() => setActiveNode(null)}
-            className="cursor-pointer"
-          >
+          <g {...nodeProps("loki")}>
             <rect
               x="50"
               y="490"
               width="160"
               height="80"
               rx="8"
-              className={`stroke-border ${
-                activeNode === "loki" ? "fill-primary/20" : "fill-card"
-              }`}
+              className={rectClass("loki", "fill-card")}
+              style={rectStyle("loki")}
               strokeWidth="3"
             />
             <text x="130" y="515" textAnchor="middle" className="fill-foreground text-base font-bold">
@@ -306,20 +306,15 @@ export function ObservabilityArchitecture() {
           </g>
 
           {/* Traces Path - Bottom Right */}
-          <g
-            onMouseEnter={() => setActiveNode("tempo")}
-            onMouseLeave={() => setActiveNode(null)}
-            className="cursor-pointer"
-          >
+          <g {...nodeProps("tempo")}>
             <rect
               x="280"
               y="490"
               width="160"
               height="80"
               rx="8"
-              className={`stroke-border ${
-                activeNode === "tempo" ? "fill-primary/20" : "fill-card"
-              }`}
+              className={rectClass("tempo", "fill-card")}
+              style={rectStyle("tempo")}
               strokeWidth="3"
             />
             <text x="360" y="515" textAnchor="middle" className="fill-foreground text-base font-bold">
@@ -337,20 +332,15 @@ export function ObservabilityArchitecture() {
           </g>
 
           {/* Visualization - Right Center */}
-          <g
-            onMouseEnter={() => setActiveNode("grafana")}
-            onMouseLeave={() => setActiveNode(null)}
-            className="cursor-pointer"
-          >
+          <g {...nodeProps("grafana")}>
             <rect
               x="500"
               y="280"
               width="140"
               height="100"
               rx="8"
-              className={`stroke-border ${
-                activeNode === "grafana" ? "fill-primary/20" : "fill-card"
-              }`}
+              className={rectClass("grafana", "fill-card")}
+              style={rectStyle("grafana")}
               strokeWidth="3"
             />
             <text x="570" y="310" textAnchor="middle" className="fill-foreground text-base font-bold">
@@ -371,20 +361,15 @@ export function ObservabilityArchitecture() {
           </g>
 
           {/* Alerting - Right Bottom */}
-          <g
-            onMouseEnter={() => setActiveNode("alertmanager")}
-            onMouseLeave={() => setActiveNode(null)}
-            className="cursor-pointer"
-          >
+          <g {...nodeProps("alertmanager")}>
             <rect
               x="700"
               y="280"
               width="140"
               height="90"
               rx="8"
-              className={`stroke-border ${
-                activeNode === "alertmanager" ? "fill-primary/20" : "fill-card"
-              }`}
+              className={rectClass("alertmanager", "fill-card")}
+              style={rectStyle("alertmanager")}
               strokeWidth="2"
             />
             <text x="770" y="310" textAnchor="middle" className="fill-foreground text-sm font-semibold">
@@ -401,20 +386,15 @@ export function ObservabilityArchitecture() {
             </text>
           </g>
 
-          <g
-            onMouseEnter={() => setActiveNode("teams")}
-            onMouseLeave={() => setActiveNode(null)}
-            className="cursor-pointer"
-          >
+          <g {...nodeProps("teams")}>
             <rect
               x="700"
               y="410"
               width="140"
               height="80"
               rx="8"
-              className={`stroke-border ${
-                activeNode === "teams" ? "fill-primary/20" : "fill-card"
-              }`}
+              className={rectClass("teams", "fill-card")}
+              style={rectStyle("teams")}
               strokeWidth="2"
             />
             <text x="770" y="435" textAnchor="middle" className="fill-foreground text-sm font-semibold">
@@ -438,34 +418,34 @@ export function ObservabilityArchitecture() {
           <line x1="640" y1="165" x2="700" y2="165" className="stroke-primary" strokeWidth="2" markerEnd="url(#arrowhead)" />
 
           {/* Flow arrows - Logs path: Microservices → Promtail → Loki */}
-          <line x1="130" y1="280" x2="130" y2="380" className="stroke-green-500" strokeWidth="2" markerEnd="url(#arrowhead-green)" />
-          <line x1="130" y1="460" x2="130" y2="490" className="stroke-green-500" strokeWidth="2" markerEnd="url(#arrowhead-green)" />
+          <line x1="130" y1="280" x2="130" y2="380" className="stroke-primary" strokeWidth="2" markerEnd="url(#arrowhead)" />
+          <line x1="130" y1="460" x2="130" y2="490" className="stroke-primary" strokeWidth="2" markerEnd="url(#arrowhead)" />
 
           {/* Flow arrows - Traces path: Microservices → Tempo */}
-          <line x1="180" y1="250" x2="320" y2="490" className="stroke-purple-500" strokeWidth="2" markerEnd="url(#arrowhead-purple)" />
+          <line x1="180" y1="250" x2="320" y2="490" className="stroke-muted-foreground" strokeWidth="2" markerEnd="url(#arrowhead-muted)" />
 
           {/* Grafana queries */}
-          <line x1="440" y1="190" x2="530" y2="280" className="stroke-blue-500" strokeWidth="2" strokeDasharray="5,5" />
-          <line x1="180" y1="530" x2="500" y2="360" className="stroke-blue-500" strokeWidth="2" strokeDasharray="5,5" />
-          <line x1="410" y1="530" x2="520" y2="380" className="stroke-blue-500" strokeWidth="2" strokeDasharray="5,5" />
+          <line x1="440" y1="190" x2="530" y2="280" className="stroke-muted-foreground" strokeWidth="2" strokeDasharray="5,5" opacity="0.6" />
+          <line x1="180" y1="530" x2="500" y2="360" className="stroke-muted-foreground" strokeWidth="2" strokeDasharray="5,5" opacity="0.6" />
+          <line x1="410" y1="530" x2="520" y2="380" className="stroke-muted-foreground" strokeWidth="2" strokeDasharray="5,5" opacity="0.6" />
 
           {/* Alerting flow */}
-          <line x1="360" y1="220" x2="760" y2="280" className="stroke-red-500" strokeWidth="2" markerEnd="url(#arrowhead)" strokeDasharray="3,3" />
-          <line x1="770" y1="370" x2="770" y2="410" className="stroke-red-500" strokeWidth="2" markerEnd="url(#arrowhead)" />
+          <line x1="360" y1="220" x2="760" y2="280" className="stroke-error" strokeWidth="2" markerEnd="url(#arrowhead-error)" strokeDasharray="3,3" />
+          <line x1="770" y1="370" x2="770" y2="410" className="stroke-error" strokeWidth="2" markerEnd="url(#arrowhead-error)" />
 
           {/* Labels */}
           <text x="230" y="140" className="fill-primary text-[8px]">scrape</text>
           <text x="230" y="230" className="fill-primary text-[8px]">scrape</text>
           <text x="460" y="158" className="fill-primary text-[8px]">store</text>
           <text x="660" y="158" className="fill-primary text-[8px]">archive</text>
-          <text x="75" y="330" className="fill-green-500 text-[8px]">logs</text>
-          <text x="140" y="480" className="fill-green-500 text-[8px]">aggregate</text>
-          <text x="230" y="360" className="fill-purple-500 text-[8px]">traces</text>
-          <text x="460" y="245" className="fill-blue-500 text-[8px]">query</text>
-          <text x="280" y="430" className="fill-blue-500 text-[8px]">query</text>
-          <text x="450" y="450" className="fill-blue-500 text-[8px]">query</text>
-          <text x="520" y="250" className="fill-red-500 text-[8px]">alerts</text>
-          <text x="780" y="395" className="fill-red-500 text-[8px]">notify</text>
+          <text x="75" y="330" className="fill-primary text-[8px]">logs</text>
+          <text x="140" y="480" className="fill-primary text-[8px]">aggregate</text>
+          <text x="230" y="360" className="fill-muted-foreground text-[8px]">traces</text>
+          <text x="460" y="245" className="fill-muted-foreground text-[8px]">query</text>
+          <text x="280" y="430" className="fill-muted-foreground text-[8px]">query</text>
+          <text x="450" y="450" className="fill-muted-foreground text-[8px]">query</text>
+          <text x="520" y="250" className="fill-error text-[8px]">alerts</text>
+          <text x="780" y="395" className="fill-error text-[8px]">notify</text>
 
           {/* Cost savings legend */}
           <g>
@@ -485,7 +465,7 @@ export function ObservabilityArchitecture() {
           </g>
         </svg>
 
-        {/* Hover info panel */}
+        {/* Info panel for the selected-or-hovered node */}
         {activeNode && (
           <div className="mt-4 rounded-lg border border-primary/50 bg-primary/10 p-4">
             <h4 className="mb-1 font-semibold text-foreground">
@@ -503,16 +483,16 @@ export function ObservabilityArchitecture() {
           <strong className="text-primary">Metrics Flow:</strong> Services (expose /metrics) + Exporters → Prometheus (scrape) → Thanos → S3
         </p>
         <p>
-          <strong className="text-green-600 dark:text-green-400">Logs Flow:</strong> Services (stdout/stderr) → Promtail (DaemonSet collector) → Loki (aggregate)
+          <strong className="text-primary">Logs Flow:</strong> Services (stdout/stderr) → Promtail (DaemonSet collector) → Loki (aggregate)
         </p>
         <p>
-          <strong className="text-purple-600 dark:text-purple-400">Traces Flow:</strong> Services (OpenTelemetry instrumentation) → Tempo (distributed trace storage)
+          <strong className="text-foreground">Traces Flow:</strong> Services (OpenTelemetry instrumentation) → Tempo (distributed trace storage)
         </p>
         <p>
-          <strong className="text-blue-600 dark:text-blue-400">Visualization:</strong> Grafana queries Prometheus, Loki, and Tempo for unified observability (metrics + logs + traces)
+          <strong className="text-foreground">Visualization:</strong> Grafana queries Prometheus, Loki, and Tempo for unified observability (metrics + logs + traces)
         </p>
         <p>
-          <strong className="text-red-600 dark:text-red-400">Alerting:</strong> Prometheus → Alertmanager (routing + inhibition) → Teams (environment-specific channels)
+          <strong className="text-error">Alerting:</strong> Prometheus → Alertmanager (routing + inhibition) → Teams (environment-specific channels)
         </p>
       </div>
     </div>

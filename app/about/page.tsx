@@ -2,43 +2,40 @@
 
 import { useRef } from "react";
 import Image from "next/image";
-import Link from "next/link";
-import { motion, useScroll, useTransform, useInView } from "framer-motion";
-import { ArrowRight } from "lucide-react";
-import {
-  FadeUp,
-  StaggerContainer,
-  StaggerItem,
-  GradientOrb,
-  GridPattern,
-  GlassCard,
-} from "@/components/scroll-reveal";
+import { motion, useScroll } from "framer-motion";
+import { Download } from "lucide-react";
+import { SectionHeading } from "@/components/section-heading";
+import { ContactCTA } from "@/components/contact-cta";
 
-// Journey timeline data
+// Journey timeline data, styled as git log entries. Hashes are decorative.
 const journey = [
   {
+    hash: "a1b2c3f",
     year: "2023",
     title: "QA Engineer",
-    description: "Graduated with a BSc in Computer Science. Jumped straight into a massive monolith → microservices migration, building the first CI/CD pipelines from scratch.",
-    color: "#22c55e",
+    description:
+      "Graduated with a BSc in Computer Science. Jumped straight into a massive monolith → microservices migration, building the first CI/CD pipelines from scratch.",
   },
   {
+    hash: "d4e5f6a",
     year: "2024",
     title: "Platform Engineer",
-    description: "Took ownership of the platform. Built observability from zero, implemented GitOps with ArgoCD, and designed deployment automation for 20+ services.",
-    color: "#06b6d4",
+    description:
+      "Took ownership of the platform. Built observability from zero, implemented GitOps with ArgoCD, and designed deployment automation for 20+ services.",
   },
   {
+    hash: "b7c8d9e",
     year: "2025",
     title: "Site Reliability Engineer",
-    description: "Standardised the pipeline platform onto one shared library across every service. Started the deployment-metrics tooling that became Heimdall.",
-    color: "#8b5cf6",
+    description:
+      "Standardised the pipeline platform onto one shared library across every service. Started the deployment-metrics tooling that became Heimdall.",
   },
   {
+    hash: "f0a1b2c",
     year: "2026",
     title: "Platform & MLOps · MSc AI",
-    description: "Pivoting toward AI infrastructure. Finishing an MSc in Artificial Intelligence (August 2026). Operating as an independent B2B contractor, focused on the gap between data science and production.",
-    color: "#f59e0b",
+    description:
+      "Pivoting toward AI infrastructure. Finishing an MSc in Artificial Intelligence (August 2026). Operating as an independent B2B contractor, focused on the gap between data science and production.",
   },
 ];
 
@@ -66,239 +63,239 @@ const philosophy = [
   },
 ];
 
-// Tech stack with categories
-const techStack = [
-  { category: "Orchestration", items: ["Kubernetes", "EKS", "ArgoCD", "Helm", "Kustomize"] },
-  { category: "MLOps & AI", items: ["PyTorch", "MLflow", "KubeFlow", "NVIDIA GPU Operator", "Triton"] },
-  { category: "Observability", items: ["Prometheus", "Grafana", "Loki", "Tempo", "Thanos"] },
-  { category: "Cloud & IaC", items: ["AWS", "Terraform", "AWS CDK", "CloudFormation"] },
-  { category: "Languages", items: ["Python", "Bash", "TypeScript", "Go"] },
-  { category: "Security", items: ["Falco", "Veracode", "Istio", "OPA"] },
-  { category: "Data", items: ["Kafka", "PostgreSQL", "TimescaleDB", "Redis"] },
+// Tech stack, tiered honestly: what the case studies evidence in production
+// versus what I've used but wouldn't claim to have operated at scale.
+const stackTiers = [
+  {
+    id: "production",
+    label: "run-in-production/",
+    note: "Evidenced by the case studies. I have carried a pager for these.",
+    items: [
+      "Kubernetes",
+      "EKS",
+      "ArgoCD",
+      "Kustomize",
+      "Bitbucket Pipelines",
+      "Prometheus",
+      "Grafana",
+      "Loki",
+      "Thanos",
+      "Alertmanager",
+      "Kafka",
+      "Python",
+      "Flask",
+      "TimescaleDB",
+      "AWS",
+      "K3s",
+      "Home Assistant",
+      "Zigbee2MQTT",
+      "Tailscale",
+    ],
+  },
+  {
+    id: "working",
+    label: "working-knowledge/",
+    note: "Used in projects, coursework or smaller doses — not yet run at production scale.",
+    items: [
+      "Helm",
+      "Terraform",
+      "AWS CDK",
+      "CloudFormation",
+      "Bash",
+      "TypeScript",
+      "Go",
+      "PyTorch",
+      "MLflow",
+      "KubeFlow",
+      "NVIDIA GPU Operator",
+      "Triton",
+      "Tempo",
+      "Istio",
+      "OPA",
+      "Falco",
+      "Veracode",
+      "PostgreSQL",
+      "Redis",
+    ],
+  },
 ];
 
 // Hero section
 function AboutHero() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollY } = useScroll();
-  const y = useTransform(scrollY, [0, 500], [0, 150]);
-  const opacity = useTransform(scrollY, [0, 400], [1, 0]);
-
   return (
-    <motion.section
-      ref={containerRef}
-      style={{ opacity }}
-      className="relative min-h-[80vh] flex items-center justify-center overflow-hidden"
-    >
-      {/* Background elements */}
-      <GridPattern opacity={0.03} />
-      <GradientOrb className="-top-32 -left-32" color="green" size="xl" />
-      <GradientOrb className="-bottom-32 -right-32" color="cyan" size="lg" />
+    <section className="relative pt-28 md:pt-36 pb-20 overflow-hidden">
+      <div className="absolute inset-0 grid-background pointer-events-none" aria-hidden />
 
-      <motion.div style={{ y }} className="container px-4 relative z-10">
+      <div className="container px-4 relative z-10">
         <div className="max-w-5xl mx-auto">
-          <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+          <div className="flex flex-col lg:flex-row items-center lg:items-start gap-12 lg:gap-20">
             {/* Photo */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8 }}
-              className="relative flex-shrink-0"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="flex-shrink-0 w-64 md:w-72"
             >
-              <div className="relative w-64 h-64 md:w-80 md:h-80">
-                {/* Animated border */}
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-green-500 via-cyan-500 to-purple-500 opacity-50 blur-xl animate-pulse" />
-                <div className="absolute inset-[3px] rounded-2xl bg-background" />
+              {/* CRT-phosphor treatment — the photo renders as if on the
+                  site's own monitor: green duotone + scanlines + vignette. */}
+              <div className="relative w-64 h-64 md:w-72 md:h-72 rounded-md border border-border overflow-hidden glow-border">
+                <Image
+                  src="/jack-photo.jpg"
+                  alt="Jack Devlin"
+                  fill
+                  className="object-cover grayscale contrast-125 brightness-90 [filter:grayscale(1)_contrast(1.2)_brightness(0.9)_sepia(1)_hue-rotate(90deg)_saturate(1.4)]"
+                  priority
+                />
+                <div
+                  aria-hidden
+                  className="absolute inset-0 pointer-events-none [background-image:repeating-linear-gradient(0deg,transparent_0_2px,oklch(0_0_0_/_0.18)_2px_3px)]"
+                />
+                <div
+                  aria-hidden
+                  className="absolute inset-0 pointer-events-none [background:radial-gradient(ellipse_at_center,transparent_55%,oklch(0_0_0_/_0.45)_100%)]"
+                />
+              </div>
 
-                {/* Photo */}
-                <div className="absolute inset-[6px] rounded-xl overflow-hidden">
-                  <Image
-                    src="/jack-photo.jpg"
-                    alt="Jack Devlin"
-                    fill
-                    className="object-cover"
-                    priority
-                  />
-                </div>
-
-                {/* Status badge */}
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5 }}
-                  className="absolute -bottom-4 left-1/2 -translate-x-1/2 whitespace-nowrap"
-                >
-                  <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-sm font-mono">
-                    <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                    B2B contracts · September 2026
-                  </span>
-                </motion.div>
+              {/* Exif-style caption */}
+              <div className="mt-3 rounded-md border border-border bg-card px-4 py-3 font-mono text-xs text-muted-foreground space-y-1">
+                <p>jack.jpg · UK · platform engineer</p>
+                <p className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary" aria-hidden />
+                  <span className="text-foreground/80">available September 2026</span>
+                </p>
               </div>
             </motion.div>
 
             {/* Intro text */}
-            <div className="text-center lg:text-left">
+            <div className="text-center lg:text-left flex-1">
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-                className="mb-4"
+                transition={{ duration: 0.5, delay: 0.1 }}
               >
-                <span className="text-green-400 font-mono text-sm tracking-wider">
-                  {"// about me"}
-                </span>
+                <p className="font-mono text-sm text-primary mb-3" aria-hidden>
+                  <span className="text-muted-foreground">$</span> whoami
+                </p>
+                <h1 className="font-mono font-semibold tracking-tight text-4xl sm:text-5xl md:text-6xl text-foreground mb-6">
+                  Hey, I&apos;m Jack
+                </h1>
+                <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed">
+                  Independent B2B contractor based in the UK. I sit between data
+                  science and production, and I build the platforms that get models
+                  and services off a laptop and onto a Kubernetes cluster that
+                  doesn&apos;t fall over. Day job: Heimdall, a deployment dashboard
+                  20+ engineers open every morning, a shared CI/CD library across
+                  20 services, and the observability stack underneath. Night job:
+                  MSc in Artificial Intelligence, finishing August 2026.
+                </p>
               </motion.div>
 
-              <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-                className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6"
-              >
-                Hey, I&apos;m{" "}
-                <span className="bg-gradient-to-r from-green-400 to-cyan-400 bg-clip-text text-transparent">
-                  Jack
-                </span>
-              </motion.h1>
-
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="text-xl text-muted-foreground mb-8 leading-relaxed"
-              >
-                Independent B2B contractor based in the UK. I sit between data
-                science and production, and I build the platforms that get models
-                and services off a laptop and onto a Kubernetes cluster that
-                doesn&apos;t fall over. Day job: Heimdall, a deployment dashboard
-                20+ engineers open every morning, a shared CI/CD library across
-                20 services, and the observability stack underneath. Night job:
-                MSc in Artificial Intelligence, finishing August 2026.
-              </motion.p>
-
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-                className="flex flex-wrap gap-3 justify-center lg:justify-start mb-6"
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="flex flex-wrap gap-2 justify-center lg:justify-start mb-8"
               >
-                {["Platform Engineering", "MLOps", "Kubernetes", "AI Infrastructure", "Observability"].map((tag, i) => (
-                  <motion.span
+                {[
+                  "Platform Engineering",
+                  "MLOps",
+                  "Kubernetes",
+                  "AI Infrastructure",
+                  "Observability",
+                ].map((tag) => (
+                  <span
                     key={tag}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.4 + i * 0.05 }}
-                    className="px-4 py-2 text-sm font-medium rounded-full bg-secondary text-secondary-foreground border border-border"
+                    className="px-3 py-1.5 text-sm font-mono rounded-md bg-secondary text-secondary-foreground border border-border"
                   >
                     {tag}
-                  </motion.span>
+                  </span>
                 ))}
               </motion.div>
 
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.5 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
                 className="flex flex-wrap gap-4 justify-center lg:justify-start items-center"
               >
                 <a
                   href="/cv.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-green-500/40 text-green-400 font-medium hover:bg-green-500/10 hover:border-green-400 transition-colors"
+                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-md border border-border text-foreground font-mono font-semibold hover:border-primary/60 hover:text-primary transition-colors"
                 >
                   Download CV
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V3" />
-                  </svg>
+                  <Download className="w-4 h-4" aria-hidden />
                 </a>
               </motion.div>
             </div>
           </div>
         </div>
-      </motion.div>
-
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
-      >
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
-          className="flex flex-col items-center gap-2 text-muted-foreground"
-        >
-          <span className="text-xs font-mono">scroll</span>
-          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-          </svg>
-        </motion.div>
-      </motion.div>
-    </motion.section>
+      </div>
+    </section>
   );
 }
 
-// Timeline section
+// Timeline section, styled as `git log`
 function JourneyTimeline() {
+  const listRef = useRef<HTMLOListElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: listRef,
+    offset: ["start 0.8", "end 0.55"],
+  });
+
   return (
-    <section className="relative py-24 overflow-hidden">
-      <GradientOrb className="top-1/4 -right-64" color="purple" size="lg" />
+    <section className="relative py-24">
+      <div className="container px-4">
+        <SectionHeading
+          command="git log --oneline --reverse"
+          title="The story"
+          lede="From graduate QA to platform engineering. Here's how I got here."
+          align="center"
+        />
 
-      <div className="container px-4 relative z-10">
-        <FadeUp className="text-center mb-16">
-          <span className="inline-block text-green-400 font-mono text-sm mb-4 tracking-wider">
-            {"<journey />"}
-          </span>
-          <h2 className="text-4xl sm:text-5xl font-bold mb-6">
-            <span className="text-foreground">The </span>
-            <span className="bg-gradient-to-r from-green-400 to-cyan-400 bg-clip-text text-transparent">
-              Story
-            </span>
-          </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            From graduate QA to platform engineering. Here&apos;s how I got here.
-          </p>
-        </FadeUp>
+        <div className="max-w-3xl mx-auto">
+          <ol ref={listRef} className="relative">
+            {/* Static track */}
+            <div
+              className="absolute left-[7px] top-2 bottom-2 w-px bg-border"
+              aria-hidden
+            />
+            {/* Line that draws itself with scroll progress */}
+            <motion.div
+              style={{ scaleY: scrollYProgress }}
+              className="absolute left-[7px] top-2 bottom-2 w-px bg-primary origin-top"
+              aria-hidden
+            />
 
-        <div className="max-w-4xl mx-auto">
-          <StaggerContainer className="relative">
-            {/* Timeline line */}
-            <div className="absolute left-[27px] md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-green-500 via-cyan-500 to-purple-500 opacity-30" />
-
-            {journey.map((item, index) => (
-              <StaggerItem
+            {journey.map((item) => (
+              <motion.li
                 key={item.year}
-                className={`relative flex items-start gap-8 mb-12 ${
-                  index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-                }`}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.5 }}
+                className="relative pl-10 pb-12 last:pb-0"
               >
-                {/* Year badge */}
-                <div className="absolute left-0 md:left-1/2 md:-translate-x-1/2 z-10">
-                  <motion.div
-                    whileHover={{ scale: 1.1 }}
-                    className="w-14 h-14 rounded-full flex items-center justify-center font-mono text-sm font-bold"
-                    style={{
-                      backgroundColor: `${item.color}20`,
-                      color: item.color,
-                      border: `2px solid ${item.color}`,
-                    }}
-                  >
-                    {item.year}
-                  </motion.div>
-                </div>
+                {/* Commit dot */}
+                <span
+                  className="absolute left-0 top-1.5 w-[15px] h-[15px] rounded-full border-2 border-primary bg-background"
+                  aria-hidden
+                />
 
-                {/* Content */}
-                <div className={`flex-1 ml-20 md:ml-0 ${index % 2 === 0 ? "md:pr-16 md:text-right" : "md:pl-16"}`}>
-                  <GlassCard className="p-6">
-                    <h3 className="text-xl font-bold text-foreground mb-2">{item.title}</h3>
-                    <p className="text-muted-foreground leading-relaxed">{item.description}</p>
-                  </GlassCard>
-                </div>
-              </StaggerItem>
+                <p className="font-mono text-sm mb-2">
+                  <span className="text-primary">{item.hash}</span>{" "}
+                  <span className="text-muted-foreground">(tag: {item.year})</span>
+                </p>
+                <h3 className="font-mono font-semibold tracking-tight text-xl text-foreground mb-2">
+                  {item.title}
+                </h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  {item.description}
+                </p>
+              </motion.li>
             ))}
-          </StaggerContainer>
+          </ol>
         </div>
       </div>
     </section>
@@ -308,105 +305,80 @@ function JourneyTimeline() {
 // Philosophy section
 function PhilosophySection() {
   return (
-    <section className="relative py-24 overflow-hidden">
-      <GridPattern opacity={0.02} />
-      <GradientOrb className="-left-32 top-1/2" color="green" size="lg" />
+    <section className="relative py-24">
+      <div className="container px-4">
+        <SectionHeading
+          command="cat principles.md"
+          title="How I work"
+          lede="A few things I've come to believe after a few years on platform teams."
+          align="center"
+        />
 
-      <div className="container px-4 relative z-10">
-        <FadeUp className="text-center mb-16">
-          <span className="inline-block text-green-400 font-mono text-sm mb-4 tracking-wider">
-            {"<principles />"}
-          </span>
-          <h2 className="text-4xl sm:text-5xl font-bold mb-6">
-            <span className="text-foreground">How I </span>
-            <span className="bg-gradient-to-r from-green-400 to-cyan-400 bg-clip-text text-transparent">
-              Work
-            </span>
-          </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            A few things I&apos;ve come to believe after a few years on platform teams.
-          </p>
-        </FadeUp>
-
-        <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
           {philosophy.map((item, index) => (
-            <StaggerItem key={item.title}>
-              <GlassCard className="p-8 h-full group">
-                {/* Number */}
-                <div className="text-5xl font-bold text-green-500/20 mb-4 group-hover:text-green-500/40 transition-colors">
-                  0{index + 1}
-                </div>
-
-                <h3 className="text-xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors">
-                  {item.title}
-                </h3>
-                <p className="text-muted-foreground leading-relaxed">
-                  {item.description}
-                </p>
-              </GlassCard>
-            </StaggerItem>
+            <motion.div
+              key={item.title}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.5, delay: (index % 2) * 0.08 }}
+              className="rounded-md border border-border bg-card p-8 h-full"
+            >
+              <p className="font-mono text-sm text-primary mb-3" aria-hidden>
+                {String(index + 1).padStart(2, "0")}
+              </p>
+              <h3 className="font-mono font-semibold tracking-tight text-xl text-foreground mb-3">
+                {item.title}
+              </h3>
+              <p className="text-muted-foreground leading-relaxed">
+                {item.description}
+              </p>
+            </motion.div>
           ))}
-        </StaggerContainer>
+        </div>
       </div>
     </section>
   );
 }
 
-// Tech stack section
+// Tech stack section, tiered by what's actually been run in production
 function TechStackSection() {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
-
   return (
-    <section className="relative py-24 overflow-hidden">
-      <GradientOrb className="-right-32 top-0" color="cyan" size="lg" />
-      <GradientOrb className="-left-32 bottom-0" color="purple" size="md" />
+    <section className="relative py-24">
+      <div className="container px-4">
+        <SectionHeading
+          command="ls stack/"
+          title="Tech stack"
+          lede="What I work with, split honestly: things I've run in production, and things I know my way around."
+          align="center"
+        />
 
-      <div className="container px-4 relative z-10">
-        <FadeUp className="text-center mb-16">
-          <span className="inline-block text-green-400 font-mono text-sm mb-4 tracking-wider">
-            {"<stack />"}
-          </span>
-          <h2 className="text-4xl sm:text-5xl font-bold mb-6">
-            <span className="text-foreground">Tech </span>
-            <span className="bg-gradient-to-r from-green-400 to-cyan-400 bg-clip-text text-transparent">
-              Stack
-            </span>
-          </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            What I work with day to day.
-          </p>
-        </FadeUp>
-
-        <div ref={ref} className="max-w-5xl mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {techStack.map((category, categoryIndex) => (
-              <motion.div
-                key={category.category}
-                initial={{ opacity: 0, y: 30 }}
-                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-                transition={{ duration: 0.5, delay: categoryIndex * 0.1 }}
-              >
-                <GlassCard className="p-6 h-full">
-                  <h3 className="text-sm font-mono text-green-400 mb-4">{category.category}</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {category.items.map((tech, techIndex) => (
-                      <motion.span
-                        key={tech}
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-                        transition={{ delay: categoryIndex * 0.1 + techIndex * 0.05 + 0.2 }}
-                        whileHover={{ scale: 1.05 }}
-                        className="px-3 py-1.5 text-sm rounded-lg bg-secondary text-secondary-foreground border border-border hover:border-primary/30 transition-colors cursor-default"
-                      >
-                        {tech}
-                      </motion.span>
-                    ))}
-                  </div>
-                </GlassCard>
-              </motion.div>
-            ))}
-          </div>
+        <div className="max-w-4xl mx-auto space-y-6">
+          {stackTiers.map((tier) => (
+            <motion.div
+              key={tier.id}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.5 }}
+              className="rounded-md border border-border bg-card p-6 md:p-8"
+            >
+              <h3 className="font-mono font-semibold text-sm text-primary mb-1">
+                {tier.label}
+              </h3>
+              <p className="text-sm text-muted-foreground mb-5">{tier.note}</p>
+              <div className="flex flex-wrap gap-2">
+                {tier.items.map((tech) => (
+                  <span
+                    key={tech}
+                    className="px-3 py-1.5 text-sm font-mono rounded-md bg-secondary text-secondary-foreground border border-border"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>
@@ -416,108 +388,45 @@ function TechStackSection() {
 // Currently section
 function CurrentlySection() {
   return (
-    <section className="relative py-24 overflow-hidden">
-      <div className="container px-4 relative z-10">
+    <section className="relative py-24">
+      <div className="container px-4">
         <div className="max-w-3xl mx-auto">
-          <FadeUp>
-            <GlassCard className="p-8 md:p-12 relative overflow-hidden">
-              {/* Background decoration */}
-              <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-amber-500/10 to-transparent rounded-full blur-3xl" />
-
-              <div className="relative">
-                <span className="inline-block text-amber-400 font-mono text-sm mb-4 tracking-wider">
-                  {"<now />"}
-                </span>
-
-                <div className="flex items-start gap-6">
-                  <div className="flex-shrink-0 w-16 h-16 rounded-xl bg-amber-500/10 flex items-center justify-center">
-                    <span className="text-3xl">⚙️</span>
-                  </div>
-
-                  <div>
-                    <h3 className="text-2xl font-bold text-foreground mb-2">
-                      Right now
-                    </h3>
-                    <p className="text-xl text-amber-400 font-medium mb-4">
-                      Shipping Heimdall · Finishing the MSc · Lining up September 2026
-                    </p>
-                    <p className="text-muted-foreground leading-relaxed mb-4">
-                      Wrapping up my current contract on the platform team I helped
-                      build. Heimdall is still the centre of gravity — a deployment
-                      intelligence dashboard used daily by 20+ engineers across 17
-                      services.
-                    </p>
-                    <p className="text-muted-foreground leading-relaxed mb-4">
-                      Finishing an MSc in Artificial Intelligence in August 2026.
-                      The dissertation looks at deep learning applied to compute
-                      resource allocation — the same problem I keep running into on
-                      the platform side, so the two halves are converging.
-                    </p>
-                    <p className="text-sm text-muted-foreground/60">
-                      Available for fully remote B2B contracts (Outside IR35 or
-                      international equivalent) starting September 2026. Platform
-                      engineering, SRE, and MLOps / AI infrastructure work.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </GlassCard>
-          </FadeUp>
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.5 }}
+            className="rounded-md border border-border bg-card p-8 md:p-12"
+          >
+            <p className="font-mono text-sm text-primary mb-4" aria-hidden>
+              <span className="text-muted-foreground">$</span> status --now
+            </p>
+            <h2 className="font-mono font-semibold tracking-tight text-2xl md:text-3xl text-foreground mb-3">
+              Right now
+            </h2>
+            <p className="font-mono text-sm text-primary mb-6">
+              Shipping Heimdall · Finishing the MSc · Lining up September 2026
+            </p>
+            <p className="text-muted-foreground leading-relaxed mb-4">
+              Wrapping up my current contract on the platform team I helped
+              build. Heimdall is still the centre of gravity — a deployment
+              intelligence dashboard used daily by 20+ engineers across a
+              couple dozen services.
+            </p>
+            <p className="text-muted-foreground leading-relaxed mb-4">
+              Finishing an MSc in Artificial Intelligence in August 2026. The
+              dissertation looks at deep learning applied to compute resource
+              allocation — the same problem I keep running into on the platform
+              side, so the two halves are converging.
+            </p>
+            <p className="text-sm text-muted-foreground/70">
+              Available from September 2026 — contracting (Outside IR35 or
+              international equivalent) preferred, full-time considered,
+              remote-first with relocation on the table. Platform
+              engineering, SRE, and MLOps / AI infrastructure work.
+            </p>
+          </motion.div>
         </div>
-      </div>
-    </section>
-  );
-}
-
-// CTA section
-function CTASection() {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
-
-  return (
-    <section className="relative py-24 overflow-hidden">
-      <GridPattern opacity={0.03} />
-      <GradientOrb className="top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" color="green" size="xl" />
-
-      <div ref={ref} className="container px-4 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.8 }}
-          className="max-w-2xl mx-auto text-center"
-        >
-          <h2 className="text-4xl sm:text-5xl font-bold mb-6">
-            <span className="text-foreground">Still </span>
-            <span className="bg-gradient-to-r from-green-400 to-cyan-400 bg-clip-text text-transparent">
-              reading?
-            </span>
-          </h2>
-          <p className="text-muted-foreground text-lg mb-10">
-            Drop me a note. About a B2B engagement, an AI infrastructure problem,
-            or anything that overlaps with the work above.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-              <Link
-                href="/contact"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-green-500 to-emerald-500 text-black font-semibold hover:shadow-[0_0_40px_rgba(34,197,94,0.4)] transition-all duration-300"
-              >
-                Say hello
-                <ArrowRight className="w-5 h-5" />
-              </Link>
-            </motion.div>
-
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-              <Link
-                href="/projects"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl border-2 border-green-500/50 text-green-400 font-semibold hover:bg-green-500/10 hover:border-green-400 transition-all duration-300"
-              >
-                See the projects
-              </Link>
-            </motion.div>
-          </div>
-        </motion.div>
       </div>
     </section>
   );
@@ -526,13 +435,17 @@ function CTASection() {
 // Main page component
 export default function AboutPage() {
   return (
-    <div className="bg-background dark:bg-black">
+    <div className="bg-background">
       <AboutHero />
       <JourneyTimeline />
       <PhilosophySection />
       <TechStackSection />
       <CurrentlySection />
-      <CTASection />
+      <ContactCTA
+        command="say-hello"
+        title="Still reading?"
+        lede="Drop me a note. About a B2B engagement, an AI infrastructure problem, or anything that overlaps with the work above."
+      />
     </div>
   );
 }

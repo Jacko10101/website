@@ -1,23 +1,36 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { Inter } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { KonamiCode } from "@/components/konami-code";
+import { ChaosMode } from "@/components/chaos-mode";
+import { SmoothScroll } from "@/components/smooth-scroll";
 import { CliNavigation } from "@/components/cli-navigation";
 import { BackToTop } from "@/components/back-to-top";
+import { MotionProvider } from "@/components/motion-provider";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://devlinops.com"),
   title: {
-    default: "Jack Devlin — Platform & MLOps Engineer",
+    default: "Jack Devlin — Platform Engineer",
     template: "%s — Jack Devlin",
   },
   description:
-    "Platform & MLOps engineer. Production infrastructure for AI workloads and distributed systems — Kubernetes, GPU scheduling, GitOps, observability. Available for fully remote B2B contracts from September 2026.",
+    "Platform engineer. Kubernetes, GitOps, CI/CD and observability infrastructure, increasingly for AI workloads. Available from September 2026 — contract or full-time, remote-first, open to relocation.",
   keywords: [
     "Platform Engineer",
     "MLOps Engineer",
@@ -50,9 +63,9 @@ export const metadata: Metadata = {
     ],
   },
   openGraph: {
-    title: "Jack Devlin — Platform & MLOps Engineer",
+    title: "Jack Devlin — Platform Engineer",
     description:
-      "Platform & MLOps engineer. Production infrastructure for AI workloads and distributed systems. Available for fully remote B2B contracts from September 2026.",
+      "Platform engineer. Kubernetes, GitOps and observability infrastructure, increasingly for AI workloads. Available from September 2026 — contract or full-time, remote-first, open to relocation.",
     url: "https://devlinops.com",
     siteName: "Jack Devlin",
     type: "website",
@@ -61,15 +74,15 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Jack Devlin — Platform & MLOps Engineer",
+        alt: "Jack Devlin — Platform Engineer",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Jack Devlin — Platform & MLOps Engineer",
+    title: "Jack Devlin — Platform Engineer",
     description:
-      "Platform & MLOps engineer. Production infrastructure for AI workloads and distributed systems. Available for fully remote B2B contracts from September 2026.",
+      "Platform engineer. Kubernetes, GitOps and observability infrastructure, increasingly for AI workloads. Available from September 2026 — contract or full-time, remote-first, open to relocation.",
     images: ["/og-image.png"],
   },
 };
@@ -86,7 +99,7 @@ export default function RootLayout({
         "@type": "Person",
         "@id": "https://devlinops.com/#person",
         "name": "Jack Devlin",
-        "jobTitle": "Platform & MLOps Engineer",
+        "jobTitle": "Platform Engineer",
         "url": "https://devlinops.com",
         "email": "jack@devlinops.com",
         "address": {
@@ -116,7 +129,7 @@ export default function RootLayout({
         ],
         "hasOccupation": {
           "@type": "Occupation",
-          "name": "Platform & MLOps Engineer",
+          "name": "Platform Engineer",
           "skills":
             "Kubernetes, MLOps, GPU scheduling, AWS, ArgoCD, GitOps, CI/CD, Observability, Python, PyTorch",
         },
@@ -129,6 +142,30 @@ export default function RootLayout({
         "publisher": {
           "@id": "https://devlinops.com/#person",
         },
+      },
+      {
+        "@type": "ProfessionalService",
+        "@id": "https://devlinops.com/#service",
+        "name": "DevlinOps",
+        "url": "https://devlinops.com",
+        "description":
+          "Independent platform & MLOps engineering for teams running AI workloads and distributed systems — Kubernetes, GPU scheduling, GitOps, CI/CD and observability.",
+        "provider": {
+          "@id": "https://devlinops.com/#person",
+        },
+        "areaServed": {
+          "@type": "Place",
+          "name": "Remote · worldwide",
+        },
+        "availableLanguage": "en",
+        "serviceType": [
+          "Platform Engineering",
+          "MLOps",
+          "AI Infrastructure",
+          "Site Reliability Engineering",
+          "GitOps & CI/CD",
+          "Observability",
+        ],
       },
     ],
   };
@@ -147,21 +184,25 @@ export default function RootLayout({
           strategy="afterInteractive"
         />
       </head>
-      <body className={inter.className}>
+      <body className={`${inter.variable} ${jetbrainsMono.variable} font-sans`}>
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:rounded-lg focus:bg-green-500 focus:text-black focus:font-semibold"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:rounded-lg focus:bg-primary focus:text-primary-foreground focus:font-semibold"
         >
           Skip to content
         </a>
-        <div className="relative flex min-h-screen flex-col">
-          <Navigation />
-          <main id="main-content" className="flex-1">{children}</main>
-          <Footer />
-        </div>
-        <KonamiCode />
-        <CliNavigation />
-        <BackToTop />
+        <MotionProvider>
+          <div className="relative flex min-h-screen flex-col">
+            <Navigation />
+            <main id="main-content" className="flex-1">{children}</main>
+            <Footer />
+          </div>
+          <SmoothScroll />
+          <KonamiCode />
+          <ChaosMode />
+          <CliNavigation />
+          <BackToTop />
+        </MotionProvider>
       </body>
     </html>
   );

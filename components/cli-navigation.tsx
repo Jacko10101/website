@@ -23,20 +23,19 @@ export function CliNavigation() {
     "/contact": { path: "/contact", description: "Get in touch" },
   };
 
-  // Easter eggs
+  // Easter eggs — every number here is measured elsewhere on the site.
   const secrets = [
-    "🎯 Favorite tech: Kubernetes, ArgoCD, Prometheus",
-    "☕ Coffee consumption: ~4 cups/day (monitoring not included)",
-    "🐛 Bugs fixed: Too many to count (see 750+ tickets)",
-    "🚀 Deployment velocity: 400+ deploys/month",
-    "💰 Cost savings: $750K+ through platform optimization",
-    "🎓 Currently: MSc AI in progress",
-    "🔥 Hidden talent: Bash scripting wizard (1000+ line scripts)",
+    "preferred_stack: Kubernetes, ArgoCD, Prometheus",
+    "observability_savings: ~£95k/yr — measured, not projected",
+    "deploy_rate: ~400/month across the platform",
+    "heimdall_daily_users: 20+",
+    "msc_ai: in progress",
+    "longest_bash_script: longer than it should have been",
   ];
 
   // Vim mode state
   const [vimMode, setVimMode] = useState(false);
-  const [vimContent, setVimContent] = useState(`// Welcome to vim! (readonly mode)
+  const [vimContent] = useState(`// Welcome to vim (readonly mode)
 // This is a simplified vim simulator
 // Commands: :q to quit, :wq to "save" and quit
 // Press i for INSERT mode, ESC for NORMAL mode
@@ -124,8 +123,9 @@ export function DevlinOps() {
     argocd <args>          ArgoCD commands (try: app list)
     git <args>             Git commands (try: status, log)
 
-  Fun Stuff:
-    snake                  🐍 Play kubectl snake
+  Diversions:
+    oncall                 Take the pager. Good luck
+    chaos                  Unleash the chaos monkey on this page
     neofetch               Display system info
     vim                    Open vim (good luck exiting)
     cowsay <msg>           Make a cow say something
@@ -134,8 +134,8 @@ export function DevlinOps() {
   Other:
     whoami                 Display user info
     hire                   Get in touch
-    sudo <cmd>             Try it...
-    rm -rf /               Don't do it...
+    sudo <cmd>             If you must
+    rm -rf /               Best not
     clear                  Clear terminal
     exit                   Close terminal
     help                   Show this help message`;
@@ -185,26 +185,25 @@ export function DevlinOps() {
         if (!arg) {
           output = "Error: kubectl requires a subcommand";
         } else if (arg === "get pods" || arg === "get pod" || arg === "get po") {
-          output = `NAME                                   READY   STATUS      RESTARTS   AGE
-devlinops-frontend-7d9f8b-xkcd2        1/1     Running     0          42d
-prometheus-server-5f7b8d-h4x0r         1/1     Running     0          100d
-argocd-application-ctrl-chaos          1/1     Running     1337       69d
-platform-engineer-sleeping             0/1     CrashLoop   3          4h
-coffee-deployment-critical             2/2     Running     0          5m
-k8s-api-probably-fine                  1/1     Running     0          999d
-prod-db-definitely-not-staging         1/1     Running     0          1d
-helm-upgrade-yolo-69420                1/1     Running     0          10m`;
+          output = `NAME                                READY   STATUS    RESTARTS   AGE
+devlinops-site-7d9f8b-x2c4k         1/1     Running   0          42d
+prometheus-server-5f7b8d-q9r7t      1/1     Running   0          100d
+argocd-application-controller-0     1/1     Running   0          69d
+grafana-6c4f9d-w1n2r                1/1     Running   0          100d
+staging-definitely-isnt-prod-0      1/1     Running   0          3d
+backlog-processor-0                 0/1     Pending   0          999d`;
         } else if (arg === "get nodes" || arg === "get node" || arg === "get no") {
-          output = `NAME                          STATUS   ROLES           AGE     VERSION
-node-caffeinated-1            Ready    control-plane   365d    v1.30.0
-node-works-on-my-machine-2    Ready    <none>          200d    v1.30.0
-node-friday-deploy-survivor   Ready    <none>          100d    v1.30.0
-node-probably-aws-1           Ready    <none>          50d     v1.30.0`;
+          output = `NAME              STATUS   ROLES           AGE    VERSION
+node-1            Ready    control-plane   365d   v1.30.0
+node-2            Ready    <none>          200d   v1.30.0
+node-3            Ready    <none>          100d   v1.30.0
+node-under-desk   Ready    <none>          50d    v1.30.0`;
         } else if (arg === "get deployments" || arg === "get deploy") {
-          output = `NAME                    READY   UP-TO-DATE   AVAILABLE   AGE
-frontend                3/3     3            3           42d
-backend-api             5/5     5            5           100d
-microservice-madness    8/8     8            8           200d`;
+          output = `NAME               READY   UP-TO-DATE   AVAILABLE   AGE
+devlinops-site     2/2     2            2           42d
+prometheus-stack   1/1     1            1           100d
+heimdall           1/1     1            1           200d
+loki               1/1     1            1           100d`;
         } else {
           output = `Error: unknown kubectl command: ${arg}\nTry: get pods, get nodes, get deployments`;
         }
@@ -214,20 +213,20 @@ microservice-madness    8/8     8            8           200d`;
         if (!arg) {
           output = "Error: docker requires a command";
         } else if (arg === "ps" || arg === "ps -a") {
-          output = `CONTAINER ID   IMAGE                      STATUS         PORTS                     NAMES
-a1b2c3d4e5f6   devlinops/frontend:v1      Up 42 days     0.0.0.0:3000->3000/tcp   probably_works
-f6e5d4c3b2a1   prometheus:latest          Up 100 days    0.0.0.0:9090->9090/tcp   definitely_working
-1234567890ab   grafana:latest             Up 100 days    0.0.0.0:3001->3000/tcp   dashboard_addiction
-deadbeef1337   postgres:15                Up 200 days    5432/tcp                  db_or_not_db
-cafecafe0042   redis:alpine               Up 50 days     6379/tcp                  cache_me_outside`;
+          output = `CONTAINER ID   IMAGE             STATUS        PORTS                    NAMES
+a1b2c3d4e5f6   devlinops/site    Up 42 days    0.0.0.0:3000->3000/tcp   site
+f6e5d4c3b2a1   prom/prometheus   Up 100 days   0.0.0.0:9090->9090/tcp   prometheus
+1234567890ab   grafana/grafana   Up 100 days   0.0.0.0:3001->3000/tcp   yet_another_dashboard
+deadbeef1337   postgres:15       Up 200 days   5432/tcp                 postgres
+cafecafe0042   redis:alpine      Up 50 days    6379/tcp                 redis`;
         } else if (arg === "images" || arg === "image ls") {
-          output = `REPOSITORY              TAG            IMAGE ID       CREATED        SIZE
-devlinops/frontend      latest         abc123def456   2 days ago     420MB
-devlinops/frontend      works-on-prod  def456abc123   1 week ago     419MB
-prometheus              latest         789abc012def   3 weeks ago    200MB
-grafana                 latest         012def789abc   1 month ago    350MB
-postgres                15-alpine      456789abcdef   2 months ago   180MB
-node                    20-slim        fedcba987654   3 days ago     250MB`;
+          output = `REPOSITORY        TAG           IMAGE ID       CREATED        SIZE
+devlinops/site    sha-abc1234   abc123def456   2 days ago     420MB
+devlinops/site    sha-def5678   def456abc123   1 week ago     419MB
+prom/prometheus   latest        789abc012def   3 weeks ago    200MB
+grafana/grafana   latest        012def789abc   1 month ago    350MB
+postgres          15-alpine     456789abcdef   2 months ago   180MB
+node              20-slim       fedcba987654   3 days ago     250MB`;
         } else {
           output = `Error: unknown docker command: ${arg}\nTry: ps, images`;
         }
@@ -237,39 +236,27 @@ node                    20-slim        fedcba987654   3 days ago     250MB`;
         if (!arg || arg === "plan") {
           output = `Terraform will perform the following actions:
 
-  # aws_instance.coffee_machine will be created
-  + resource "aws_instance" "coffee_machine" {
-      + ami                    = "ami-c0ff33-420"
-      + instance_type          = "c6.xlarge"  # for maximum caffeine
-      + tags                   = {
-          + "Purpose"   = "Keeping DevOps engineers alive"
-          + "CostCenter" = "Critical Infrastructure"
-        }
+  # aws_s3_bucket.terraform_state will be created
+  + resource "aws_s3_bucket" "terraform_state" {
+      + bucket     = "devlinops-tfstate"
+      + versioning = true  # state surgery is not a hobby
     }
 
-  # aws_s3_bucket.prod_backups will be created
-  + resource "aws_s3_bucket" "prod_backups" {
-      + bucket         = "definitely-not-production-data"
-      + acl            = "private"
-      + versioning     = true  # because Friday deploys
+  # aws_budgets_budget.guardrail will be created
+  + resource "aws_budgets_budget" "guardrail" {
+      + limit_unit   = "GBP"
+      + limit_amount = "modest"
     }
 
 Plan: 2 to add, 0 to change, 0 to destroy.
-Cost estimate: 1 coffee/hour + your sanity`;
+
+Note: nothing on this site provisions real infrastructure.
+This plan is theatre. Convincing theatre, but theatre.`;
         } else if (arg === "apply") {
-          output = `Applying infrastructure changes...
+          output = `Error: no saved plan to apply.
 
-aws_instance.coffee_machine: Creating...
-aws_instance.coffee_machine: Still creating... [10s elapsed]
-aws_instance.coffee_machine: Creation complete after 30s
-aws_s3_bucket.prod_backups: Creating...
-aws_s3_bucket.prod_backups: Creation complete after 5s
-
-Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
-
-Outputs:
-  coffee_status = "brewing"
-  deployment_confidence = "it works on my machine"`;
+This terminal is a prop — it doesn't get apply access to anything.
+Run 'terraform plan' if you'd like the full performance.`;
         } else {
           output = `Error: unknown terraform command: ${arg}\nTry: plan, apply`;
         }
@@ -277,28 +264,24 @@ Outputs:
 
       case "argocd":
         if (arg === "app list" || arg === "app ls") {
-          output = `NAME                    SYNC STATUS   HEALTH STATUS
-platform-frontend       Synced        Healthy
-platform-backend        Synced        Healthy
-prometheus-stack        Synced        Healthy
-definitely-in-sync      OutOfSync     Degraded
-friday-afternoon-deploy Syncing       Progressing
-hotfix-that-worked      Synced        Healthy`;
-        } else if (arg === "app get platform-frontend") {
-          output = `Name:               platform-frontend
+          output = `NAME                 SYNC STATUS   HEALTH STATUS
+devlinops-site       Synced        Healthy
+prometheus-stack     Synced        Healthy
+heimdall             Synced        Healthy
+loki                 Synced        Healthy
+definitely-in-sync   OutOfSync     Progressing`;
+        } else if (arg === "app get devlinops-site") {
+          output = `Name:               devlinops-site
 Project:            default
 Server:             https://kubernetes.default.svc
 Namespace:          production
 URL:                https://devlinops.com
-Repo:               https://github.com/devlinops/platform
 Target:             main
-Path:               k8s/frontend
-SyncWindow:         Sync Allowed
 Sync Policy:        Automated
 Sync Status:        Synced to main (abc1234)
 Health Status:      Healthy`;
         } else {
-          output = `Error: unknown argocd command: ${arg}\nTry: app list, app get <name>`;
+          output = `Error: unknown argocd command: ${arg}\nTry: app list, app get devlinops-site`;
         }
         break;
 
@@ -310,16 +293,13 @@ Health Status:      Healthy`;
 
       case "whoami":
         output = `jack@devlinops
-├─ Platform & MLOps Engineer
-├─ Kubernetes Enthusiast
-├─ Coffee-Driven Developer
-├─ GitOps Advocate
-├─ MSc AI (finishing Aug 2026)
-└─ "It works on my machine" Survivor
+├─ Platform & MLOps engineer
+├─ Kubernetes, ArgoCD, Prometheus — by choice
+├─ MSc AI, finishing Aug 2026
+└─ Available for fully remote B2B contracts from September 2026
 
-Current status: Probably debugging something
-Location: ~/projects/make-it-work
-Shell: bash (with way too many aliases)`;
+Location: UK (remote)
+Shell: bash, with more aliases than is strictly dignified`;
         break;
 
       case "history":
@@ -345,35 +325,39 @@ Shell: bash (with way too many aliases)`;
 
       case "snake":
       case "play":
-        if (command === "play" && arg !== "snake") {
-          output = `play: unknown game '${arg}'\nTry: play snake`;
-          break;
-        }
-        output = `🐍 Launching kubectl snake...
+      case "oncall":
+        output = `Paging the on-call engineer… that's you.`;
+        setTimeout(() => {
+          setIsOpen(false);
+          window.dispatchEvent(new Event("devlinops:oncall"));
+        }, 900);
+        break;
 
-To play, close this terminal (ESC) and enter the Konami code:
-↑ ↑ ↓ ↓ ← → ← → B A
-
-Good luck collecting those pods!`;
+      case "chaos":
+      case "chaos-monkey":
+        output = `chaos-monkey: targeting devlinops.com…
+(watch the page behind this terminal)`;
+        setTimeout(() => {
+          setIsOpen(false);
+          window.dispatchEvent(new Event("devlinops:chaos"));
+        }, 900);
         break;
 
       case "neofetch":
         output = `
        ████████████████████        jack@devlinops
     ████████████████████████████   ──────────────────
-  ██████████████████████████████   OS: DevlinOps Platform v2.0
- █████████     ████     █████████  Host: devlinops.com
+  ██████████████████████████████   OS: devlinops.com — versioned by commit, not by marketing
+ █████████     ████     █████████  Host: Vercel
 ████████  ████  ███  ███  ████████ Kernel: Next.js 16.1.0
 ████████  ████  ███  ███  ████████ Uptime: since Oct 2025
-████████  ████  ███  ███  ████████ Packages: 113 (npm)
-████████  ████  ███  ███  ████████ Shell: bash 5.0
+████████  ████  ███  ███  ████████ Packages: 63 (npm, lockfile-pinned)
+████████  ████  ███  ███  ████████ Shell: bash 5.2
 ████████  ████  ███  ███  ████████ Terminal: cli-navigation.tsx
- █████████     ████     █████████  CPU: 100% Coffee-Powered
-  ██████████████████████████████   Memory: 750K+ saved
-    ████████████████████████████   Disk: 400+ deploys/month
-       ████████████████████
-                                   Stack: K8s, ArgoCD, AWS, PyTorch, Terraform
-                                   Status: B2B contracts, Sept 2026`;
+ █████████     ████     █████████  Day job: ~400 deploys/month, ~£95k/yr saved on observability
+  ██████████████████████████████   Stack: K8s, ArgoCD, AWS, PyTorch, Terraform
+    ████████████████████████████   Status: available for B2B contracts, Sept 2026
+       ████████████████████`;
         break;
 
       case "git":
@@ -386,23 +370,20 @@ Changes staged for commit:
   modified:   k8s/deployments/frontend.yaml
 
 Changes not staged:
-  modified:   README.md (added more buzzwords)
+  modified:   README.md (now matches actual behaviour)
 
 Untracked files:
   .env.local.backup.old.dontdelete
   TODO-fix-later.md`;
         } else if (arg === "log" || arg === "log --oneline") {
-          output = `a1b2c3d fix: it works now (hopefully)
-f4e5d6c feat: add feature that PM asked for 3 times
-7890abc refactor: make it "enterprise-ready"
-bcd1234 fix: undo the thing that broke prod
-e5f6789 chore: Friday 5pm deploy (YOLO)
-0123456 docs: update README to match reality
-abc7890 fix: the REAL fix this time
-def4567 feat: microservices go brrr`;
+          output = `a1b2c3d fix: handle the case the previous fix introduced
+f4e5d6c feat: the feature as actually requested, third attempt
+7890abc refactor: remove an abstraction added in a moment of optimism
+bcd1234 revert: revert "quick win"
+e5f6789 docs: update README to match reality
+abc7890 fix: same bug, correct fix this time`;
         } else if (arg === "blame") {
-          output = `Not me. Definitely not me.
-Check with the guy who left last month.`;
+          output = `It was me. It's my website — it's always me.`;
         } else {
           output = `git: '${arg}' is not a git command.\nTry: status, log, blame`;
         }
@@ -411,27 +392,27 @@ Check with the guy who left last month.`;
       case "sudo":
         if (arg === "rm -rf /" || arg === "rm -rf /*") {
           output = `[sudo] password for jack: ********
-rm: cannot remove '/': Permission denied
-rm: cannot remove '/home': Nice try
-rm: cannot remove '/etc': Nope
-rm: cannot remove '/var': Still no
-
-Just kidding. This is a portfolio website. 😄`;
-        } else if (arg === "make me a sandwich") {
-          output = `🥪 Okay.`;
+Fine. Have it your way.`;
+          setTimeout(() => {
+            setIsOpen(false);
+            window.dispatchEvent(new Event("devlinops:chaos"));
+          }, 900);
         } else if (arg) {
           output = `[sudo] password for jack: ********
-Sorry, user jack is not allowed to execute '${arg}' as root.
-(But nice try!)`;
+sudo: superfluous. You're already root here — although it's my
+website, so the privileges are decorative.`;
         } else {
-          output = `usage: sudo <command>\nTry: sudo make me a sandwich`;
+          output = `usage: sudo <command>`;
         }
         break;
 
       case "rm":
         if (arg === "-rf /" || arg === "-rf /*" || arg === "-rf /home") {
-          output = `rm: cannot remove: Operation not permitted
-(This is a website, not your production server... right?)`;
+          output = `rm: proceeding against advice…`;
+          setTimeout(() => {
+            setIsOpen(false);
+            window.dispatchEvent(new Event("devlinops:chaos"));
+          }, 900);
         } else {
           output = `rm: missing operand\nTry 'rm --help' for more information.`;
         }
@@ -440,14 +421,13 @@ Sorry, user jack is not allowed to execute '${arg}' as root.
       case "hire":
       case "contact":
         router.push("/contact");
-        output = `📧 Great choice! Redirecting to contact page...
-
-Looking forward to hearing from you!`;
+        output = `Redirecting to /contact...
+The form does actually send, and I read everything that comes through it.`;
         setTimeout(() => setIsOpen(false), 1000);
         break;
 
       case "cowsay":
-        const message = arg || "Moo! Hire Jack!";
+        const message = arg || "moo";
         output = ` ${"_".repeat(message.length + 2)}
 < ${message} >
  ${"-".repeat(message.length + 2)}
@@ -465,9 +445,7 @@ Looking forward to hearing from you!`;
 64 bytes from 76.76.21.21: icmp_seq=2 ttl=64 time=0.035 ms
 --- devlinops.com ping statistics ---
 3 packets transmitted, 3 received, 0% packet loss
-round-trip min/avg/max/stddev = 0.035/0.038/0.042/0.003 ms
-
-Status: All systems operational ✓`;
+round-trip min/avg/max/stddev = 0.035/0.038/0.042/0.003 ms`;
         break;
 
       case "curl":
@@ -475,9 +453,9 @@ Status: All systems operational ✓`;
           output = `HTTP/2 200 OK
 server: Vercel
 content-type: text/html
-x-powered-by: Next.js, Coffee, and Determination
-x-hiring-status: Available
-x-easter-egg: You found one!
+x-powered-by: Next.js
+x-available-from: 2026-09
+x-easter-egg: you found one
 
 <!DOCTYPE html>...`;
         } else {
@@ -487,19 +465,16 @@ x-easter-egg: You found one!
 
       case "npm":
         if (arg === "run dev") {
-          output = `> devlinops@2.0.0 dev
+          output = `> devlinops@1.0.0 dev
 > next dev
 
   ▲ Next.js 16.1.0
   - Local:        http://localhost:3000
-  - Ready in 1.2s
-
-✓ Compiled in 420ms`;
+  - Ready in 1.2s`;
         } else if (arg === "install" || arg === "i") {
-          output = `added 113 packages in 2.3s
+          output = `added 63 packages in 1.4s
 
-47 packages are looking for funding
-  run \`npm fund\` for details`;
+found 0 vulnerabilities`;
         } else {
           output = `npm: try 'npm run dev' or 'npm install'`;
         }
@@ -531,7 +506,7 @@ x-easter-egg: You found one!
       <div className="fixed inset-0 z-50 bg-black">
         <div className="container mx-auto flex h-full flex-col p-4">
           {/* Vim status bar */}
-          <div className="border-b border-green-500/30 pb-2 font-mono text-sm text-green-500">
+          <div className="border-b border-border pb-2 font-mono text-sm text-primary">
             <div className="flex items-center justify-between">
               <span>devlinops.tsx [readonly]</span>
               <span>-- NORMAL --</span>
@@ -539,21 +514,21 @@ x-easter-egg: You found one!
           </div>
 
           {/* Vim content */}
-          <div className="flex-1 overflow-auto py-4 font-mono text-sm text-green-400">
+          <div className="flex-1 overflow-auto py-4 font-mono text-sm text-foreground/90">
             <pre className="whitespace-pre-wrap">{vimContent}</pre>
           </div>
 
           {/* Vim command line */}
-          <div className="border-t border-green-500/30 pt-2 font-mono text-sm">
-            <div className="text-green-500">
-              <span className="text-green-400">:</span>
-              <span className="text-green-300">
+          <div className="border-t border-border pt-2 font-mono text-sm">
+            <div className="text-primary">
+              <span>:</span>
+              <span className="text-muted-foreground">
                 {" "}
                 Type :q to quit, :wq to save & quit
               </span>
             </div>
-            <div className="mt-2 text-xs text-green-600">
-              <p>💡 Pro tip: In real vim, you&apos;d be stuck here forever</p>
+            <div className="mt-2 text-xs text-muted-foreground">
+              <p>In real vim you would still be here. This one lets you leave.</p>
               <p className="mt-1">Press ESC or type :q to exit</p>
             </div>
           </div>
@@ -575,7 +550,7 @@ x-easter-egg: You found one!
                   e.target.value = "";
                 }
               }}
-              className="w-full border-none bg-transparent font-mono text-sm text-green-400 outline-none placeholder:text-green-700"
+              className="w-full border-none bg-transparent font-mono text-sm text-foreground outline-none placeholder:text-muted-foreground"
               placeholder=":q to quit"
             />
           </div>
@@ -587,19 +562,19 @@ x-easter-egg: You found one!
   return (
     <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm">
       <div className="container mx-auto flex h-full items-center justify-center px-4">
-        <div className="w-full max-w-4xl rounded-lg border border-green-500/50 bg-black p-6 shadow-2xl">
+        <div className="w-full max-w-4xl rounded-lg border border-border bg-black p-6 shadow-2xl">
           {/* Header */}
-          <div className="mb-4 flex items-center justify-between border-b border-green-500/30 pb-2">
-            <div className="flex items-center gap-2 font-mono text-sm text-green-500">
-              <span className="text-green-400">jack@devlinops</span>
-              <span className="text-green-600">~</span>
-              <span className="text-green-300">$</span>
+          <div className="mb-4 flex items-center justify-between border-b border-border pb-2">
+            <div className="flex items-center gap-2 font-mono text-sm">
+              <span className="text-primary">jack@devlinops</span>
+              <span className="text-muted-foreground">~</span>
+              <span className="text-muted-foreground">$</span>
             </div>
             <div className="flex items-center gap-4">
-              <span className="font-mono text-xs text-green-600">Press ESC to close</span>
+              <span className="font-mono text-xs text-muted-foreground">Press ESC to close</span>
               <button
                 onClick={() => setIsOpen(false)}
-                className="text-green-500 hover:text-green-300"
+                className="text-muted-foreground hover:text-foreground"
               >
                 ✕
               </button>
@@ -609,9 +584,9 @@ x-easter-egg: You found one!
           {/* Terminal output */}
           <div ref={outputRef} className="mb-4 max-h-96 overflow-y-auto font-mono text-sm">
             {history.length === 0 && (
-              <div className="mb-4 text-green-400">
-                <p>DevlinOps Terminal - Interactive Navigation</p>
-                <p className="mt-1 text-xs text-green-600">
+              <div className="mb-4 text-foreground/90">
+                <p>devlinops.com — interactive shell</p>
+                <p className="mt-1 text-xs text-muted-foreground">
                   Type 'help' for available commands or 'ls' to see routes
                 </p>
               </div>
@@ -619,13 +594,13 @@ x-easter-egg: You found one!
 
             {history.map((item, index) => (
               <div key={index} className="mb-3">
-                <div className="text-green-500">
-                  <span className="text-green-400">jack@devlinops</span>
-                  <span className="text-green-600"> ~ </span>
-                  <span className="text-green-300">$ </span>
-                  <span>{item.command}</span>
+                <div>
+                  <span className="text-primary">jack@devlinops</span>
+                  <span className="text-muted-foreground"> ~ </span>
+                  <span className="text-muted-foreground">$ </span>
+                  <span className="text-foreground">{item.command}</span>
                 </div>
-                <pre className="mt-1 whitespace-pre-wrap text-green-300/90">
+                <pre className="mt-1 whitespace-pre-wrap text-foreground/80">
                   {item.output}
                 </pre>
               </div>
@@ -634,17 +609,17 @@ x-easter-egg: You found one!
 
           {/* Input */}
           <form onSubmit={handleSubmit} className="flex items-center gap-2">
-            <span className="font-mono text-sm text-green-500">
-              <span className="text-green-400">jack@devlinops</span>
-              <span className="text-green-600"> ~ </span>
-              <span className="text-green-300">$ </span>
+            <span className="font-mono text-sm">
+              <span className="text-primary">jack@devlinops</span>
+              <span className="text-muted-foreground"> ~ </span>
+              <span className="text-muted-foreground">$ </span>
             </span>
             <input
               ref={inputRef}
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              className="flex-1 border-none bg-transparent font-mono text-sm text-green-400 outline-none placeholder:text-green-700"
+              className="flex-1 border-none bg-transparent font-mono text-sm text-foreground caret-primary outline-none placeholder:text-muted-foreground"
               placeholder="type a command... (try 'help')"
               autoComplete="off"
               spellCheck={false}

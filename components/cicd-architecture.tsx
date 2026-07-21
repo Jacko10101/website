@@ -78,22 +78,48 @@ const nodeInfo: Record<NodeKey, { title: string; description: string }> = {
   },
 };
 
+const ACTIVE_FILL = "oklch(0.72 0.19 150 / 0.1)";
+
 export function CicdArchitecture() {
-  const [active, setActive] = useState<NodeKey | null>(null);
+  const [selected, setSelected] = useState<NodeKey | null>(null);
+  const [hovered, setHovered] = useState<NodeKey | null>(null);
+  const active = hovered ?? selected;
   const isActive = (key: NodeKey) => active === key;
+
+  const toggle = (key: NodeKey) =>
+    setSelected((prev) => (prev === key ? null : key));
+
+  const nodeProps = (key: NodeKey) => ({
+    tabIndex: 0,
+    role: "button" as const,
+    "aria-label": `${nodeInfo[key].title} — show details`,
+    "aria-pressed": selected === key,
+    onClick: () => toggle(key),
+    onKeyDown: (e: React.KeyboardEvent<SVGGElement>) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        toggle(key);
+      }
+    },
+    onMouseEnter: () => setHovered(key),
+    onMouseLeave: () => setHovered(null),
+    onFocus: () => setHovered(key),
+    onBlur: () => setHovered(null),
+    className: "cursor-pointer outline-none",
+  });
 
   return (
     <div className="rounded-lg border border-border bg-card p-6">
       <h3 className="mb-1 text-lg font-semibold">Pipeline platform — system overview</h3>
       <p className="mb-4 text-xs text-muted-foreground">
-        Hover any node for a one-line explanation.
+        Click, tap or hover any node for a one-line explanation.
       </p>
 
       <div className="relative">
         <svg
           viewBox="0 0 900 600"
           className="w-full"
-          role="img"
+          role="group"
           aria-label="CI/CD architecture: a service repo and two shared pipeline libraries feed Bitbucket Pipelines, which produces an ECR image and build metadata; ArgoCD Image Updater promotes via the GitOps repo, ArgoCD syncs to Kubernetes, and a PostSync hook triggers the test infra repo with results aggregated in Sentry."
         >
           <defs>
@@ -139,21 +165,17 @@ export function CicdArchitecture() {
               },
             ] as const
           ).map((n) => (
-            <g
-              key={n.key}
-              onMouseEnter={() => setActive(n.key)}
-              onMouseLeave={() => setActive(null)}
-              className="cursor-pointer"
-            >
+            <g key={n.key} {...nodeProps(n.key)}>
               <rect
                 x={n.x}
                 y="50"
                 width={n.w}
                 height="60"
                 rx="8"
-                className={`stroke-border ${
-                  isActive(n.key) ? "fill-primary/20" : "fill-secondary"
+                className={`fill-secondary ${
+                  isActive(n.key) ? "stroke-primary" : "stroke-border"
                 }`}
+                style={isActive(n.key) ? { fill: ACTIVE_FILL } : undefined}
                 strokeWidth="2"
               />
               <text
@@ -195,20 +217,17 @@ export function CicdArchitecture() {
           </text>
 
           {/* Row 2 — Bitbucket Pipelines */}
-          <g
-            onMouseEnter={() => setActive("bitbucket")}
-            onMouseLeave={() => setActive(null)}
-            className="cursor-pointer"
-          >
+          <g {...nodeProps("bitbucket")}>
             <rect
               x="240"
               y="180"
               width="420"
               height="60"
               rx="10"
-              className={`stroke-border ${
-                isActive("bitbucket") ? "fill-primary/20" : "fill-card"
+              className={`fill-card ${
+                isActive("bitbucket") ? "stroke-primary" : "stroke-border"
               }`}
+              style={isActive("bitbucket") ? { fill: ACTIVE_FILL } : undefined}
               strokeWidth="3"
             />
             <text
@@ -250,20 +269,17 @@ export function CicdArchitecture() {
           />
 
           {/* Outputs */}
-          <g
-            onMouseEnter={() => setActive("ecr")}
-            onMouseLeave={() => setActive(null)}
-            className="cursor-pointer"
-          >
+          <g {...nodeProps("ecr")}>
             <rect
               x="160"
               y="280"
               width="180"
               height="50"
               rx="8"
-              className={`stroke-border ${
-                isActive("ecr") ? "fill-primary/20" : "fill-card"
+              className={`fill-card ${
+                isActive("ecr") ? "stroke-primary" : "stroke-border"
               }`}
+              style={isActive("ecr") ? { fill: ACTIVE_FILL } : undefined}
               strokeWidth="2"
             />
             <text
@@ -284,20 +300,17 @@ export function CicdArchitecture() {
             </text>
           </g>
 
-          <g
-            onMouseEnter={() => setActive("buildjson")}
-            onMouseLeave={() => setActive(null)}
-            className="cursor-pointer"
-          >
+          <g {...nodeProps("buildjson")}>
             <rect
               x="560"
               y="280"
               width="180"
               height="50"
               rx="8"
-              className={`stroke-border ${
-                isActive("buildjson") ? "fill-primary/20" : "fill-card"
+              className={`fill-card ${
+                isActive("buildjson") ? "stroke-primary" : "stroke-border"
               }`}
+              style={isActive("buildjson") ? { fill: ACTIVE_FILL } : undefined}
               strokeWidth="2"
             />
             <text
@@ -355,21 +368,17 @@ export function CicdArchitecture() {
               },
             ] as const
           ).map((n) => (
-            <g
-              key={n.key}
-              onMouseEnter={() => setActive(n.key)}
-              onMouseLeave={() => setActive(null)}
-              className="cursor-pointer"
-            >
+            <g key={n.key} {...nodeProps(n.key)}>
               <rect
                 x={n.x}
                 y="380"
                 width={n.w}
                 height="60"
                 rx="8"
-                className={`stroke-border ${
-                  isActive(n.key) ? "fill-primary/20" : "fill-card"
+                className={`fill-card ${
+                  isActive(n.key) ? "stroke-primary" : "stroke-border"
                 }`}
+                style={isActive(n.key) ? { fill: ACTIVE_FILL } : undefined}
                 strokeWidth="2"
               />
               <text
@@ -425,20 +434,17 @@ export function CicdArchitecture() {
           </text>
 
           {/* Row 4 — verify */}
-          <g
-            onMouseEnter={() => setActive("postsync")}
-            onMouseLeave={() => setActive(null)}
-            className="cursor-pointer"
-          >
+          <g {...nodeProps("postsync")}>
             <rect
               x="120"
               y="500"
               width="280"
               height="60"
               rx="8"
-              className={`stroke-border ${
-                isActive("postsync") ? "fill-primary/20" : "fill-secondary"
+              className={`fill-secondary ${
+                isActive("postsync") ? "stroke-primary" : "stroke-border"
               }`}
+              style={isActive("postsync") ? { fill: ACTIVE_FILL } : undefined}
               strokeWidth="2"
             />
             <text
@@ -459,20 +465,17 @@ export function CicdArchitecture() {
             </text>
           </g>
 
-          <g
-            onMouseEnter={() => setActive("sentry")}
-            onMouseLeave={() => setActive(null)}
-            className="cursor-pointer"
-          >
+          <g {...nodeProps("sentry")}>
             <rect
               x="500"
               y="500"
               width="280"
               height="60"
               rx="8"
-              className={`stroke-border ${
-                isActive("sentry") ? "fill-primary/20" : "fill-secondary"
+              className={`fill-secondary ${
+                isActive("sentry") ? "stroke-primary" : "stroke-border"
               }`}
+              style={isActive("sentry") ? { fill: ACTIVE_FILL } : undefined}
               strokeWidth="2"
             />
             <text

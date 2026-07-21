@@ -54,7 +54,7 @@ export default function SmartHomePage() {
         description="Single-node Kubernetes cluster on a Raspberry Pi 5. Home Assistant, ArgoCD, Prometheus and Grafana, all GitOps-reconciled. Twenty-plus lights, plugs and sensors. Zero ports exposed to the internet."
         date="2024 → ongoing"
         metrics="Single-node K3s, 20+ devices, 0 cloud accounts"
-        color="#06b6d4"
+        command="cat case-studies/smart-home.md"
       />
 
       <div className="container px-4">
@@ -166,7 +166,7 @@ node-exporter         Synced        Healthy`}
             <CaseStudySection eyebrow="// design" title="A few decisions worth flagging">
               <div className="space-y-5">
                 <GlassCard className="p-6">
-                  <h3 className="font-semibold text-foreground mb-2">
+                  <h3 className="font-mono font-semibold tracking-tight text-foreground mb-2">
                     Local-first by default
                   </h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">
@@ -178,7 +178,7 @@ node-exporter         Synced        Healthy`}
                 </GlassCard>
 
                 <GlassCard className="p-6">
-                  <h3 className="font-semibold text-foreground mb-2">
+                  <h3 className="font-mono font-semibold tracking-tight text-foreground mb-2">
                     Treat it like work
                   </h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">
@@ -190,7 +190,7 @@ node-exporter         Synced        Healthy`}
                 </GlassCard>
 
                 <GlassCard className="p-6">
-                  <h3 className="font-semibold text-foreground mb-2">
+                  <h3 className="font-mono font-semibold tracking-tight text-foreground mb-2">
                     Right-sized infrastructure
                   </h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">
@@ -223,7 +223,6 @@ node-exporter         Synced        Healthy`}
 
             <CaseStudySection eyebrow="// the numbers" title="What it adds up to">
               <StatsGrid
-                color="#06b6d4"
                 stats={[
                   { value: "Single-node", label: "K3s + ArgoCD + Prometheus" },
                   { value: "20+", label: "lights, plugs and sensors" },

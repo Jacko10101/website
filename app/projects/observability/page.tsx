@@ -51,7 +51,7 @@ export default function ObservabilityPage() {
         description="Prometheus, Grafana, Loki and Alertmanager monitoring 20 services across four environments. Built in-house, because the commercial quotes were a bit silly."
         date="2024 → 2025"
         metrics="20 services, 4 environments"
-        color="#e6522c"
+        command="cat case-studies/observability.md"
       />
 
       <div className="container px-4">
@@ -65,7 +65,7 @@ export default function ObservabilityPage() {
                 wasn&apos;t happening.
               </p>
               <p className="text-muted-foreground leading-relaxed">
-                So I built it ourselves. The stack is unsurprising: Prometheus and
+                So we built it ourselves. The stack is unsurprising: Prometheus and
                 Thanos for metrics, Loki for logs, Alertmanager for paging, Grafana
                 for everyone to actually look at. Standard pieces. The interesting
                 bit was wiring them together so the people who needed them could
@@ -140,7 +140,7 @@ export default function ObservabilityPage() {
             <CaseStudySection eyebrow="// design" title="A few decisions worth flagging">
               <div className="space-y-5">
                 <GlassCard className="p-6">
-                  <h3 className="font-semibold text-foreground mb-2">
+                  <h3 className="font-mono font-semibold tracking-tight text-foreground mb-2">
                     Self-hosting was the right call here
                   </h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">
@@ -154,7 +154,7 @@ export default function ObservabilityPage() {
                 </GlassCard>
 
                 <GlassCard className="p-6">
-                  <h3 className="font-semibold text-foreground mb-2">
+                  <h3 className="font-mono font-semibold tracking-tight text-foreground mb-2">
                     Cheap storage, expensive compute
                   </h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">
@@ -167,7 +167,7 @@ export default function ObservabilityPage() {
                 </GlassCard>
 
                 <GlassCard className="p-6">
-                  <h3 className="font-semibold text-foreground mb-2">
+                  <h3 className="font-mono font-semibold tracking-tight text-foreground mb-2">
                     Dashboards as documentation
                   </h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">
@@ -183,7 +183,6 @@ export default function ObservabilityPage() {
 
             <CaseStudySection eyebrow="// impact" title="The numbers">
               <StatsGrid
-                color="#e6522c"
                 stats={[
                   { value: "20", label: "services covered, every environment" },
                   { value: "~£5k/yr", label: "running cost (vs ~£100k commercial)" },

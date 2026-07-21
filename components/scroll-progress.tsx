@@ -31,11 +31,11 @@ export function ScrollProgress() {
 
       {/* Progress bar */}
       <div
-        className="h-full bg-gradient-to-r from-primary via-blue-500 to-green-500 transition-all duration-150 ease-out relative"
+        className="h-full bg-gradient-to-r from-primary/60 to-primary transition-all duration-150 ease-out relative"
         style={{ width: `${progress}%` }}
       >
         {/* Animated pulse at the end */}
-        <div className="absolute right-0 top-0 h-full w-2 bg-white/50 animate-pulse" />
+        <div className="absolute right-0 top-0 h-full w-2 bg-foreground/50 animate-pulse" />
       </div>
     </div>
   );

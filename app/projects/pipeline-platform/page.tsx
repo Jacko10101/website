@@ -13,6 +13,7 @@ import {
   CaseStudyCTA,
 } from "@/components/case-study-layout";
 import { GlassCard, FadeUp } from "@/components/scroll-reveal";
+import { TerminalWindow } from "@/components/terminal-window";
 
 const articleSchema = {
   "@context": "https://schema.org",
@@ -64,29 +65,19 @@ function Screenshot({
 }) {
   return (
     <FadeUp>
-      <GlassCard className="p-0 overflow-hidden">
-        <div className="px-5 py-3 border-b border-border bg-secondary/30 flex items-center gap-3">
-          <div className="flex items-center gap-1.5">
-            <div className="w-2 h-2 rounded-full bg-red-500/60" />
-            <div className="w-2 h-2 rounded-full bg-yellow-500/60" />
-            <div className="w-2 h-2 rounded-full bg-green-500/60" />
-          </div>
-          <span className="text-xs font-mono text-muted-foreground">{label}</span>
-        </div>
-        <div className="bg-black">
-          <Image
-            src={src}
-            alt={alt}
-            width={width}
-            height={height}
-            className="w-full h-auto"
-            sizes="(max-width: 1024px) 100vw, 800px"
-          />
-        </div>
-        <div className="px-5 py-4 border-t border-border bg-secondary/20 text-sm text-muted-foreground leading-relaxed">
+      <TerminalWindow title={label}>
+        <Image
+          src={src}
+          alt={alt}
+          width={width}
+          height={height}
+          className="w-full h-auto"
+          sizes="(max-width: 1024px) 100vw, 800px"
+        />
+        <div className="px-5 py-4 border-t border-border bg-card/50 text-sm text-muted-foreground leading-relaxed">
           {caption}
         </div>
-      </GlassCard>
+      </TerminalWindow>
     </FadeUp>
   );
 }
@@ -100,7 +91,7 @@ export default function CicdGitopsPage() {
         description="One Bitbucket pipeline library, imported by every Java and Node service. Tests live in their own repo. Promotion and reporting belong to ArgoCD."
         date="2023 → ongoing"
         metrics="20 services, ~400 deploys/month"
-        color="#22c55e"
+        command="cat case-studies/pipeline-platform.md"
       />
 
       <div className="container px-4">
@@ -276,7 +267,7 @@ gitops:
             <CaseStudySection eyebrow="// design" title="A few decisions worth flagging">
               <div className="space-y-5">
                 <GlassCard className="p-6">
-                  <h3 className="font-semibold text-foreground mb-2">
+                  <h3 className="font-mono font-semibold tracking-tight text-foreground mb-2">
                     Optional gates are env-gated, not template-forked
                   </h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">
@@ -291,7 +282,7 @@ gitops:
                 </GlassCard>
 
                 <GlassCard className="p-6">
-                  <h3 className="font-semibold text-foreground mb-2">
+                  <h3 className="font-mono font-semibold tracking-tight text-foreground mb-2">
                     Build doesn&apos;t promote
                   </h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">
@@ -304,7 +295,7 @@ gitops:
                 </GlassCard>
 
                 <GlassCard className="p-6">
-                  <h3 className="font-semibold text-foreground mb-2">
+                  <h3 className="font-mono font-semibold tracking-tight text-foreground mb-2">
                     Tests are not pipeline steps
                   </h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">
@@ -321,7 +312,6 @@ gitops:
 
             <CaseStudySection eyebrow="// impact" title="What changed">
               <StatsGrid
-                color="#22c55e"
                 stats={[
                   { value: "20", label: "services on one shared library" },
                   { value: "~400", label: "deploys per month" },

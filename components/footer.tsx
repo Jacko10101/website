@@ -2,19 +2,13 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-
-// Build info - these would ideally come from environment variables set at build time
-const BUILD_INFO = {
-  commit: process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA?.substring(0, 7) || "dev",
-  branch: process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_REF || "local",
-  deployedAt: process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_AUTHOR_DATE || null,
-};
+import { BUILD, formatBuildDate } from "@/lib/build-info";
+import { profile } from "@/lib/profile";
 
 function useLoadTime() {
   const [loadTime, setLoadTime] = useState<string | null>(null);
 
   useEffect(() => {
-    // Wait for page to fully load
     if (typeof window !== "undefined" && window.performance) {
       const measureLoadTime = () => {
         const navigation = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming;
@@ -26,7 +20,6 @@ function useLoadTime() {
         }
       };
 
-      // Try immediately, then after a short delay
       measureLoadTime();
       const timeout = setTimeout(measureLoadTime, 100);
       return () => clearTimeout(timeout);
@@ -36,37 +29,14 @@ function useLoadTime() {
   return loadTime;
 }
 
-function useUptime() {
-  const [uptime, setUptime] = useState<string>("0d 0h");
-
-  useEffect(() => {
-    // Site launched approximately Oct 30, 2025
-    const launchDate = new Date("2025-10-30T00:00:00Z");
-
-    const updateUptime = () => {
-      const now = new Date();
-      const diff = now.getTime() - launchDate.getTime();
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      setUptime(`${days}d ${hours}h`);
-    };
-
-    updateUptime();
-    const interval = setInterval(updateUptime, 60000); // Update every minute
-    return () => clearInterval(interval);
-  }, []);
-
-  return uptime;
-}
-
 export function Footer() {
-  const currentYear = new Date().getFullYear();
   const loadTime = useLoadTime();
-  const uptime = useUptime();
+  const buildDate = formatBuildDate(BUILD.time);
 
   const links = [
     { name: "Projects", href: "/projects" },
     { name: "About", href: "/about" },
+    { name: "Colophon", href: "/colophon" },
     { name: "Contact", href: "/contact" },
   ];
 
@@ -101,35 +71,33 @@ export function Footer() {
   ];
 
   return (
-    <footer className="relative bg-black border-t border-gray-800">
-      {/* Subtle gradient */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-black to-gray-900/50 pointer-events-none" />
-
-      <div className="container px-4 py-16 relative z-10">
+    <footer className="relative border-t border-border bg-background">
+      <div className="container py-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
           {/* Brand */}
           <div>
-            <Link href="/" className="inline-flex items-center gap-2 mb-4">
-              <span className="text-xl font-bold text-white">DevlinOps</span>
+            <Link href="/" className="inline-flex items-center gap-2 mb-4 font-mono">
+              <span className="text-muted-foreground">~/</span>
+              <span className="text-xl font-semibold text-foreground">devlinops</span>
             </Link>
-            <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
-              Jack Devlin. Platform &amp; MLOps engineering. Independent B2B contractor.
+            <p className="text-muted-foreground text-sm leading-relaxed max-w-xs">
+              Jack Devlin. Platform engineering. Contract or full-time, remote-first.
             </p>
           </div>
 
           {/* Links */}
           <div>
-            <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">
-              Navigate
+            <h3 className="font-mono text-sm text-primary mb-4">
+              <span className="text-muted-foreground">$</span> ls
             </h3>
             <ul className="space-y-3">
               {links.map((link) => (
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-gray-400 hover:text-green-400 transition-colors text-sm"
+                    className="text-muted-foreground hover:text-primary transition-colors text-sm font-mono"
                   >
-                    {link.name}
+                    {link.name.toLowerCase()}/
                   </Link>
                 </li>
               ))}
@@ -138,8 +106,8 @@ export function Footer() {
 
           {/* Connect */}
           <div>
-            <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">
-              Connect
+            <h3 className="font-mono text-sm text-primary mb-4">
+              <span className="text-muted-foreground">$</span> ping jack
             </h3>
             <div className="flex gap-4">
               {socials.map((social) => (
@@ -148,58 +116,70 @@ export function Footer() {
                   href={social.href}
                   target={social.href.startsWith("mailto") ? undefined : "_blank"}
                   rel={social.href.startsWith("mailto") ? undefined : "noopener noreferrer"}
-                  className="w-10 h-10 rounded-lg bg-gray-800/50 border border-gray-700 flex items-center justify-center text-gray-400 hover:text-green-400 hover:border-green-500/50 hover:bg-green-500/10 transition-all duration-300"
+                  className="w-10 h-10 rounded-md border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/60 transition-colors"
                   aria-label={social.name}
                 >
                   {social.icon}
                 </a>
               ))}
             </div>
-            <p className="mt-4 text-gray-500 text-sm">
+            <p className="mt-4 text-muted-foreground text-sm font-mono">
               jack@devlinops.com
             </p>
           </div>
         </div>
 
-        {/* Build Info Bar */}
-        <div className="mb-8 p-4 rounded-lg bg-gray-900/50 border border-gray-800 font-mono text-xs">
-          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-gray-500">
-            <div className="flex items-center gap-2">
-              <span className="text-gray-600">build:</span>
-              <span className="text-cyan-400">{BUILD_INFO.commit}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-gray-600">branch:</span>
-              <span className="text-green-400">{BUILD_INFO.branch}</span>
-            </div>
-            {loadTime && (
-              <div className="flex items-center gap-2">
-                <span className="text-gray-600">load:</span>
-                <span className="text-yellow-400">{loadTime}</span>
-              </div>
+        {/* Statusline — tmux-style segments; every value is real or absent. */}
+        <div className="mb-8 rounded-md border border-border bg-card/50 overflow-hidden font-mono text-[11px]">
+          <div className="flex flex-wrap items-stretch">
+            {BUILD.branch && BUILD.shortSha && (
+              <a
+                href={BUILD.commitUrl ?? undefined}
+                target={BUILD.commitUrl ? "_blank" : undefined}
+                rel={BUILD.commitUrl ? "noopener noreferrer" : undefined}
+                className="flex items-center gap-1.5 px-4 py-2 bg-primary text-primary-foreground font-semibold [clip-path:polygon(0_0,calc(100%-9px)_0,100%_100%,0_100%)] pr-6 hover:bg-primary/90 transition-colors"
+                title="The exact commit serving you this page"
+              >
+                <svg className="w-3 h-3" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={1.5} aria-hidden>
+                  <circle cx="8" cy="8" r="2.5" />
+                  <path d="M8 1v4.5M8 10.5V15" />
+                </svg>
+                {BUILD.branch} @ {BUILD.shortSha}
+              </a>
             )}
-            <div className="flex items-center gap-2">
-              <span className="text-gray-600">uptime:</span>
-              <span className="text-purple-400">{uptime}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-              <span className="text-green-400">all systems operational</span>
-            </div>
+            {buildDate && (
+              <span className="flex items-center px-4 py-2 -ml-2 bg-secondary text-muted-foreground [clip-path:polygon(9px_0,calc(100%-9px)_0,100%_100%,0_100%)] pl-6 pr-6">
+                shipped {buildDate}
+              </span>
+            )}
+            {loadTime && (
+              <span className="flex items-center px-4 py-2 -ml-2 bg-card text-warn [clip-path:polygon(9px_0,calc(100%-9px)_0,100%_100%,0_100%)] pl-6 pr-6">
+                this load {loadTime}
+              </span>
+            )}
+            <span className="flex items-center px-4 py-2 -ml-2 bg-secondary text-muted-foreground [clip-path:polygon(9px_0,calc(100%-9px)_0,100%_100%,0_100%)] pl-6 pr-6">
+              static · no cookies
+            </span>
+            <Link
+              href="/colophon"
+              className="flex items-center px-4 py-2 -ml-2 bg-card text-primary [clip-path:polygon(9px_0,100%_0,100%_100%,0_100%)] pl-6 hover:text-foreground transition-colors"
+            >
+              how this site runs →
+            </Link>
           </div>
-          <div className="mt-3 pt-3 border-t border-gray-800/50 text-center text-gray-600">
-            press <kbd className="px-1.5 py-0.5 mx-1 rounded bg-gray-800/80 border border-gray-700 text-gray-400 text-[10px]">/</kbd> for the CLI · <kbd className="px-1.5 py-0.5 mx-1 rounded bg-gray-800/80 border border-gray-700 text-gray-400 text-[10px]">↑↑↓↓←→←→BA</kbd> for the other thing
+          <div className="px-4 py-2 border-t border-border/60 text-center text-muted-foreground">
+            press <kbd className="px-1.5 py-0.5 mx-1 rounded bg-secondary border border-border text-foreground/70 text-[10px]">/</kbd> for the terminal · <kbd className="px-1.5 py-0.5 mx-1 rounded bg-secondary border border-border text-foreground/70 text-[10px]">↑↑↓↓←→←→BA</kbd> if the pager finds you
           </div>
         </div>
 
         {/* Bottom bar */}
-        <div className="pt-8 border-t border-gray-800 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-gray-500 text-sm">
-            &copy; {currentYear} DevlinOps. All rights reserved.
+        <div className="pt-8 border-t border-border flex flex-col sm:flex-row justify-between items-center gap-4">
+          <p className="text-muted-foreground text-sm font-mono">
+            © {new Date().getFullYear()} Jack Devlin
           </p>
-          <div className="flex items-center gap-2 text-gray-500 text-sm">
-            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-            <span>Available for fully remote B2B contracts · September 2026</span>
+          <div className="flex items-center gap-2 text-muted-foreground text-sm">
+            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" aria-hidden />
+            <span>{profile.availability.short}</span>
           </div>
         </div>
       </div>

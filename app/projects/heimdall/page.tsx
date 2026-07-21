@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { ReactNode } from "react";
 import { HeimdallArchitecture } from "@/components/heimdall-architecture";
+import { HeimdallDemo } from "@/components/heimdall-demo";
 import {
   CaseStudyLayout,
   CaseStudyHero,
@@ -12,13 +13,14 @@ import {
   CaseStudyCTA,
 } from "@/components/case-study-layout";
 import { GlassCard, FadeUp } from "@/components/scroll-reveal";
+import { TerminalWindow } from "@/components/terminal-window";
 
 const articleSchema = {
   "@context": "https://schema.org",
   "@type": "TechArticle",
   headline: "Heimdall — Deployment Intelligence Platform",
   description:
-    "An internal SRE dashboard answering 'where is my ticket right now?' across 17 services. Used daily by a 20+ person engineering team.",
+    "An internal SRE dashboard answering 'where is my ticket right now?' across a couple dozen services. Used daily by a 20+ person engineering team.",
   author: {
     "@type": "Person",
     name: "Jack Devlin",
@@ -62,29 +64,19 @@ function Screenshot({
 }) {
   return (
     <FadeUp>
-      <GlassCard className="p-0 overflow-hidden">
-        <div className="px-5 py-3 border-b border-border bg-secondary/30 flex items-center gap-3">
-          <div className="flex items-center gap-1.5">
-            <div className="w-2 h-2 rounded-full bg-red-500/60" />
-            <div className="w-2 h-2 rounded-full bg-yellow-500/60" />
-            <div className="w-2 h-2 rounded-full bg-green-500/60" />
-          </div>
-          <span className="text-xs font-mono text-muted-foreground">{label}</span>
-        </div>
-        <div className="bg-black">
-          <Image
-            src={src}
-            alt={alt}
-            width={width}
-            height={height}
-            className="w-full h-auto"
-            sizes="(max-width: 1024px) 100vw, 800px"
-          />
-        </div>
-        <div className="px-5 py-4 border-t border-border bg-secondary/20 text-sm text-muted-foreground leading-relaxed">
+      <TerminalWindow title={label}>
+        <Image
+          src={src}
+          alt={alt}
+          width={width}
+          height={height}
+          className="w-full h-auto"
+          sizes="(max-width: 1024px) 100vw, 800px"
+        />
+        <div className="px-5 py-4 border-t border-border bg-card/50 text-sm text-muted-foreground leading-relaxed">
           {caption}
         </div>
-      </GlassCard>
+      </TerminalWindow>
     </FadeUp>
   );
 }
@@ -95,21 +87,40 @@ export default function HeimdallPage() {
       <CaseStudyHero
         title="Heimdall"
         subtitle="Deployment intelligence platform"
-        description="The dashboard the platform team checks every morning. Answers one question — 'where is my ticket right now?' — across 17 services and four environments."
+        description="The dashboard the platform team checks every morning. Answers one question — 'where is my ticket right now?' — across a couple dozen services and four environments."
         date="2025 → ongoing"
         metrics="20+ engineers, daily"
-        color="#f59e0b"
+        command="cat case-studies/heimdall.md"
       />
+
+      <div className="container px-4 mb-16">
+        <div className="max-w-7xl mx-auto">
+          <FadeUp>
+            <div className="mb-5">
+              <span className="font-mono text-sm text-primary">// try it</span>
+              <h2 className="mt-2 font-mono font-semibold tracking-tight text-2xl sm:text-3xl text-foreground">
+                The environments view, live
+              </h2>
+              <p className="mt-2 text-muted-foreground max-w-2xl">
+                The screenshots below are the real thing. This one you can poke at — pick a
+                ticket to trace it across the pipeline, toggle drift, or click any cell for the
+                commit, pods and who shipped it. Mock data, real interaction model.
+              </p>
+            </div>
+            <HeimdallDemo />
+          </FadeUp>
+        </div>
+      </div>
 
       <div className="container px-4">
         <div className="grid gap-8 lg:grid-cols-[2fr_1fr] max-w-7xl mx-auto">
           <div className="space-y-12">
             <CaseStudySection eyebrow="// the problem" title="Five tabs, one question">
               <p className="text-muted-foreground leading-relaxed mb-4">
-                Across 17 services and a dev → QA → preprod → prod pipeline, the state
+                Across a couple dozen services and a dev → QA → preprod → prod pipeline, the state
                 of any given ticket is scattered. The commit&apos;s in Bitbucket. The
                 desired state is in the GitOps repo. The pods are in Kubernetes. The
-                tests are in Sentry. The ticket is in JIRA.
+                test results are in the CI / test-report system. The ticket is in JIRA.
               </p>
               <p className="text-muted-foreground leading-relaxed mb-4">
                 Heimdall started life as a small Python service that exposed DORA
@@ -246,7 +257,7 @@ export default function HeimdallPage() {
             <CaseStudySection eyebrow="// design" title="A few decisions worth flagging">
               <div className="space-y-5">
                 <GlassCard className="p-6">
-                  <h3 className="font-semibold text-foreground mb-2">
+                  <h3 className="font-mono font-semibold tracking-tight text-foreground mb-2">
                     Treat it as a product, not a script
                   </h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">
@@ -258,7 +269,7 @@ export default function HeimdallPage() {
                 </GlassCard>
 
                 <GlassCard className="p-6">
-                  <h3 className="font-semibold text-foreground mb-2">
+                  <h3 className="font-mono font-semibold tracking-tight text-foreground mb-2">
                     Trust pods, not abstractions
                   </h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">
@@ -270,7 +281,7 @@ export default function HeimdallPage() {
                 </GlassCard>
 
                 <GlassCard className="p-6">
-                  <h3 className="font-semibold text-foreground mb-2">
+                  <h3 className="font-mono font-semibold tracking-tight text-foreground mb-2">
                     Make it operable
                   </h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">
@@ -285,9 +296,8 @@ export default function HeimdallPage() {
 
             <CaseStudySection eyebrow="// impact" title="What changed">
               <StatsGrid
-                color="#f59e0b"
                 stats={[
-                  { value: "17", label: "services tracked" },
+                  { value: "~2 dozen", label: "services tracked" },
                   { value: "20+", label: "engineers using it daily" },
                   { value: "10 min", label: "data freshness" },
                   { value: "1 curl", label: "to know if it's healthy" },
@@ -326,7 +336,7 @@ export default function HeimdallPage() {
             metrics={[
               { label: "Status", value: "Live, ongoing" },
               { label: "Users", value: "20+ engineers, daily" },
-              { label: "Services tracked", value: "17 across 4 environments" },
+              { label: "Services tracked", value: "A couple dozen, across 4 environments" },
               { label: "Data freshness", value: "Every 10 minutes" },
             ]}
             relatedProjects={[
