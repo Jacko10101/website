@@ -1,14 +1,15 @@
 "use client";
 
 import {
+  PHOSPHORS,
   CaseStudyLayout,
   CaseStudyHero,
-  CaseStudySection,
   StatsGrid,
   TechSidebar,
   CaseStudyCTA,
   EnhancedCodeBlock,
 } from "@/components/case-study-layout";
+import { TraceSection as CaseStudySection } from "@/components/case-section-variants";
 import { GlassCard, FadeUp } from "@/components/scroll-reveal";
 import { GatewayTracer } from "@/components/gateway-tracer";
 
@@ -43,7 +44,7 @@ const articleSchema = {
 
 export default function AIGatewayPage() {
   return (
-    <CaseStudyLayout schema={articleSchema}>
+    <CaseStudyLayout schema={articleSchema} phosphor={PHOSPHORS.amber}>
       <CaseStudyHero
         title="AI Gateway"
         subtitle="One endpoint for every model"
@@ -51,6 +52,7 @@ export default function AIGatewayPage() {
         date="2026"
         metrics="every AI workload, one endpoint"
         command="cat case-studies/ai-gateway.md"
+        phosphor={PHOSPHORS.amber.label}
       />
 
       <div className="container px-4 mb-16">
@@ -76,7 +78,7 @@ export default function AIGatewayPage() {
         <div className="grid gap-8 lg:grid-cols-[2fr_1fr] max-w-7xl mx-auto">
           <div className="space-y-12">
             <CaseStudySection
-              eyebrow="// the problem"
+              eyebrow="// before: no gateway"
               title="The third API key is the one that hurts"
             >
               <p className="text-muted-foreground leading-relaxed mb-4">
@@ -94,7 +96,7 @@ export default function AIGatewayPage() {
             </CaseStudySection>
 
             <CaseStudySection
-              eyebrow="// the gateway"
+              eyebrow="// request · auth + allowlist"
               title="Virtual keys, and a model list you can't talk your way past"
             >
               <p className="text-muted-foreground leading-relaxed mb-4">
@@ -132,7 +134,7 @@ curl -H "Authorization: Bearer $VIRTUAL_KEY" "$GATEWAY/v1/models"`}
               </p>
             </CaseStudySection>
 
-            <CaseStudySection eyebrow="// attribution" title="Whose spend is it?">
+            <CaseStudySection eyebrow="// request · spend tags" title="Whose spend is it?">
               <p className="text-muted-foreground leading-relaxed mb-4">
                 Every call carries its tenant, plus tags for environment and
                 feature. Chat, scheduled estate summaries and the nightly schema
@@ -144,18 +146,47 @@ curl -H "Authorization: Bearer $VIRTUAL_KEY" "$GATEWAY/v1/models"`}
                 tenant and per feature, which matters the first time somebody
                 asks about cost to serve.
               </p>
-              <p className="text-muted-foreground leading-relaxed">
-                One warning, learned the hard way. The cost dashboard
-                multiplies tokens by per-million prices held as dashboard
-                variables, and ours were set to a different model&apos;s pricing
-                than the one deployed. Spend read about fourfold high for weeks
-                and nobody questioned it, because the number was in a dashboard
-                and dashboards look authoritative. Tokens are measured. Prices
-                are config, and config rots.
-              </p>
+              <div className="rounded-lg border border-warn/40 bg-warn/5 overflow-hidden">
+                <div className="flex items-center gap-2 px-5 py-3 border-b border-warn/30 font-mono text-xs">
+                  <span className="w-2 h-2 rounded-full bg-warn" aria-hidden />
+                  <span className="text-warn font-semibold">postmortem</span>
+                  <span className="text-muted-foreground">
+                    · the 4x pricing bug · severity: embarrassing
+                  </span>
+                </div>
+                <dl className="px-5 py-4 space-y-3 text-sm leading-relaxed">
+                  <div className="grid sm:grid-cols-[7rem_1fr] gap-1">
+                    <dt className="font-mono text-xs text-warn/90 pt-0.5">symptom</dt>
+                    <dd className="text-muted-foreground">
+                      Spend read about fourfold high. For weeks.
+                    </dd>
+                  </div>
+                  <div className="grid sm:grid-cols-[7rem_1fr] gap-1">
+                    <dt className="font-mono text-xs text-warn/90 pt-0.5">cause</dt>
+                    <dd className="text-muted-foreground">
+                      The cost dashboard multiplies tokens by per-million prices
+                      held as dashboard variables, and ours were set to a
+                      different model&apos;s pricing than the one deployed.
+                    </dd>
+                  </div>
+                  <div className="grid sm:grid-cols-[7rem_1fr] gap-1">
+                    <dt className="font-mono text-xs text-warn/90 pt-0.5">why it lived</dt>
+                    <dd className="text-muted-foreground">
+                      Nobody questioned it, because the number was in a
+                      dashboard and dashboards look authoritative.
+                    </dd>
+                  </div>
+                  <div className="grid sm:grid-cols-[7rem_1fr] gap-1">
+                    <dt className="font-mono text-xs text-warn/90 pt-0.5">lesson</dt>
+                    <dd className="text-foreground/90">
+                      Tokens are measured. Prices are config, and config rots.
+                    </dd>
+                  </div>
+                </dl>
+              </div>
             </CaseStudySection>
 
-            <CaseStudySection eyebrow="// on top" title="What it made cheap">
+            <CaseStudySection eyebrow="// after: what got cheap" title="What it made cheap">
               <p className="text-muted-foreground leading-relaxed mb-4">
                 The point of a seam is what gets easy afterwards. There&apos;s
                 an automated pull request review agent running on PRs across
@@ -170,7 +201,7 @@ curl -H "Authorization: Bearer $VIRTUAL_KEY" "$GATEWAY/v1/models"`}
               </p>
             </CaseStudySection>
 
-            <CaseStudySection eyebrow="// design" title="Why it's shaped like this">
+            <CaseStudySection eyebrow="// review: the calls" title="Why it's shaped like this">
               <div className="space-y-5">
                 <GlassCard className="p-6">
                   <h3 className="font-mono font-semibold tracking-tight text-foreground mb-2">
@@ -210,7 +241,7 @@ curl -H "Authorization: Bearer $VIRTUAL_KEY" "$GATEWAY/v1/models"`}
               </div>
             </CaseStudySection>
 
-            <CaseStudySection eyebrow="// impact" title="Where it stands">
+            <CaseStudySection eyebrow="// 200 OK · where it stands" title="Where it stands">
               <StatsGrid
                 stats={[
                   { value: "1", label: "endpoint for every AI workload" },
@@ -262,7 +293,7 @@ curl -H "Authorization: Bearer $VIRTUAL_KEY" "$GATEWAY/v1/models"`}
         </div>
       </div>
 
-      <CaseStudyCTA />
+      <CaseStudyCTA line="If the third API key is already hurting, it's a config change away from not hurting. Happy to talk it through." />
     </CaseStudyLayout>
   );
 }

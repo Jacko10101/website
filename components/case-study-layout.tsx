@@ -16,6 +16,7 @@ export function CaseStudyHero({
   date,
   metrics,
   command,
+  phosphor,
 }: {
   title: string;
   subtitle: string;
@@ -23,6 +24,8 @@ export function CaseStudyHero({
   date: string;
   metrics: string;
   command: string;
+  /** phosphor label chip, e.g. "P3 · amber" */
+  phosphor?: string;
 }) {
   return (
     <header className="relative pt-28 pb-24 md:pt-32 md:pb-32 overflow-hidden">
@@ -102,6 +105,15 @@ export function CaseStudyHero({
               <Tag className="h-4 w-4 text-primary" aria-hidden />
               <span>{metrics}</span>
             </div>
+            {phosphor && (
+              <div
+                className="flex items-center gap-2 px-2.5 py-0.5 rounded border border-primary/40 text-primary text-xs self-center"
+                title="Every case study renders on its own CRT phosphor. This one's tube."
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-primary glow-soft" aria-hidden />
+                phosphor {phosphor}
+              </div>
+            )}
           </motion.div>
         </div>
       </div>
@@ -290,8 +302,9 @@ export function TechSidebar({
   );
 }
 
-// CTA at end of case study
-export function CaseStudyCTA() {
+// CTA at end of case study. `line` lets each project close in its own voice
+// instead of six copies of the same sign-off.
+export function CaseStudyCTA({ line }: { line?: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
@@ -310,8 +323,8 @@ export function CaseStudyCTA() {
             Thanks for reading.
           </h2>
           <p className="text-muted-foreground mb-8">
-            If any of this resonates, or you want to dig into the parts I didn&apos;t
-            write up, drop me a note. Always happy to talk shop.
+            {line ??
+              "If any of this resonates, or you want to dig into the parts I didn't write up, drop me a note. Always happy to talk shop."}
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -336,14 +349,52 @@ export function CaseStudyCTA() {
   );
 }
 
+/**
+ * Per-project accent: each case study renders on its own CRT phosphor.
+ * Real tube designations — P1 green, P3 amber, P4 white, P11 blue,
+ * P16 violet, P26 orange. Scoped CSS variables re-tint everything on the
+ * page (glows, stats, diagrams, the interactives) without touching the
+ * rest of the site, which stays on the house P1 green.
+ */
+export interface Phosphor {
+  /** oklch hue angle for --color-primary */
+  hue: number;
+  /** oklch chroma; blues want less to avoid vibrating on black */
+  chroma?: number;
+  /** oklch lightness; P4 white sits higher */
+  lightness?: number;
+  /** e.g. "P3 · amber" — rendered as a chip in the hero */
+  label: string;
+}
+
+export const PHOSPHORS: Record<string, Phosphor> = {
+  green: { hue: 150, label: "P1 · green" },
+  amber: { hue: 85, label: "P3 · amber" },
+  white: { hue: 250, chroma: 0.02, lightness: 0.87, label: "P4 · white" },
+  blue: { hue: 230, chroma: 0.15, label: "P11 · blue" },
+  violet: { hue: 305, chroma: 0.16, label: "P16 · violet" },
+  orange: { hue: 55, label: "P26 · orange" },
+};
+
 // Main layout wrapper
 export function CaseStudyLayout({
   children,
   schema,
+  phosphor,
 }: {
   children: ReactNode;
   schema?: object;
+  phosphor?: Phosphor;
 }) {
+  const accentStyle = phosphor
+    ? ({
+        "--color-primary": `oklch(${phosphor.lightness ?? 0.72} ${
+          phosphor.chroma ?? 0.17
+        } ${phosphor.hue})`,
+        "--color-primary-foreground": `oklch(0.08 0.01 ${phosphor.hue})`,
+      } as React.CSSProperties)
+    : undefined;
+
   return (
     <>
       {schema && (
@@ -352,7 +403,7 @@ export function CaseStudyLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
         />
       )}
-      <article className="bg-background min-h-screen">
+      <article className="bg-background min-h-screen" style={accentStyle}>
         <ScrollProgress />
         {children}
       </article>

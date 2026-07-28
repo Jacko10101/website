@@ -4,14 +4,15 @@ import Image from "next/image";
 import { ReactNode } from "react";
 import { CicdArchitecture } from "@/components/cicd-architecture";
 import {
+  PHOSPHORS,
   CaseStudyLayout,
   CaseStudyHero,
-  CaseStudySection,
   StatsGrid,
   TechSidebar,
   EnhancedCodeBlock,
   CaseStudyCTA,
 } from "@/components/case-study-layout";
+import { StepSection as CaseStudySection } from "@/components/case-section-variants";
 import { GlassCard, FadeUp } from "@/components/scroll-reveal";
 import { TerminalWindow } from "@/components/terminal-window";
 
@@ -84,7 +85,7 @@ function Screenshot({
 
 export default function CicdGitopsPage() {
   return (
-    <CaseStudyLayout schema={articleSchema}>
+    <CaseStudyLayout schema={articleSchema} phosphor={PHOSPHORS.white}>
       <CaseStudyHero
         title="Pipeline platform"
         subtitle="Shared CI/CD library"
@@ -92,12 +93,13 @@ export default function CicdGitopsPage() {
         date="2023 → ongoing"
         metrics="20 services, ~400 deploys/month"
         command="cat case-studies/pipeline-platform.md"
+        phosphor={PHOSPHORS.white.label}
       />
 
       <div className="container px-4">
         <div className="grid gap-8 lg:grid-cols-[2fr_1fr] max-w-7xl mx-auto">
           <div className="space-y-12">
-            <CaseStudySection eyebrow="// the shape that broke" title="Twenty pipelines that drifted">
+            <CaseStudySection eyebrow="// exit 1 · the shape that broke" title="Twenty pipelines that drifted">
               <p className="text-muted-foreground leading-relaxed mb-4">
                 Twenty services each shipped their own bitbucket-pipelines.yml.
                 Same rough shape: build, test, scan, push, deploy, but each
@@ -113,13 +115,32 @@ export default function CicdGitopsPage() {
                 Tests ran inside the pipeline, before pods were healthy. They
                 were flaky and most failures weren&apos;t real.
               </p>
-              <p className="text-muted-foreground leading-relaxed">
+              <p className="text-muted-foreground leading-relaxed mb-6">
                 Jira gates, Veracode and SourceClear were copy-pasted into
                 every yaml.
               </p>
+
+              <div className="grid sm:grid-cols-2 gap-4 font-mono text-sm">
+                <div className="rounded-lg border border-error/30 bg-error/5 p-5">
+                  <p className="text-xs text-error/90 font-semibold mb-3">then</p>
+                  <ul className="space-y-2 text-muted-foreground text-[13px] leading-relaxed">
+                    <li>~500-line bitbucket-pipelines.yml, per service</li>
+                    <li>1071-line bash reporter, one file, zero tests</li>
+                    <li>a build-pattern change = a PR to twenty repos</li>
+                  </ul>
+                </div>
+                <div className="rounded-lg border border-primary/30 bg-primary/5 p-5">
+                  <p className="text-xs text-primary font-semibold mb-3">now</p>
+                  <ul className="space-y-2 text-muted-foreground text-[13px] leading-relaxed">
+                    <li>a six-line import, pinned to a tag</li>
+                    <li>142-line orchestrator, five modules, each tested</li>
+                    <li>a build-pattern change = one release, adopted by bump</li>
+                  </ul>
+                </div>
+              </div>
             </CaseStudySection>
 
-            <CaseStudySection eyebrow="// the pipeline" title="One library, imported by every service">
+            <CaseStudySection eyebrow="// step: build" title="One library, imported by every service">
               <p className="text-muted-foreground leading-relaxed mb-4">
                 I split the pipeline into two repos:{" "}
                 <code className="text-foreground">java-shared-pipeline</code>{" "}
@@ -181,7 +202,7 @@ gitops:
               </p>
             </CaseStudySection>
 
-            <CaseStudySection eyebrow="// tests, extracted" title="Tests aren't pipeline steps">
+            <CaseStudySection eyebrow="// step: verify" title="Tests aren't pipeline steps">
               <p className="text-muted-foreground leading-relaxed mb-4">
                 I pulled test infra out into its own repo. The pipeline builds
                 and pushes the image, then stops. A separate ArgoCD PostSync hook runs
@@ -233,7 +254,7 @@ gitops:
               </div>
             </CaseStudySection>
 
-            <CaseStudySection eyebrow="// reporting & promotion" title="ArgoCD took over the rest">
+            <CaseStudySection eyebrow="// step: promote" title="ArgoCD took over the rest">
               <p className="text-muted-foreground leading-relaxed mb-4">
                 The bash reporter is gone. I moved the bits worth keeping into
                 a shared-scripts repo and retired the rest when ArgoCD&apos;s
@@ -252,7 +273,7 @@ gitops:
               </p>
             </CaseStudySection>
 
-            <CaseStudySection eyebrow="// architecture" title="How it fits together">
+            <CaseStudySection eyebrow="// the whole run" title="How it fits together">
               <p className="text-muted-foreground mb-6 leading-relaxed">
                 Four layers, top to bottom. A service repo and the shared
                 libraries it imports. A Bitbucket run that produces an image
@@ -264,7 +285,7 @@ gitops:
               <CicdArchitecture />
             </CaseStudySection>
 
-            <CaseStudySection eyebrow="// design" title="The calls that shaped it">
+            <CaseStudySection eyebrow="// annotations" title="The calls that shaped it">
               <div className="space-y-5">
                 <GlassCard className="p-6">
                   <h3 className="font-mono font-semibold tracking-tight text-foreground mb-2">
@@ -310,7 +331,7 @@ gitops:
               </div>
             </CaseStudySection>
 
-            <CaseStudySection eyebrow="// impact" title="What changed">
+            <CaseStudySection eyebrow="// exit 0 · what changed" title="What changed">
               <StatsGrid
                 stats={[
                   { value: "20", label: "services on one shared library" },
@@ -365,7 +386,7 @@ gitops:
         </div>
       </div>
 
-      <CaseStudyCTA />
+      <CaseStudyCTA line="If your twenty pipelines have quietly drifted apart, I've merged that mess once already." />
     </CaseStudyLayout>
   );
 }

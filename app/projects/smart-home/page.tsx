@@ -1,14 +1,15 @@
 "use client";
 
 import {
+  PHOSPHORS,
   CaseStudyLayout,
   CaseStudyHero,
-  CaseStudySection,
   StatsGrid,
   TechSidebar,
   EnhancedCodeBlock,
   CaseStudyCTA,
 } from "@/components/case-study-layout";
+import { TopicSection as CaseStudySection } from "@/components/case-section-variants";
 import { GlassCard, FadeUp } from "@/components/scroll-reveal";
 import { LocalPath } from "@/components/local-path";
 
@@ -48,7 +49,7 @@ const articleSchema = {
 
 export default function SmartHomePage() {
   return (
-    <CaseStudyLayout schema={articleSchema}>
+    <CaseStudyLayout schema={articleSchema} phosphor={PHOSPHORS.violet}>
       <CaseStudyHero
         title="Smart home on K3s"
         subtitle="Self-hosted home automation"
@@ -56,12 +57,13 @@ export default function SmartHomePage() {
         date="2024 → ongoing"
         metrics="Single-node K3s, 20+ devices, 0 cloud accounts"
         command="cat case-studies/smart-home.md"
+        phosphor={PHOSPHORS.violet.label}
       />
 
       <div className="container px-4">
         <div className="grid gap-8 lg:grid-cols-[2fr_1fr] max-w-7xl mx-auto">
           <div className="space-y-12">
-            <CaseStudySection eyebrow="// the premise" title="The same discipline, in miniature">
+            <CaseStudySection eyebrow="// home/why-local" title="The same discipline, in miniature">
               <p className="text-muted-foreground leading-relaxed mb-4">
                 Most smart-home setups end up as a pile of vendor apps tied
                 together with cloud accounts. That works until a vendor goes
@@ -79,7 +81,7 @@ export default function SmartHomePage() {
               </p>
             </CaseStudySection>
 
-            <CaseStudySection eyebrow="// the hardware" title="One Pi, no cloud">
+            <CaseStudySection eyebrow="// zigbee2mqtt/coordinator" title="One Pi, no cloud">
               <p className="text-muted-foreground leading-relaxed mb-4">
                 A Raspberry Pi 5 (8GB) is the whole control plane. I run NVMe
                 over USB because SD cards die under sustained writes, and a UPS
@@ -115,7 +117,7 @@ export default function SmartHomePage() {
               </FadeUp>
             </div>
 
-            <CaseStudySection eyebrow="// the cluster" title="GitOps for the living room">
+            <CaseStudySection eyebrow="// argocd/apps · 6 synced" title="GitOps for the living room">
               <p className="text-muted-foreground leading-relaxed mb-4">
                 Everything on the Pi is a Kubernetes deployment, reconciled by
                 ArgoCD from a git repo. Adding a new automation, tweaking a
@@ -145,7 +147,7 @@ node-exporter         Synced        Healthy`}
               />
             </CaseStudySection>
 
-            <CaseStudySection eyebrow="// observability" title="Power draw and humidity, in Grafana">
+            <CaseStudySection eyebrow="// home/sensors/#" title="Power draw and humidity, in Grafana">
               <p className="text-muted-foreground leading-relaxed mb-4">
                 Prometheus scrapes metrics from Home Assistant&apos;s exporter
                 and from node-exporter on the Pi itself. Innr smart plugs
@@ -161,7 +163,7 @@ node-exporter         Synced        Healthy`}
               </p>
             </CaseStudySection>
 
-            <CaseStudySection eyebrow="// access" title="Tailscale, not port-forwarding">
+            <CaseStudySection eyebrow="// tailscale/status" title="Tailscale, not port-forwarding">
               <p className="text-muted-foreground leading-relaxed mb-4">
                 Zero ports exposed to the internet. Remote access goes through
                 Tailscale. Every device on my account joins a private overlay
@@ -176,7 +178,7 @@ node-exporter         Synced        Healthy`}
               </p>
             </CaseStudySection>
 
-            <CaseStudySection eyebrow="// design" title="Why it's built this way">
+            <CaseStudySection eyebrow="// home/decisions" title="Why it's built this way">
               <div className="space-y-5">
                 <GlassCard className="p-6">
                   <h3 className="font-mono font-semibold tracking-tight text-foreground mb-2">
@@ -217,7 +219,7 @@ node-exporter         Synced        Healthy`}
               </div>
             </CaseStudySection>
 
-            <CaseStudySection eyebrow="// what&apos;s next" title="Where this might go">
+            <CaseStudySection eyebrow="// home/backlog" title="Where this might go">
               <p className="text-muted-foreground leading-relaxed mb-4">
                 Smart TRV radiator valves are next, which would let me
                 schedule heating per room instead of per house. After that,
@@ -233,7 +235,7 @@ node-exporter         Synced        Healthy`}
               </p>
             </CaseStudySection>
 
-            <CaseStudySection eyebrow="// the numbers" title="What it adds up to">
+            <CaseStudySection eyebrow="// home/state" title="What it adds up to">
               <StatsGrid
                 stats={[
                   { value: "Single-node", label: "K3s + ArgoCD + Prometheus" },
@@ -288,7 +290,7 @@ node-exporter         Synced        Healthy`}
         </div>
       </div>
 
-      <CaseStudyCTA />
+      <CaseStudyCTA line="If you also run ArgoCD at home, we'll get on." />
     </CaseStudyLayout>
   );
 }

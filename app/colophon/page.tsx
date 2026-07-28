@@ -33,6 +33,10 @@ const decisions = [
     title: "Dark only, on purpose",
     body: "One audience, one context: engineers, usually at a desk. Maintaining a second theme would double the design surface for a mode almost nobody here would choose.",
   },
+  {
+    title: "One console, six tubes",
+    body: "Every case study renders on its own CRT phosphor, and they're real tube designations: P1 green for Heimdall, P3 amber for the gateway, P11 blue for Clarity, P4 white for the pipeline, P26 orange for observability, P16 violet for the homelab. Same console, different glass. The chip in each hero tells you which tube you're looking at.",
+  },
 ];
 
 const stack = [

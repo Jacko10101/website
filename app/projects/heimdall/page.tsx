@@ -5,13 +5,14 @@ import { ReactNode } from "react";
 import { HeimdallArchitecture } from "@/components/heimdall-architecture";
 import { HeimdallDemo } from "@/components/heimdall-demo";
 import {
+  PHOSPHORS,
   CaseStudyLayout,
   CaseStudyHero,
-  CaseStudySection,
   StatsGrid,
   TechSidebar,
   CaseStudyCTA,
 } from "@/components/case-study-layout";
+import { DaySection as CaseStudySection } from "@/components/case-section-variants";
 import { GlassCard, FadeUp } from "@/components/scroll-reveal";
 import { TerminalWindow } from "@/components/terminal-window";
 
@@ -83,7 +84,7 @@ function Screenshot({
 
 export default function HeimdallPage() {
   return (
-    <CaseStudyLayout schema={articleSchema}>
+    <CaseStudyLayout schema={articleSchema} phosphor={PHOSPHORS.green}>
       <CaseStudyHero
         title="Heimdall"
         subtitle="Deployment intelligence platform"
@@ -91,13 +92,14 @@ export default function HeimdallPage() {
         date="2025 → ongoing"
         metrics="20+ engineers, daily"
         command="cat case-studies/heimdall.md"
+        phosphor={PHOSPHORS.green.label}
       />
 
       <div className="container px-4 mb-16">
         <div className="max-w-7xl mx-auto">
           <FadeUp>
             <div className="mb-5">
-              <span className="font-mono text-sm text-primary">// try it</span>
+              <span className="font-mono text-sm text-primary">// 08:55 · try it first</span>
               <h2 className="mt-2 font-mono font-semibold tracking-tight text-2xl sm:text-3xl text-foreground">
                 The environments view, live
               </h2>
@@ -115,7 +117,7 @@ export default function HeimdallPage() {
       <div className="container px-4">
         <div className="grid gap-8 lg:grid-cols-[2fr_1fr] max-w-7xl mx-auto">
           <div className="space-y-12">
-            <CaseStudySection eyebrow="// the problem" title="Five tabs, one question">
+            <CaseStudySection eyebrow="// 08:57 · five tabs open" title="Five tabs, one question">
               <p className="text-muted-foreground leading-relaxed mb-4">
                 Across a couple dozen services and a dev → QA → preprod → prod pipeline, the state
                 of any given ticket is scattered. The commit&apos;s in Bitbucket. The
@@ -134,7 +136,7 @@ export default function HeimdallPage() {
               </p>
             </CaseStudySection>
 
-            <CaseStudySection eyebrow="// the product" title="A short tour">
+            <CaseStudySection eyebrow="// 09:00 · standup, on one screen" title="A short tour">
               <p className="text-muted-foreground mb-6">
                 Six pages. Each one answers a question someone&apos;s about to ask in Teams.
               </p>
@@ -235,7 +237,7 @@ export default function HeimdallPage() {
               </div>
             </CaseStudySection>
 
-            <CaseStudySection eyebrow="// architecture" title="How it&apos;s built">
+            <CaseStudySection eyebrow="// 12:30 · how it's wired" title="How it&apos;s built">
               <p className="text-muted-foreground mb-6 leading-relaxed">
                 One Python service. A background job pulls from the upstream sources
                 every ten minutes and writes everything down: once into a database,
@@ -254,7 +256,7 @@ export default function HeimdallPage() {
               </p>
             </CaseStudySection>
 
-            <CaseStudySection eyebrow="// design" title="A few decisions worth flagging">
+            <CaseStudySection eyebrow="// 15:00 · decisions that held" title="A few decisions worth flagging">
               <div className="space-y-5">
                 <GlassCard className="p-6">
                   <h3 className="font-mono font-semibold tracking-tight text-foreground mb-2">
@@ -294,7 +296,7 @@ export default function HeimdallPage() {
               </div>
             </CaseStudySection>
 
-            <CaseStudySection eyebrow="// impact" title="What changed">
+            <CaseStudySection eyebrow="// 17:30 · what changed" title="What changed">
               <StatsGrid
                 stats={[
                   { value: "~2 dozen", label: "services tracked" },
@@ -347,7 +349,7 @@ export default function HeimdallPage() {
         </div>
       </div>
 
-      <CaseStudyCTA />
+      <CaseStudyCTA line="If your standup still starts with kubectl output pasted into the chat, I'd enjoy that conversation." />
     </CaseStudyLayout>
   );
 }

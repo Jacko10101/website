@@ -3,13 +3,14 @@
 import { MetricsShowcase } from "@/components/metrics-showcase";
 import { ObservabilityArchitecture } from "@/components/observability-architecture";
 import {
+  PHOSPHORS,
   CaseStudyLayout,
   CaseStudyHero,
-  CaseStudySection,
   StatsGrid,
   TechSidebar,
   CaseStudyCTA,
 } from "@/components/case-study-layout";
+import { PanelSection as CaseStudySection } from "@/components/case-section-variants";
 import { GlassCard } from "@/components/scroll-reveal";
 
 const articleSchema = {
@@ -44,7 +45,7 @@ const articleSchema = {
 
 export default function ObservabilityPage() {
   return (
-    <CaseStudyLayout schema={articleSchema}>
+    <CaseStudyLayout schema={articleSchema} phosphor={PHOSPHORS.orange}>
       <CaseStudyHero
         title="Observability stack"
         subtitle="Self-hosted monitoring"
@@ -52,12 +53,13 @@ export default function ObservabilityPage() {
         date="2024 → 2025"
         metrics="20 services, 4 environments"
         command="cat case-studies/observability.md"
+        phosphor={PHOSPHORS.orange.label}
       />
 
       <div className="container px-4">
         <div className="grid gap-8 lg:grid-cols-[2fr_1fr] max-w-7xl mx-auto">
           <div className="space-y-12">
-            <CaseStudySection eyebrow="// the setup" title="No dashboards, no logs, no alerts">
+            <CaseStudySection eyebrow="// absent(up)" title="No dashboards, no logs, no alerts">
               <p className="text-muted-foreground leading-relaxed mb-4">
                 Twenty microservices on Kubernetes and not a Grafana panel between
                 them. The first sign something was wrong was usually a customer
@@ -75,7 +77,7 @@ export default function ObservabilityPage() {
               </p>
             </CaseStudySection>
 
-            <CaseStudySection eyebrow="// architecture" title="How it fits together">
+            <CaseStudySection eyebrow="// sum by (layer)" title="How it fits together">
               <ObservabilityArchitecture />
 
               <p className="text-muted-foreground mt-6 leading-relaxed">
@@ -91,7 +93,7 @@ export default function ObservabilityPage() {
               </p>
             </CaseStudySection>
 
-            <CaseStudySection eyebrow="// dashboards" title="What people actually look at">
+            <CaseStudySection eyebrow="// topk(5, dashboard_views)" title="What people actually look at">
               <p className="text-muted-foreground mb-6 leading-relaxed">
                 I ended up with 22 dashboards, but most of the
                 traffic goes to maybe five. The rest exist for the once-a-quarter
@@ -125,7 +127,7 @@ export default function ObservabilityPage() {
               />
             </CaseStudySection>
 
-            <CaseStudySection eyebrow="// alerts" title="Alerts that don&apos;t cry wolf">
+            <CaseStudySection eyebrow={'// ALERTS{alertstate="firing"}'} title="Alerts that don&apos;t cry wolf">
               <p className="text-muted-foreground leading-relaxed mb-4">
                 Every alert passes two tests. A human has to be able to do
                 something about it, and the runbook has to exist before the rule
@@ -136,10 +138,30 @@ export default function ObservabilityPage() {
                 fixes, who to escalate to. Just enough that the on-call engineer
                 isn&apos;t starting from zero at 3am.
               </p>
-              <p className="text-muted-foreground leading-relaxed">
+              <p className="text-muted-foreground leading-relaxed mb-5">
                 Routing is by environment more than severity. Prod fires
                 straight to the on-call channel. Dev waits until business hours.
               </p>
+
+              <div className="rounded-lg border border-border bg-black/40 font-mono text-[13px] overflow-hidden mb-5">
+                <div className="px-5 py-2.5 border-b border-border text-xs text-muted-foreground">
+                  alertmanager · routes, by environment
+                </div>
+                <div className="px-5 py-4 space-y-2">
+                  <div className="flex flex-wrap gap-x-3">
+                    <span className="text-error w-16 shrink-0">prod</span>
+                    <span className="text-muted-foreground">→ on-call channel, immediately, any hour</span>
+                  </div>
+                  <div className="flex flex-wrap gap-x-3">
+                    <span className="text-warn w-16 shrink-0">qa</span>
+                    <span className="text-muted-foreground">→ Teams, 24/7 channel</span>
+                  </div>
+                  <div className="flex flex-wrap gap-x-3">
+                    <span className="text-primary w-16 shrink-0">dev</span>
+                    <span className="text-muted-foreground">→ Teams, business hours only</span>
+                  </div>
+                </div>
+              </div>
               <p className="text-muted-foreground leading-relaxed">
                 Inhibition rules kill the cascade of follow-on alerts when one
                 root cause takes out a dozen things downstream. Without them, the
@@ -148,7 +170,7 @@ export default function ObservabilityPage() {
               </p>
             </CaseStudySection>
 
-            <CaseStudySection eyebrow="// design" title="The calls I'd defend">
+            <CaseStudySection eyebrow="// # HELP" title="The calls I'd defend">
               <div className="space-y-5">
                 <GlassCard className="p-6">
                   <h3 className="font-mono font-semibold tracking-tight text-foreground mb-2">
@@ -191,7 +213,7 @@ export default function ObservabilityPage() {
               </div>
             </CaseStudySection>
 
-            <CaseStudySection eyebrow="// impact" title="The numbers">
+            <CaseStudySection eyebrow="// range: 2024 → now" title="The numbers">
               <StatsGrid
                 stats={[
                   { value: "20", label: "services covered, every environment" },
@@ -245,7 +267,7 @@ export default function ObservabilityPage() {
         </div>
       </div>
 
-      <CaseStudyCTA />
+      <CaseStudyCTA line="If the first alert of the night is still a customer, we should talk." />
     </CaseStudyLayout>
   );
 }

@@ -12,30 +12,30 @@ const journey = [
   {
     hash: "a1b2c3f",
     year: "2023",
-    title: "QA Engineer",
+    title: "Joined as a graduate, inherited a migration",
     description:
       "I graduated with a BSc in Computer Science and landed in the middle of a monolith → microservices migration, writing the test automation that kept it honest.",
   },
   {
     hash: "d4e5f6a",
     year: "2024",
-    title: "Platform Engineer",
+    title: "Earned the platform",
     description:
-      "I moved onto the platform itself. Observability from zero, then GitOps with ArgoCD, until 20+ services deployed the same way.",
+      "The test work kept exposing infrastructure problems, so I started fixing those instead. Observability from zero, then GitOps with ArgoCD, until 20+ services deployed the same way.",
   },
   {
     hash: "b7c8d9e",
     year: "2025",
-    title: "Site Reliability Engineer",
+    title: "Standardised it, then instrumented it",
     description:
-      "I standardised CI onto one shared pipeline library across every service, and started the deployment-metrics tool that grew into Heimdall.",
+      "I moved CI onto one shared pipeline library across every service, and started the deployment-metrics tool that grew into Heimdall. The team went from asking \"did it deploy?\" to reading the answer off a screen.",
   },
   {
     hash: "f0a1b2c",
     year: "2026",
-    title: "AI Platform · MSc AI",
+    title: "Built the AI platform on top",
     description:
-      "I built the AI platform: an LLM gateway in front of every AI workload, and Clarity, a natural-language database product live across ~30 tenants. I'm finishing an MSc in Artificial Intelligence alongside it.",
+      "The same infrastructure, now carrying LLM workloads: a gateway in front of every model call, and Clarity, a natural-language database product live across ~30 tenants. I'm finishing an MSc in Artificial Intelligence alongside it.",
   },
 ];
 
@@ -253,7 +253,7 @@ function JourneyTimeline() {
         <SectionHeading
           command="git log --oneline --reverse"
           title="The story"
-          lede="From graduate QA to platform engineering. Here's how I got here."
+          lede="Four years, one company, compounding scope. Each year built on what the last one shipped."
           align="center"
         />
 

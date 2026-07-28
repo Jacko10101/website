@@ -3,13 +3,14 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
 import {
+  PHOSPHORS,
   CaseStudyLayout,
   CaseStudyHero,
-  CaseStudySection,
   StatsGrid,
   TechSidebar,
   CaseStudyCTA,
 } from "@/components/case-study-layout";
+import { ChatSection as CaseStudySection } from "@/components/case-section-variants";
 import { GlassCard, FadeUp } from "@/components/scroll-reveal";
 import { TerminalWindow } from "@/components/terminal-window";
 import { GroundingDemo } from "@/components/grounding-demo";
@@ -69,7 +70,7 @@ const articleSchema = {
   "@type": "TechArticle",
   headline: "Clarity · a natural-language interface to a multi-tenant database estate",
   description:
-    "Text-to-SQL across 13 tenant databases. Generating the SQL was the easy bit. Proving the answer was real took the other eight months.",
+    "Text-to-SQL across ~30 tenant databases. Generating the SQL was the easy bit. Proving the answer was real took the other eight months.",
   author: { "@type": "Person", name: "Jack Devlin", url: "https://devlinops.com" },
   publisher: { "@type": "Organization", name: "DevlinOps", url: "https://devlinops.com" },
   datePublished: "2025-11-01",
@@ -88,7 +89,7 @@ const articleSchema = {
 
 export default function ClarityPage() {
   return (
-    <CaseStudyLayout schema={articleSchema}>
+    <CaseStudyLayout schema={articleSchema} phosphor={PHOSPHORS.blue}>
       <CaseStudyHero
         title="Clarity"
         subtitle="Natural-language database interface"
@@ -96,13 +97,14 @@ export default function ClarityPage() {
         date="2025 → ongoing"
         metrics="~30 tenants, ~20 daily users"
         command="cat case-studies/clarity.md"
+        phosphor={PHOSPHORS.blue.label}
       />
 
       <div className="container px-4 mb-16">
         <div className="max-w-7xl mx-auto">
           <FadeUp>
             <div className="mb-5">
-              <span className="font-mono text-sm text-primary">// try it</span>
+              <span className="font-mono text-sm text-primary">&gt; try it yourself</span>
               <h2 className="mt-2 font-mono font-semibold tracking-tight text-2xl sm:text-3xl text-foreground">
                 Five ways an answer can lie
               </h2>
@@ -121,7 +123,7 @@ export default function ClarityPage() {
         <div className="grid gap-8 lg:grid-cols-[2fr_1fr] max-w-7xl mx-auto">
           <div className="space-y-12">
             <CaseStudySection
-              eyebrow="// the problem"
+              eyebrow="> how hard is text-to-sql, really?"
               title="Text-to-SQL demos in an afternoon"
             >
               <p className="text-muted-foreground leading-relaxed mb-4">
@@ -141,7 +143,7 @@ export default function ClarityPage() {
             </CaseStudySection>
 
             {SHOTS.length > 0 && (
-              <CaseStudySection eyebrow="// the real thing" title="What it looks like">
+              <CaseStudySection eyebrow="> show me" title="What it looks like">
                 <div className="space-y-6">
                   {SHOTS.map((shot) => (
                     <Screenshot key={shot.src} {...shot} />
@@ -150,7 +152,7 @@ export default function ClarityPage() {
               </CaseStudySection>
             )}
 
-            <CaseStudySection eyebrow="// grounding" title="No vector store. Anywhere.">
+            <CaseStudySection eyebrow="> where's the vector store?" title="No vector store. Anywhere.">
               <p className="text-muted-foreground leading-relaxed mb-4">
                 The default move is embeddings. Chunk the schema, load it into a
                 vector database, retrieve per question. I&apos;d push back on
@@ -172,7 +174,7 @@ export default function ClarityPage() {
               <SchemaDirectory />
             </CaseStudySection>
 
-            <CaseStudySection eyebrow="// freshness" title="The bug that changed the design">
+            <CaseStudySection eyebrow="> which sites are running hottest?" title="The bug that changed the design">
               <p className="text-muted-foreground leading-relaxed mb-4">
                 Someone asked which sites were running hottest. Clarity said
                 there was no data. There was loads of data. It had found a
@@ -197,7 +199,7 @@ export default function ClarityPage() {
             </CaseStudySection>
 
             <CaseStudySection
-              eyebrow="// safety"
+              eyebrow="> drop table sites;"
               title="Try to get something past it"
             >
               <p className="text-muted-foreground leading-relaxed mb-4">
@@ -224,7 +226,7 @@ export default function ClarityPage() {
             </CaseStudySection>
 
             <CaseStudySection
-              eyebrow="// evaluation"
+              eyebrow="> how do you know it works?"
               title="I won't use a model to grade a model"
             >
               <p className="text-muted-foreground leading-relaxed mb-4">
@@ -243,7 +245,7 @@ export default function ClarityPage() {
               </p>
             </CaseStudySection>
 
-            <CaseStudySection eyebrow="// design" title="Two calls worth explaining">
+            <CaseStudySection eyebrow="> why is it built like that?" title="Two calls worth explaining">
               <p className="text-muted-foreground leading-relaxed mb-6">
                 Before either of them: every answer carries the query that
                 produced it, verbatim. It costs screen space and turns an oracle
@@ -291,7 +293,7 @@ export default function ClarityPage() {
               </div>
             </CaseStudySection>
 
-            <CaseStudySection eyebrow="// impact" title="Where it stands">
+            <CaseStudySection eyebrow="> where does it stand?" title="Where it stands">
               <StatsGrid
                 stats={[
                   { value: "~30", label: "tenants, a database each" },
@@ -349,7 +351,7 @@ export default function ClarityPage() {
         </div>
       </div>
 
-      <CaseStudyCTA />
+      <CaseStudyCTA line="If you're fighting hallucinations in production, or just want to argue about vector stores, I'm easy to find." />
     </CaseStudyLayout>
   );
 }
