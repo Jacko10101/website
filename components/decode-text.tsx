@@ -54,8 +54,9 @@ export function DecodeText({
   }, [inView, reduceMotion, text, duration]);
 
   return (
-    <span ref={ref} className={className} aria-label={text}>
-      <span aria-hidden>{done ? text : display}</span>
+    <span ref={ref} className={className}>
+      <span aria-hidden="true">{done ? text : display}</span>
+      <span className="sr-only">{text}</span>
     </span>
   );
 }

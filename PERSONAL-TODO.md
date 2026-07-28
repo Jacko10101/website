@@ -40,3 +40,30 @@ describe the actual pipeline. Also: the CLI's `neofetch` currently claims
 The estate is described as "20", "20+" and "a couple dozen" services in
 different places (about page, projects data). Pick one phrasing and Claude can
 sweep it everywhere.
+
+## 8. Clarity screenshots — the biggest single lift available
+`/projects/clarity` is the strongest thing on the site and currently has no
+images. Heimdall has five; the gap shows. Drop PNGs in `public/clarity/` and add
+entries to the `SHOTS` array at the top of `app/projects/clarity/page.tsx`. The
+section renders itself once the array is non-empty and stays hidden until then.
+
+Worth capturing, roughly in value order:
+
+1. **An answer with its SQL showing.** The single most persuasive image on the
+   whole site: a real question, a real answer, and the verbatim query underneath
+   it. This is the thing everyone else's AI portfolio can't show.
+2. **A caught fabrication.** A `chat_audit` row (or the Grafana panel) where
+   `fabricated_names` is non-empty and the regenerate resolved it. Proof the
+   detectors fire on real traffic rather than in my demo.
+3. **The grounding Grafana panel.** `clarity.grounding.violations` by type over
+   time, plus `grounding.regenerate` resolved vs unresolved. Turns the claim
+   into a measurement.
+4. **The schema-intelligence directory.** A slice of a compiled doc showing the
+   business summaries and the `(no new data since …)` freshness marks. Makes the
+   KAG argument concrete.
+5. **A dashboard the AI built.** Shows it as a product, not a chat toy.
+
+**Redact before exporting**: tenant and customer names (the site never names the
+employer or its customers), real site IDs, usernames and email addresses, any
+hostname containing the company domain, and account IDs. Rename tenants to
+something neutral if they appear in a schema path.

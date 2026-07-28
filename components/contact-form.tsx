@@ -14,7 +14,7 @@ export function ContactForm() {
 
     if (!WEB3FORMS_KEY) {
       setStatus("error");
-      setErrorMessage("The form isn't configured right now — please email jack@devlinops.com directly.");
+      setErrorMessage("The form isn't configured right now. Please email jack@devlinops.com directly.");
       return;
     }
 
@@ -52,7 +52,7 @@ export function ContactForm() {
       <input type="hidden" name="access_key" value={WEB3FORMS_KEY} />
       <input type="hidden" name="from_name" value="DevlinOps Contact Form" />
 
-      {/* Honeypot — hidden from real users, bots tend to fill it. Web3forms drops any submission where this is set. */}
+      {/* Honeypot, hidden from real users, bots tend to fill it. Web3forms drops any submission where this is set. */}
       <input
         type="checkbox"
         name="botcheck"
@@ -74,6 +74,7 @@ export function ContactForm() {
             type="text"
             id="name"
             name="name"
+            autoComplete="name"
             required
             disabled={status === "submitting"}
             className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
@@ -92,6 +93,7 @@ export function ContactForm() {
             type="email"
             id="email"
             name="email"
+            autoComplete="email"
             required
             disabled={status === "submitting"}
             className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
@@ -162,14 +164,18 @@ export function ContactForm() {
               Message sent. I usually reply within a day.
             </div>
           )}
-
-          {status === "error" && (
-            <div className="flex items-center gap-2 text-sm text-error">
-              <AlertCircle className="h-4 w-4" />
-              {errorMessage}
-            </div>
-          )}
         </div>
+
+        {status === "error" && (
+          <div
+            role="alert"
+            id="form-error"
+            className="flex items-center gap-2 text-sm text-error"
+          >
+            <AlertCircle className="h-4 w-4" />
+            {errorMessage}
+          </div>
+        )}
       </div>
     </form>
   );

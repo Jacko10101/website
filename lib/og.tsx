@@ -122,7 +122,7 @@ export function renderOgImage({
           }}
         >
           <div style={{ fontSize: 26, color: "#e4ece7", fontWeight: 600 }}>
-            Jack Devlin — Platform Engineer
+            Jack Devlin · Platform & AI Infrastructure
           </div>
           <div style={{ fontSize: 24, color: "#6b7a70" }}>
             devlinops.com

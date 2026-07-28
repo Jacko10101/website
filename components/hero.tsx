@@ -33,7 +33,7 @@ function useDeployLog(): TerminalLine[] {
   ];
   if (ttfb !== null) {
     lines.push({
-      text: `serving you this page — ttfb ${ttfb}ms, measured just now`,
+      text: `serving you this page in ${ttfb}ms, measured just now`,
       tone: "warn",
     });
   }
@@ -67,7 +67,7 @@ export function Hero() {
         className="container relative z-10"
       >
         <div className="grid lg:grid-cols-[1.2fr_1fr] gap-12 lg:gap-16 items-center">
-          {/* Identity — staggered entrance */}
+          {/* Identity, staggered entrance */}
           <motion.div
             initial="hidden"
             animate="visible"
@@ -86,13 +86,15 @@ export function Hero() {
             </motion.h1>
 
             <motion.p variants={rise} className="text-xl sm:text-2xl text-foreground/90 mb-4 leading-snug">
-              Platform engineer. I build the infrastructure teams ship on —
-              pipelines, clusters, and the dashboards that keep them honest.
+              Platform engineer. I build the infrastructure AI products run on:
+              Kubernetes and CI/CD underneath, an LLM gateway and guardrails on top.
             </motion.p>
 
             <motion.p variants={rise} className="text-base text-muted-foreground mb-8 max-w-xl">
-              Kubernetes, GitOps, CI/CD and observability, run in production.
-              Now taking that discipline to AI workloads —{" "}
+              Three years of production Kubernetes, GitOps and observability.
+              The last year went to AI workloads: a gateway in front of every
+              model call, and a natural-language query product live across ~30
+              tenant databases.{" "}
               {profile.msc.label}
               {profile.msc.result
                 ? ` (${profile.msc.result})`
@@ -102,10 +104,10 @@ export function Hero() {
 
             <motion.div variants={rise} className="flex flex-wrap gap-4 items-center mb-8">
               <Link
-                href="/projects/heimdall"
+                href="/projects/clarity"
                 className="px-7 py-3.5 rounded-md bg-primary text-primary-foreground font-mono font-semibold hover:bg-primary/90 hover:shadow-[0_0_28px_oklch(0.72_0.19_150_/_0.35)] transition-all"
               >
-                See Heimdall
+                See Clarity
               </Link>
               <Link
                 href="/contact"
@@ -132,14 +134,14 @@ export function Hero() {
             </motion.p>
           </motion.div>
 
-          {/* Deploy log — this site shipping itself */}
+          {/* Deploy log, this site shipping itself */}
           <motion.div
             initial={{ opacity: 0, x: 24 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.7, delay: 0.5, ease: [0.22, 1, 0.36, 1] as const }}
             className="hidden md:block"
           >
-            <TerminalWindow title="deploy — devlinops.com" className="glow-border backdrop-blur-sm">
+            <TerminalWindow title="deploy · devlinops.com" className="glow-border backdrop-blur-sm">
               <div className="p-5">
                 <TypedLines lines={deployLog} charDelay={18} lineDelay={260} className="text-[13px] leading-6" />
               </div>
@@ -147,7 +149,7 @@ export function Hero() {
           </motion.div>
         </div>
 
-        {/* Proof strip — evidence before claims */}
+        {/* Proof strip, evidence before claims */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

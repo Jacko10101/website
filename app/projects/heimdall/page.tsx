@@ -18,7 +18,7 @@ import { TerminalWindow } from "@/components/terminal-window";
 const articleSchema = {
   "@context": "https://schema.org",
   "@type": "TechArticle",
-  headline: "Heimdall — Deployment Intelligence Platform",
+  headline: "Heimdall · Deployment Intelligence Platform",
   description:
     "An internal SRE dashboard answering 'where is my ticket right now?' across a couple dozen services. Used daily by a 20+ person engineering team.",
   author: {
@@ -87,7 +87,7 @@ export default function HeimdallPage() {
       <CaseStudyHero
         title="Heimdall"
         subtitle="Deployment intelligence platform"
-        description="The dashboard the platform team checks every morning. Answers one question — 'where is my ticket right now?' — across a couple dozen services and four environments."
+        description="The dashboard the platform team checks every morning. One question: where is my ticket right now? Across a couple dozen services and four environments."
         date="2025 → ongoing"
         metrics="20+ engineers, daily"
         command="cat case-studies/heimdall.md"
@@ -102,7 +102,7 @@ export default function HeimdallPage() {
                 The environments view, live
               </h2>
               <p className="mt-2 text-muted-foreground max-w-2xl">
-                The screenshots below are the real thing. This one you can poke at — pick a
+                The screenshots below are the real thing. This one you can poke at. Pick a
                 ticket to trace it across the pipeline, toggle drift, or click any cell for the
                 commit, pods and who shipped it. Mock data, real interaction model.
               </p>
@@ -124,7 +124,7 @@ export default function HeimdallPage() {
               </p>
               <p className="text-muted-foreground leading-relaxed mb-4">
                 Heimdall started life as a small Python service that exposed DORA
-                counters to Prometheus — handy for leadership, but it didn&apos;t help
+                counters to Prometheus. Handy for leadership, but it didn&apos;t help
                 anyone shipping a feature on a Tuesday afternoon. So I built a UI on
                 top, and kept building until it was the first tab people opened.
               </p>
@@ -136,7 +136,7 @@ export default function HeimdallPage() {
 
             <CaseStudySection eyebrow="// the product" title="A short tour">
               <p className="text-muted-foreground mb-6">
-                Six pages. Each one answers a question someone&apos;s about to ask in Slack.
+                Six pages. Each one answers a question someone&apos;s about to ask in Teams.
               </p>
 
               <div className="space-y-6">
@@ -148,7 +148,7 @@ export default function HeimdallPage() {
                   alt="Heimdall dashboard with pipeline stages, last-24h deploys and 30-day rollup"
                   caption={
                     <>
-                      The pipeline at the top — how many tickets are at each stage,
+                      The pipeline at the top: how many tickets are at each stage,
                       and how long each handover takes. Underneath, the last 24 hours
                       of deploys and a 30-day rollup. DORA metrics in a glance, no
                       Grafana detour required.
@@ -166,7 +166,7 @@ export default function HeimdallPage() {
                     <>
                       Every open ticket grouped by environment, stuck ones first. The
                       &quot;PRs ready&quot; card surfaces the PRs with approval and
-                      green CI just waiting on a merge — usually two or three a day.
+                      green CI just waiting on a merge, usually two or three a day.
                     </>
                   }
                 />
@@ -180,9 +180,9 @@ export default function HeimdallPage() {
                   caption={
                     <>
                       Per-environment cards on top. The matrix below is one row per
-                      service, one column per environment — a green cell means the env
+                      service, one column per environment. A green cell means the env
                       is on the latest commit, red means it&apos;s drifted. This view
-                      replaced about five recurring Slack threads.
+                      replaced about five recurring Teams threads.
                     </>
                   }
                 />
@@ -238,7 +238,7 @@ export default function HeimdallPage() {
             <CaseStudySection eyebrow="// architecture" title="How it&apos;s built">
               <p className="text-muted-foreground mb-6 leading-relaxed">
                 One Python service. A background job pulls from the upstream sources
-                every ten minutes and writes everything down — once into a database,
+                every ten minutes and writes everything down: once into a database,
                 once into an in-memory cache the web app reads from. The web app
                 itself does no fetching, no joins, no slow work. That&apos;s the whole
                 trick. Pages stay fast under load because the work happens elsewhere.
@@ -306,7 +306,7 @@ export default function HeimdallPage() {
 
               <p className="text-muted-foreground mt-6 leading-relaxed">
                 The numbers I care about most aren&apos;t in the table. The team stopped
-                pasting kubectl output into Slack to ask if a deploy worked.
+                pasting kubectl output into Teams to ask if a deploy worked.
                 Standup got shorter. Release management started using the same view
                 as the engineers, which meant fewer dropped tickets at the seams. I&apos;m
                 still finding things to improve.
@@ -340,7 +340,7 @@ export default function HeimdallPage() {
               { label: "Data freshness", value: "Every 10 minutes" },
             ]}
             relatedProjects={[
-              { title: "Pipeline Platform — shared CI/CD", href: "/projects/pipeline-platform" },
+              { title: "Pipeline Platform · shared CI/CD", href: "/projects/pipeline-platform" },
               { title: "Observability Stack", href: "/projects/observability" },
             ]}
           />

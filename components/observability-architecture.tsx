@@ -44,7 +44,7 @@ export function ObservabilityArchitecture() {
     },
     grafana: {
       title: "Grafana",
-      description: "10+ custom dashboards for metrics, logs, and traces - unified observability interface",
+      description: "22 custom dashboards for metrics, logs, and traces - unified observability interface",
     },
     alertmanager: {
       title: "Alertmanager",
@@ -62,7 +62,7 @@ export function ObservabilityArchitecture() {
   const nodeProps = (key: keyof typeof nodes) => ({
     tabIndex: 0,
     role: "button" as const,
-    "aria-label": `${nodes[key].title} — show details`,
+    "aria-label": `${nodes[key].title} · show details`,
     "aria-pressed": selected === key,
     onClick: () => toggle(key),
     onKeyDown: (e: React.KeyboardEvent<SVGGElement>) => {
@@ -86,14 +86,15 @@ export function ObservabilityArchitecture() {
 
   return (
     <div className="rounded-lg border border-border bg-card p-6">
-      <h3 className="mb-1 text-lg font-semibold">Observability stack — system overview</h3>
+      <h3 className="mb-1 text-lg font-semibold">Observability stack · system overview</h3>
       <p className="mb-4 text-xs text-muted-foreground">
         Click, tap or hover any node for a one-line explanation.
       </p>
       <div className="relative">
+        <div className="overflow-x-auto" data-lenis-prevent tabIndex={0}>
         <svg
           viewBox="0 0 950 720"
-          className="w-full"
+          className="min-w-[950px] w-full"
           role="group"
           aria-label="Enterprise observability platform architecture diagram showing Prometheus metrics scraping from Kubernetes microservices and infrastructure exporters, Thanos long-term storage on AWS S3, Loki log aggregation with Promtail collectors, Tempo distributed tracing with OpenTelemetry, Grafana unified visualization dashboards for metrics logs and traces, Alertmanager alert routing with smart inhibition, and Microsoft Teams notification integration for DevOps incident management"
         >
@@ -347,7 +348,7 @@ export function ObservabilityArchitecture() {
               Grafana
             </text>
             <text x="570" y="328" textAnchor="middle" className="fill-muted-foreground text-[9px]">
-              10+ custom dashboards
+              22 custom dashboards
             </text>
             <text x="570" y="341" textAnchor="middle" className="fill-muted-foreground text-[9px]">
               Metrics + Logs
@@ -454,18 +455,20 @@ export function ObservabilityArchitecture() {
               Business Impact & Scale
             </text>
             <text x="470" y="657" textAnchor="middle" className="fill-muted-foreground text-[9px]">
-              <tspan className="fill-primary font-semibold">&lt;$5K/year</tspan> self-hosted cost vs <tspan className="fill-muted-foreground line-through">$50K-150K</tspan> cloud solutions (95%+ savings)
+              Self-hosted on cluster capacity we already had • one stack across four environments
             </text>
             <text x="470" y="673" textAnchor="middle" className="fill-muted-foreground text-[9px]">
-              10+ custom dashboards • 50+ alert rules • 6 exporters • Full LGTM stack • OpenTelemetry tracing
+              22 custom dashboards • 50+ alert rules • 6 exporters • Full LGTM stack • OpenTelemetry tracing
             </text>
             <text x="470" y="689" textAnchor="middle" className="fill-muted-foreground text-[8px]">
               Platform: Cluster health, infrastructure, service mesh • Service: IoT gateway, multi-tenant analytics • Business: Cost tracking, SLA monitoring
             </text>
           </g>
         </svg>
+        </div>
 
         {/* Info panel for the selected-or-hovered node */}
+        <div aria-live="polite">
         {activeNode && (
           <div className="mt-4 rounded-lg border border-primary/50 bg-primary/10 p-4">
             <h4 className="mb-1 font-semibold text-foreground">
@@ -476,6 +479,7 @@ export function ObservabilityArchitecture() {
             </p>
           </div>
         )}
+        </div>
       </div>
 
       <div className="mt-4 text-xs text-muted-foreground space-y-2">

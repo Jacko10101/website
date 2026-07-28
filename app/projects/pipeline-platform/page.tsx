@@ -18,7 +18,7 @@ import { TerminalWindow } from "@/components/terminal-window";
 const articleSchema = {
   "@context": "https://schema.org",
   "@type": "TechArticle",
-  headline: "Pipeline Platform — Shared CI/CD and ArgoCD-Driven Delivery",
+  headline: "Pipeline Platform · Shared CI/CD and ArgoCD-Driven Delivery",
   description:
     "One shared Bitbucket pipeline library imported by every Java and Node service. Tests, reporting and promotion all decoupled. Used across 20 services with ~400 deploys/month.",
   author: {
@@ -100,7 +100,7 @@ export default function CicdGitopsPage() {
             <CaseStudySection eyebrow="// the shape that broke" title="Twenty pipelines that drifted">
               <p className="text-muted-foreground leading-relaxed mb-4">
                 Twenty services each shipped their own bitbucket-pipelines.yml.
-                Same rough shape — build, test, scan, push, deploy — but each
+                Same rough shape: build, test, scan, push, deploy, but each
                 one slightly different. A change in the build pattern meant a
                 PR to twenty repos.
               </p>
@@ -121,7 +121,7 @@ export default function CicdGitopsPage() {
 
             <CaseStudySection eyebrow="// the pipeline" title="One library, imported by every service">
               <p className="text-muted-foreground leading-relaxed mb-4">
-                The pipeline lives in two repos now:{" "}
+                I split the pipeline into two repos:{" "}
                 <code className="text-foreground">java-shared-pipeline</code>{" "}
                 and <code className="text-foreground">node-shared-pipeline</code>.
                 Each exports a set of Bitbucket selectors using Bitbucket&apos;s
@@ -136,7 +136,7 @@ export default function CicdGitopsPage() {
 
               <div className="space-y-4 mb-6">
                 <EnhancedCodeBlock
-                  title=".ci/builds.yaml — the per-service surface"
+                  title=".ci/builds.yaml · the per-service surface"
                   language="yaml"
                   code={`service:
   name: payments-api
@@ -155,7 +155,7 @@ gitops:
                 />
 
                 <EnhancedCodeBlock
-                  title="bitbucket-pipelines.yml — the import"
+                  title="bitbucket-pipelines.yml · the import"
                   language="yaml"
                   code={`pipelines:
   pull-requests:
@@ -168,8 +168,8 @@ gitops:
               </div>
 
               <p className="text-muted-foreground leading-relaxed mb-4">
-                Optional gates — Veracode SAST, SourceClear SCA, Jira Fix
-                Version validation — are env-gated in the same library. One
+                Optional gates, Veracode SAST, SourceClear SCA, Jira Fix
+                Version validation, are env-gated in the same library. One
                 library handles services that need them and services that
                 don&apos;t. The difference is an env var on the import, not a
                 fork of the pipeline.
@@ -181,23 +181,23 @@ gitops:
               </p>
             </CaseStudySection>
 
-            <CaseStudySection eyebrow="// tests, extracted" title="Tests are not pipeline steps">
+            <CaseStudySection eyebrow="// tests, extracted" title="Tests aren't pipeline steps">
               <p className="text-muted-foreground leading-relaxed mb-4">
-                Test infra is its own repo now. The pipeline builds and pushes
-                the image, then stops. A separate ArgoCD PostSync hook runs
+                I pulled test infra out into its own repo. The pipeline builds
+                and pushes the image, then stops. A separate ArgoCD PostSync hook runs
                 the test job after the deploy is actually healthy, so the
                 tests run against the real running thing rather than half a
                 pod.
               </p>
               <p className="text-muted-foreground leading-relaxed mb-6">
                 Allure reports per run. Pass/fail published to a result store.
-                Sentry — a small dashboard I built on top — is where you go to
+                Sentry, a small dashboard I built on top, is where you go to
                 ask &quot;is the fleet green?&quot;.
               </p>
 
               <div className="space-y-6">
                 <Screenshot
-                  label="sentry — fleet"
+                  label="sentry · fleet"
                   src="/sentry/fleet-dashboard.png"
                   width={2376}
                   height={1746}
@@ -205,18 +205,18 @@ gitops:
                   caption={
                     <>
                       Eleven services green, four red. Platform Foundation
-                      across the top — cluster, Kafka, databases, secrets —
-                      lives separately from per-service test health, because
-                      &quot;the cluster is broken&quot; and &quot;Data Flow has
-                      a flaky test&quot; are different conversations. POSTSYNC
-                      and CONTINUOUS triggers are tagged so it&apos;s obvious
-                      what kind of run produced the result.
+                      sits across the top (cluster, Kafka, databases, secrets)
+                      and is scored separately from per-service test health,
+                      because &quot;the cluster is broken&quot; and &quot;Data
+                      Flow has a flaky test&quot; are different conversations.
+                      POSTSYNC and CONTINUOUS triggers are tagged so it&apos;s
+                      obvious what kind of run produced the result.
                     </>
                   }
                 />
 
                 <Screenshot
-                  label="sentry — per service"
+                  label="sentry · per service"
                   src="/sentry/test-results.png"
                   width={2576}
                   height={1538}
@@ -235,14 +235,14 @@ gitops:
 
             <CaseStudySection eyebrow="// reporting & promotion" title="ArgoCD took over the rest">
               <p className="text-muted-foreground leading-relaxed mb-4">
-                The bash reporter is gone. The bits worth keeping moved into a
-                shared-scripts repo. The rest retired when ArgoCD&apos;s
+                The bash reporter is gone. I moved the bits worth keeping into
+                a shared-scripts repo and retired the rest when ArgoCD&apos;s
                 Notifications controller took over deploy reporting.
               </p>
               <p className="text-muted-foreground leading-relaxed mb-4">
                 Promotion is decoupled from build. The pipeline emits{" "}
-                <code className="text-foreground">.ci/out/build.json</code> —
-                commit, image, digest, tags, build url — and stops. ArgoCD
+                <code className="text-foreground">.ci/out/build.json</code>:
+                commit, image, digest, tags, build url, and stops. ArgoCD
                 Image Updater watches ECR and opens the GitOps bump itself
                 when it sees a new tag.
               </p>
@@ -254,17 +254,17 @@ gitops:
 
             <CaseStudySection eyebrow="// architecture" title="How it fits together">
               <p className="text-muted-foreground mb-6 leading-relaxed">
-                Four layers, top to bottom: a service repo and the shared
-                libraries it imports; a Bitbucket run that produces an image
-                and a metadata file; an Image-Updater-driven promotion that
-                ends in a Kubernetes deploy; and a PostSync hook that closes
-                the loop with a test result in Sentry.
+                Four layers, top to bottom. A service repo and the shared
+                libraries it imports. A Bitbucket run that produces an image
+                and a metadata file. Image Updater promotes it into a
+                Kubernetes deploy, and a PostSync hook writes the test result
+                into Sentry.
               </p>
 
               <CicdArchitecture />
             </CaseStudySection>
 
-            <CaseStudySection eyebrow="// design" title="A few decisions worth flagging">
+            <CaseStudySection eyebrow="// design" title="The calls that shaped it">
               <div className="space-y-5">
                 <GlassCard className="p-6">
                   <h3 className="font-mono font-semibold tracking-tight text-foreground mb-2">
@@ -272,7 +272,7 @@ gitops:
                   </h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">
                     Some services run Veracode and Jira gates. Some don&apos;t.
-                    Both kinds use the same shared pipeline tag — the
+                    Both kinds use the same shared pipeline tag. The
                     difference is an env var, not a different selector. The
                     library stays a singleton, and the diff between two
                     services&apos; CI is something you can read in their{" "}
@@ -296,7 +296,7 @@ gitops:
 
                 <GlassCard className="p-6">
                   <h3 className="font-mono font-semibold tracking-tight text-foreground mb-2">
-                    Tests are not pipeline steps
+                    Tests aren&apos;t pipeline steps
                   </h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">
                     Pipelines that fail before pods are healthy lie. PostSync
@@ -321,11 +321,10 @@ gitops:
               />
 
               <p className="text-muted-foreground mt-6 leading-relaxed">
-                The change I care about most isn&apos;t in the table. Onboarding
-                a new service used to mean copy-pasting somebody else&apos;s
-                yaml and quietly hoping. Now it&apos;s a builds.yaml and a
-                tag. The diff between two services&apos; CI is small,
-                readable and intentional.
+                The table misses the real change. Onboarding a new service
+                used to mean copy-pasting somebody else&apos;s yaml and quietly
+                hoping. Now it&apos;s a builds.yaml and a tag, and the diff
+                between two services&apos; CI fits on one screen.
               </p>
             </CaseStudySection>
           </div>
@@ -359,7 +358,7 @@ gitops:
               { label: "Deploys", value: "~400/month across 4 envs" },
             ]}
             relatedProjects={[
-              { title: "Heimdall — deployment intelligence", href: "/projects/heimdall" },
+              { title: "Heimdall · deployment intelligence", href: "/projects/heimdall" },
               { title: "Observability stack", href: "/projects/observability" },
             ]}
           />

@@ -44,7 +44,7 @@ export default function NotFound() {
         transition={{ duration: 0.5 }}
         className="w-full max-w-3xl"
       >
-        <h1 className="sr-only">404 — page not found</h1>
+        <h1 className="sr-only">404 · page not found</h1>
 
         {/* Alert Banner */}
         <motion.div
@@ -67,7 +67,7 @@ export default function NotFound() {
         </motion.div>
 
         {/* Main Terminal */}
-        <TerminalWindow title="kubectl — namespace: production" className="shadow-2xl">
+        <TerminalWindow title="kubectl · namespace: production" className="shadow-2xl">
           <div className="p-6 font-mono text-sm space-y-4">
             {/* Command */}
             <div className="flex items-center gap-2">

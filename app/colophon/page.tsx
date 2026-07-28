@@ -3,15 +3,15 @@ import { BUILD, formatBuildDate } from "@/lib/build-info";
 import { SessionVitals } from "@/components/session-vitals";
 
 export const metadata: Metadata = {
-  title: "Colophon — how this site runs",
+  title: "Colophon · how this site runs",
   description:
-    "The stack, the pipeline and the decisions behind devlinops.com — with the site's own build provenance and your session's real web vitals.",
+    "The stack, the pipeline and the decisions behind devlinops.com, with the site's own build provenance and your session's real web vitals.",
 };
 
 const decisions = [
   {
     title: "Numbers are measured or absent",
-    body: "Every metric on this site — build SHA, load time, the vitals below — is measured at build or in your browser. If something can't be measured honestly, it isn't shown. A portfolio that sells observability shouldn't fake its own telemetry.",
+    body: "Every metric on this site (build SHA, load time, the vitals below) is measured at build or in your browser. If something can't be measured honestly, it isn't shown. A portfolio that sells observability shouldn't fake its own telemetry.",
   },
   {
     title: "The deploy is traceable",
@@ -19,7 +19,7 @@ const decisions = [
   },
   {
     title: "No cookies, no tracking pixels",
-    body: "Analytics is Plausible — aggregate, cookie-free, no consent banner needed. The Content-Security-Policy is strict enough that a stray third-party script simply won't load.",
+    body: "Analytics is Plausible: aggregate, cookie-free, no consent banner needed. The Content-Security-Policy is strict enough that a stray third-party script simply won't load.",
   },
   {
     title: "Fonts are self-hosted",
@@ -27,7 +27,7 @@ const decisions = [
   },
   {
     title: "The hero is a canvas, not a video",
-    body: "The glyph field on the homepage is ~150 lines of hand-written canvas: two interference waves over a stable character grid, redrawn on a 15fps budget, paused when offscreen, and reduced to a single static frame if you prefer reduced motion. No WebGL library, no shader bundle, no autoplaying video.",
+    body: "The glyph field on the homepage is ~150 lines of hand-written canvas: two interference waves over a stable character grid, redrawn on a 15fps budget and paused when offscreen. If you prefer reduced motion it collapses to a single static frame. No WebGL, no autoplaying video.",
   },
   {
     title: "Dark only, on purpose",
@@ -58,8 +58,8 @@ export default function ColophonPage() {
         </h1>
         <p className="text-muted-foreground text-lg leading-relaxed mb-16 max-w-2xl">
           This website is the smallest production system I operate, and it&apos;s run
-          like one: shipped from a pipeline, traceable to a commit, and measured
-          honestly. Consider this page its runbook.
+          like one: it ships from a pipeline, and every number on it is measured.
+          Consider this page its runbook.
         </p>
 
         {/* Provenance */}
@@ -123,7 +123,7 @@ export default function ColophonPage() {
         {/* Decisions */}
         <section>
           <h2 className="font-mono font-semibold text-2xl text-foreground mb-6">
-            <span className="text-primary">##</span> Decisions worth flagging
+            <span className="text-primary">##</span> Decisions
           </h2>
           <div className="space-y-6">
             {decisions.map((decision) => (

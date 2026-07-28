@@ -134,7 +134,7 @@ export function SessionVitals() {
         ))}
       </div>
       <p className="mt-3 text-xs text-muted-foreground">
-        Measured in your browser, on this visit — not a screenshot of a good day.
+        Measured in your browser, on this visit. Not a screenshot of a good day.
         Thresholds follow the Core Web Vitals definitions.
       </p>
     </div>

@@ -125,7 +125,7 @@ const TICKETS: Ticket[] = [
       { env: "qa", via: "via pull request" },
       { env: "preprod", via: "via cross-env match" },
     ],
-    blocked: { env: "prod", reason: "Awaiting Thursday release window — green everywhere else." },
+    blocked: { env: "prod", reason: "Awaiting Thursday release window. Green everywhere else." },
   },
   {
     id: "PLAT-1998",
@@ -143,7 +143,7 @@ const TICKETS: Ticket[] = [
     title: "New search ranking model",
     service: "search-api",
     reached: [{ env: "dev", via: "via commit message" }],
-    blocked: { env: "qa", reason: "Just merged — pods still starting in dev, not yet promoted." },
+    blocked: { env: "qa", reason: "Just merged. Pods still starting in dev, not yet promoted." },
   },
   {
     id: "PLAT-2033",
@@ -153,7 +153,7 @@ const TICKETS: Ticket[] = [
       { env: "dev", via: "via commit message" },
       { env: "qa", via: "via pull request" },
     ],
-    blocked: { env: "preprod", reason: "Crashlooping in qa (1/2 pods) — promotion gate is holding it back." },
+    blocked: { env: "preprod", reason: "Crashlooping in qa (1/2 pods). The promotion gate is holding it back." },
   },
   {
     id: "OPS-417",
@@ -242,7 +242,7 @@ export function HeimdallDemo() {
           <div className="h-2.5 w-2.5 rounded-full bg-yellow-500/60" />
           <div className="h-2.5 w-2.5 rounded-full bg-green-500/60" />
         </div>
-        <span className="font-mono text-xs text-muted-foreground">heimdall — environments</span>
+        <span className="font-mono text-xs text-muted-foreground">heimdall · environments</span>
         <div className="ml-auto flex items-center gap-2 font-mono text-[11px] text-muted-foreground">
           <span className="relative flex h-2 w-2">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60" />
@@ -259,7 +259,7 @@ export function HeimdallDemo() {
             interactive demo
           </span>
           <span>
-            A faithful rebuild with mock data — the real Heimdall reads live from Bitbucket, ArgoCD, Kubernetes and JIRA.
+            A faithful rebuild with mock data. The real Heimdall reads live from Bitbucket, ArgoCD, Kubernetes and JIRA.
           </span>
         </div>
 
@@ -273,10 +273,14 @@ export function HeimdallDemo() {
 
         {/* "where is my ticket" search */}
         <div className="mb-3">
-          <label className="mb-2 block font-mono text-xs text-muted-foreground">
+          <span className="mb-2 block font-mono text-xs text-muted-foreground">
             where is my ticket?
-          </label>
-          <div className="flex flex-wrap items-center gap-2">
+          </span>
+          <div
+            role="group"
+            aria-label="where is my ticket?"
+            className="flex flex-wrap items-center gap-2"
+          >
             {TICKETS.map((t) => {
               const on = activeTicket === t.id;
               return (
@@ -368,7 +372,7 @@ export function HeimdallDemo() {
                 <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
                   {ticket.blocked
                     ? ticket.blocked.reason
-                    : "Shipped end-to-end — live in production, nothing outstanding."}
+                    : "Shipped end-to-end. Live in production, nothing outstanding."}
                 </p>
               </div>
             </motion.div>
@@ -376,7 +380,7 @@ export function HeimdallDemo() {
         </AnimatePresence>
 
         {/* matrix */}
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto" tabIndex={0} data-lenis-prevent>
           <div className="min-w-[560px]">
             {/* header */}
             <div className="grid grid-cols-[150px_repeat(4,1fr)] gap-2 px-1 pb-2">
@@ -472,29 +476,29 @@ export function HeimdallDemo() {
                 <p className="font-mono text-xs leading-relaxed text-muted-foreground">
                   Cluster metrics aren&apos;t reachable for this environment, so Heimdall shows{" "}
                   <span className="text-foreground">no data</span> rather than assuming a healthy
-                  state. Honest beats green — a grey cell is a prompt to go and look, not a
+                  state. Honest beats green. A grey cell is a prompt to go and look, not a
                   silent false-positive.
                 </p>
               ) : (
               <div className="grid grid-cols-2 gap-x-6 gap-y-1.5 font-mono text-xs text-muted-foreground sm:grid-cols-4">
                 <div>
-                  <span className="text-muted-foreground/60">commit</span>
+                  <span className="text-muted-foreground/70">commit</span>
                   <div className="text-foreground">{detail.sha}</div>
                 </div>
                 <div>
-                  <span className="text-muted-foreground/60">ticket</span>
+                  <span className="text-muted-foreground/70">ticket</span>
                   <div className="text-warn">{detail.ticket ?? "—"}</div>
                 </div>
                 <div>
-                  <span className="text-muted-foreground/60">deployed</span>
+                  <span className="text-muted-foreground/70">deployed</span>
                   <div className="text-foreground">{fmtAge(detail.ageMin)}</div>
                 </div>
                 <div>
-                  <span className="text-muted-foreground/60">by</span>
+                  <span className="text-muted-foreground/70">by</span>
                   <div className="text-foreground">{detail.by}</div>
                 </div>
                 <div className="col-span-2">
-                  <span className="text-muted-foreground/60">pods</span>
+                  <span className="text-muted-foreground/70">pods</span>
                   <div
                     className={
                       detail.pods.includes("crashloop") ? "text-error" : "text-primary"
@@ -517,7 +521,7 @@ export function HeimdallDemo() {
               {STATUS_META[s].label}
             </span>
           ))}
-          <span className="ml-auto text-muted-foreground/60">
+          <span className="ml-auto text-muted-foreground/70">
             {ticket ? "click a ticket again to clear" : "pick a ticket, or click any cell"}
           </span>
         </div>

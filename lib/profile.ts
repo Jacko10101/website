@@ -12,17 +12,17 @@ export interface Testimonial {
 
 export const profile = {
   availability: {
-    from: "September 2026",
+    from: "October 2026",
     /** One-liner used in the footer, ticker and CTA. */
-    short: "Available from September 2026 · contract or full-time · remote-first",
+    short: "Available from October 2026 · permanent or contract · remote-first",
     /** Fuller status line used in the hero. */
     status:
-      "UK-based · remote-first, open to relocation · contract or full-time · from September 2026",
+      "UK-based · remote-first, open to relocation · permanent or contract · from October 2026",
   },
 
   msc: {
     label: "MSc AI",
-    finishes: "August 2026",
+    finishes: "September 2026",
     // TODO(jack): set when confirmed, e.g. "Distinction" — it will appear in
     // the hero and About automatically. Leave null until it's real.
     result: null as string | null,
@@ -32,8 +32,9 @@ export const profile = {
   // e.g. { quote: "…", attribution: "Engineering Manager, a UK IoT company" }
   testimonial: null as Testimonial | null,
 
-  // TODO(jack): if you want to state right-to-work/visa position for a target
-  // country, put one plain sentence here and it renders on /contact.
-  // e.g. "I hold a UK passport and am eligible for [visa] in Australia."
-  visaNote: null as string | null,
+  // Right-to-work position, rendered on /contact. Worth stating plainly: it
+  // removes the sponsorship question that filters most UK applicants out of
+  // EU roles before anyone reads the CV.
+  visaNote:
+    "Irish and British citizen. Full right to live and work anywhere in the EU as well as the UK, no sponsorship required." as string | null,
 };

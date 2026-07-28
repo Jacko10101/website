@@ -16,8 +16,10 @@ export function CliNavigation() {
     "/": { path: "/", description: "Homepage" },
     "/about": { path: "/about", description: "About Jack Devlin" },
     "/projects": { path: "/projects", description: "Case studies and portfolio" },
-    "/projects/heimdall": { path: "/projects/heimdall", description: "Heimdall — deployment intelligence" },
-    "/projects/pipeline-platform": { path: "/projects/pipeline-platform", description: "Pipeline platform — shared CI/CD" },
+    "/projects/clarity": { path: "/projects/clarity", description: "Clarity · natural-language database interface" },
+    "/projects/ai-gateway": { path: "/projects/ai-gateway", description: "AI gateway · one endpoint for every model" },
+    "/projects/heimdall": { path: "/projects/heimdall", description: "Heimdall · deployment intelligence" },
+    "/projects/pipeline-platform": { path: "/projects/pipeline-platform", description: "Pipeline platform · shared CI/CD" },
     "/projects/observability": { path: "/projects/observability", description: "Self-hosted observability stack" },
     "/projects/smart-home": { path: "/projects/smart-home", description: "Smart home on K3s" },
     "/contact": { path: "/contact", description: "Get in touch" },
@@ -26,7 +28,7 @@ export function CliNavigation() {
   // Easter eggs — every number here is measured elsewhere on the site.
   const secrets = [
     "preferred_stack: Kubernetes, ArgoCD, Prometheus",
-    "observability_savings: ~£95k/yr — measured, not projected",
+    "clarity_tenants: ~30, a database each",
     "deploy_rate: ~400/month across the platform",
     "heimdall_daily_users: 20+",
     "msc_ai: in progress",
@@ -57,13 +59,16 @@ export function DevlinOps() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Open with /
-      if (e.key === "/" && !isOpen && document.activeElement?.tagName !== "INPUT" && document.activeElement?.tagName !== "TEXTAREA") {
+      const active = document.activeElement as HTMLElement | null;
+      if (e.key === "/" && !isOpen && active?.tagName !== "INPUT" && active?.tagName !== "TEXTAREA" && !active?.isContentEditable) {
         e.preventDefault();
         setIsOpen(true);
       }
 
       // Close with Escape
-      if (e.key === "Escape" && isOpen) {
+      if (e.key === "Escape" && vimMode) {
+        setVimMode(false);
+      } else if (e.key === "Escape" && isOpen) {
         setIsOpen(false);
         setInput("");
       }
@@ -71,7 +76,7 @@ export function DevlinOps() {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen]);
+  }, [isOpen, vimMode]);
 
   useEffect(() => {
     if (isOpen && inputRef.current) {
@@ -88,14 +93,12 @@ export function DevlinOps() {
 
   // Prevent body scroll when modal is open
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
+    if (!isOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
 
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = previousOverflow;
     };
   }, [isOpen]);
 
@@ -255,7 +258,7 @@ This plan is theatre. Convincing theatre, but theatre.`;
         } else if (arg === "apply") {
           output = `Error: no saved plan to apply.
 
-This terminal is a prop — it doesn't get apply access to anything.
+This terminal is a prop. It doesn't get apply access to anything.
 Run 'terraform plan' if you'd like the full performance.`;
         } else {
           output = `Error: unknown terraform command: ${arg}\nTry: plan, apply`;
@@ -293,10 +296,10 @@ Health Status:      Healthy`;
 
       case "whoami":
         output = `jack@devlinops
-├─ Platform & MLOps engineer
-├─ Kubernetes, ArgoCD, Prometheus — by choice
-├─ MSc AI, finishing Aug 2026
-└─ Available for fully remote B2B contracts from September 2026
+├─ Platform & AI infrastructure engineer
+├─ Kubernetes, ArgoCD, LiteLLM · by choice
+├─ MSc AI, finishing Sep 2026
+└─ Available from October 2026 · permanent or contract · remote-first
 
 Location: UK (remote)
 Shell: bash, with more aliases than is strictly dignified`;
@@ -347,16 +350,16 @@ Shell: bash, with more aliases than is strictly dignified`;
         output = `
        ████████████████████        jack@devlinops
     ████████████████████████████   ──────────────────
-  ██████████████████████████████   OS: devlinops.com — versioned by commit, not by marketing
+  ██████████████████████████████   OS: devlinops.com · versioned by commit, not by marketing
  █████████     ████     █████████  Host: Vercel
 ████████  ████  ███  ███  ████████ Kernel: Next.js 16.1.0
 ████████  ████  ███  ███  ████████ Uptime: since Oct 2025
 ████████  ████  ███  ███  ████████ Packages: 63 (npm, lockfile-pinned)
 ████████  ████  ███  ███  ████████ Shell: bash 5.2
 ████████  ████  ███  ███  ████████ Terminal: cli-navigation.tsx
- █████████     ████     █████████  Day job: ~400 deploys/month, ~£95k/yr saved on observability
-  ██████████████████████████████   Stack: K8s, ArgoCD, AWS, PyTorch, Terraform
-    ████████████████████████████   Status: available for B2B contracts, Sept 2026
+ █████████     ████     █████████  Day job: ~400 deploys/month, ~30 AI tenants in prod
+  ██████████████████████████████   Stack: K8s, ArgoCD, AWS, LiteLLM, Spring AI
+    ████████████████████████████   Status: available Oct 2026, permanent or contract
        ████████████████████`;
         break;
 
@@ -383,7 +386,7 @@ bcd1234 revert: revert "quick win"
 e5f6789 docs: update README to match reality
 abc7890 fix: same bug, correct fix this time`;
         } else if (arg === "blame") {
-          output = `It was me. It's my website — it's always me.`;
+          output = `It was me. It's my website. It's always me.`;
         } else {
           output = `git: '${arg}' is not a git command.\nTry: status, log, blame`;
         }
@@ -399,7 +402,7 @@ Fine. Have it your way.`;
           }, 900);
         } else if (arg) {
           output = `[sudo] password for jack: ********
-sudo: superfluous. You're already root here — although it's my
+sudo: superfluous. You're already root here, although it's my
 website, so the privileges are decorative.`;
         } else {
           output = `usage: sudo <command>`;
@@ -509,7 +512,16 @@ found 0 vulnerabilities`;
           <div className="border-b border-border pb-2 font-mono text-sm text-primary">
             <div className="flex items-center justify-between">
               <span>devlinops.tsx [readonly]</span>
-              <span>-- NORMAL --</span>
+              <div className="flex items-center gap-4">
+                <span>-- NORMAL --</span>
+                <button
+                  onClick={() => setVimMode(false)}
+                  className="text-muted-foreground hover:text-foreground"
+                  aria-label="Close"
+                >
+                  ✕
+                </button>
+              </div>
             </div>
           </div>
 
@@ -560,7 +572,12 @@ found 0 vulnerabilities`;
   }
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm">
+    <div
+      className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Command line navigation"
+    >
       <div className="container mx-auto flex h-full items-center justify-center px-4">
         <div className="w-full max-w-4xl rounded-lg border border-border bg-black p-6 shadow-2xl">
           {/* Header */}
@@ -575,6 +592,7 @@ found 0 vulnerabilities`;
               <button
                 onClick={() => setIsOpen(false)}
                 className="text-muted-foreground hover:text-foreground"
+                aria-label="Close"
               >
                 ✕
               </button>
@@ -582,10 +600,10 @@ found 0 vulnerabilities`;
           </div>
 
           {/* Terminal output */}
-          <div ref={outputRef} className="mb-4 max-h-96 overflow-y-auto font-mono text-sm">
+          <div ref={outputRef} tabIndex={0} data-lenis-prevent className="mb-4 max-h-96 overflow-y-auto font-mono text-sm">
             {history.length === 0 && (
               <div className="mb-4 text-foreground/90">
-                <p>devlinops.com — interactive shell</p>
+                <p>devlinops.com · interactive shell</p>
                 <p className="mt-1 text-xs text-muted-foreground">
                   Type 'help' for available commands or 'ls' to see routes
                 </p>

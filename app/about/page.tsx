@@ -14,28 +14,28 @@ const journey = [
     year: "2023",
     title: "QA Engineer",
     description:
-      "Graduated with a BSc in Computer Science. Jumped straight into a massive monolith → microservices migration, building the first CI/CD pipelines from scratch.",
+      "I graduated with a BSc in Computer Science and landed in the middle of a monolith → microservices migration, writing the test automation that kept it honest.",
   },
   {
     hash: "d4e5f6a",
     year: "2024",
     title: "Platform Engineer",
     description:
-      "Took ownership of the platform. Built observability from zero, implemented GitOps with ArgoCD, and designed deployment automation for 20+ services.",
+      "I moved onto the platform itself. Observability from zero, then GitOps with ArgoCD, until 20+ services deployed the same way.",
   },
   {
     hash: "b7c8d9e",
     year: "2025",
     title: "Site Reliability Engineer",
     description:
-      "Standardised the pipeline platform onto one shared library across every service. Started the deployment-metrics tooling that became Heimdall.",
+      "I standardised CI onto one shared pipeline library across every service, and started the deployment-metrics tool that grew into Heimdall.",
   },
   {
     hash: "f0a1b2c",
     year: "2026",
-    title: "Platform & MLOps · MSc AI",
+    title: "AI Platform · MSc AI",
     description:
-      "Pivoting toward AI infrastructure. Finishing an MSc in Artificial Intelligence (August 2026). Operating as an independent B2B contractor, focused on the gap between data science and production.",
+      "I built the AI platform: an LLM gateway in front of every AI workload, and Clarity, a natural-language database product live across ~30 tenants. I'm finishing an MSc in Artificial Intelligence alongside it.",
   },
 ];
 
@@ -44,7 +44,7 @@ const philosophy = [
   {
     title: "Build for the morning standup",
     description:
-      "If a tool doesn't have a place to look, it doesn't get used. Most of my best work has been adding a UI to something that was already running headless.",
+      "Most of my best work has been adding a UI to something that already ran headless. Nobody trusts a system they can't see.",
   },
   {
     title: "Boring is a compliment",
@@ -81,10 +81,16 @@ const stackTiers = [
       "Loki",
       "Thanos",
       "Alertmanager",
+      "Tempo",
       "Kafka",
+      "Java 21",
+      "Spring AI",
+      "LiteLLM",
       "Python",
       "Flask",
       "TimescaleDB",
+      "PostgreSQL",
+      "Veracode",
       "AWS",
       "K3s",
       "Home Assistant",
@@ -95,7 +101,7 @@ const stackTiers = [
   {
     id: "working",
     label: "working-knowledge/",
-    note: "Used in projects, coursework or smaller doses — not yet run at production scale.",
+    note: "Used in projects, coursework or smaller doses, not yet run at production scale.",
     items: [
       "Helm",
       "Terraform",
@@ -109,12 +115,9 @@ const stackTiers = [
       "KubeFlow",
       "NVIDIA GPU Operator",
       "Triton",
-      "Tempo",
       "Istio",
       "OPA",
       "Falco",
-      "Veracode",
-      "PostgreSQL",
       "Redis",
     ],
   },
@@ -136,7 +139,7 @@ function AboutHero() {
               transition={{ duration: 0.5 }}
               className="flex-shrink-0 w-64 md:w-72"
             >
-              {/* CRT-phosphor treatment — the photo renders as if on the
+              {/* CRT-phosphor treatment, the photo renders as if on the
                   site's own monitor: green duotone + scanlines + vignette. */}
               <div className="relative w-64 h-64 md:w-72 md:h-72 rounded-md border border-border overflow-hidden glow-border">
                 <Image
@@ -161,7 +164,7 @@ function AboutHero() {
                 <p>jack.jpg · UK · platform engineer</p>
                 <p className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-primary" aria-hidden />
-                  <span className="text-foreground/80">available September 2026</span>
+                  <span className="text-foreground/80">available October 2026</span>
                 </p>
               </div>
             </motion.div>
@@ -180,13 +183,13 @@ function AboutHero() {
                   Hey, I&apos;m Jack
                 </h1>
                 <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed">
-                  Independent B2B contractor based in the UK. I sit between data
-                  science and production, and I build the platforms that get models
-                  and services off a laptop and onto a Kubernetes cluster that
-                  doesn&apos;t fall over. Day job: Heimdall, a deployment dashboard
-                  20+ engineers open every morning, a shared CI/CD library across
-                  20 services, and the observability stack underneath. Night job:
-                  MSc in Artificial Intelligence, finishing August 2026.
+                  Platform engineer in the UK. I put AI systems into production
+                  and run the Kubernetes they sit on. Day job: Clarity, a
+                  natural-language database product live across ~30 tenants, and
+                  the LLM gateway every AI workload goes through. The unusual bit
+                  is having both halves: the LLM systems and the clusters,
+                  pipelines and observability underneath them. Night job: MSc in
+                  Artificial Intelligence, finishing September 2026.
                 </p>
               </motion.div>
 
@@ -197,10 +200,10 @@ function AboutHero() {
                 className="flex flex-wrap gap-2 justify-center lg:justify-start mb-8"
               >
                 {[
-                  "Platform Engineering",
+                  "AI Infrastructure",
                   "MLOps",
                   "Kubernetes",
-                  "AI Infrastructure",
+                  "Platform Engineering",
                   "Observability",
                 ].map((tag) => (
                   <span
@@ -405,25 +408,27 @@ function CurrentlySection() {
               Right now
             </h2>
             <p className="font-mono text-sm text-primary mb-6">
-              Shipping Heimdall · Finishing the MSc · Lining up September 2026
+              Shipping Clarity · Finishing the MSc · Available October 2026
             </p>
             <p className="text-muted-foreground leading-relaxed mb-4">
               Wrapping up my current contract on the platform team I helped
-              build. Heimdall is still the centre of gravity — a deployment
-              intelligence dashboard used daily by 20+ engineers across a
-              couple dozen services.
+              build. Most of this year went to the AI side: Clarity live across
+              ~30 tenant databases, and the gateway that fronts every AI
+              workload. Heimdall still opens every morning.
             </p>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              Finishing an MSc in Artificial Intelligence in August 2026. The
-              dissertation looks at deep learning applied to compute resource
-              allocation — the same problem I keep running into on the platform
-              side, so the two halves are converging.
+              Finishing an MSc in Artificial Intelligence in September 2026. The
+              dissertation builds a capacity-aware scheduler for recovering
+              Kubernetes workloads after node failure, measured on real clusters
+              where failure means actually killing the machine. It&apos;s the
+              same problem I keep hitting on the platform side, so the two
+              halves have converged.
             </p>
             <p className="text-sm text-muted-foreground/70">
-              Available from September 2026 — contracting (Outside IR35 or
-              international equivalent) preferred, full-time considered,
-              remote-first with relocation on the table. Platform
-              engineering, SRE, and MLOps / AI infrastructure work.
+              Available from October 2026, permanent or contract, remote-first,
+              and happy to relocate for the right role. AI platform and
+              infrastructure work first, MLOps, SRE and platform engineering
+              close behind.
             </p>
           </motion.div>
         </div>
@@ -444,7 +449,7 @@ export default function AboutPage() {
       <ContactCTA
         command="say-hello"
         title="Still reading?"
-        lede="Drop me a note. About a B2B engagement, an AI infrastructure problem, or anything that overlaps with the work above."
+        lede="Drop me a note. About a role, an AI infrastructure problem, or anything that overlaps with the work above."
       />
     </div>
   );

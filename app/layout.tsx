@@ -26,25 +26,24 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://devlinops.com"),
   title: {
-    default: "Jack Devlin — Platform Engineer",
-    template: "%s — Jack Devlin",
+    default: "Jack Devlin · Platform & AI Infrastructure Engineer",
+    template: "%s · Jack Devlin",
   },
   description:
-    "Platform engineer. Kubernetes, GitOps, CI/CD and observability infrastructure, increasingly for AI workloads. Available from September 2026 — contract or full-time, remote-first, open to relocation.",
+    "Platform engineer for AI systems. Production LLM infrastructure on Kubernetes: gateway, guardrails, GitOps and observability. Available from October 2026, permanent or contract, remote-first, open to relocation.",
   keywords: [
-    "Platform Engineer",
-    "MLOps Engineer",
     "AI Infrastructure",
+    "AI Platform Engineer",
+    "MLOps Engineer",
+    "Platform Engineer",
+    "LLM Gateway",
     "SRE",
     "Kubernetes",
-    "GPU Scheduling",
-    "PyTorch",
     "ArgoCD",
     "GitOps",
     "Observability",
     "Heimdall",
-    "B2B Contractor",
-    "Outside IR35",
+    "Clarity",
     "Jack Devlin",
   ],
   authors: [{ name: "Jack Devlin" }],
@@ -63,9 +62,9 @@ export const metadata: Metadata = {
     ],
   },
   openGraph: {
-    title: "Jack Devlin — Platform Engineer",
+    title: "Jack Devlin · Platform & AI Infrastructure Engineer",
     description:
-      "Platform engineer. Kubernetes, GitOps and observability infrastructure, increasingly for AI workloads. Available from September 2026 — contract or full-time, remote-first, open to relocation.",
+      "Platform engineer for AI systems. Production LLM infrastructure on Kubernetes: gateway, guardrails, GitOps and observability. Available from October 2026, permanent or contract, remote-first, open to relocation.",
     url: "https://devlinops.com",
     siteName: "Jack Devlin",
     type: "website",
@@ -74,15 +73,15 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Jack Devlin — Platform Engineer",
+        alt: "Jack Devlin · Platform Engineer",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Jack Devlin — Platform Engineer",
+    title: "Jack Devlin · Platform & AI Infrastructure Engineer",
     description:
-      "Platform engineer. Kubernetes, GitOps and observability infrastructure, increasingly for AI workloads. Available from September 2026 — contract or full-time, remote-first, open to relocation.",
+      "Platform engineer for AI systems. Production LLM infrastructure on Kubernetes: gateway, guardrails, GitOps and observability. Available from October 2026, permanent or contract, remote-first, open to relocation.",
     images: ["/og-image.png"],
   },
 };
@@ -108,7 +107,6 @@ export default function RootLayout({
         },
         "sameAs": [
           "https://github.com/Jacko10101",
-          "https://linkedin.com/in/jack-devlin-5a0902148",
         ],
         "knowsAbout": [
           "Platform Engineering",
@@ -149,7 +147,7 @@ export default function RootLayout({
         "name": "DevlinOps",
         "url": "https://devlinops.com",
         "description":
-          "Independent platform & MLOps engineering for teams running AI workloads and distributed systems — Kubernetes, GPU scheduling, GitOps, CI/CD and observability.",
+          "Independent platform & MLOps engineering for teams running AI workloads and distributed systems, Kubernetes, GPU scheduling, GitOps, CI/CD and observability.",
         "provider": {
           "@id": "https://devlinops.com/#person",
         },

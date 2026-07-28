@@ -12,7 +12,7 @@ import { profile } from "@/lib/profile";
 export function ContactCTA({
   command = "say-hello",
   title = "Want to chat?",
-  lede = "For teams that need CI/CD, Kubernetes or observability sorted by someone who has run it in production. Contracting (Outside IR35 or international B2B) suits best, though full-time roles are on the table — remote-first, and open to relocating for the right one. I usually reply within a day.",
+  lede = "For teams putting AI workloads on Kubernetes, or platforms that need CI/CD and observability sorted by someone who has run them in production. Permanent or contract, remote-first, and I'll relocate for the right role. I usually reply within a day.",
 }: {
   command?: string;
   title?: string;

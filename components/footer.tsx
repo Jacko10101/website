@@ -51,15 +51,6 @@ export function Footer() {
       ),
     },
     {
-      name: "LinkedIn",
-      href: "https://linkedin.com/in/jack-devlin-5a0902148",
-      icon: (
-        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M19 3a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h14m-.5 15.5v-5.3a3.26 3.26 0 00-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 011.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 001.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 00-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z" />
-        </svg>
-      ),
-    },
-    {
       name: "Email",
       href: "mailto:jack@devlinops.com",
       icon: (
@@ -129,14 +120,14 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Statusline — tmux-style segments; every value is real or absent. */}
+        {/* Statusline, tmux-style segments; every value is real or absent. */}
         <div className="mb-8 rounded-md border border-border bg-card/50 overflow-hidden font-mono text-[11px]">
           <div className="flex flex-wrap items-stretch">
-            {BUILD.branch && BUILD.shortSha && (
+            {BUILD.branch && BUILD.shortSha && (BUILD.commitUrl ? (
               <a
-                href={BUILD.commitUrl ?? undefined}
-                target={BUILD.commitUrl ? "_blank" : undefined}
-                rel={BUILD.commitUrl ? "noopener noreferrer" : undefined}
+                href={BUILD.commitUrl}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex items-center gap-1.5 px-4 py-2 bg-primary text-primary-foreground font-semibold [clip-path:polygon(0_0,calc(100%-9px)_0,100%_100%,0_100%)] pr-6 hover:bg-primary/90 transition-colors"
                 title="The exact commit serving you this page"
               >
@@ -146,7 +137,18 @@ export function Footer() {
                 </svg>
                 {BUILD.branch} @ {BUILD.shortSha}
               </a>
-            )}
+            ) : (
+              <span
+                className="flex items-center gap-1.5 px-4 py-2 bg-primary text-primary-foreground font-semibold [clip-path:polygon(0_0,calc(100%-9px)_0,100%_100%,0_100%)] pr-6 hover:bg-primary/90 transition-colors"
+                title="The exact commit serving you this page"
+              >
+                <svg className="w-3 h-3" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={1.5} aria-hidden>
+                  <circle cx="8" cy="8" r="2.5" />
+                  <path d="M8 1v4.5M8 10.5V15" />
+                </svg>
+                {BUILD.branch} @ {BUILD.shortSha}
+              </span>
+            ))}
             {buildDate && (
               <span className="flex items-center px-4 py-2 -ml-2 bg-secondary text-muted-foreground [clip-path:polygon(9px_0,calc(100%-9px)_0,100%_100%,0_100%)] pl-6 pr-6">
                 shipped {buildDate}

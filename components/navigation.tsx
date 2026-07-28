@@ -29,15 +29,24 @@ export function Navigation() {
 
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
-    if (mobileMenuOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
+    if (!mobileMenuOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
 
     return () => {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = previousOverflow;
     };
+  }, [mobileMenuOpen]);
+
+  // Close mobile menu with Escape
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMobileMenuOpen(false);
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [mobileMenuOpen]);
 
   return (
@@ -80,7 +89,7 @@ export function Navigation() {
             className="md:hidden w-10 h-10 rounded-md bg-secondary border border-border flex items-center justify-center text-muted-foreground"
             aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileMenuOpen}
-            aria-controls="mobile-menu"
+            aria-controls={mobileMenuOpen ? "mobile-menu" : undefined}
           >
             {mobileMenuOpen ? (
               <X className="h-5 w-5" />

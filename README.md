@@ -16,7 +16,7 @@ My portfolio site. Not your typical "here's my CV in website form" - this one bu
 
 ## What's Inside
 
-Three case studies from my platform engineering work - CI/CD pipelines doing 400+ deploys/month, a DORA metrics platform I built from scratch (~8000 lines of Python + Bash), and a self-hosted observability stack that saves 95% vs Datadog/New Relic.
+Five case studies from my platform and AI infrastructure work - a natural-language database interface with compiled schema knowledge and per-turn hallucination detection, a self-hosted LLM gateway with per-key model allowlists, CI/CD pipelines doing 400+ deploys/month, a DORA metrics platform I built from scratch (~8000 lines of Python + Bash), and a self-hosted observability stack that saves 95% vs Datadog/New Relic.
 
 All figures verified against the actual source code. No "reduced deployment time by 300%" nonsense.
 

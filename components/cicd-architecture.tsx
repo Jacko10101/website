@@ -20,7 +20,7 @@ const nodeInfo: Record<NodeKey, { title: string; description: string }> = {
   service: {
     title: "Service repo",
     description:
-      "Per-service config is a single .ci/builds.yaml — name, runtime, dockerfile, image repo, build commands. That's all a service author has to write.",
+      "Per-service config is a single .ci/builds.yaml: name, runtime, dockerfile, image repo, build commands. That's all a service author has to write.",
   },
   shared: {
     title: "Shared pipelines (java + node)",
@@ -30,12 +30,12 @@ const nodeInfo: Record<NodeKey, { title: string; description: string }> = {
   scripts: {
     title: "shared-scripts",
     description:
-      "Reusable commands the shared pipelines call into — tagging, ECR push, scan helpers. Where the useful bits of the old 1000-line bash reporter ended up.",
+      "Reusable commands the shared pipelines call into: tagging, ECR push, scan helpers. Where the useful bits of the old 1000-line bash reporter ended up.",
   },
   bitbucket: {
     title: "Bitbucket Pipelines",
     description:
-      "Runs the imported steps. Optional gates (Veracode SAST, SourceClear SCA, Jira Fix Version) are env-gated in the same library — toggled per service via env, not template-forked.",
+      "Runs the imported steps. Optional gates (Veracode SAST, SourceClear SCA, Jira Fix Version) are env-gated in the same library, toggled per service via env, not template-forked.",
   },
   ecr: {
     title: "AWS ECR",
@@ -92,7 +92,7 @@ export function CicdArchitecture() {
   const nodeProps = (key: NodeKey) => ({
     tabIndex: 0,
     role: "button" as const,
-    "aria-label": `${nodeInfo[key].title} — show details`,
+    "aria-label": `${nodeInfo[key].title} · show details`,
     "aria-pressed": selected === key,
     onClick: () => toggle(key),
     onKeyDown: (e: React.KeyboardEvent<SVGGElement>) => {
@@ -110,15 +110,16 @@ export function CicdArchitecture() {
 
   return (
     <div className="rounded-lg border border-border bg-card p-6">
-      <h3 className="mb-1 text-lg font-semibold">Pipeline platform — system overview</h3>
+      <h3 className="mb-1 text-lg font-semibold">Pipeline platform · system overview</h3>
       <p className="mb-4 text-xs text-muted-foreground">
         Click, tap or hover any node for a one-line explanation.
       </p>
 
       <div className="relative">
+        <div className="overflow-x-auto" data-lenis-prevent tabIndex={0}>
         <svg
           viewBox="0 0 900 600"
-          className="w-full"
+          className="min-w-[900px] w-full"
           role="group"
           aria-label="CI/CD architecture: a service repo and two shared pipeline libraries feed Bitbucket Pipelines, which produces an ECR image and build metadata; ArgoCD Image Updater promotes via the GitOps repo, ArgoCD syncs to Kubernetes, and a PostSync hook triggers the test infra repo with results aggregated in Sentry."
         >
@@ -139,7 +140,7 @@ export function CicdArchitecture() {
             inputs
           </text>
 
-          {/* Row 1 — three input boxes */}
+          {/* Row 1, three input boxes */}
           {(
             [
               {
@@ -216,7 +217,7 @@ export function CicdArchitecture() {
             ci
           </text>
 
-          {/* Row 2 — Bitbucket Pipelines */}
+          {/* Row 2, Bitbucket Pipelines */}
           <g {...nodeProps("bitbucket")}>
             <rect
               x="240"
@@ -335,7 +336,7 @@ export function CicdArchitecture() {
             delivery
           </text>
 
-          {/* Row 3 — delivery chain */}
+          {/* Row 3, delivery chain */}
           {(
             [
               {
@@ -433,7 +434,7 @@ export function CicdArchitecture() {
             verify
           </text>
 
-          {/* Row 4 — verify */}
+          {/* Row 4, verify */}
           <g {...nodeProps("postsync")}>
             <rect
               x="120"
@@ -532,7 +533,9 @@ export function CicdArchitecture() {
             opacity="0.4"
           />
         </svg>
+        </div>
 
+        <div aria-live="polite">
         {active && (
           <div className="mt-4 rounded-lg border border-primary/40 bg-primary/5 p-4">
             <h4 className="mb-1 font-semibold text-foreground">{nodeInfo[active].title}</h4>
@@ -541,6 +544,7 @@ export function CicdArchitecture() {
             </p>
           </div>
         )}
+        </div>
       </div>
     </div>
   );

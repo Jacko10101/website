@@ -123,7 +123,13 @@ export function AsciiField({ className = "" }: { className?: string }) {
     };
 
     resize();
-    window.addEventListener("resize", resize);
+    const onResize = () => {
+      resize();
+      // resize() cleared the canvas; under reduced motion no loop runs to
+      // repaint it, so redraw the static frame here.
+      if (reduceMotion) draw(0);
+    };
+    window.addEventListener("resize", onResize);
 
     if (reduceMotion) {
       draw(0); // one static frame
@@ -145,14 +151,14 @@ export function AsciiField({ className = "" }: { className?: string }) {
         running = false;
         cancelAnimationFrame(raf);
         io.disconnect();
-        window.removeEventListener("resize", resize);
+        window.removeEventListener("resize", onResize);
         window.removeEventListener("pointermove", onMove);
         window.removeEventListener("pointerleave", onLeave);
       };
     }
 
     return () => {
-      window.removeEventListener("resize", resize);
+      window.removeEventListener("resize", onResize);
     };
   }, [reduceMotion]);
 

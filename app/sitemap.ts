@@ -1,5 +1,9 @@
 import { MetadataRoute } from 'next'
+import { featuredProjects } from '@/lib/projects'
 
+// Case-study entries are derived from lib/projects.ts rather than listed here.
+// They used to be hand-maintained, which meant a new case study shipped
+// invisible to search until someone remembered this file.
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://devlinops.com'
   const currentDate = new Date()
@@ -23,30 +27,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.9,
     },
-    {
-      url: `${baseUrl}/projects/heimdall`,
+    ...featuredProjects.map((project) => ({
+      url: `${baseUrl}${project.href}`,
       lastModified: currentDate,
-      changeFrequency: 'monthly',
+      changeFrequency: 'monthly' as const,
       priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/projects/pipeline-platform`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/projects/observability`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/projects/smart-home`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
+    })),
     {
       url: `${baseUrl}/contact`,
       lastModified: currentDate,

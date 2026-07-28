@@ -30,6 +30,54 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    id: "clarity",
+    context: null, // TODO(jack): e.g. role · duration · company setting
+    title: "Clarity",
+    subtitle: "Natural-language database interface",
+    description:
+      "Ask the estate a question in English, get an answer backed by SQL that actually ran. Around thirty tenant databases, about twenty people using it daily. There's no vector store anywhere; compiled schema knowledge does the grounding, and five classes of hallucination get caught on every turn.",
+    status: "production",
+    statusLabel: "Synced · Healthy",
+    year: "2025–26",
+    stats: [
+      { value: "~30", label: "tenants, a database each" },
+      { value: "5", label: "hallucination classes per turn" },
+      { value: "0", label: "vector stores" },
+    ],
+    tags: ["Java 21", "Spring AI", "Gemini", "PostgreSQL", "TimescaleDB", "Kubernetes"],
+    href: "/projects/clarity",
+    terminal: [
+      { text: "$ curl clarity/chat -d '{\"question\":\"hottest sites?\"}'", tone: "cmd" },
+      { text: "sql_statements: 1 executed", tone: "ok" },
+      { text: "fabricated_names: []", tone: "ok" },
+      { text: "grounding.regenerate: not required", tone: "info" },
+    ],
+  },
+  {
+    id: "ai-gateway",
+    context: null, // TODO(jack): e.g. role · duration · company setting
+    title: "AI Gateway",
+    subtitle: "One endpoint for every model",
+    description:
+      "A self-hosted LLM gateway in front of every AI workload. Services hold virtual keys with allowlists that fail closed, so I can tell you what any tenant or feature spent, and nothing reaches a model I didn't approve.",
+    status: "production",
+    statusLabel: "Synced · Healthy",
+    year: "2026",
+    stats: [
+      { value: "1", label: "endpoint, every AI workload" },
+      { value: "Per-key", label: "model allowlists" },
+      { value: "3 tags", label: "tenant, env, feature" },
+    ],
+    tags: ["LiteLLM", "Kubernetes", "ArgoCD", "Gemini", "Prometheus", "FinOps"],
+    href: "/projects/ai-gateway",
+    terminal: [
+      { text: "$ curl -H \"Authorization: Bearer $KEY\" $GATEWAY/v1/models", tone: "cmd" },
+      { text: "gemini-2.5-flash    permitted", tone: "ok" },
+      { text: "gemini-3.6-flash    permitted", tone: "ok" },
+      { text: "everything else     401", tone: "warn" },
+    ],
+  },
+  {
     id: "heimdall",
     context: null, // TODO(jack): e.g. role · duration · company setting
     title: "Heimdall",
@@ -83,13 +131,13 @@ export const projects: Project[] = [
     title: "Observability Stack",
     subtitle: "Self-hosted monitoring",
     description:
-      "Prometheus, Grafana and Loki for 20 services across four environments. Built in-house because the commercial quotes were ~£100k and we already had the cluster capacity.",
+      "Prometheus, Grafana and Loki for 20 services across four environments. Built in-house because the commercial quotes were silly money and we already had the cluster capacity going spare.",
     status: "production",
     statusLabel: "Synced · Healthy",
     year: "2024–25",
     stats: [
-      { value: "~£5k/yr", label: "vs ~£100k commercial" },
-      { value: "~25", label: "dashboards" },
+      { value: "4", label: "environments, one stack" },
+      { value: "22", label: "dashboards, managed as code" },
       { value: "50+", label: "alerts, runbook each" },
     ],
     tags: ["Prometheus", "Grafana", "Loki", "Thanos", "Alertmanager"],
@@ -107,7 +155,7 @@ export const projects: Project[] = [
     title: "Smart Home on K3s",
     subtitle: "Self-hosted home automation",
     description:
-      "Single-node Kubernetes cluster on a Raspberry Pi 5, GitOps-reconciled by ArgoCD, observable end-to-end through Prometheus and Grafana. Twenty-plus lights, plugs and sensors. Zero ports exposed to the internet. Same discipline I apply at work, sized to a flat.",
+      "A single-node K3s cluster on a Raspberry Pi 5, reconciled by ArgoCD and watched by Prometheus. Twenty-plus lights, plugs and sensors, and not one port open to the internet. It's the discipline I use at work, sized to a flat.",
     status: "homelab",
     statusLabel: "Synced · Healthy",
     year: "2025",
@@ -128,24 +176,25 @@ export const projects: Project[] = [
   {
     id: "ml-scheduler",
     context: null, // TODO(jack): e.g. role · duration · company setting
-    title: "GPU-aware Scheduling",
+    title: "Recovery Scheduling under Node Failure",
     subtitle: "MSc dissertation, in progress",
     description:
-      "Research into GPU-aware scheduling on Kubernetes for ML workloads. The write-up lands with the dissertation — August 2026.",
+      "When a machine dies, nothing decides how the workload comes back: displaced pods rejoin the queue blind to what matters and to how loaded the survivors already are. I'm building a capacity-aware recovery scheduler and measuring it against stock kube-scheduler and PriorityClass preemption, on real clusters where node failure means actually killing the machine. Submission September 2026.",
     status: "in-progress",
     statusLabel: "In progress",
     year: "2026",
     stats: [
-      { value: "Aug 2026", label: "write-up due" },
-      { value: "K8s", label: "scheduler internals" },
-      { value: "GPU", label: "bin-packing & sharing" },
+      { value: "Sep 2026", label: "submission" },
+      { value: "3 arms", label: "kube-scheduler, PriorityClass, selection" },
+      { value: "Real kills", label: "no simulated results reported" },
     ],
-    tags: ["Kubernetes", "GPU", "Scheduling", "PyTorch"],
+    tags: ["Kubernetes", "Scheduling", "EKS", "Python", "Pre-registered analysis"],
     href: null,
     terminal: [
-      { text: "$ kubectl get pods -l workload=training", tone: "cmd" },
-      { text: "status: research in progress", tone: "warn" },
-      { text: "eta: august 2026", tone: "info" },
+      { text: "$ aws ec2 terminate-instances --instance-ids i-0f3a…", tone: "cmd" },
+      { text: "node/ip-10-0-4-91 NotReady", tone: "warn" },
+      { text: "recovery: importance-aware policy engaged", tone: "info" },
+      { text: "measuring against noise floor…", tone: "ok" },
     ],
   },
 ];
@@ -156,5 +205,5 @@ export const featuredProjects = projects.filter((p) => p.href !== null);
 export const proofPoints = [
   { value: "20+", label: "engineers use Heimdall daily", href: "/projects/heimdall" },
   { value: "~400", label: "deploys/month on my pipeline library", href: "/projects/pipeline-platform" },
-  { value: "~£95k/yr", label: "saved on observability", href: "/projects/observability" },
+  { value: "~30", label: "tenants live on Clarity, my AI query product", href: "/projects/clarity" },
 ];

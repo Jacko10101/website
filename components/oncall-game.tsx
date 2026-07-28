@@ -50,7 +50,7 @@ const SCENARIOS: Scenario[] = [
     ],
     fixes: [
       { label: "Raise the memory limit and roll out", correct: true, reaction: "" },
-      { label: "Roll back the last deploy", correct: false, reaction: "Rolled back. Still OOMKilled — last deploy was three days ago. Not the deploy." },
+      { label: "Roll back the last deploy", correct: false, reaction: "Rolled back. Still OOMKilled, last deploy was three days ago. Not the deploy." },
       { label: "Delete the pod", correct: false, reaction: "New pod, same limit, same heap. It's back in CrashLoopBackOff within two minutes." },
       { label: "Silence the alert", correct: false, reaction: "The alert is quiet. Payments are still down. Bold strategy." },
     ],
@@ -123,7 +123,7 @@ const SCENARIOS: Scenario[] = [
       },
       {
         cmd: "kubectl logs cert-manager | tail",
-        output: ["ACME error: rateLimited — too many certificates issued"],
+        output: ["ACME error: rateLimited · too many certificates issued"],
       },
     ],
     fixes: [
@@ -155,7 +155,7 @@ const SCENARIOS: Scenario[] = [
     fixes: [
       { label: "Cordon, drain, and recycle the node", correct: true, reaction: "" },
       { label: "Restart the stuck pods", correct: false, reaction: "The kubelet isn't listening. Your deletes queue politely behind a dead process." },
-      { label: "Scale the deployments up", correct: false, reaction: "New pods schedule onto healthy nodes — but node-4's zombies still hold their PVCs." },
+      { label: "Scale the deployments up", correct: false, reaction: "New pods schedule onto healthy nodes, but node-4's zombies still hold their PVCs." },
       { label: "Wait and see", correct: false, reaction: "Ten more minutes of NotReady. The pending queue grows. The pager does not self-resolve." },
     ],
     resolution: "Node cordoned, drained, recycled by the ASG. Workloads rescheduled. PLEG saga added to the runbook.",
@@ -171,7 +171,7 @@ const SCENARIOS: Scenario[] = [
       },
       {
         cmd: "kubectl logs -n kube-system coredns | tail",
-        output: ["[WARNING] overloaded — dropping queries", "throttling: CPU limit reached"],
+        output: ["[WARNING] overloaded, dropping queries", "throttling: CPU limit reached"],
       },
       {
         cmd: "kubectl top pod -n kube-system | grep coredns",
@@ -217,9 +217,19 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
   const [highScore, setHighScore] = useState(0);
   const logRef = useRef<HTMLDivElement>(null);
   const lastScenarioRef = useRef<string | null>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const advanceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     setHighScore(Number(localStorage.getItem("oncall-highscore") || 0));
+  }, []);
+
+  // Move focus into the dialog on open; clear any pending round advance on close.
+  useEffect(() => {
+    dialogRef.current?.focus();
+    return () => {
+      if (advanceTimerRef.current) clearTimeout(advanceTimerRef.current);
+    };
   }, []);
 
   useEffect(() => {
@@ -290,7 +300,7 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
         { kind: "cmd", text: `$ ${fix.label.toLowerCase()}` },
         { kind: "good", text: `RESOLVED  ${scenario.resolution}` },
       ]);
-      setTimeout(() => {
+      advanceTimerRef.current = setTimeout(() => {
         setRound((r) => r + 1);
         spawn();
       }, 2600);
@@ -324,16 +334,18 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
 
   return (
     <div
+      ref={dialogRef}
+      tabIndex={-1}
       className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm flex items-center justify-center p-4"
       role="dialog"
       aria-modal="true"
-      aria-label="ONCALL — incident response game"
+      aria-label="ONCALL · incident response game"
     >
       <div className="w-full max-w-4xl rounded-lg border border-border bg-background glow-border overflow-hidden">
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-3 border-b border-border bg-card/60 font-mono text-xs">
           <span className="text-primary font-semibold">
-            ONCALL <span className="text-muted-foreground font-normal">— you have the pager</span>
+            ONCALL <span className="text-muted-foreground font-normal">you have the pager</span>
           </span>
           <div className="flex items-center gap-5">
             <span className="text-muted-foreground">
@@ -353,7 +365,7 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
         {/* Error budget */}
         <div className="px-5 py-3 border-b border-border font-mono text-[11px]">
           <div className="flex justify-between text-muted-foreground mb-1.5">
-            <span>error budget — SLO {slo}%</span>
+            <span>error budget · SLO {slo}%</span>
             <span className={budgetPct <= 25 ? "text-error" : ""}>{budgetPct}%</span>
           </div>
           <div className="h-1.5 rounded bg-secondary overflow-hidden">
@@ -371,7 +383,7 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
               The pager goes off.
             </h2>
             <p className="text-muted-foreground max-w-md mx-auto mb-8 text-sm leading-relaxed">
-              Investigate before you act — commands cost a little budget, wrong
+              Investigate before you act. Commands cost a little budget, wrong
               fixes cost a lot. Resolve incidents to claw budget back. When the
               error budget hits zero, the SLO is breached and the postmortem is
               yours to write.
@@ -393,7 +405,7 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
             </h2>
             <p className="text-muted-foreground max-w-md mx-auto mb-2 text-sm">
               Incidents resolved: <span className="text-primary font-mono">{score}</span>
-              {score >= highScore && score > 0 && " — a new personal best."}
+              {score >= highScore && score > 0 && ", a new personal best."}
             </p>
             <p className="text-muted-foreground max-w-md mx-auto mb-8 text-sm">
               The postmortem writes itself. Blameless, obviously.
@@ -425,6 +437,8 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
             {/* Log feed */}
             <div
               ref={logRef}
+              tabIndex={0}
+              data-lenis-prevent
               className="p-5 font-mono text-[11px] leading-5 overflow-y-auto border-b md:border-b-0 md:border-r border-border min-h-[16rem]"
               aria-live="polite"
             >

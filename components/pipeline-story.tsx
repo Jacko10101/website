@@ -17,7 +17,7 @@ const stages = [
     name: "dev",
     gate: "on push",
     headline: "A commit lands.",
-    copy: "The pipeline takes it from here — build, test, scan, push the image. Nobody babysits a deploy.",
+    copy: "The pipeline takes it from here: build, test, scan, push the image. Nobody babysits a deploy.",
     log: ["build ✓  unit tests ✓", "trivy scan ✓  image pushed"],
   },
   {
@@ -41,7 +41,7 @@ const stages = [
     name: "prod",
     gate: "argocd",
     headline: "Promotion is a commit.",
-    copy: "Rollback is a revert. The audit log is git log. That's the whole trick — and it's why it holds up at 2am.",
+    copy: "Rollback is a revert. The audit log is git log. That's the whole trick, and it's why it holds up at 2am.",
     log: ["argocd sync ✓  Healthy", "serving traffic"],
   },
 ];
@@ -158,7 +158,7 @@ export function PipelineStory() {
               <p className="text-muted-foreground text-lg max-w-xl">{stage.copy}</p>
             </motion.div>
 
-            <TerminalWindow title={`promotion — ${sha}`} className="hidden lg:block glow-border">
+            <TerminalWindow title={`promotion · ${sha}`} className="hidden lg:block glow-border">
               <div className="p-4 font-mono text-[11px] leading-5 min-h-[9.5rem]">
                 {stages.slice(0, stageIndex + 1).map((s, i) => (
                   <div key={s.id}>

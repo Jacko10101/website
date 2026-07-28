@@ -45,7 +45,7 @@ const nodes: MapNode[] = [
     sub: "shared library",
     title: "CI/CD pipelines",
     description:
-      "One shared pipeline library imported by every service — build, test, scan, push. ~400 deploys/month across 20 services on a single .ci/builds.yaml.",
+      "One shared pipeline library imported by every service: build, test, scan, push. ~400 deploys/month across 20 services on a single .ci/builds.yaml.",
     x: 190, y: 210, w: 160, h: 64,
   },
   {
@@ -63,7 +63,7 @@ const nodes: MapNode[] = [
     sub: "EKS · K3s",
     title: "Kubernetes & EKS",
     description:
-      "Cluster operations end to end: GPU node pools, zero-downtime upgrades, right-sizing for cost. The same discipline runs my single-node K3s homelab.",
+      "Cluster operations end to end: node groups, zero-downtime upgrades, right-sizing for cost. The same discipline runs my single-node K3s homelab.",
     x: 620, y: 120, w: 220, h: 250,
   },
   {
@@ -81,7 +81,7 @@ const nodes: MapNode[] = [
     sub: "ml workloads",
     title: "MLOps & AI infrastructure",
     description:
-      "Where the platform work is heading: model serving on K8s, GPU scheduling and reproducible training pipelines. MSc dissertation in progress on GPU-aware scheduling.",
+      "Where the platform work is heading: model serving on K8s, GPU scheduling and reproducible training pipelines. MSc dissertation in progress on recovery scheduling after node failure.",
     x: 640, y: 236, w: 180, h: 48,
     variant: "sub",
   },
@@ -91,7 +91,7 @@ const nodes: MapNode[] = [
     sub: "streams",
     title: "Data platforms",
     description:
-      "Kafka and stream processing — training data pipelines and schema evolution that doesn't break consumers.",
+      "Kafka and stream processing: training data pipelines and schema evolution that doesn't break consumers.",
     x: 640, y: 300, w: 180, h: 48,
     variant: "sub",
   },
@@ -101,7 +101,7 @@ const nodes: MapNode[] = [
     sub: "prom · grafana · loki",
     title: "Observability",
     description:
-      "Self-hosted Prometheus, Grafana and Loki — ~25 dashboards, 50+ alerts with a runbook each, at ~£5k/yr instead of ~£100k commercial.",
+      "Self-hosted Prometheus, Grafana and Loki. 22 dashboards managed as code, 50+ alerts with a runbook each, across four environments.",
     x: 620, y: 410, w: 220, h: 58,
   },
   {
@@ -110,7 +110,7 @@ const nodes: MapNode[] = [
     sub: "EKS · VPC · IAM · MSK",
     title: "AWS",
     description:
-      "EKS, IAM, VPC, Route 53, S3, MSK, RDS — the boring fundamentals, done properly.",
+      "EKS, IAM, VPC, Route 53, S3, MSK, RDS. The boring fundamentals, done properly.",
     x: 20, y: 410, w: 540, h: 58,
     variant: "foundation",
   },
@@ -135,11 +135,11 @@ export function SystemMap() {
           command="cat platform.svg"
           title="What I build"
           index="02"
-          lede="Not a list of logos — the system itself. Select a node; everything here is something I have run in production or at home."
+          lede="Not a list of logos. The system itself. Select a node; everything here is something I have run in production or at home."
         />
 
         <div className="xl:grid xl:grid-cols-[1fr_20rem] xl:gap-8 xl:items-start">
-        <div className="overflow-x-auto pb-2">
+        <div className="overflow-x-auto pb-2" tabIndex={0} data-lenis-prevent>
           <motion.svg
             viewBox="0 0 860 490"
             className="min-w-[720px] w-full max-w-5xl"
@@ -193,8 +193,8 @@ export function SystemMap() {
                   tabIndex={0}
                   role="button"
                   aria-pressed={isActive}
-                  aria-label={`${node.title} — select for details`}
-                  className="cursor-pointer focus:outline-none"
+                  aria-label={`${node.title} · select for details`}
+                  className="cursor-pointer"
                   onClick={() => setSelected(node.id)}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === " ") {
@@ -257,9 +257,8 @@ export function SystemMap() {
           </motion.svg>
         </div>
 
-        {/* Detail panel — beside the diagram on wide screens */}
+        {/* Detail panel, beside the diagram on wide screens */}
         <motion.div
-          key={active.id}
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}

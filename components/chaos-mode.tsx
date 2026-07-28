@@ -16,7 +16,7 @@ interface ToastLine {
 
 export function ChaosMode() {
   const [toast, setToast] = useState<ToastLine[]>([]);
-  const [running, setRunning] = useState(false);
+  const running = useRef(false);
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
 
   useEffect(() => {
@@ -27,9 +27,9 @@ export function ChaosMode() {
     const addToast = (line: ToastLine) => setToast((t) => [...t, line]);
 
     const run = () => {
-      if (running) return;
+      if (running.current) return;
       const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      setRunning(true);
+      running.current = true;
       setToast([]);
 
       const sections = Array.from(
@@ -61,7 +61,7 @@ export function ChaosMode() {
       }
 
       schedule(() => {
-        addToast({ text: "argocd: devlinops.com OutOfSync — drift detected", tone: "warn" });
+        addToast({ text: "argocd: devlinops.com OutOfSync · drift detected", tone: "warn" });
         addToast({ text: "argocd: reconciling from git @ HEAD…", tone: "cmd" });
       }, 2800);
 
@@ -75,13 +75,13 @@ export function ChaosMode() {
       });
 
       schedule(() => {
-        addToast({ text: "argocd: Synced · Healthy — all resources restored", tone: "ok" });
+        addToast({ text: "argocd: Synced · Healthy · all resources restored", tone: "ok" });
         addToast({ text: "state lives in git. you can't break this site.", tone: "ok" });
       }, 4600 + sections.length * 450);
 
       schedule(() => {
         setToast([]);
-        setRunning(false);
+        running.current = false;
       }, 9500 + sections.length * 450);
     };
 
@@ -91,7 +91,7 @@ export function ChaosMode() {
       window.removeEventListener("devlinops:chaos", run);
       currentTimers.forEach(clearTimeout);
     };
-  }, [running]);
+  }, []);
 
   if (toast.length === 0) return null;
 

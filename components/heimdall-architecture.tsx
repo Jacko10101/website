@@ -65,7 +65,7 @@ export function HeimdallArchitecture() {
   const nodeProps = (key: NodeKey) => ({
     tabIndex: 0,
     role: "button" as const,
-    "aria-label": `${nodeInfo[key].title} — show details`,
+    "aria-label": `${nodeInfo[key].title} · show details`,
     "aria-pressed": selected === key,
     onClick: () => toggle(key),
     onKeyDown: (e: React.KeyboardEvent<SVGGElement>) => {
@@ -83,15 +83,16 @@ export function HeimdallArchitecture() {
 
   return (
     <div className="rounded-lg border border-border bg-card p-6">
-      <h3 className="mb-1 text-lg font-semibold">Heimdall — system overview</h3>
+      <h3 className="mb-1 text-lg font-semibold">Heimdall · system overview</h3>
       <p className="mb-4 text-xs text-muted-foreground">
         Click, tap or hover any node for a one-line explanation.
       </p>
 
       <div className="relative">
+        <div className="overflow-x-auto" data-lenis-prevent tabIndex={0}>
         <svg
           viewBox="0 0 900 540"
-          className="w-full"
+          className="min-w-[900px] w-full"
           role="group"
           aria-label="Heimdall architecture: four upstream sources feed a background collector, which writes to a database and an in-memory cache. A web app reads from both."
         >
@@ -336,11 +337,13 @@ export function HeimdallArchitecture() {
               textAnchor="middle"
               className="fill-muted-foreground text-[10px]"
             >
-              UI · API · metrics — only ever reads
+              UI · API · metrics · only ever reads
             </text>
           </g>
         </svg>
+        </div>
 
+        <div aria-live="polite">
         {active && (
           <div className="mt-4 rounded-lg border border-primary/40 bg-primary/5 p-4">
             <h4 className="mb-1 font-semibold text-foreground">{nodeInfo[active].title}</h4>
@@ -349,6 +352,7 @@ export function HeimdallArchitecture() {
             </p>
           </div>
         )}
+        </div>
       </div>
     </div>
   );

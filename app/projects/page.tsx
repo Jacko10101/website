@@ -24,7 +24,7 @@ function ProjectRow({ project, index }: { project: Project; index: number }) {
 
   const inner = (
     <>
-      {/* Header row — reads like a dashboard entry */}
+      {/* Header row, reads like a dashboard entry */}
       <div className="flex flex-wrap items-center justify-between gap-3 px-6 md:px-8 pt-6">
         <div className="flex items-baseline gap-3">
           <h2
@@ -49,7 +49,7 @@ function ProjectRow({ project, index }: { project: Project; index: number }) {
         </p>
       )}
 
-      {/* Body — copy and stats on the left, terminal pane on the right */}
+      {/* Body, copy and stats on the left, terminal pane on the right */}
       <div className="grid lg:grid-cols-[1fr_minmax(0,360px)] gap-6 lg:gap-10 px-6 md:px-8 mt-5">
         <div className="flex flex-col">
           <p className="text-sm text-muted-foreground leading-relaxed">
@@ -133,7 +133,7 @@ export default function ProjectsPage() {
             as="h1"
             command="kubectl get projects --all-namespaces"
             title="Case studies"
-            lede="Four projects shipped end-to-end and one in flight. What they are, what changed, and a few decisions worth flagging."
+            lede="Six projects shipped end-to-end, one dissertation in flight. What each one is, and what actually changed."
           />
 
           <div className="max-w-5xl space-y-8">

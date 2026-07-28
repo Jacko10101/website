@@ -33,14 +33,20 @@ export function MetricsShowcase({ metrics }: MetricsShowcaseProps) {
   };
 
   // Escape closes the lightbox; the close button takes focus on open.
+  // Body scroll locks while the modal is open, restored on close.
   useEffect(() => {
     if (!selectedMetric) return;
     closeButtonRef.current?.focus();
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") closeModal();
     };
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = previousOverflow;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedMetric]);
 
@@ -108,6 +114,11 @@ export function MetricsShowcase({ metrics }: MetricsShowcaseProps) {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
+              role="dialog"
+              aria-modal="true"
+              aria-label={selectedMetric.title}
+              tabIndex={0}
+              data-lenis-prevent
               className="relative max-w-6xl w-full max-h-[90vh] overflow-auto rounded-lg border border-border bg-card shadow-2xl"
             >
               <button

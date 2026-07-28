@@ -94,7 +94,15 @@ export function TypedLines({
         }
         return (
           <div key={i} className={`whitespace-pre-wrap ${toneClasses[line.tone]}`}>
-            {typing ? line.text.slice(0, progress.char) : line.text}
+            {typing ? (
+              <>
+                {/* screen readers get the complete line, not the animating partial */}
+                <span aria-hidden="true">{line.text.slice(0, progress.char)}</span>
+                <span className="sr-only">{line.text}</span>
+              </>
+            ) : (
+              line.text
+            )}
             {typing && <span className="cursor-blink !h-[0.9em] !w-[0.5em]" aria-hidden />}
           </div>
         );

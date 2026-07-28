@@ -30,7 +30,7 @@ function ProjectTile({ project, index }: { project: Project; index: number }) {
         href={project.href!}
         className="group flex flex-col h-full rounded-lg border border-border bg-card/60 hover:border-primary/60 hover:-translate-y-1 hover:shadow-[0_12px_48px_oklch(0.72_0.19_150_/_0.12)] transition-all duration-300 overflow-hidden"
       >
-        {/* Tile header — reads like a dashboard row */}
+        {/* Tile header, reads like a dashboard row */}
         <div className="flex items-center justify-between px-6 pt-5">
           <div className="flex items-baseline gap-3">
             <h3 className="font-mono font-semibold text-xl text-foreground group-hover:text-primary transition-colors">

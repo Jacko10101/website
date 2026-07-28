@@ -28,6 +28,8 @@ export function KonamiCode() {
     let progress = 0;
     const onKey = (e: KeyboardEvent) => {
       if (open) return;
+      const target = e.target as HTMLElement | null;
+      if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable)) return;
       const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
       if (key === KONAMI[progress]) {
         progress += 1;

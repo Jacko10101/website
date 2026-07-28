@@ -310,8 +310,8 @@ export function CaseStudyCTA() {
             Thanks for reading.
           </h2>
           <p className="text-muted-foreground mb-8">
-            If any of this resonates — or you want to dig into the parts I didn&apos;t
-            write up — drop me a note. Always happy to talk shop.
+            If any of this resonates, or you want to dig into the parts I didn&apos;t
+            write up, drop me a note. Always happy to talk shop.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
