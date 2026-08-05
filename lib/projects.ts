@@ -83,12 +83,12 @@ export const projects: Project[] = [
     title: "Heimdall",
     subtitle: "Deployment intelligence platform",
     description:
-      "The dashboard the platform team checks every morning. Answers one question: where is my ticket right now? Used daily by 20+ engineers across a couple dozen services.",
+      "The dashboard the platform team checks every morning. Answers one question: where is my ticket right now? Used daily by 20+ engineers across 20 services.",
     status: "production",
     statusLabel: "Synced · Healthy",
     year: "2025",
     stats: [
-      { value: "~2 dozen", label: "services tracked" },
+      { value: "20", label: "services tracked" },
       { value: "20+", label: "engineers daily" },
       { value: "10 min", label: "data freshness" },
     ],
@@ -145,7 +145,7 @@ export const projects: Project[] = [
     terminal: [
       { text: "$ promtool check targets", tone: "cmd" },
       { text: "20/20 targets healthy", tone: "ok" },
-      { text: "~25 dashboards active", tone: "info" },
+      { text: "22 dashboards active", tone: "info" },
       { text: "50+ alert rules, runbook each", tone: "ok" },
     ],
   },

@@ -44,7 +44,10 @@ const securityHeaders = [
     key: 'Content-Security-Policy',
     value: [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' https://plausible.io",
+      // 'wasm-unsafe-eval' is the narrow grant that lets SQLite-in-WebAssembly
+      // run the career query on the homepage. Deliberately NOT 'unsafe-eval':
+      // a JS-compiling SQL engine would have needed that, and it isn't worth it.
+      "script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://plausible.io",
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: blob:",
       "font-src 'self' data:",

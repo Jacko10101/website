@@ -14,10 +14,11 @@ One quoted line from an EM, tech lead or teammate, with an attribution
 This is the single highest-impact addition for hiring. Renders as a
 full-width quote block on the homepage.
 
-## 3. MSc result — `lib/profile.ts` → `msc.result`
-When it's confirmed (e.g. `"Distinction"`), set it and it appears in the hero
-automatically. Leave `null` until it's real — the site's rule is that nothing
-unverified gets shown.
+## 3. MSc result — `lib/profile.ts` → `msc.result` ✅ set to "Distinction"
+Set on your instruction (31 Jul 2026). It renders in the hero, the ticker and
+the CLI `whoami`. If the final result lands differently, change that one field
+and every mention follows. Note your CV still says "on track for Distinction" —
+worth deciding whether the two should match.
 
 ## 4. Case-study context — `lib/projects.ts` → each `context` field
 One line per project: role · duration · setting.

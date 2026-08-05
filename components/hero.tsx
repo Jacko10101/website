@@ -96,10 +96,8 @@ export function Hero() {
               model call, and a natural-language query product live across ~30
               tenant databases.{" "}
               {profile.msc.label}
-              {profile.msc.result
-                ? ` (${profile.msc.result})`
-                : ` finishing ${profile.msc.finishes}`}
-              .
+              {profile.msc.result ? `, ${profile.msc.result},` : ""} finishing{" "}
+              {profile.msc.finishes}.
             </motion.p>
 
             <motion.div variants={rise} className="flex flex-wrap gap-4 items-center mb-8">

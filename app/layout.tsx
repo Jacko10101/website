@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     template: "%s · Jack Devlin",
   },
   description:
-    "Platform engineer for AI systems. Production LLM infrastructure on Kubernetes: gateway, guardrails, GitOps and observability. Available from October 2026, permanent or contract, remote-first, open to relocation.",
+    "Platform engineer for AI systems. Production LLM infrastructure on Kubernetes: gateway, guardrails, GitOps and observability. Available now, permanent or contract, remote-first, open to relocation.",
   keywords: [
     "AI Infrastructure",
     "AI Platform Engineer",
@@ -64,7 +64,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Jack Devlin · Platform & AI Infrastructure Engineer",
     description:
-      "Platform engineer for AI systems. Production LLM infrastructure on Kubernetes: gateway, guardrails, GitOps and observability. Available from October 2026, permanent or contract, remote-first, open to relocation.",
+      "Platform engineer for AI systems. Production LLM infrastructure on Kubernetes: gateway, guardrails, GitOps and observability. Available now, permanent or contract, remote-first, open to relocation.",
     url: "https://devlinops.com",
     siteName: "Jack Devlin",
     type: "website",
@@ -81,7 +81,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Jack Devlin · Platform & AI Infrastructure Engineer",
     description:
-      "Platform engineer for AI systems. Production LLM infrastructure on Kubernetes: gateway, guardrails, GitOps and observability. Available from October 2026, permanent or contract, remote-first, open to relocation.",
+      "Platform engineer for AI systems. Production LLM infrastructure on Kubernetes: gateway, guardrails, GitOps and observability. Available now, permanent or contract, remote-first, open to relocation.",
     images: ["/og-image.png"],
   },
 };

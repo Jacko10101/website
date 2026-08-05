@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Observability Stack · Self-Hosted Monitoring",
   description:
-    "Prometheus, Grafana and Loki for 20 services across four environments. ~25 dashboards and 50+ alerts, each with a runbook, ~£5k/yr versus ~£100k commercial quotes.",
+    "Prometheus, Grafana and Loki for 20 services across four environments. 22 dashboards and 50+ alerts, each with a runbook, ~£5k/yr versus ~£100k commercial quotes.",
   openGraph: {
     title: "Observability Stack · Self-Hosted Monitoring",
     description:

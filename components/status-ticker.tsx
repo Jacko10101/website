@@ -4,15 +4,18 @@ import { useState } from "react";
 import { useReducedMotion } from "framer-motion";
 
 // Every item here is substantiated elsewhere on the site.
+// Deliberately none of the three figures in the hero proof strip — the ticker
+// sitting directly beneath it repeating them read as padding.
 const items = [
-  "heimdall: 20+ engineers daily",
-  "pipeline library: ~400 deploys/month across 20 services",
-  "clarity: ~30 tenants ask their databases questions in English",
+  "every answer ships with the SQL that produced it",
+  "5 classes of hallucination caught mechanically, every turn",
+  "0 vector stores · compiled schema knowledge instead",
   "50+ alerts, a runbook for every one",
   "promotion is a commit · rollback is a revert",
+  "one endpoint in front of every model call",
   "homelab: 0 ports exposed to the internet",
-  "MSc AI · finishing September 2026",
-  "available October 2026 · permanent or contract · remote-first",
+  "MSc AI · Distinction · September 2026",
+  "available now · permanent or contract · remote-first",
 ];
 
 /**

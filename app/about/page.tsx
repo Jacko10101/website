@@ -6,6 +6,7 @@ import { motion, useScroll } from "framer-motion";
 import { Download } from "lucide-react";
 import { SectionHeading } from "@/components/section-heading";
 import { ContactCTA } from "@/components/contact-cta";
+import { profile } from "@/lib/profile";
 
 // Journey timeline data, styled as git log entries. Hashes are decorative.
 const journey = [
@@ -164,7 +165,7 @@ function AboutHero() {
                 <p>jack.jpg · UK · platform engineer</p>
                 <p className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-primary" aria-hidden />
-                  <span className="text-foreground/80">available October 2026</span>
+                  <span className="text-foreground/80">{profile.availability.from}</span>
                 </p>
               </div>
             </motion.div>
@@ -408,7 +409,7 @@ function CurrentlySection() {
               Right now
             </h2>
             <p className="font-mono text-sm text-primary mb-6">
-              Shipping Clarity · Finishing the MSc · Available October 2026
+              Shipping Clarity · Finishing the MSc · Available now
             </p>
             <p className="text-muted-foreground leading-relaxed mb-4">
               Wrapping up my current contract on the platform team I helped
@@ -425,10 +426,9 @@ function CurrentlySection() {
               halves have converged.
             </p>
             <p className="text-sm text-muted-foreground/70">
-              Available from October 2026, permanent or contract, remote-first,
-              and happy to relocate for the right role. AI platform and
-              infrastructure work first, MLOps, SRE and platform engineering
-              close behind.
+              Available now, permanent or contract, remote-first, and happy to
+              relocate for the right role. AI platform and infrastructure work
+              first, MLOps, SRE and platform engineering close behind.
             </p>
           </motion.div>
         </div>

@@ -8,20 +8,76 @@ import {
   PHOSPHORS,
   CaseStudyLayout,
   CaseStudyHero,
-  StatsGrid,
   TechSidebar,
   CaseStudyCTA,
 } from "@/components/case-study-layout";
 import { DaySection as CaseStudySection } from "@/components/case-section-variants";
-import { GlassCard, FadeUp } from "@/components/scroll-reveal";
+import { FadeUp } from "@/components/scroll-reveal";
 import { TerminalWindow } from "@/components/terminal-window";
+
+/* --------------------------------------------------------------------------
+ * The source map. Heimdall is an aggregator, so the decision that matters is
+ * which upstream it believes for each fact — and the one case where the
+ * obvious source is confidently wrong.
+ * ----------------------------------------------------------------------- */
+const SOURCES: {
+  system: string;
+  reads: string;
+  caveat?: string;
+}[] = [
+  {
+    system: "Jira",
+    reads: "The ticket, so the whole thing can be asked in a human's terms: where is PLAT-2044 right now?",
+  },
+  {
+    system: "Bitbucket",
+    reads: "PRs, merges and review state. This is where the bottleneck usually is, and it's the part people are least willing to guess at.",
+  },
+  {
+    system: "ArgoCD",
+    reads: "Sync status and the revision each environment is meant to be running.",
+    caveat:
+      "Not its health verdict. ArgoCD will happily report a service healthy while its new pods crashloop behind it — the exact moment you most need the truth.",
+  },
+  {
+    system: "Kubernetes",
+    reads: "Pod state, read directly. This is what health actually means here, and it's why the dashboard stays honest when the abstraction above it isn't.",
+  },
+  {
+    system: "Test runs",
+    reads: "Post-deploy verification, so 'deployed' and 'working' stay separate words.",
+  },
+];
+
+function SourceMap() {
+  return (
+    <div className="rounded-lg border border-border overflow-hidden">
+      {SOURCES.map((s) => (
+        <div
+          key={s.system}
+          className="grid sm:grid-cols-[8rem_1fr] gap-x-5 gap-y-1 px-5 py-4 border-b border-border last:border-b-0 odd:bg-card/20"
+        >
+          <span className="font-mono text-sm text-primary">{s.system}</span>
+          <div>
+            <p className="text-sm text-muted-foreground leading-relaxed">{s.reads}</p>
+            {s.caveat && (
+              <p className="mt-2 text-sm text-warn/90 leading-relaxed border-l-2 border-warn/40 pl-3">
+                {s.caveat}
+              </p>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 const articleSchema = {
   "@context": "https://schema.org",
   "@type": "TechArticle",
   headline: "Heimdall · Deployment Intelligence Platform",
   description:
-    "An internal SRE dashboard answering 'where is my ticket right now?' across a couple dozen services. Used daily by a 20+ person engineering team.",
+    "An internal SRE dashboard answering 'where is my ticket right now?' across 20 services. Used daily by a 20+ person engineering team.",
   author: {
     "@type": "Person",
     name: "Jack Devlin",
@@ -88,7 +144,7 @@ export default function HeimdallPage() {
       <CaseStudyHero
         title="Heimdall"
         subtitle="Deployment intelligence platform"
-        description="The dashboard the platform team checks every morning. One question: where is my ticket right now? Across a couple dozen services and four environments."
+        description="The dashboard the platform team checks every morning. One question: where is my ticket right now? Across 20 services and four environments."
         date="2025 → ongoing"
         metrics="20+ engineers, daily"
         command="cat case-studies/heimdall.md"
@@ -119,7 +175,7 @@ export default function HeimdallPage() {
           <div className="space-y-12">
             <CaseStudySection eyebrow="// 08:57 · five tabs open" title="Five tabs, one question">
               <p className="text-muted-foreground leading-relaxed mb-4">
-                Across a couple dozen services and a dev → QA → preprod → prod pipeline, the state
+                Across 20 services and a dev → QA → preprod → prod pipeline, the state
                 of any given ticket is scattered. The commit&apos;s in Bitbucket. The
                 desired state is in the GitOps repo. The pods are in Kubernetes. The
                 test results are in the CI / test-report system. The ticket is in JIRA.
@@ -256,62 +312,43 @@ export default function HeimdallPage() {
               </p>
             </CaseStudySection>
 
-            <CaseStudySection eyebrow="// 15:00 · decisions that held" title="A few decisions worth flagging">
-              <div className="space-y-5">
-                <GlassCard className="p-6">
-                  <h3 className="font-mono font-semibold tracking-tight text-foreground mb-2">
-                    Treat it as a product, not a script
-                  </h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    The original DORA collector was a back-end service. Useful, but
-                    nobody opened it. The lesson I keep coming back to: if a tool
-                    doesn&apos;t have a place to look, it doesn&apos;t get used. The UI
-                    is what made the work matter.
-                  </p>
-                </GlassCard>
+            <CaseStudySection
+              eyebrow="// 15:00 · five sources, one of them a liar"
+              title="What it reads, and what it refuses to believe"
+            >
+              <p className="text-muted-foreground mb-6 leading-relaxed">
+                Heimdall&apos;s only real job is reconciling five systems that
+                each hold one piece of the answer. Which means the interesting
+                design work isn&apos;t what it reads — it&apos;s the one place
+                where the obvious source is wrong.
+              </p>
 
-                <GlassCard className="p-6">
-                  <h3 className="font-mono font-semibold tracking-tight text-foreground mb-2">
-                    Trust pods, not abstractions
-                  </h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    ArgoCD will happily report a service as healthy while its new pods
-                    are crashlooping behind the scenes. Heimdall reads pod state
-                    directly, which means the dashboard stays honest in the cases
-                    that matter most.
-                  </p>
-                </GlassCard>
-
-                <GlassCard className="p-6">
-                  <h3 className="font-mono font-semibold tracking-tight text-foreground mb-2">
-                    Make it operable
-                  </h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    The README opens with &quot;is it healthy?&quot; and answers it
-                    in one curl. Anyone on-call can diagnose Heimdall without reading
-                    the code. That&apos;s the bar I aim for whenever I hand work to a
-                    team.
-                  </p>
-                </GlassCard>
-              </div>
-            </CaseStudySection>
-
-            <CaseStudySection eyebrow="// 17:30 · what changed" title="What changed">
-              <StatsGrid
-                stats={[
-                  { value: "~2 dozen", label: "services tracked" },
-                  { value: "20+", label: "engineers using it daily" },
-                  { value: "10 min", label: "data freshness" },
-                  { value: "1 curl", label: "to know if it's healthy" },
-                ]}
-              />
+              <SourceMap />
 
               <p className="text-muted-foreground mt-6 leading-relaxed">
-                The numbers I care about most aren&apos;t in the table. The team stopped
-                pasting kubectl output into Teams to ask if a deploy worked.
-                Standup got shorter. Release management started using the same view
-                as the engineers, which meant fewer dropped tickets at the seams. I&apos;m
-                still finding things to improve.
+                Reading five systems means five things that can be down, so
+                Heimdall has to be diagnosable by someone who has never seen its
+                code. The README opens with &quot;is it healthy?&quot; and
+                answers it in one curl: collection age, pool usage, every
+                circuit breaker. That&apos;s the bar I try to hit whenever I
+                hand something to a team — if the on-call engineer needs me,
+                I&apos;ve not finished it.
+              </p>
+            </CaseStudySection>
+
+            <CaseStudySection eyebrow="// 17:40 · end of the day" title="What actually changed">
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                The team stopped pasting kubectl output into Teams to ask
+                whether a deploy had worked. Standup got shorter. Release
+                management started using the same view as the engineers, so
+                fewer tickets fell down the gap between them.
+              </p>
+              <p className="text-muted-foreground leading-relaxed">
+                The thing I&apos;d tell anyone building an internal tool: the
+                original DORA collector was a back-end service, it was correct,
+                and nobody opened it. Same data, no front door, no users. The UI
+                is what made the work count — and 20+ people open this one every
+                morning, which is the only metric I fully trust.
               </p>
             </CaseStudySection>
           </div>
@@ -338,7 +375,7 @@ export default function HeimdallPage() {
             metrics={[
               { label: "Status", value: "Live, ongoing" },
               { label: "Users", value: "20+ engineers, daily" },
-              { label: "Services tracked", value: "A couple dozen, across 4 environments" },
+              { label: "Services tracked", value: "20, across 4 environments" },
               { label: "Data freshness", value: "Every 10 minutes" },
             ]}
             relatedProjects={[
@@ -349,7 +386,7 @@ export default function HeimdallPage() {
         </div>
       </div>
 
-      <CaseStudyCTA line="If your standup still starts with kubectl output pasted into the chat, I'd enjoy that conversation." />
+      <CaseStudyCTA line="Twenty-odd people open it before they open their email. That's the only review of it that counts." />
     </CaseStudyLayout>
   );
 }

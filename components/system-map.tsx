@@ -71,7 +71,7 @@ const nodes: MapNode[] = [
     label: "services",
     title: "Production services",
     description:
-      "A couple dozen Java and Node services, deployed through the shared pipeline and watched by Heimdall.",
+      "Twenty Java and Node services, deployed through the shared pipeline and watched by Heimdall.",
     x: 640, y: 172, w: 180, h: 48,
     variant: "sub",
   },

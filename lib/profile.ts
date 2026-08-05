@@ -12,20 +12,22 @@ export interface Testimonial {
 
 export const profile = {
   availability: {
-    from: "October 2026",
+    /** Short badge text — footer photo caption, ticker, OG images. */
+    from: "available now",
     /** One-liner used in the footer, ticker and CTA. */
-    short: "Available from October 2026 · permanent or contract · remote-first",
+    short: "Available now · permanent or contract · remote-first",
     /** Fuller status line used in the hero. */
     status:
-      "UK-based · remote-first, open to relocation · permanent or contract · from October 2026",
+      "Available now · UK-based, remote-first, open to relocation · permanent or contract",
+    /** Sentence form, for prose and meta descriptions. */
+    sentence:
+      "Available now, permanent or contract, remote-first, open to relocation.",
   },
 
   msc: {
     label: "MSc AI",
     finishes: "September 2026",
-    // TODO(jack): set when confirmed, e.g. "Distinction" — it will appear in
-    // the hero and About automatically. Leave null until it's real.
-    result: null as string | null,
+    result: "Distinction" as string | null,
   },
 
   // TODO(jack): one quoted line from an EM or teammate transforms the site.

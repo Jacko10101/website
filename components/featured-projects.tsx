@@ -99,7 +99,7 @@ export function FeaturedProjects() {
           command="kubectl get projects"
           title="Shipped and running"
           index="03"
-          lede="Four things I've owned end-to-end. What they are, what changed, and a few decisions worth flagging."
+          lede="Six things I've owned end-to-end. What they are, what changed, and a few decisions worth flagging."
         />
 
         <div className="grid md:grid-cols-2 gap-6 max-w-6xl">

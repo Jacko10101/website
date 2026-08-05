@@ -5,7 +5,7 @@ import { profile } from "@/lib/profile";
 export const metadata = {
   title: "Contact",
   description:
-    "Drop Jack Devlin a note. AI platform engineer, available from October 2026 for permanent or contract work, remote-first.",
+    "Drop Jack Devlin a note. AI platform engineer, available now for permanent or contract work, remote-first.",
 };
 
 export default function ContactPage() {
@@ -20,7 +20,7 @@ export default function ContactPage() {
         </h1>
         <p className="mb-4 text-lg text-muted-foreground leading-relaxed">
           The fastest way to reach me is the form below or just an email.
-          Available from October 2026, for permanent roles or contracts, and
+          I&apos;m available now, for permanent roles or contracts, and
           I&apos;ll relocate for the right one. Remote-first either way.
         </p>
         <p className="mb-12 text-lg text-muted-foreground leading-relaxed">

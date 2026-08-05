@@ -6,12 +6,86 @@ import {
   PHOSPHORS,
   CaseStudyLayout,
   CaseStudyHero,
-  StatsGrid,
   TechSidebar,
   CaseStudyCTA,
 } from "@/components/case-study-layout";
 import { PanelSection as CaseStudySection } from "@/components/case-section-variants";
-import { GlassCard } from "@/components/scroll-reveal";
+
+/* --------------------------------------------------------------------------
+ * This project was a build-or-buy decision, so the page ends as the artefact
+ * that decision deserved: an ADR, consequences and reversal condition
+ * included. The negative consequences are the point — an ADR that only lists
+ * upsides is a sales page.
+ * ----------------------------------------------------------------------- */
+const DECISION: { field: string; tone?: "good" | "bad"; body: string }[] = [
+  {
+    field: "Status",
+    body: "Accepted, 2024. Still in force at the time of writing, and reviewed below.",
+  },
+  {
+    field: "Context",
+    body: "Twenty microservices across four environments with no shared monitoring. Commercial quotes came back around £100k a year — for a company of our size, a second payroll line for something we already had the cluster capacity to run.",
+  },
+  {
+    field: "Option A",
+    body: "A commercial SaaS platform. Fastest to value, no operational burden, per-host and per-GB pricing that grows with exactly the thing you can't control: how much telemetry your developers decide to emit.",
+  },
+  {
+    field: "Option B",
+    body: "Self-host Prometheus, Thanos, Loki, Tempo and Grafana on the existing cluster. Slower to stand up, an operational surface we own, and near-flat cost as the data grows.",
+  },
+  {
+    field: "Decision",
+    body: "Option B, at roughly £5k a year all-in. The cluster capacity was already there, the team knew Kubernetes, and the gap between the two numbers was too wide to argue with.",
+  },
+  {
+    field: "Consequence",
+    tone: "good",
+    body: "Cold data goes to object storage — Thanos for metrics, S3-backed Loki for logs — so we only pay premium prices for the recent data people actually query. That single choice is why the bill stayed flat while the data grew, and it's where most self-hosted stacks quietly get expensive.",
+  },
+  {
+    field: "Consequence",
+    tone: "bad",
+    body: "It's mine to fix at 3am. There is nobody on the other end of a support contract, and the stack that tells you what's broken is itself a thing that can break — at the exact moment you'd most like it not to. That risk is real and it's the price of the number above.",
+  },
+  {
+    field: "Revisit when",
+    body: "The team is small enough that a day of my time is worth more than the difference, or the estate grows to where storage costs start tracking the SaaS quote. I'd make the opposite call at a three-person startup without hesitating.",
+  },
+];
+
+function DecisionRecord() {
+  return (
+    <dl className="border-t border-border">
+      {DECISION.map((d, i) => (
+        <div
+          key={`${d.field}-${i}`}
+          className="grid sm:grid-cols-[8.5rem_1fr] gap-x-5 gap-y-1 py-4 border-b border-border"
+        >
+          <dt className="font-mono text-xs uppercase tracking-wider pt-1 text-muted-foreground">
+            <span
+              className={
+                d.tone === "good"
+                  ? "text-primary"
+                  : d.tone === "bad"
+                    ? "text-warn"
+                    : undefined
+              }
+            >
+              {d.field}
+            </span>
+            {d.tone && (
+              <span aria-hidden className="ml-1.5">
+                {d.tone === "good" ? "+" : "−"}
+              </span>
+            )}
+          </dt>
+          <dd className="text-sm text-muted-foreground leading-relaxed">{d.body}</dd>
+        </div>
+      ))}
+    </dl>
+  );
+}
 
 const articleSchema = {
   "@context": "https://schema.org",
@@ -170,64 +244,23 @@ export default function ObservabilityPage() {
               </p>
             </CaseStudySection>
 
-            <CaseStudySection eyebrow="// # HELP" title="The calls I'd defend">
-              <div className="space-y-5">
-                <GlassCard className="p-6">
-                  <h3 className="font-mono font-semibold tracking-tight text-foreground mb-2">
-                    Self-hosting was the right call here
-                  </h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    The gap between &quot;we run it&quot; and &quot;they run
-                    it&quot; was too wide to ignore. The cluster capacity was
-                    already there, the team knew Kubernetes, and the
-                    operational overhead has stayed small. I&apos;d make the
-                    opposite call at a 3-person startup, but at our scale, the
-                    maths was obvious.
-                  </p>
-                </GlassCard>
+            <CaseStudySection eyebrow="// adr-001" title="Build or buy, written down">
+              <p className="text-muted-foreground leading-relaxed mb-6">
+                This was a decision before it was a stack, so here it is in the
+                form it deserved at the time — including the consequences that
+                went against it and the condition that would reverse it.
+              </p>
 
-                <GlassCard className="p-6">
-                  <h3 className="font-mono font-semibold tracking-tight text-foreground mb-2">
-                    Cheap storage, expensive compute
-                  </h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    Thanos for metrics, S3-backed Loki for logs. Both push the
-                    cold data to object storage so we&apos;re only paying premium
-                    prices for the recent stuff people actually query. This is
-                    where most homegrown stacks get expensive. Getting it right
-                    early kept the bill flat as the data grew.
-                  </p>
-                </GlassCard>
-
-                <GlassCard className="p-6">
-                  <h3 className="font-mono font-semibold tracking-tight text-foreground mb-2">
-                    Dashboards as documentation
-                  </h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    A dashboard is the answer to a recurring question. If nobody&apos;s
-                    asking it, the dashboard&apos;s clutter. I do an annual cull:
-                    open the audit log, delete anything no one&apos;s viewed in a
-                    quarter. Nobody has ever missed one.
-                  </p>
-                </GlassCard>
-              </div>
+              <DecisionRecord />
             </CaseStudySection>
 
-            <CaseStudySection eyebrow="// range: 2024 → now" title="The numbers">
-              <StatsGrid
-                stats={[
-                  { value: "20", label: "services covered, every environment" },
-                  { value: "4", label: "environments, one stack" },
-                  { value: "50+", label: "alerts, every one with a runbook" },
-                  { value: "22", label: "dashboards (I cull the rest annually)" },
-                ]}
-              />
-
-              <p className="text-muted-foreground mt-6 leading-relaxed">
-                The saving got it approved. The outcome I&apos;d actually show
-                off is harder to put on a slide: incidents now start with
-                someone pasting a Grafana link instead of asking &quot;is it
-                just me?&quot;.
+            <CaseStudySection eyebrow="// range: 2024 → now" title="Two years on">
+              <p className="text-muted-foreground leading-relaxed">
+                The saving is what got it approved. The outcome I&apos;d
+                actually show off is harder to put on a slide: an incident now
+                starts with someone pasting a Grafana link, instead of asking
+                whether it&apos;s just them. Nobody has thanked me for the
+                dashboards. They&apos;d notice immediately if they went.
               </p>
             </CaseStudySection>
           </div>
@@ -257,7 +290,7 @@ export default function ObservabilityPage() {
               { label: "Services covered", value: "20 across 4 environments" },
               { label: "Annual cost", value: "~£5k all-in" },
               { label: "Alerts", value: "50+, runbook per rule" },
-              { label: "Dashboards", value: "~25 active" },
+              { label: "Dashboards", value: "22 active" },
             ]}
             relatedProjects={[
               { title: "Heimdall · deployment intelligence", href: "/projects/heimdall" },
@@ -267,7 +300,7 @@ export default function ObservabilityPage() {
         </div>
       </div>
 
-      <CaseStudyCTA line="If the first alert of the night is still a customer, we should talk." />
+      <CaseStudyCTA line="The 3am question is the interesting one, and I'm happy to be asked it." />
     </CaseStudyLayout>
   );
 }

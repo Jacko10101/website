@@ -9,6 +9,6 @@ export default function Image() {
     eyebrow: "deployment intelligence",
     title: "Heimdall",
     subtitle:
-      "Where is my ticket right now? Answered across a couple dozen services and four environments. Used daily by 20+ engineers.",
+      "Where is my ticket right now? Answered across 20 services and four environments. Used daily by 20+ engineers.",
       });
 }

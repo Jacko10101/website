@@ -4,14 +4,54 @@ import {
   PHOSPHORS,
   CaseStudyLayout,
   CaseStudyHero,
-  StatsGrid,
   TechSidebar,
   EnhancedCodeBlock,
   CaseStudyCTA,
 } from "@/components/case-study-layout";
 import { TopicSection as CaseStudySection } from "@/components/case-section-variants";
-import { GlassCard, FadeUp } from "@/components/scroll-reveal";
+import { FadeUp } from "@/components/scroll-reveal";
 import { LocalPath } from "@/components/local-path";
+
+/* --------------------------------------------------------------------------
+ * A homelab's natural artefact is a spec sheet, so that's what this page ends
+ * with — the whole build on one card, rather than a stat grid pretending a
+ * flat is an estate.
+ * ----------------------------------------------------------------------- */
+const SPEC: { label: string; value: string; note?: string }[] = [
+  { label: "Node", value: "One Raspberry Pi 5", note: "control plane and every workload, with room spare" },
+  { label: "Orchestration", value: "Bare-metal K3s" },
+  { label: "Reconciliation", value: "ArgoCD", note: "the flat's desired state is a git repo" },
+  { label: "Automation", value: "Home Assistant" },
+  { label: "Radio", value: "Zigbee mesh", note: "no device talks to a vendor cloud" },
+  { label: "Transport", value: "MQTT" },
+  { label: "Monitoring", value: "Prometheus + Grafana", note: "same stack as work, smaller" },
+  { label: "Apps", value: "6, GitOps-reconciled" },
+  { label: "Devices", value: "20+ lights, plugs and sensors" },
+  { label: "Exposure", value: "0 ports open to the internet", note: "access is over the VPN or not at all" },
+];
+
+function SpecSheet() {
+  return (
+    <dl className="rounded-lg border border-border divide-y divide-border overflow-hidden">
+      {SPEC.map((s) => (
+        <div
+          key={s.label}
+          className="grid grid-cols-[7.5rem_1fr] sm:grid-cols-[9rem_1fr] gap-x-4 px-5 py-3 odd:bg-card/20"
+        >
+          <dt className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground pt-1">
+            {s.label}
+          </dt>
+          <dd className="text-sm text-foreground/90 leading-relaxed">
+            {s.value}
+            {s.note && (
+              <span className="block text-muted-foreground text-[13px]">{s.note}</span>
+            )}
+          </dd>
+        </div>
+      ))}
+    </dl>
+  );
+}
 
 const articleSchema = {
   "@context": "https://schema.org",
@@ -178,78 +218,35 @@ node-exporter         Synced        Healthy`}
               </p>
             </CaseStudySection>
 
-            <CaseStudySection eyebrow="// home/decisions" title="Why it's built this way">
-              <div className="space-y-5">
-                <GlassCard className="p-6">
-                  <h3 className="font-mono font-semibold tracking-tight text-foreground mb-2">
-                    Local-first by default
-                  </h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    No vendor cloud, and no remote kill-switch someone else
-                    holds. If my internet goes down the lights still work.
-                    That one constraint picked most of the devices and the
-                    network topology for me.
-                  </p>
-                </GlassCard>
+            <CaseStudySection eyebrow="// home/spec" title="The whole thing, on one card">
+              <p className="text-muted-foreground leading-relaxed mb-6">
+                One constraint picked nearly all of it: if the internet goes
+                down, the lights still work. Everything below follows from that.
+              </p>
 
-                <GlassCard className="p-6">
-                  <h3 className="font-mono font-semibold tracking-tight text-foreground mb-2">
-                    Treat it like work
-                  </h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    Same git, same ArgoCD, same Prometheus. The cost of
-                    applying real discipline to a home lab is small. The cost
-                    of not doing it is a fragile pile of config that nobody,
-                    me included, wants to debug at the weekend.
-                  </p>
-                </GlassCard>
+              <SpecSheet />
 
-                <GlassCard className="p-6">
-                  <h3 className="font-mono font-semibold tracking-tight text-foreground mb-2">
-                    Right-sized infrastructure
-                  </h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    K3s and ArgoCD aren&apos;t heavy. The whole control plane
-                    plus every workload runs comfortably on a single Pi 5 with
-                    room to spare. The temptation to add a second node for
-                    &quot;HA&quot; is a trap. For a flat, the right number of
-                    nodes is one.
-                  </p>
-                </GlassCard>
-              </div>
+              <p className="text-muted-foreground leading-relaxed mt-6">
+                The temptation to add a second node for &quot;HA&quot; is a
+                trap. For a flat, the right number of nodes is one — and the
+                honest reason this runs the same tooling as work isn&apos;t
+                rigour, it&apos;s that I already know how to debug it at eleven
+                on a Sunday night.
+              </p>
             </CaseStudySection>
 
-            <CaseStudySection eyebrow="// home/backlog" title="Where this might go">
+            <CaseStudySection eyebrow="// home/backlog" title="Next">
               <p className="text-muted-foreground leading-relaxed mb-4">
-                Smart TRV radiator valves are next, which would let me
-                schedule heating per room instead of per house. After that,
-                presence detection that&apos;s good enough to stop relying on
-                motion sensors. They&apos;re fine for &quot;is someone in the
-                hallway&quot; and bad for &quot;is anyone home&quot;.
+                Smart TRV valves, so heating schedules per room rather than per
+                house. Then presence detection good enough to retire the motion
+                sensors — they&apos;re fine for &quot;is someone in the
+                hallway&quot; and useless for &quot;is anyone home&quot;.
               </p>
               <p className="text-muted-foreground leading-relaxed">
-                The longer arc is local LLM integration: a small model on a
-                separate node, so voice control and natural-language automation
-                don&apos;t round-trip to a cloud API. Same instinct as the rest
-                of the system. Local data, countable dependencies.
-              </p>
-            </CaseStudySection>
-
-            <CaseStudySection eyebrow="// home/state" title="What it adds up to">
-              <StatsGrid
-                stats={[
-                  { value: "Single-node", label: "K3s + ArgoCD + Prometheus" },
-                  { value: "20+", label: "lights, plugs and sensors" },
-                  { value: "6", label: "GitOps-reconciled apps" },
-                  { value: "0", label: "ports exposed to the internet" },
-                ]}
-              />
-
-              <p className="text-muted-foreground mt-6 leading-relaxed">
-                What I actually get out of it: the house runs on kit I own and
-                config I can read, and nothing in it phones home. When
-                something breaks, I debug it the way I&apos;d debug anything at
-                work, and it stays fixed.
+                The longer arc is a small local model on its own node, so voice
+                control doesn&apos;t round-trip to somebody&apos;s API. Same
+                instinct as the rest of it: local data, countable dependencies,
+                nothing that stops working because a company changed its mind.
               </p>
             </CaseStudySection>
           </div>
@@ -290,7 +287,7 @@ node-exporter         Synced        Healthy`}
         </div>
       </div>
 
-      <CaseStudyCTA line="If you also run ArgoCD at home, we'll get on." />
+      <CaseStudyCTA line="It's a flat, not an estate. Ask me about the parts that were genuinely fiddly." />
     </CaseStudyLayout>
   );
 }

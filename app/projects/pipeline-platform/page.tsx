@@ -7,14 +7,100 @@ import {
   PHOSPHORS,
   CaseStudyLayout,
   CaseStudyHero,
-  StatsGrid,
   TechSidebar,
   EnhancedCodeBlock,
   CaseStudyCTA,
 } from "@/components/case-study-layout";
 import { StepSection as CaseStudySection } from "@/components/case-section-variants";
-import { GlassCard, FadeUp } from "@/components/scroll-reveal";
+import { FadeUp } from "@/components/scroll-reveal";
 import { TerminalWindow } from "@/components/terminal-window";
+
+/* --------------------------------------------------------------------------
+ * This project was a migration, so the page is shaped like the pull request
+ * that landed it: the objections raised in review, then the merge summary.
+ * ----------------------------------------------------------------------- */
+const REVIEW_THREADS: { anchor: string; question: string; answer: string }[] = [
+  {
+    anchor: ".ci/builds.yaml",
+    question:
+      "Some of us need the Veracode and Jira gates and some of us don't. Why aren't there two templates?",
+    answer:
+      "Because two templates become five. Both kinds use the same shared pipeline tag and the difference is an env var, not a different selector. The library stays a singleton, and the diff between any two services' CI is something you can read in their builds.yaml instead of tracing through forks.",
+  },
+  {
+    anchor: "argocd-image-updater",
+    question:
+      "The old pipeline deployed. This one stops after the build. Isn't that a step backwards?",
+    answer:
+      "The pipeline emits build metadata and stops; Image Updater does the GitOps bump separately. So a service can't break its own deploy by misconfiguring its yaml, and fixing promotion behaviour doesn't need a new pipeline release for twenty repos.",
+  },
+  {
+    anchor: "postsync/tests",
+    question:
+      "Why are the tests outside the pipeline? I want the build to go red when they fail.",
+    answer:
+      "A pipeline that finishes before the pods are healthy is telling you about the build, not the deploy. PostSync runs tests against what's actually running, and Sentry surfaces the result whether or not anyone was watching. Most of the flaky-test bucket turned out to be the readiness assumption nobody had written down.",
+  },
+];
+
+function ReviewThreads() {
+  return (
+    <div className="space-y-4">
+      {REVIEW_THREADS.map((t) => (
+        <div key={t.anchor} className="rounded-lg border border-border overflow-hidden">
+          <div className="px-4 py-2 border-b border-border bg-card/60 font-mono text-xs text-muted-foreground">
+            {t.anchor}
+          </div>
+          <div className="p-5 space-y-4">
+            <p className="text-sm text-foreground/90 leading-relaxed border-l-2 border-border pl-4">
+              {t.question}
+            </p>
+            <div className="flex gap-3">
+              <span className="font-mono text-xs text-primary shrink-0 pt-0.5" aria-hidden>
+                ↳
+              </span>
+              <p className="text-sm text-muted-foreground leading-relaxed">{t.answer}</p>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+const MERGE_LINES: { sign: "+" | "-"; text: string }[] = [
+  { sign: "-", text: "1,071-line bash reporter, one file, zero tests" },
+  { sign: "-", text: "20 bespoke bitbucket-pipelines.yml, drifted apart" },
+  { sign: "+", text: "1 shared pipeline library, versioned by tag" },
+  { sign: "+", text: "1 .ci/builds.yaml per service, ~5 min build" },
+  { sign: "+", text: "Veracode and SourceClear findings filed straight to Jira" },
+  { sign: "+", text: "Sentry verifying ~400 deploys a month after they land" },
+];
+
+function MergeSummary() {
+  return (
+    <div className="rounded-lg border border-primary/40 overflow-hidden">
+      <div className="flex items-center gap-2 px-5 py-3 border-b border-border bg-primary/10 font-mono text-xs">
+        <span className="w-2 h-2 rounded-full bg-primary" aria-hidden />
+        <span className="text-primary font-semibold">Merged</span>
+        <span className="text-muted-foreground">· 20 services · one library</span>
+      </div>
+      <ul className="font-mono text-[13px] leading-6 p-5 space-y-0.5">
+        {MERGE_LINES.map((l) => (
+          <li
+            key={l.text}
+            className={l.sign === "+" ? "text-primary" : "text-error/80"}
+          >
+            <span aria-hidden>{l.sign} </span>
+            <span className={l.sign === "+" ? "text-foreground/85" : "text-muted-foreground line-through decoration-error/40"}>
+              {l.text}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
 const articleSchema = {
   "@context": "https://schema.org",
@@ -107,7 +193,7 @@ export default function CicdGitopsPage() {
                 PR to twenty repos.
               </p>
               <p className="text-muted-foreground leading-relaxed mb-4">
-                A 1000-line bash pipeline reporter lived in the base image and
+                A 1071-line bash pipeline reporter lived in the base image and
                 posted to Teams at every stage. It worked. Nobody wanted to
                 touch it.
               </p>
@@ -285,67 +371,26 @@ gitops:
               <CicdArchitecture />
             </CaseStudySection>
 
-            <CaseStudySection eyebrow="// annotations" title="The calls that shaped it">
-              <div className="space-y-5">
-                <GlassCard className="p-6">
-                  <h3 className="font-mono font-semibold tracking-tight text-foreground mb-2">
-                    Optional gates are env-gated, not template-forked
-                  </h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    Some services run Veracode and Jira gates. Some don&apos;t.
-                    Both kinds use the same shared pipeline tag. The
-                    difference is an env var, not a different selector. The
-                    library stays a singleton, and the diff between two
-                    services&apos; CI is something you can read in their{" "}
-                    <code className="text-foreground">.ci/builds.yaml</code>{" "}
-                    rather than tracing through forks.
-                  </p>
-                </GlassCard>
+            <CaseStudySection eyebrow="// review comments" title="The three questions it had to answer">
+              <p className="text-muted-foreground leading-relaxed mb-6">
+                A migration like this has to survive twenty people with twenty
+                services to protect, each of whom can veto it by simply not
+                adopting it. These are the three objections the design had to
+                answer.
+              </p>
 
-                <GlassCard className="p-6">
-                  <h3 className="font-mono font-semibold tracking-tight text-foreground mb-2">
-                    Build doesn&apos;t promote
-                  </h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    The pipeline emits build metadata and stops. ArgoCD Image
-                    Updater handles the GitOps bump separately. The upshot:
-                    a service can&apos;t break its own deploy by misconfiguring
-                    its yaml, and a fix to promotion behaviour doesn&apos;t
-                    need a new pipeline release.
-                  </p>
-                </GlassCard>
-
-                <GlassCard className="p-6">
-                  <h3 className="font-mono font-semibold tracking-tight text-foreground mb-2">
-                    Tests aren&apos;t pipeline steps
-                  </h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    Pipelines that fail before pods are healthy lie. PostSync
-                    runs tests against the actual running deploy, and Sentry
-                    surfaces the result independently of whether anyone was
-                    watching the pipeline. Most of the &quot;flaky test&quot;
-                    bucket evaporated when the readiness assumption stopped
-                    being implicit.
-                  </p>
-                </GlassCard>
-              </div>
+              <ReviewThreads />
             </CaseStudySection>
 
-            <CaseStudySection eyebrow="// exit 0 · what changed" title="What changed">
-              <StatsGrid
-                stats={[
-                  { value: "20", label: "services on one shared library" },
-                  { value: "~400", label: "deploys per month" },
-                  { value: "~5 min", label: "build time" },
-                  { value: "1 file", label: "to onboard a new service" },
-                ]}
-              />
+            <CaseStudySection eyebrow="// exit 0 · merged" title="What the diff came to">
+              <MergeSummary />
 
               <p className="text-muted-foreground mt-6 leading-relaxed">
-                The table misses the real change. Onboarding a new service
-                used to mean copy-pasting somebody else&apos;s yaml and quietly
-                hoping. Now it&apos;s a builds.yaml and a tag, and the diff
-                between two services&apos; CI fits on one screen.
+                None of which is the real change. Onboarding a service used to
+                mean copy-pasting somebody else&apos;s yaml and quietly hoping.
+                Now it&apos;s a builds.yaml and a tag, and the difference
+                between two services&apos; CI fits on one screen — which means a
+                change to how everything builds is one merge, not twenty.
               </p>
             </CaseStudySection>
           </div>
@@ -386,7 +431,7 @@ gitops:
         </div>
       </div>
 
-      <CaseStudyCTA line="If your twenty pipelines have quietly drifted apart, I've merged that mess once already." />
+      <CaseStudyCTA line="Merged, and I'd do it the same way again. The bash reporter is not missed." />
     </CaseStudyLayout>
   );
 }

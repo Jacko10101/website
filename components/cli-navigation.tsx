@@ -2,11 +2,21 @@
 
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { profile } from "@/lib/profile";
+
+/** Everything tab-completion and `help` know about. */
+const COMMANDS = [
+  "help", "ls", "cd", "cat", "pwd", "kubectl", "docker", "terraform", "argocd",
+  "git", "npm", "curl", "ping", "neofetch", "vim", "cowsay", "oncall", "chaos",
+  "whoami", "cv", "hire", "contact", "history", "sudo", "rm", "clear", "exit",
+];
 
 export function CliNavigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
   const [history, setHistory] = useState<{ command: string; output: string }[]>([]);
+  /** Position when walking back through history with the arrow keys. */
+  const [recallIndex, setRecallIndex] = useState<number | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const outputRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
@@ -127,7 +137,7 @@ export function DevlinOps() {
     git <args>             Git commands (try: status, log)
 
   Diversions:
-    oncall                 Take the pager. Good luck
+    oncall                 Take the pager. Five incidents, one shift
     chaos                  Unleash the chaos monkey on this page
     neofetch               Display system info
     vim                    Open vim (good luck exiting)
@@ -136,12 +146,16 @@ export function DevlinOps() {
 
   Other:
     whoami                 Display user info
+    cv                     Open cv.pdf
     hire                   Get in touch
+    history                Commands you've run
     sudo <cmd>             If you must
     rm -rf /               Best not
     clear                  Clear terminal
     exit                   Close terminal
-    help                   Show this help message`;
+    help                   Show this help message
+
+  Tab completes commands and paths. Up and down walk your history.`;
         break;
 
       case "ls":
@@ -298,11 +312,18 @@ Health Status:      Healthy`;
         output = `jack@devlinops
 ├─ Platform & AI infrastructure engineer
 ├─ Kubernetes, ArgoCD, LiteLLM · by choice
-├─ MSc AI, finishing Sep 2026
-└─ Available from October 2026 · permanent or contract · remote-first
+├─ MSc AI${profile.msc.result ? `, ${profile.msc.result}` : ""}, finishing Sep 2026
+└─ ${profile.availability.short}
 
 Location: UK (remote)
 Shell: bash, with more aliases than is strictly dignified`;
+        break;
+
+      case "cv":
+      case "resume":
+        window.open("/cv.pdf", "_blank", "noopener,noreferrer");
+        output = `opening cv.pdf …
+One page. Every claim on it has a case study behind it at /projects.`;
         break;
 
       case "history":
@@ -339,7 +360,8 @@ Shell: bash, with more aliases than is strictly dignified`;
       case "chaos":
       case "chaos-monkey":
         output = `chaos-monkey: targeting devlinops.com…
-(watch the page behind this terminal)`;
+Every section of this page is a pod. Watch them die, then watch
+ArgoCD put them back from git. Esc stops it early.`;
         setTimeout(() => {
           setIsOpen(false);
           window.dispatchEvent(new Event("devlinops:chaos"));
@@ -359,7 +381,7 @@ Shell: bash, with more aliases than is strictly dignified`;
 ████████  ████  ███  ███  ████████ Terminal: cli-navigation.tsx
  █████████     ████     █████████  Day job: ~400 deploys/month, ~30 AI tenants in prod
   ██████████████████████████████   Stack: K8s, ArgoCD, AWS, LiteLLM, Spring AI
-    ████████████████████████████   Status: available Oct 2026, permanent or contract
+    ████████████████████████████   Status: available now, permanent or contract
        ████████████████████`;
         break;
 
@@ -457,7 +479,7 @@ round-trip min/avg/max/stddev = 0.035/0.038/0.042/0.003 ms`;
 server: Vercel
 content-type: text/html
 x-powered-by: Next.js
-x-available-from: 2026-09
+x-available: now
 x-easter-egg: you found one
 
 <!DOCTYPE html>...`;
@@ -497,7 +519,67 @@ found 0 vulnerabilities`;
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (input.trim()) {
+      setRecallIndex(null);
       executeCommand(input);
+    }
+  };
+
+  /** Longest shared prefix, so tab behaves like a real shell on ambiguity. */
+  const commonPrefix = (options: string[]) =>
+    options.reduce((prefix, option) => {
+      let i = 0;
+      while (i < prefix.length && i < option.length && prefix[i] === option[i]) i++;
+      return prefix.slice(0, i);
+    }, options[0] ?? "");
+
+  const handleTab = () => {
+    const parts = input.split(" ");
+    const word = parts[parts.length - 1];
+    const takesPath = ["cd", "ls", "cat"].includes(parts[0]) && parts.length > 1;
+
+    const candidates = (takesPath ? Object.keys(routes) : COMMANDS).filter((c) =>
+      c.startsWith(word)
+    );
+    if (candidates.length === 0) return;
+
+    const completion =
+      candidates.length === 1 ? candidates[0] : commonPrefix(candidates);
+    if (completion.length > word.length || candidates.length === 1) {
+      parts[parts.length - 1] = completion;
+      setInput(parts.join(" ") + (candidates.length === 1 ? " " : ""));
+      return;
+    }
+    // Ambiguous and nothing more to share — print the options, like bash does.
+    setHistory((prev) => [...prev, { command: input, output: candidates.join("  ") }]);
+  };
+
+  /** Walk back and forth through previously run commands. */
+  const recall = (direction: -1 | 1) => {
+    if (history.length === 0) return;
+    const next =
+      recallIndex === null
+        ? history.length - 1
+        : Math.min(history.length - 1, Math.max(0, recallIndex + direction));
+
+    if (recallIndex !== null && direction === 1 && recallIndex === history.length - 1) {
+      setRecallIndex(null);
+      setInput("");
+      return;
+    }
+    setRecallIndex(next);
+    setInput(history[next].command);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Tab") {
+      e.preventDefault();
+      handleTab();
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      recall(-1);
+    } else if (e.key === "ArrowDown") {
+      e.preventDefault();
+      recall(1);
     }
   };
 
@@ -637,8 +719,9 @@ found 0 vulnerabilities`;
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
+              onKeyDown={handleKeyDown}
               className="flex-1 border-none bg-transparent font-mono text-sm text-foreground caret-primary outline-none placeholder:text-muted-foreground"
-              placeholder="type a command... (try 'help')"
+              placeholder="type a command... (try 'help', tab completes)"
               autoComplete="off"
               spellCheck={false}
             />

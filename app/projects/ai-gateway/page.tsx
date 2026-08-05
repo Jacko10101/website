@@ -4,14 +4,99 @@ import {
   PHOSPHORS,
   CaseStudyLayout,
   CaseStudyHero,
-  StatsGrid,
   TechSidebar,
   CaseStudyCTA,
   EnhancedCodeBlock,
 } from "@/components/case-study-layout";
 import { TraceSection as CaseStudySection } from "@/components/case-section-variants";
-import { GlassCard, FadeUp } from "@/components/scroll-reveal";
+import { FadeUp } from "@/components/scroll-reveal";
 import { GatewayTracer } from "@/components/gateway-tracer";
+
+/* --------------------------------------------------------------------------
+ * Action items. This project exists because of a problem that was about to
+ * happen, and it contains a real postmortem, so the page ends the way an
+ * incident review does: a list with statuses, including the ones still open.
+ * ----------------------------------------------------------------------- */
+type ItemStatus = "shipped" | "runbook" | "by design" | "open";
+
+const STATUS_TONE: Record<ItemStatus, string> = {
+  shipped: "text-primary border-primary/40",
+  runbook: "text-muted-foreground border-border",
+  "by design": "text-muted-foreground border-border",
+  open: "text-warn border-warn/50",
+};
+
+const ACTION_ITEMS: { action: string; status: ItemStatus; detail: string }[] = [
+  {
+    action: "Get provider credentials out of service repos",
+    status: "shipped",
+    detail:
+      "Services hold a virtual key with an explicit model list, not a provider key. The credential that actually costs money lives in one place.",
+  },
+  {
+    action: "Make an unpermitted model fail closed",
+    status: "shipped",
+    detail:
+      "A 401, never a silent substitution. A gateway that quietly picks something else makes cost and behaviour unpredictable at the same time, and you find out from the bill.",
+  },
+  {
+    action: "Collapse to one gateway, environment as a tag",
+    status: "shipped",
+    detail:
+      "It started as a deployment per environment. One instance means fewer moving parts and spend I can compare across environments rather than sum across dashboards.",
+  },
+  {
+    action: "Make spend attributable to the thing that caused it",
+    status: "shipped",
+    detail:
+      "Tenant, environment and feature on every call. Chat, scheduled estate summaries and the nightly schema compile bill to one service but answer completely different questions about cost.",
+  },
+  {
+    action: "Write down the two-step onboarding trap",
+    status: "runbook",
+    detail:
+      "A model can be fully deployed and still 401 for everybody, because existing and being permitted are different facts. It caught me more than once before it was written down.",
+  },
+  {
+    action: "Write no proxy",
+    status: "by design",
+    detail:
+      "This is LiteLLM doing what it says on the tin, on Kubernetes, through GitOps like everything else. The engineering worth doing was the key and allowlist model, the attribution scheme and the runbook.",
+  },
+  {
+    action: "Stop dashboard price constants from rotting",
+    status: "open",
+    detail:
+      "The 4x bug was config drift, not a measurement error: the tokens were counted correctly and multiplied by a price a human had typed in. Closing this properly means something that compares those constants against what the provider actually charges, because a number nobody re-checks is a number that rots.",
+  },
+];
+
+function ActionItems() {
+  return (
+    <ul className="space-y-px">
+      {ACTION_ITEMS.map((item) => (
+        <li
+          key={item.action}
+          className="bg-card/30 border border-border rounded-md p-5"
+        >
+          <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2 mb-2">
+            <h3 className="font-mono font-semibold tracking-tight text-foreground">
+              {item.action}
+            </h3>
+            <span
+              className={`shrink-0 font-mono text-[10px] uppercase tracking-wider border rounded px-2 py-0.5 ${STATUS_TONE[item.status]}`}
+            >
+              {item.status}
+            </span>
+          </div>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            {item.detail}
+          </p>
+        </li>
+      ))}
+    </ul>
+  );
+}
 
 const articleSchema = {
   "@context": "https://schema.org",
@@ -201,61 +286,26 @@ curl -H "Authorization: Bearer $VIRTUAL_KEY" "$GATEWAY/v1/models"`}
               </p>
             </CaseStudySection>
 
-            <CaseStudySection eyebrow="// review: the calls" title="Why it's shaped like this">
-              <div className="space-y-5">
-                <GlassCard className="p-6">
-                  <h3 className="font-mono font-semibold tracking-tight text-foreground mb-2">
-                    Fail closed, and loudly
-                  </h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    An unpermitted model is a 401, never a silent substitution.
-                    A gateway that picks something else for you makes cost and
-                    behaviour unpredictable at the same time, and you find out
-                    from the bill.
-                  </p>
-                </GlassCard>
+            <CaseStudySection eyebrow="// review: action items" title="What changed as a result">
+              <p className="text-muted-foreground leading-relaxed mb-6">
+                The honest version of this project&apos;s history is a list of
+                things that were going to hurt and what got done about each one.
+                The last one is still open, which is the normal state of an
+                action list nobody is pretending about.
+              </p>
 
-                <GlassCard className="p-6">
-                  <h3 className="font-mono font-semibold tracking-tight text-foreground mb-2">
-                    One gateway, not one per environment
-                  </h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    It started as a deployment per environment and consolidated
-                    down to a single instance with environment as a tag. Fewer
-                    moving parts, and spend I can compare across environments
-                    instead of summing across dashboards.
-                  </p>
-                </GlassCard>
-
-                <GlassCard className="p-6">
-                  <h3 className="font-mono font-semibold tracking-tight text-foreground mb-2">
-                    Buy the boring middle
-                  </h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    This is LiteLLM doing what it says on the tin, on Kubernetes,
-                    managed through GitOps like everything else. The engineering
-                    worth doing was the key and allowlist model, the attribution
-                    scheme, and the runbook. Nobody needed me to write a proxy.
-                  </p>
-                </GlassCard>
-              </div>
+              <ActionItems />
             </CaseStudySection>
 
-            <CaseStudySection eyebrow="// 200 OK · where it stands" title="Where it stands">
-              <StatsGrid
-                stats={[
-                  { value: "1", label: "endpoint for every AI workload" },
-                  { value: "Per-key", label: "model allowlists, fail closed" },
-                  { value: "3", label: "tags: tenant, environment, feature" },
-                  { value: "~4x", label: "spend overstatement the pricing bug hid" },
-                ]}
-              />
-
-              <p className="text-muted-foreground mt-6 leading-relaxed">
+            <CaseStudySection eyebrow="// 200 OK · resolved, monitoring" title="Where it stands">
+              <p className="text-muted-foreground leading-relaxed">
                 It&apos;s an unglamorous piece of infrastructure and that&apos;s
                 roughly the recommendation. Built before the sprawl rather than
                 after it, which is the only reason adding an AI feature here is
-                now a config change instead of a procurement conversation.
+                now a config change instead of a procurement conversation. The
+                version of this page I&apos;d have had to write two years later
+                is the interesting one, and I&apos;d rather not find out what it
+                says.
               </p>
             </CaseStudySection>
           </div>
@@ -293,7 +343,7 @@ curl -H "Authorization: Bearer $VIRTUAL_KEY" "$GATEWAY/v1/models"`}
         </div>
       </div>
 
-      <CaseStudyCTA line="If the third API key is already hurting, it's a config change away from not hurting. Happy to talk it through." />
+      <CaseStudyCTA line="One action item is still open, and the pricing bug has a longer version. Happy to talk through either." />
     </CaseStudyLayout>
   );
 }
