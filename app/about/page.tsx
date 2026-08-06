@@ -134,10 +134,7 @@ function AboutHero() {
         <div className="max-w-5xl mx-auto">
           <div className="flex flex-col lg:flex-row items-center lg:items-start gap-12 lg:gap-20">
             {/* Photo */}
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
+            <div
               className="flex-shrink-0 w-64 md:w-72"
             >
               {/* CRT-phosphor treatment, the photo renders as if on the
@@ -168,15 +165,11 @@ function AboutHero() {
                   <span className="text-foreground/80">{profile.availability.from}</span>
                 </p>
               </div>
-            </motion.div>
+            </div>
 
             {/* Intro text */}
             <div className="text-center lg:text-left flex-1">
-              <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-              >
+              <div>
                 <p className="font-mono text-sm text-primary mb-3" aria-hidden>
                   <span className="text-muted-foreground">$</span> whoami
                 </p>
@@ -192,12 +185,9 @@ function AboutHero() {
                   pipelines and observability underneath them. Night job: MSc in
                   Artificial Intelligence, finishing September 2026.
                 </p>
-              </motion.div>
+              </div>
 
-              <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
+              <div
                 className="flex flex-wrap gap-2 justify-center lg:justify-start mb-8"
               >
                 {[
@@ -214,12 +204,9 @@ function AboutHero() {
                     {tag}
                   </span>
                 ))}
-              </motion.div>
+              </div>
 
-              <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
+              <div
                 className="flex flex-wrap gap-4 justify-center lg:justify-start items-center"
               >
                 <a
@@ -231,7 +218,7 @@ function AboutHero() {
                   Download CV
                   <Download className="w-4 h-4" aria-hidden />
                 </a>
-              </motion.div>
+              </div>
             </div>
           </div>
         </div>
@@ -273,12 +260,8 @@ function JourneyTimeline() {
             />
 
             {journey.map((item) => (
-              <motion.li
+              <li
                 key={item.year}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.5 }}
                 className="relative pl-10 pb-12 last:pb-0"
               >
                 {/* Commit dot */}
@@ -297,7 +280,7 @@ function JourneyTimeline() {
                 <p className="text-muted-foreground leading-relaxed">
                   {item.description}
                 </p>
-              </motion.li>
+              </li>
             ))}
           </ol>
         </div>
@@ -320,12 +303,8 @@ function PhilosophySection() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
           {philosophy.map((item, index) => (
-            <motion.div
+            <div
               key={item.title}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.5, delay: (index % 2) * 0.08 }}
               className="rounded-md border border-border bg-card p-8 h-full"
             >
               <p className="font-mono text-sm text-primary mb-3" aria-hidden>
@@ -337,7 +316,7 @@ function PhilosophySection() {
               <p className="text-muted-foreground leading-relaxed">
                 {item.description}
               </p>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
@@ -359,12 +338,8 @@ function TechStackSection() {
 
         <div className="max-w-4xl mx-auto space-y-6">
           {stackTiers.map((tier) => (
-            <motion.div
+            <div
               key={tier.id}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.5 }}
               className="rounded-md border border-border bg-card p-6 md:p-8"
             >
               <h3 className="font-mono font-semibold text-sm text-primary mb-1">
@@ -381,7 +356,7 @@ function TechStackSection() {
                   </span>
                 ))}
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
@@ -395,11 +370,7 @@ function CurrentlySection() {
     <section className="relative py-24">
       <div className="container px-4">
         <div className="max-w-3xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.5 }}
+          <div
             className="rounded-md border border-border bg-card p-8 md:p-12"
           >
             <p className="font-mono text-sm text-primary mb-4" aria-hidden>
@@ -430,7 +401,7 @@ function CurrentlySection() {
               relocate for the right role. AI platform and infrastructure work
               first, MLOps, SRE and platform engineering close behind.
             </p>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

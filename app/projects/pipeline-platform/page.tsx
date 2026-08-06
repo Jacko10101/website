@@ -14,7 +14,6 @@ import {
   PrSidebar,
   PrMergeFooter,
 } from "@/components/pipeline-page-pr";
-import { FadeUp } from "@/components/scroll-reveal";
 import { TerminalWindow } from "@/components/terminal-window";
 
 /* --------------------------------------------------------------------------
@@ -153,21 +152,19 @@ function Screenshot({
   height: number;
 }) {
   return (
-    <FadeUp>
-      <TerminalWindow title={label}>
-        <Image
-          src={src}
-          alt={alt}
-          width={width}
-          height={height}
-          className="w-full h-auto"
-          sizes="(max-width: 1024px) 100vw, 800px"
-        />
-        <div className="px-5 py-4 border-t border-border bg-card/50 text-sm text-muted-foreground leading-relaxed">
-          {caption}
-        </div>
-      </TerminalWindow>
-    </FadeUp>
+    <TerminalWindow title={label}>
+      <Image
+        src={src}
+        alt={alt}
+        width={width}
+        height={height}
+        className="w-full h-auto"
+        sizes="(max-width: 1024px) 100vw, 800px"
+      />
+      <div className="px-5 py-4 border-t border-border bg-card/50 text-sm text-muted-foreground leading-relaxed">
+        {caption}
+      </div>
+    </TerminalWindow>
   );
 }
 
@@ -180,27 +177,7 @@ export default function CicdGitopsPage() {
         <div className="grid gap-8 lg:grid-cols-[2fr_1fr] max-w-7xl mx-auto">
           <div className="space-y-12">
             <CaseStudySection eyebrow="// exit 1 · the shape that broke" title="Twenty pipelines that drifted">
-              <p className="text-muted-foreground leading-relaxed mb-4">
-                Twenty services each shipped their own bitbucket-pipelines.yml.
-                Same rough shape: build, test, scan, push, deploy, but each
-                one slightly different. A change in the build pattern meant a
-                PR to twenty repos.
-              </p>
-              <p className="text-muted-foreground leading-relaxed mb-4">
-                A 1071-line bash pipeline reporter lived in the base image and
-                posted to Teams at every stage. It worked. Nobody wanted to
-                touch it.
-              </p>
-              <p className="text-muted-foreground leading-relaxed mb-4">
-                Tests ran inside the pipeline, before pods were healthy. They
-                were flaky and most failures weren&apos;t real.
-              </p>
-              <p className="text-muted-foreground leading-relaxed mb-6">
-                Jira gates, Veracode and SourceClear were copy-pasted into
-                every yaml.
-              </p>
-
-              <div className="grid sm:grid-cols-2 gap-4 font-mono text-sm">
+              <div className="grid sm:grid-cols-2 gap-4 font-mono text-sm mb-6">
                 <div className="rounded-lg border border-error/30 bg-error/5 p-5">
                   <p className="text-xs text-error/90 font-semibold mb-3">then</p>
                   <ul className="space-y-2 text-muted-foreground text-[13px] leading-relaxed">
@@ -218,6 +195,26 @@ export default function CicdGitopsPage() {
                   </ul>
                 </div>
               </div>
+
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                Twenty services each shipped their own bitbucket-pipelines.yml.
+                Same rough shape: build, test, scan, push, deploy, but each
+                one slightly different. A change in the build pattern meant a
+                PR to twenty repos.
+              </p>
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                A 1071-line bash pipeline reporter lived in the base image and
+                posted to Teams at every stage. It worked. Nobody wanted to
+                touch it.
+              </p>
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                Tests ran inside the pipeline, before pods were healthy. They
+                were flaky and most failures weren&apos;t real.
+              </p>
+              <p className="text-muted-foreground leading-relaxed">
+                Jira gates, Veracode and SourceClear were copy-pasted into
+                every yaml.
+              </p>
             </CaseStudySection>
 
             <CaseStudySection eyebrow="// step: build" title="One library, imported by every service">

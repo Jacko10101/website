@@ -11,7 +11,6 @@ import {
   DayLogSidebar,
   DayLogClose,
 } from "@/components/heimdall-page-frame";
-import { FadeUp } from "@/components/scroll-reveal";
 import { TerminalWindow } from "@/components/terminal-window";
 
 /* --------------------------------------------------------------------------
@@ -119,21 +118,19 @@ function Screenshot({
   height: number;
 }) {
   return (
-    <FadeUp>
-      <TerminalWindow title={label}>
-        <Image
-          src={src}
-          alt={alt}
-          width={width}
-          height={height}
-          className="w-full h-auto"
-          sizes="(max-width: 1024px) 100vw, 800px"
-        />
-        <div className="px-5 py-4 border-t border-border bg-card/50 text-sm text-muted-foreground leading-relaxed">
-          {caption}
-        </div>
-      </TerminalWindow>
-    </FadeUp>
+    <TerminalWindow title={label}>
+      <Image
+        src={src}
+        alt={alt}
+        width={width}
+        height={height}
+        className="w-full h-auto"
+        sizes="(max-width: 1024px) 100vw, 800px"
+      />
+      <div className="px-5 py-4 border-t border-border bg-card/50 text-sm text-muted-foreground leading-relaxed">
+        {caption}
+      </div>
+    </TerminalWindow>
   );
 }
 
@@ -144,20 +141,18 @@ export default function HeimdallPage() {
 
       <div className="container px-4 mb-16">
         <div className="max-w-7xl mx-auto">
-          <FadeUp>
-            <div className="mb-5">
-              <span className="font-mono text-sm text-primary">// 08:55 · try it first</span>
-              <h2 className="mt-2 font-mono font-semibold tracking-tight text-2xl sm:text-3xl text-foreground">
-                The environments view, live
-              </h2>
-              <p className="mt-2 text-muted-foreground max-w-2xl">
-                The screenshots below are the real thing. This one you can poke at. Pick a
-                ticket to trace it across the pipeline, toggle drift, or click any cell for the
-                commit, pods and who shipped it. Mock data, real interaction model.
-              </p>
-            </div>
-            <HeimdallDemo />
-          </FadeUp>
+          <div className="mb-5">
+            <span className="font-mono text-sm text-primary">// 08:55 · try it first</span>
+            <h2 className="mt-2 font-mono font-semibold tracking-tight text-2xl sm:text-3xl text-foreground">
+              The environments view, live
+            </h2>
+            <p className="mt-2 text-muted-foreground max-w-2xl">
+              The screenshots below are the real thing. This one you can poke at. Pick a
+              ticket to trace it across the pipeline, toggle drift, or click any cell for the
+              commit, pods and who shipped it. Mock data, real interaction model.
+            </p>
+          </div>
+          <HeimdallDemo />
         </div>
       </div>
 

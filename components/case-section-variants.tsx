@@ -1,7 +1,4 @@
-"use client";
-
-import { useRef, ReactNode } from "react";
-import { motion, useInView } from "framer-motion";
+import { ReactNode } from "react";
 
 /**
  * Per-project section chrome. Six case studies, six section anatomies, all
@@ -19,24 +16,11 @@ interface SectionProps {
   className?: string;
 }
 
-function useReveal() {
-  const ref = useRef<HTMLElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
-  return { ref, isInView };
-}
-
-const reveal = (isInView: boolean) => ({
-  initial: { opacity: 0, y: 40 },
-  animate: isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 },
-  transition: { duration: 0.6 },
-});
-
 /* Clarity — every section is a chat turn: the question typed into an input
    line, the body indented like the answer that came back. */
 export function ChatSection({ children, title, eyebrow, className = "" }: SectionProps) {
-  const { ref, isInView } = useReveal();
   return (
-    <motion.section ref={ref} {...reveal(isInView)} className={`mb-16 ${className}`}>
+    <section className={`mb-16 ${className}`}>
       {eyebrow && (
         <div className="flex items-center gap-3 rounded-md border border-border bg-black/40 px-4 py-2.5 font-mono text-sm mb-5">
           <span className="text-muted-foreground" aria-hidden>
@@ -54,19 +38,15 @@ export function ChatSection({ children, title, eyebrow, className = "" }: Sectio
         )}
         {children}
       </div>
-    </motion.section>
+    </section>
   );
 }
 
 /* AI gateway — sections are spans in a request trace: a dot on a shared
    rail, the span label as a chip. */
 export function TraceSection({ children, title, eyebrow, className = "" }: SectionProps) {
-  const { ref, isInView } = useReveal();
   return (
-    <motion.section
-      ref={ref}
-      {...reveal(isInView)}
-      className={`mb-14 relative pl-8 ${className}`}
+    <section className={`mb-14 relative pl-8 ${className}`}
     >
       <span
         className="absolute left-[5px] top-6 bottom-0 w-px bg-border"
@@ -87,19 +67,18 @@ export function TraceSection({ children, title, eyebrow, className = "" }: Secti
         </h2>
       )}
       {children}
-    </motion.section>
+    </section>
   );
 }
 
 /* Heimdall — a day on the platform team: a clock time in the margin,
    schedule-style, because the product's job is the morning. */
 export function DaySection({ children, title, eyebrow, className = "" }: SectionProps) {
-  const { ref, isInView } = useReveal();
   const match = eyebrow?.match(/(\d{2}:\d{2})\s*·\s*(.*)$/);
   const time = match?.[1];
   const label = match?.[2] ?? eyebrow?.replace(/^\/\/\s*/, "");
   return (
-    <motion.section ref={ref} {...reveal(isInView)} className={`mb-16 ${className}`}>
+    <section className={`mb-16 ${className}`}>
       <div className="flex items-baseline gap-4 mb-1 font-mono">
         {time && (
           <span className="text-2xl font-semibold text-primary glow-soft tabular-nums shrink-0">
@@ -116,24 +95,20 @@ export function DaySection({ children, title, eyebrow, className = "" }: Section
         )}
         {children}
       </div>
-    </motion.section>
+    </section>
   );
 }
 
 /* Pipeline — sections are steps in a CI run. `// exit 1 · x` renders a
    failed step, `// step: y` a passing one, `// exit 0 · z` the green run. */
 export function StepSection({ children, title, eyebrow, className = "" }: SectionProps) {
-  const { ref, isInView } = useReveal();
   const raw = eyebrow?.replace(/^\/\/\s*/, "") ?? "";
   const failed = raw.startsWith("exit 1");
   const passed = raw.startsWith("exit 0") || raw.startsWith("step:");
   const glyph = failed ? "✗" : passed ? "✓" : "▸";
   const tone = failed ? "text-error border-error/50" : passed ? "text-primary border-primary/50" : "text-muted-foreground border-border";
   return (
-    <motion.section
-      ref={ref}
-      {...reveal(isInView)}
-      className={`mb-14 relative pl-9 ${className}`}
+    <section className={`mb-14 relative pl-9 ${className}`}
     >
       <span className="absolute left-[9px] top-7 bottom-0 w-px border-l border-dashed border-border" aria-hidden />
       <span
@@ -153,19 +128,15 @@ export function StepSection({ children, title, eyebrow, className = "" }: Sectio
         </h2>
       )}
       {children}
-    </motion.section>
+    </section>
   );
 }
 
 /* Observability — sections are dashboard panels: chrome bar with the query,
    content inside the panel. */
 export function PanelSection({ children, title, eyebrow, className = "" }: SectionProps) {
-  const { ref, isInView } = useReveal();
   return (
-    <motion.section
-      ref={ref}
-      {...reveal(isInView)}
-      className={`mb-14 rounded-lg border border-border bg-card/30 overflow-hidden ${className}`}
+    <section className={`mb-14 rounded-lg border border-border bg-card/30 overflow-hidden ${className}`}
     >
       <div className="flex items-center justify-between gap-3 px-5 py-2.5 border-b border-border bg-card/60">
         <span className="font-mono text-xs text-primary tracking-wider truncate">
@@ -183,16 +154,15 @@ export function PanelSection({ children, title, eyebrow, className = "" }: Secti
         )}
         {children}
       </div>
-    </motion.section>
+    </section>
   );
 }
 
 /* Smart home — sections arrive as MQTT messages: topic chip, retained flag,
    soft card. Cosy, not corporate. */
 export function TopicSection({ children, title, eyebrow, className = "" }: SectionProps) {
-  const { ref, isInView } = useReveal();
   return (
-    <motion.section ref={ref} {...reveal(isInView)} className={`mb-16 ${className}`}>
+    <section className={`mb-16 ${className}`}>
       {eyebrow && (
         <div className="flex items-center gap-2 mb-4 font-mono text-xs">
           <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" aria-hidden />
@@ -210,6 +180,6 @@ export function TopicSection({ children, title, eyebrow, className = "" }: Secti
         </h2>
       )}
       {children}
-    </motion.section>
+    </section>
   );
 }

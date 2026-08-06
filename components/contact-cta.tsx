@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { AsciiField } from "@/components/ascii-field";
 import { profile } from "@/lib/profile";
 
@@ -23,12 +22,7 @@ export function ContactCTA({
       <AsciiField className="opacity-50 [mask-image:radial-gradient(ellipse_65%_80%_at_50%_50%,black_0%,transparent_75%)]" />
       <div className="container relative z-10">
         <div className="max-w-3xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6 }}
-          >
+          <div>
             <p className="font-mono text-sm text-primary mb-4" aria-hidden>
               <span className="text-muted-foreground">$</span> {command}
             </p>
@@ -58,7 +52,7 @@ export function ContactCTA({
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse" aria-hidden />
               {profile.availability.short}
             </p>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

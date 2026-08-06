@@ -1,44 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
-import { motion, useReducedMotion, useScroll, useTransform, type Variants } from "framer-motion";
-import { TerminalWindow, TypedLines } from "@/components/terminal-window";
+import { motion, type Variants } from "framer-motion";
 import { AsciiField } from "@/components/ascii-field";
 import { DecodeText } from "@/components/decode-text";
-import { BUILD } from "@/lib/build-info";
-import { proofPoints, type TerminalLine } from "@/lib/projects";
+import { CareerQuery } from "@/components/career-query";
+import { proofPoints } from "@/lib/projects";
 import { profile } from "@/lib/profile";
-
-function useDeployLog(): TerminalLine[] {
-  const [ttfb, setTtfb] = useState<number | null>(null);
-
-  useEffect(() => {
-    const nav = performance.getEntriesByType("navigation")[0] as
-      | PerformanceNavigationTiming
-      | undefined;
-    if (nav) {
-      const t = Math.round(nav.responseStart - nav.startTime);
-      if (t > 0 && t < 5000) setTtfb(t);
-    }
-  }, []);
-
-  const lines: TerminalLine[] = [
-    { text: "$ git push origin main", tone: "cmd" },
-    { text: "pipeline: build ✓  test ✓  scan ✓", tone: "ok" },
-    {
-      text: `deploy: devlinops.com ${BUILD.shortSha ? `@ ${BUILD.shortSha} ` : ""}Synced · Healthy`,
-      tone: "info",
-    },
-  ];
-  if (ttfb !== null) {
-    lines.push({
-      text: `serving you this page in ${ttfb}ms, measured just now`,
-      tone: "warn",
-    });
-  }
-  return lines;
-}
 
 const rise: Variants = {
   hidden: { opacity: 0, y: 18 },
@@ -49,24 +17,20 @@ const rise: Variants = {
   },
 };
 
+/**
+ * The hero leads with the site's most differentiated artefact: a real SQLite
+ * database about the work, queryable in the visitor's browser. Identity on the
+ * left, evidence on the right. The identity column gets the one entrance
+ * animation the page allows itself; everything else renders instantly.
+ */
 export function Hero() {
-  const reduceMotion = useReducedMotion();
-  const deployLog = useDeployLog();
-
-  const { scrollY } = useScroll();
-  const opacity = useTransform(scrollY, [0, 500], [1, 0]);
-  const y = useTransform(scrollY, [0, 500], [0, 60]);
-
   return (
     <section className="relative min-h-[92vh] flex flex-col justify-center overflow-hidden pt-28 pb-16">
       <div className="absolute inset-0 phosphor-ambient pointer-events-none" aria-hidden />
       <AsciiField className="[mask-image:radial-gradient(ellipse_75%_90%_at_72%_30%,black_0%,transparent_72%)] opacity-80" />
 
-      <motion.div
-        style={reduceMotion ? undefined : { opacity, y }}
-        className="container relative z-10"
-      >
-        <div className="grid lg:grid-cols-[1.2fr_1fr] gap-12 lg:gap-16 items-center">
+      <div className="container relative z-10">
+        <div className="grid lg:grid-cols-[1fr_1.05fr] gap-12 lg:gap-16 items-center">
           {/* Identity, staggered entrance */}
           <motion.div
             initial="hidden"
@@ -132,28 +96,23 @@ export function Hero() {
             </motion.p>
           </motion.div>
 
-          {/* Deploy log, this site shipping itself */}
-          <motion.div
-            initial={{ opacity: 0, x: 24 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7, delay: 0.5, ease: [0.22, 1, 0.36, 1] as const }}
-            className="hidden md:block"
-          >
-            <TerminalWindow title="deploy · devlinops.com" className="glow-border backdrop-blur-sm">
-              <div className="p-5">
-                <TypedLines lines={deployLog} charDelay={18} lineDelay={260} className="text-[13px] leading-6" />
-              </div>
-            </TerminalWindow>
-          </motion.div>
+          {/* The artefact: ask the site a question, get the SQL back. */}
+          <div>
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-primary mb-2">
+              Don&apos;t take my word for any of it
+            </p>
+            <p className="text-sm text-muted-foreground mb-4 max-w-xl">
+              My day job is an AI that answers questions about a database and
+              shows you the SQL. This is that, pointed at my own work — real
+              SQLite, running in your browser. Pick a question, read the query,
+              then edit it and run your own.
+            </p>
+            <CareerQuery />
+          </div>
         </div>
 
         {/* Proof strip, evidence before claims */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="mt-16 lg:mt-20 grid sm:grid-cols-3 border-y border-border divide-y sm:divide-y-0 sm:divide-x divide-border"
-        >
+        <div className="mt-16 lg:mt-20 grid sm:grid-cols-3 border-y border-border divide-y sm:divide-y-0 sm:divide-x divide-border">
           {proofPoints.map((point) => (
             <Link
               key={point.label}
@@ -168,8 +127,8 @@ export function Hero() {
               </span>
             </Link>
           ))}
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
     </section>
   );
 }

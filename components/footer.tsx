@@ -78,9 +78,7 @@ export function Footer() {
 
           {/* Links */}
           <div>
-            <h3 className="font-mono text-sm text-primary mb-4">
-              <span className="text-muted-foreground">$</span> ls
-            </h3>
+            <h3 className="font-mono text-sm text-primary mb-4">Navigate</h3>
             <ul className="space-y-3">
               {links.map((link) => (
                 <li key={link.name}>
@@ -88,7 +86,7 @@ export function Footer() {
                     href={link.href}
                     className="text-muted-foreground hover:text-primary transition-colors text-sm font-mono"
                   >
-                    {link.name.toLowerCase()}/
+                    {link.name}
                   </Link>
                 </li>
               ))}
@@ -97,9 +95,7 @@ export function Footer() {
 
           {/* Connect */}
           <div>
-            <h3 className="font-mono text-sm text-primary mb-4">
-              <span className="text-muted-foreground">$</span> ping jack
-            </h3>
+            <h3 className="font-mono text-sm text-primary mb-4">Contact</h3>
             <div className="flex gap-4">
               {socials.map((social) => (
                 <a

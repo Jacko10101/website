@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { projects, type Project } from "@/lib/projects";
 import { TypedLines } from "@/components/terminal-window";
 import { SectionHeading } from "@/components/section-heading";
@@ -121,12 +120,7 @@ function ProjectRow({ project, index }: { project: Project; index: number }) {
   );
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.5, delay: index === 0 ? 0.1 : 0 }}
-    >
+    <div>
       {clickable ? (
         <Link
           href={project.href!}
@@ -139,7 +133,7 @@ function ProjectRow({ project, index }: { project: Project; index: number }) {
           {inner}
         </div>
       )}
-    </motion.div>
+    </div>
   );
 }
 

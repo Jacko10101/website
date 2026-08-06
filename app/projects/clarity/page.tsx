@@ -3,11 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import { PHOSPHORS, CaseStudyLayout } from "@/components/case-study-layout";
 import { ChatSection as CaseStudySection } from "@/components/case-section-variants";
-import { FadeUp } from "@/components/scroll-reveal";
 import { TerminalWindow } from "@/components/terminal-window";
 import { GroundingDemo } from "@/components/grounding-demo";
 import { SqlPlayground } from "@/components/sql-playground";
@@ -104,26 +102,24 @@ function Evidence({ of }: { of: keyof typeof SHOTS }) {
   if (!shot) return null;
   const { src, alt, caption, label, width, height } = shot;
   return (
-    <FadeUp>
-      <figure className="my-7">
-        <TerminalWindow title={label}>
-          <Image
-            src={src}
-            alt={alt}
-            width={width}
-            height={height}
-            className="w-full h-auto"
-            sizes="(max-width: 1024px) 100vw, 800px"
-          />
-          <figcaption className="px-5 py-4 border-t border-border bg-card/50 text-sm text-muted-foreground leading-relaxed">
-            <span className="font-mono text-[11px] uppercase tracking-wider text-primary block mb-1.5">
-              the receipt
-            </span>
-            {caption}
-          </figcaption>
-        </TerminalWindow>
-      </figure>
-    </FadeUp>
+    <figure className="my-7">
+      <TerminalWindow title={label}>
+        <Image
+          src={src}
+          alt={alt}
+          width={width}
+          height={height}
+          className="w-full h-auto"
+          sizes="(max-width: 1024px) 100vw, 800px"
+        />
+        <figcaption className="px-5 py-4 border-t border-border bg-card/50 text-sm text-muted-foreground leading-relaxed">
+          <span className="font-mono text-[11px] uppercase tracking-wider text-primary block mb-1.5">
+            the receipt
+          </span>
+          {caption}
+        </figcaption>
+      </TerminalWindow>
+    </figure>
   );
 }
 
@@ -144,71 +140,42 @@ const LEDGER: { claim: string; receipt: string; open?: boolean }[] = [
 
 function ClaimsLedgerHeader() {
   return (
-    <header className="relative pt-28 pb-20 md:pt-32 md:pb-24 overflow-hidden">
+    <header className="relative pt-20 pb-10 md:pt-24 md:pb-12 overflow-hidden">
       <div className="absolute inset-0 grid-background pointer-events-none" aria-hidden />
 
       <div className="container px-4 relative z-10">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
+        <Link
+          href="/projects"
+          className="inline-flex items-center gap-2 text-sm font-mono text-muted-foreground hover:text-primary transition-colors mb-6 group"
         >
-          <Link
-            href="/projects"
-            className="inline-flex items-center gap-2 text-sm font-mono text-muted-foreground hover:text-primary transition-colors mb-8 group"
-          >
-            <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
-            Back to Projects
-          </Link>
-        </motion.div>
+          <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
+          Back to Projects
+        </Link>
 
         <div className="max-w-4xl">
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6 }}
-            className="font-mono text-xs uppercase tracking-[0.2em] text-primary mb-4"
+          <p
+            className="font-mono text-xs uppercase tracking-[0.2em] text-primary mb-3"
             aria-hidden
           >
             claims &amp; receipts
-          </motion.p>
+          </p>
 
-          <motion.h1
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="font-mono font-semibold tracking-tight text-4xl sm:text-5xl md:text-6xl text-foreground mb-4"
-          >
+          <h1 className="font-mono font-semibold tracking-tight text-4xl sm:text-5xl md:text-6xl text-foreground mb-3">
             Clarity
-          </motion.h1>
+          </h1>
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.15 }}
-            className="font-mono text-sm text-muted-foreground mb-6"
-          >
+          <p className="font-mono text-sm text-muted-foreground mb-5">
             Natural-language database interface
-          </motion.p>
+          </p>
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-xl text-muted-foreground mb-10 leading-relaxed"
-          >
+          <p className="text-xl text-muted-foreground mb-6 leading-relaxed">
             Ask the estate a question in English, get an answer with the SQL
             that produced it. Generating the SQL was the easy bit. The hard
             part was proving the answers, so this page is written the way the
             product works: every claim sits next to the thing that backs it.
-          </motion.p>
+          </p>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="rounded-lg border border-border bg-card/40 overflow-hidden"
-          >
+          <div className="rounded-lg border border-border bg-card/40 overflow-hidden">
             <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 px-4 py-2.5 border-b border-border bg-card/60 font-mono text-[11px]">
               <span className="uppercase tracking-wider text-primary">
                 what this page claims
@@ -221,7 +188,7 @@ function ClaimsLedgerHeader() {
               {LEDGER.map((row, i) => (
                 <li
                   key={row.claim}
-                  className="flex flex-wrap items-baseline gap-x-3 gap-y-1.5 px-4 py-3 border-b border-border/60"
+                  className="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-4 py-1.5 border-b border-border/60"
                 >
                   <span
                     className="text-xs text-muted-foreground/60 tabular-nums"
@@ -248,12 +215,12 @@ function ClaimsLedgerHeader() {
                 </li>
               ))}
             </ol>
-            <p className="px-4 py-3 font-mono text-xs text-muted-foreground leading-relaxed">
+            <p className="px-4 py-2.5 font-mono text-xs text-muted-foreground leading-relaxed">
               Five receipts on this page. The sixth claim is left open on
               purpose — it&apos;s the last paragraph, and it stays open until
               the evidence exists.
             </p>
-          </motion.div>
+          </div>
         </div>
       </div>
     </header>
@@ -340,105 +307,95 @@ function RecordLabel({ children }: { children: ReactNode }) {
 function AuditRecord() {
   return (
     <aside className="lg:sticky lg:top-24 self-start">
-      <FadeUp delay={0.1}>
-        <div className="rounded-lg border border-border bg-card/40 overflow-hidden">
-          <div className="flex items-center justify-between gap-3 px-5 py-3 border-b border-border bg-card/60 font-mono text-[11px]">
-            <span className="uppercase tracking-wider text-primary">
-              audit record
-            </span>
-            <span className="text-muted-foreground">clarity</span>
-          </div>
+      <div className="rounded-lg border border-border bg-card/40 overflow-hidden">
+        <div className="flex items-center justify-between gap-3 px-5 py-3 border-b border-border bg-card/60 font-mono text-[11px]">
+          <span className="uppercase tracking-wider text-primary">
+            audit record
+          </span>
+          <span className="text-muted-foreground">clarity</span>
+        </div>
 
-          <div className="px-5 py-5 border-b border-border/60">
-            <RecordLabel>built with</RecordLabel>
-            <p className="font-mono text-xs text-muted-foreground leading-loose">
-              Java 21 · Spring Boot · Spring AI · Gemini 2.5 Flash · LiteLLM ·
-              PostgreSQL · TimescaleDB · Flyway · S3 · Caffeine · Micrometer ·
-              OpenTelemetry · Kubernetes
-            </p>
-          </div>
+        <div className="px-5 py-5 border-b border-border/60">
+          <RecordLabel>built with</RecordLabel>
+          <p className="font-mono text-xs text-muted-foreground leading-loose">
+            Java 21 · Spring Boot · Spring AI · Gemini 2.5 Flash · LiteLLM ·
+            PostgreSQL · TimescaleDB · Flyway · S3 · Caffeine · Micrometer ·
+            OpenTelemetry · Kubernetes
+          </p>
+        </div>
 
-          <div className="px-5 py-5 border-b border-border/60">
-            <RecordLabel>entered in evidence</RecordLabel>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              {[
-                "LLM grounding and hallucination detection",
-                "Evaluation that doesn't rely on a model",
-                "Securing model-generated SQL",
-                "Multi-tenant data isolation",
-                "Streaming exports at constant memory",
-                "Instrumenting AI so failures are visible",
-              ].map((skill) => (
-                <li key={skill} className="flex gap-2">
-                  <span className="text-primary shrink-0" aria-hidden>
-                    –
-                  </span>
-                  {skill}
-                </li>
-              ))}
-            </ul>
-          </div>
+        <div className="px-5 py-5 border-b border-border/60">
+          <RecordLabel>entered in evidence</RecordLabel>
+          <ul className="space-y-2 text-sm text-muted-foreground">
+            {[
+              "LLM grounding and hallucination detection",
+              "Evaluation that doesn't rely on a model",
+              "Securing model-generated SQL",
+              "Multi-tenant data isolation",
+              "Streaming exports at constant memory",
+              "Instrumenting AI so failures are visible",
+            ].map((skill) => (
+              <li key={skill} className="flex gap-2">
+                <span className="text-primary shrink-0" aria-hidden>
+                  –
+                </span>
+                {skill}
+              </li>
+            ))}
+          </ul>
+        </div>
 
-          <div className="px-5 py-5 border-b border-border/60">
-            <RecordLabel>for the record</RecordLabel>
-            <ul className="space-y-2.5 text-sm leading-relaxed">
-              {[
-                { label: "Tenants", value: "~30, isolated per database" },
-                { label: "Grounding checks", value: "5 classes, every turn" },
-                { label: "Vector stores", value: "none — compiled knowledge" },
-                { label: "Export ceiling", value: "50k rows, flat memory" },
-              ].map((metric) => (
-                <li key={metric.label}>
-                  <span className="font-medium text-foreground">
-                    {metric.label}
-                  </span>{" "}
-                  <span className="text-muted-foreground">
-                    — {metric.value}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
+        <div className="px-5 py-5 border-b border-border/60">
+          <RecordLabel>for the record</RecordLabel>
+          <ul className="space-y-2.5 text-sm leading-relaxed">
+            {[
+              { label: "Tenants", value: "~30, isolated per database" },
+              { label: "Grounding checks", value: "5 classes, every turn" },
+              { label: "Vector stores", value: "none — compiled knowledge" },
+              { label: "Export ceiling", value: "50k rows, flat memory" },
+            ].map((metric) => (
+              <li key={metric.label}>
+                <span className="font-medium text-foreground">
+                  {metric.label}
+                </span>{" "}
+                <span className="text-muted-foreground">
+                  — {metric.value}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
 
-          <div className="px-5 py-5">
-            <RecordLabel>cross-referenced</RecordLabel>
-            <div className="space-y-3">
-              {[
-                {
-                  title: "AI Gateway · one endpoint for every model",
-                  href: "/projects/ai-gateway",
-                },
-                {
-                  title: "Observability · self-hosted monitoring",
-                  href: "/projects/observability",
-                },
-              ].map((project) => (
-                <Link
-                  key={project.href}
-                  href={project.href}
-                  className="group flex items-baseline justify-between gap-3 text-sm font-medium hover:text-primary transition-colors"
+        <div className="px-5 py-5">
+          <RecordLabel>cross-referenced</RecordLabel>
+          <div className="space-y-3">
+            {[
+              {
+                title: "AI Gateway · one endpoint for every model",
+                href: "/projects/ai-gateway",
+              },
+              {
+                title: "Observability · self-hosted monitoring",
+                href: "/projects/observability",
+              },
+            ].map((project) => (
+              <Link
+                key={project.href}
+                href={project.href}
+                className="group flex items-baseline justify-between gap-3 text-sm font-medium hover:text-primary transition-colors"
+              >
+                <span>{project.title}</span>
+                <span
+                  className="font-mono text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all"
+                  aria-hidden
                 >
-                  <span>{project.title}</span>
-                  <span
-                    className="font-mono text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all"
-                    aria-hidden
-                  >
-                    →
-                  </span>
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2 px-5 py-3 border-t border-border bg-card/60 font-mono text-[11px] text-muted-foreground">
-            <span
-              className="w-1.5 h-1.5 rounded-full bg-primary glow-soft"
-              aria-hidden
-            />
-            rendered on phosphor {PHOSPHORS.blue.label}
+                  →
+                </span>
+              </Link>
+            ))}
           </div>
         </div>
-      </FadeUp>
+      </div>
     </aside>
   );
 }
@@ -451,42 +408,40 @@ function LedgerSignOff() {
   return (
     <section className="container px-4 py-16">
       <div className="max-w-2xl mx-auto">
-        <FadeUp>
-          <div className="rounded-lg border border-border bg-card/40 overflow-hidden font-mono">
-            <div className="px-5 py-3 border-b border-border bg-card/60 text-[11px] uppercase tracking-wider text-primary">
-              ledger closed
-            </div>
-            <dl className="px-5 py-4 space-y-2 text-sm">
-              <div className="flex justify-between gap-4">
-                <dt className="text-muted-foreground">receipts attached</dt>
-                <dd className="text-foreground tabular-nums">5</dd>
-              </div>
-              <div className="flex justify-between gap-4">
-                <dt className="text-muted-foreground">claims left open</dt>
-                <dd className="text-primary">1 · marked above</dd>
-              </div>
-            </dl>
+        <div className="rounded-lg border border-border bg-card/40 overflow-hidden font-mono">
+          <div className="px-5 py-3 border-b border-border bg-card/60 text-[11px] uppercase tracking-wider text-primary">
+            ledger closed
           </div>
-          <p className="mt-6 text-sm text-muted-foreground leading-relaxed">
-            Everything above has its receipt except the last paragraph, and I
-            told you which one that was. I&apos;d hold work to the same
-            standard —{" "}
-            <Link
-              href="/contact"
-              className="text-primary hover:underline underline-offset-4"
-            >
-              say hello
-            </Link>{" "}
-            if that sounds useful, or head{" "}
-            <Link
-              href="/projects"
-              className="text-primary hover:underline underline-offset-4"
-            >
-              back to the projects
-            </Link>
-            .
-          </p>
-        </FadeUp>
+          <dl className="px-5 py-4 space-y-2 text-sm">
+            <div className="flex justify-between gap-4">
+              <dt className="text-muted-foreground">receipts attached</dt>
+              <dd className="text-foreground tabular-nums">5</dd>
+            </div>
+            <div className="flex justify-between gap-4">
+              <dt className="text-muted-foreground">claims left open</dt>
+              <dd className="text-primary">1 · marked above</dd>
+            </div>
+          </dl>
+        </div>
+        <p className="mt-6 text-sm text-muted-foreground leading-relaxed">
+          Everything above has its receipt except the last paragraph, and I
+          told you which one that was. I&apos;d hold work to the same
+          standard —{" "}
+          <Link
+            href="/contact"
+            className="text-primary hover:underline underline-offset-4"
+          >
+            say hello
+          </Link>{" "}
+          if that sounds useful, or head{" "}
+          <Link
+            href="/projects"
+            className="text-primary hover:underline underline-offset-4"
+          >
+            back to the projects
+          </Link>
+          .
+        </p>
       </div>
     </section>
   );
@@ -521,20 +476,18 @@ export default function ClarityPage() {
 
       <div className="container px-4 mb-16">
         <div className="max-w-7xl mx-auto">
-          <FadeUp>
-            <div className="mb-5">
-              <span className="font-mono text-sm text-primary">&gt; try it yourself</span>
-              <h2 className="mt-2 font-mono font-semibold tracking-tight text-2xl sm:text-3xl text-foreground">
-                Five ways an answer can lie
-              </h2>
-              <p className="mt-2 text-muted-foreground max-w-2xl">
-                Toggle it off for what the model said. On for what ships. All
-                five are simplified from cases the detectors caught in
-                production.
-              </p>
-            </div>
-            <GroundingDemo />
-          </FadeUp>
+          <div className="mb-4">
+            <span className="font-mono text-sm text-primary">&gt; try it yourself</span>
+            <h2 className="mt-1.5 font-mono font-semibold tracking-tight text-2xl sm:text-3xl text-foreground">
+              Five ways an answer can lie
+            </h2>
+            <p className="mt-1.5 text-muted-foreground max-w-2xl">
+              Toggle it off for what the model said. On for what ships. All
+              five are simplified from cases the detectors caught in
+              production.
+            </p>
+          </div>
+          <GroundingDemo />
         </div>
       </div>
 

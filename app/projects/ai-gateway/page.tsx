@@ -11,7 +11,6 @@ import {
   IncidentAppendices,
   IncidentSignoff,
 } from "@/components/ai-gateway-incident";
-import { FadeUp } from "@/components/scroll-reveal";
 import { GatewayTracer } from "@/components/gateway-tracer";
 
 /* --------------------------------------------------------------------------
@@ -132,25 +131,23 @@ const articleSchema = {
 export default function AIGatewayPage() {
   return (
     <CaseStudyLayout schema={articleSchema} phosphor={PHOSPHORS.amber}>
-      <IncidentHeader phosphor={PHOSPHORS.amber.label} />
+      <IncidentHeader />
 
-      <div className="container px-4 mb-16">
+      <div className="container px-4 mb-12">
         <div className="max-w-7xl mx-auto">
-          <FadeUp>
-            <div className="mb-5">
-              <span className="font-mono text-sm text-primary">// try it</span>
-              <h2 className="mt-2 font-mono font-semibold tracking-tight text-2xl sm:text-3xl text-foreground">
-                Two different ways to get a 401
-              </h2>
-              <p className="mt-2 text-muted-foreground max-w-2xl">
-                Pick a consumer and a model. Some combinations come back 401
-                even though the model is fully deployed, and the trace shows
-                exactly where the refusal happens. That catches people
-                constantly, including me.
-              </p>
-            </div>
-            <GatewayTracer />
-          </FadeUp>
+          <div className="mb-4">
+            <span className="font-mono text-sm text-primary">// try it</span>
+            <h2 className="mt-2 font-mono font-semibold tracking-tight text-2xl sm:text-3xl text-foreground">
+              Two different ways to get a 401
+            </h2>
+            <p className="mt-2 text-muted-foreground max-w-2xl">
+              Pick a consumer and a model. Some combinations come back 401
+              even though the model is fully deployed, and the trace shows
+              exactly where the refusal happens. That catches people
+              constantly, including me.
+            </p>
+          </div>
+          <GatewayTracer />
         </div>
       </div>
 

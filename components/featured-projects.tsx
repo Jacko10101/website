@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { featuredProjects, type Project } from "@/lib/projects";
 import { TypedLines } from "@/components/terminal-window";
 import { SectionHeading } from "@/components/section-heading";
@@ -18,14 +17,8 @@ function StatusPill({ project }: { project: Project }) {
   );
 }
 
-function ProjectTile({ project, index }: { project: Project; index: number }) {
+function ProjectTile({ project }: { project: Project }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.5, delay: (index % 2) * 0.1 }}
-    >
       <Link
         href={project.href!}
         className="group flex flex-col h-full rounded-lg border border-border bg-card/60 hover:border-primary/60 hover:-translate-y-1 hover:shadow-[0_12px_48px_oklch(0.72_0.19_150_/_0.12)] transition-all duration-300 overflow-hidden"
@@ -94,7 +87,6 @@ function ProjectTile({ project, index }: { project: Project; index: number }) {
           </span>
         </div>
       </Link>
-    </motion.div>
   );
 }
 
@@ -103,15 +95,14 @@ export function FeaturedProjects() {
     <section className="relative py-24 md:py-32">
       <div className="container">
         <SectionHeading
-          command="kubectl get projects"
           title="Shipped and running"
           index="01"
           lede="Six things I've owned end-to-end. What they are, what changed, and a few decisions worth flagging."
         />
 
         <div className="grid md:grid-cols-2 gap-6 max-w-6xl">
-          {featuredProjects.map((project, index) => (
-            <ProjectTile key={project.id} project={project} index={index} />
+          {featuredProjects.map((project) => (
+            <ProjectTile key={project.id} project={project} />
           ))}
         </div>
 
@@ -120,7 +111,7 @@ export function FeaturedProjects() {
             href="/projects"
             className="inline-flex items-center gap-2 font-mono text-primary hover:text-foreground transition-colors"
           >
-            kubectl get projects --all-namespaces →
+            All projects, including the dissertation →
           </Link>
         </div>
       </div>

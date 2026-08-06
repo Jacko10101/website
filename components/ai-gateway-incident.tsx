@@ -1,10 +1,8 @@
 "use client";
 
-import { useRef, ReactNode } from "react";
+import { ReactNode } from "react";
 import Link from "next/link";
-import { motion, useInView } from "framer-motion";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { FadeUp } from "@/components/scroll-reveal";
 
 /* --------------------------------------------------------------------------
  * Incident-report frame for the AI Gateway case study. The page's genre is
@@ -34,86 +32,50 @@ function FrontMatterField({
   );
 }
 
-export function IncidentHeader({ phosphor }: { phosphor?: string }) {
+export function IncidentHeader() {
   return (
-    <header className="relative pt-28 pb-16 md:pt-32 md:pb-20 overflow-hidden">
+    <header className="relative pt-24 pb-8 md:pt-24 md:pb-10 overflow-hidden">
       <div className="absolute inset-0 grid-background pointer-events-none" aria-hidden />
 
       <div className="container px-4 relative z-10">
         {/* Back link */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
+        <div>
           <Link
             href="/projects"
-            className="inline-flex items-center gap-2 text-sm font-mono text-muted-foreground hover:text-primary transition-colors mb-8 group"
+            className="inline-flex items-center gap-2 text-sm font-mono text-muted-foreground hover:text-primary transition-colors mb-6 group"
           >
             <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
             Back to Projects
           </Link>
-        </motion.div>
+        </div>
 
         <div className="max-w-4xl">
           {/* Document class */}
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6 }}
-            className="font-mono text-sm text-primary mb-4"
-          >
+          <p className="font-mono text-sm text-primary mb-3">
             incident review{" "}
             <span className="text-muted-foreground">
               · filed before the incident
             </span>
-          </motion.p>
+          </p>
 
           {/* Title */}
-          <motion.h1
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="font-mono font-semibold tracking-tight text-4xl sm:text-5xl md:text-6xl text-foreground mb-4"
-          >
+          <h1 className="font-mono font-semibold tracking-tight text-4xl sm:text-5xl text-foreground mb-3">
             AI Gateway
-          </motion.h1>
+          </h1>
 
           {/* Subtitle */}
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.15 }}
-            className="font-mono text-sm text-muted-foreground mb-8"
-          >
+          <p className="font-mono text-sm text-muted-foreground mb-6">
             One endpoint for every model
-          </motion.p>
+          </p>
 
           {/* Front matter */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.25 }}
-            className="rounded-lg border border-border bg-card/40 overflow-hidden"
-          >
-            <div className="flex flex-wrap items-center gap-2 px-5 py-3 border-b border-border font-mono text-xs">
+          <div className="rounded-lg border border-border bg-card/40 overflow-hidden">
+            <div className="flex flex-wrap items-center gap-2 px-5 py-2.5 border-b border-border font-mono text-xs">
               <span className="w-2 h-2 rounded-full bg-primary" aria-hidden />
               <span className="text-primary font-semibold">front matter</span>
               <span className="text-muted-foreground">· ai-gateway</span>
-              {phosphor && (
-                <span
-                  className="ml-auto flex items-center gap-2 px-2.5 py-0.5 rounded border border-primary/40 text-primary"
-                  title="Every case study renders on its own CRT phosphor. This one's tube."
-                >
-                  <span
-                    className="w-1.5 h-1.5 rounded-full bg-primary glow-soft"
-                    aria-hidden
-                  />
-                  phosphor {phosphor}
-                </span>
-              )}
             </div>
-            <dl className="px-5 py-4 grid gap-x-10 gap-y-3 sm:grid-cols-2">
+            <dl className="px-5 py-3.5 grid gap-x-10 gap-y-2.5 sm:grid-cols-2">
               <FrontMatterField label="status">
                 <span className="inline-flex items-center gap-2 text-foreground/90">
                   <span
@@ -136,7 +98,7 @@ export function IncidentHeader({ phosphor }: { phosphor?: string }) {
                 key, and spend lands against the tenant that caused it.
               </FrontMatterField>
             </dl>
-          </motion.div>
+          </div>
         </div>
       </div>
     </header>
@@ -192,73 +154,71 @@ function AppendixLabel({ index, label }: { index: string; label: string }) {
 export function IncidentAppendices() {
   return (
     <aside className="lg:sticky lg:top-24 self-start">
-      <FadeUp delay={0.1}>
-        <div className="rounded-lg border border-border bg-card/30 overflow-hidden">
-          <div className="px-5 py-3 border-b border-border font-mono text-xs text-muted-foreground">
-            appendices · attached to this review
-          </div>
-
-          <section className="px-5 py-4 border-b border-border">
-            <AppendixLabel index="A" label="systems involved" />
-            <p className="font-mono text-sm text-muted-foreground leading-relaxed">
-              {SYSTEMS.map((system, i) => (
-                <span key={system}>
-                  <span className="whitespace-nowrap">{system}</span>
-                  {i < SYSTEMS.length - 1 && (
-                    <span className="mx-1.5 text-muted-foreground/40" aria-hidden>
-                      ·
-                    </span>
-                  )}
-                </span>
-              ))}
-            </p>
-          </section>
-
-          <section className="px-5 py-4 border-b border-border">
-            <AppendixLabel index="B" label="the work" />
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              {WORK.map((item) => (
-                <li key={item} className="flex gap-2">
-                  <span className="text-primary shrink-0" aria-hidden>
-                    —
-                  </span>
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </section>
-
-          <section className="px-5 py-4 border-b border-border">
-            <AppendixLabel index="C" label="facts on file" />
-            <dl className="space-y-3 text-sm">
-              {FACTS.map((fact) => (
-                <div key={fact.label} className="grid grid-cols-[7rem_1fr] gap-1">
-                  <dt className="font-mono text-xs text-primary/90 pt-0.5">
-                    {fact.label}
-                  </dt>
-                  <dd className="text-muted-foreground">{fact.value}</dd>
-                </div>
-              ))}
-            </dl>
-          </section>
-
-          <section className="px-5 py-4">
-            <AppendixLabel index="D" label="linked reviews" />
-            <div className="space-y-3">
-              {LINKED_REVIEWS.map((review) => (
-                <Link
-                  key={review.href}
-                  href={review.href}
-                  className="flex items-center justify-between gap-2 text-sm font-medium hover:text-primary transition-colors group"
-                >
-                  <span>{review.title}</span>
-                  <ArrowRight className="w-4 h-4 shrink-0 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              ))}
-            </div>
-          </section>
+      <div className="rounded-lg border border-border bg-card/30 overflow-hidden">
+        <div className="px-5 py-3 border-b border-border font-mono text-xs text-muted-foreground">
+          appendices · attached to this review
         </div>
-      </FadeUp>
+
+        <section className="px-5 py-4 border-b border-border">
+          <AppendixLabel index="A" label="systems involved" />
+          <p className="font-mono text-sm text-muted-foreground leading-relaxed">
+            {SYSTEMS.map((system, i) => (
+              <span key={system}>
+                <span className="whitespace-nowrap">{system}</span>
+                {i < SYSTEMS.length - 1 && (
+                  <span className="mx-1.5 text-muted-foreground/40" aria-hidden>
+                    ·
+                  </span>
+                )}
+              </span>
+            ))}
+          </p>
+        </section>
+
+        <section className="px-5 py-4 border-b border-border">
+          <AppendixLabel index="B" label="the work" />
+          <ul className="space-y-2 text-sm text-muted-foreground">
+            {WORK.map((item) => (
+              <li key={item} className="flex gap-2">
+                <span className="text-primary shrink-0" aria-hidden>
+                  —
+                </span>
+                {item}
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section className="px-5 py-4 border-b border-border">
+          <AppendixLabel index="C" label="facts on file" />
+          <dl className="space-y-3 text-sm">
+            {FACTS.map((fact) => (
+              <div key={fact.label} className="grid grid-cols-[7rem_1fr] gap-1">
+                <dt className="font-mono text-xs text-primary/90 pt-0.5">
+                  {fact.label}
+                </dt>
+                <dd className="text-muted-foreground">{fact.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+
+        <section className="px-5 py-4">
+          <AppendixLabel index="D" label="linked reviews" />
+          <div className="space-y-3">
+            {LINKED_REVIEWS.map((review) => (
+              <Link
+                key={review.href}
+                href={review.href}
+                className="flex items-center justify-between gap-2 text-sm font-medium hover:text-primary transition-colors group"
+              >
+                <span>{review.title}</span>
+                <ArrowRight className="w-4 h-4 shrink-0 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            ))}
+          </div>
+        </section>
+      </div>
     </aside>
   );
 }
@@ -268,19 +228,11 @@ export function IncidentAppendices() {
  * ----------------------------------------------------------------------- */
 
 export function IncidentSignoff() {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
-
   return (
-    <section ref={ref} className="py-16 relative overflow-hidden">
+    <section className="py-16 relative overflow-hidden">
       <div className="absolute inset-0 grid-background pointer-events-none" aria-hidden />
 
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-        transition={{ duration: 0.8 }}
-        className="container px-4 relative z-10"
-      >
+      <div className="container px-4 relative z-10">
         <div className="max-w-3xl mx-auto rounded-lg border border-border bg-card/40 overflow-hidden">
           <div className="flex items-center gap-2 px-5 py-3 border-b border-border font-mono text-xs">
             <span className="w-2 h-2 rounded-full bg-primary" aria-hidden />
@@ -336,7 +288,7 @@ export function IncidentSignoff() {
             </p>
           </div>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }

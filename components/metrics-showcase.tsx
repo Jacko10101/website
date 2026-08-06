@@ -56,10 +56,6 @@ export function MetricsShowcase({ metrics }: MetricsShowcaseProps) {
         {metrics.map((metric, index) => (
           <motion.div
             key={metric.title}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.3, delay: index * 0.1 }}
             onClick={(e) => openModal(metric, e.currentTarget)}
             onKeyDown={(e) => {
               if (e.key === "Enter" || e.key === " ") {

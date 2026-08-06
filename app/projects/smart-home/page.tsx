@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import {
   PHOSPHORS,
@@ -9,7 +8,6 @@ import {
   EnhancedCodeBlock,
 } from "@/components/case-study-layout";
 import { TopicSection as CaseStudySection } from "@/components/case-section-variants";
-import { FadeUp } from "@/components/scroll-reveal";
 import { LocalPath } from "@/components/local-path";
 
 /* --------------------------------------------------------------------------
@@ -47,19 +45,12 @@ function SpecPlate() {
   return (
     <div className="rounded-lg border border-border overflow-hidden bg-card/20">
       {/* Nameplate strip */}
-      <div className="flex items-center justify-between gap-4 px-5 sm:px-7 py-2.5 border-b border-border bg-card/50 font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
-        <span>Spec sheet · in service 2024 → ongoing</span>
-        <span
-          className="flex items-center gap-2 normal-case px-2.5 py-0.5 rounded border border-primary/40 text-primary"
-          title="Every case study renders on its own CRT phosphor. This one's tube."
-        >
-          <span className="w-1.5 h-1.5 rounded-full bg-primary glow-soft" aria-hidden />
-          phosphor {PHOSPHORS.violet.label}
-        </span>
+      <div className="px-5 sm:px-7 py-2 border-b border-border bg-card/50 font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
+        Spec sheet · in service 2024 → ongoing
       </div>
 
       {/* Title block */}
-      <div className="px-5 sm:px-7 py-6 border-b border-border">
+      <div className="px-5 sm:px-7 py-4 border-b border-border">
         <h1 className="font-mono font-semibold tracking-tight text-3xl sm:text-4xl md:text-5xl text-foreground mb-2">
           Smart home on K3s
         </h1>
@@ -127,84 +118,82 @@ function SpecMargin() {
   const marginHeading = "font-mono text-[11px] uppercase tracking-wider text-primary mb-3";
   return (
     <aside className="lg:sticky lg:top-24 self-start">
-      <FadeUp delay={0.15}>
-        <div className="rounded-lg border border-border divide-y divide-border overflow-hidden bg-card/20 text-sm">
-          <section className="px-5 py-4">
-            <h3 className={marginHeading}>1 · Bill of materials</h3>
-            <ul className="space-y-1.5 text-muted-foreground">
-              <li>Raspberry Pi 5 (8GB)</li>
-              <li>1TB NVMe over USB</li>
-              <li>UPS on the power side</li>
-              <li>SONOFF Zigbee coordinator</li>
-            </ul>
-          </section>
+      <div className="rounded-lg border border-border divide-y divide-border overflow-hidden bg-card/20 text-sm">
+        <section className="px-5 py-4">
+          <h3 className={marginHeading}>1 · Bill of materials</h3>
+          <ul className="space-y-1.5 text-muted-foreground">
+            <li>Raspberry Pi 5 (8GB)</li>
+            <li>1TB NVMe over USB</li>
+            <li>UPS on the power side</li>
+            <li>SONOFF Zigbee coordinator</li>
+          </ul>
+        </section>
 
-          <section className="px-5 py-4">
-            <h3 className={marginHeading}>2 · Software</h3>
-            <p className="font-mono text-[13px] text-muted-foreground leading-relaxed">
-              K3s · ArgoCD · Home Assistant · Zigbee2MQTT · Mosquitto MQTT ·
-              Prometheus · Grafana · Tailscale
-            </p>
-          </section>
+        <section className="px-5 py-4">
+          <h3 className={marginHeading}>2 · Software</h3>
+          <p className="font-mono text-[13px] text-muted-foreground leading-relaxed">
+            K3s · ArgoCD · Home Assistant · Zigbee2MQTT · Mosquitto MQTT ·
+            Prometheus · Grafana · Tailscale
+          </p>
+        </section>
 
-          <section className="px-5 py-4">
-            <h3 className={marginHeading}>3 · Operating figures</h3>
-            <dl className="space-y-2 text-muted-foreground">
-              <div className="flex justify-between gap-4">
-                <dt>Status</dt>
-                <dd className="text-foreground/90 text-right">Live, ongoing</dd>
-              </div>
-              <div className="flex justify-between gap-4">
-                <dt>Devices</dt>
-                <dd className="text-foreground/90 text-right">20+</dd>
-              </div>
-              <div className="flex justify-between gap-4">
-                <dt>Apps</dt>
-                <dd className="text-foreground/90 text-right">6</dd>
-              </div>
-              <div className="flex justify-between gap-4">
-                <dt>Ports exposed</dt>
-                <dd className="text-foreground/90 text-right">Zero</dd>
-              </div>
-              <div className="flex justify-between gap-4">
-                <dt>Remote access</dt>
-                <dd className="text-foreground/90 text-right">Tailscale only</dd>
-              </div>
-            </dl>
-          </section>
-
-          <section className="px-5 py-4">
-            <h3 className={marginHeading}>4 · Practices</h3>
-            <ul className="space-y-1.5 text-muted-foreground">
-              <li>Self-hosting on constrained hardware</li>
-              <li>GitOps applied to small systems</li>
-              <li>Local-first architecture</li>
-              <li>Network segmentation</li>
-              <li>Treating side-projects like production</li>
-            </ul>
-          </section>
-
-          <section className="px-5 py-4">
-            <h3 className={marginHeading}>5 · Cross-references</h3>
-            <div className="space-y-2.5">
-              <Link
-                href="/projects/heimdall"
-                className="flex items-center justify-between font-medium hover:text-primary transition-colors group"
-              >
-                <span>Heimdall · deployment intelligence</span>
-                <ArrowRight className="w-4 h-4 shrink-0 group-hover:translate-x-1 transition-transform" />
-              </Link>
-              <Link
-                href="/projects/observability"
-                className="flex items-center justify-between font-medium hover:text-primary transition-colors group"
-              >
-                <span>Observability stack</span>
-                <ArrowRight className="w-4 h-4 shrink-0 group-hover:translate-x-1 transition-transform" />
-              </Link>
+        <section className="px-5 py-4">
+          <h3 className={marginHeading}>3 · Operating figures</h3>
+          <dl className="space-y-2 text-muted-foreground">
+            <div className="flex justify-between gap-4">
+              <dt>Status</dt>
+              <dd className="text-foreground/90 text-right">Live, ongoing</dd>
             </div>
-          </section>
-        </div>
-      </FadeUp>
+            <div className="flex justify-between gap-4">
+              <dt>Devices</dt>
+              <dd className="text-foreground/90 text-right">20+</dd>
+            </div>
+            <div className="flex justify-between gap-4">
+              <dt>Apps</dt>
+              <dd className="text-foreground/90 text-right">6</dd>
+            </div>
+            <div className="flex justify-between gap-4">
+              <dt>Ports exposed</dt>
+              <dd className="text-foreground/90 text-right">Zero</dd>
+            </div>
+            <div className="flex justify-between gap-4">
+              <dt>Remote access</dt>
+              <dd className="text-foreground/90 text-right">Tailscale only</dd>
+            </div>
+          </dl>
+        </section>
+
+        <section className="px-5 py-4">
+          <h3 className={marginHeading}>4 · Practices</h3>
+          <ul className="space-y-1.5 text-muted-foreground">
+            <li>Self-hosting on constrained hardware</li>
+            <li>GitOps applied to small systems</li>
+            <li>Local-first architecture</li>
+            <li>Network segmentation</li>
+            <li>Treating side-projects like production</li>
+          </ul>
+        </section>
+
+        <section className="px-5 py-4">
+          <h3 className={marginHeading}>5 · Cross-references</h3>
+          <div className="space-y-2.5">
+            <Link
+              href="/projects/heimdall"
+              className="flex items-center justify-between font-medium hover:text-primary transition-colors group"
+            >
+              <span>Heimdall · deployment intelligence</span>
+              <ArrowRight className="w-4 h-4 shrink-0 group-hover:translate-x-1 transition-transform" />
+            </Link>
+            <Link
+              href="/projects/observability"
+              className="flex items-center justify-between font-medium hover:text-primary transition-colors group"
+            >
+              <span>Observability stack</span>
+              <ArrowRight className="w-4 h-4 shrink-0 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </div>
+        </section>
+      </div>
     </aside>
   );
 }
@@ -246,32 +235,21 @@ const articleSchema = {
 export default function SmartHomePage() {
   return (
     <CaseStudyLayout schema={articleSchema} phosphor={PHOSPHORS.violet}>
-      <header className="relative pt-28 pb-16 md:pt-32 md:pb-20 overflow-hidden">
+      <header className="relative pt-24 pb-10 md:pt-28 md:pb-12 overflow-hidden">
         <div className="absolute inset-0 grid-background pointer-events-none" aria-hidden />
 
         <div className="container px-4 relative z-10">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
+          <Link
+            href="/projects"
+            className="inline-flex items-center gap-2 text-sm font-mono text-muted-foreground hover:text-primary transition-colors mb-6 group"
           >
-            <Link
-              href="/projects"
-              className="inline-flex items-center gap-2 text-sm font-mono text-muted-foreground hover:text-primary transition-colors mb-8 group"
-            >
-              <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
-              Back to Projects
-            </Link>
-          </motion.div>
+            <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
+            Back to Projects
+          </Link>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="max-w-4xl"
-          >
+          <div className="max-w-4xl">
             <SpecPlate />
-          </motion.div>
+          </div>
         </div>
       </header>
 
@@ -318,17 +296,15 @@ export default function SmartHomePage() {
             </CaseStudySection>
 
             <div className="mb-12">
-              <FadeUp>
-                <span className="font-mono text-sm text-primary">// the path</span>
-                <h2 className="mt-2 mb-2 font-mono font-semibold tracking-tight text-2xl sm:text-3xl text-foreground">
-                  Where a light switch press actually goes
-                </h2>
-                <p className="mb-5 text-muted-foreground max-w-2xl">
-                  The claim this whole build rests on. Same press, two
-                  topologies.
-                </p>
-                <LocalPath />
-              </FadeUp>
+              <span className="font-mono text-sm text-primary">// the path</span>
+              <h2 className="mt-2 mb-2 font-mono font-semibold tracking-tight text-2xl sm:text-3xl text-foreground">
+                Where a light switch press actually goes
+              </h2>
+              <p className="mb-5 text-muted-foreground max-w-2xl">
+                The claim this whole build rests on. Same press, two
+                topologies.
+              </p>
+              <LocalPath />
             </div>
 
             <CaseStudySection eyebrow="// argocd/apps · 6 synced" title="GitOps for the living room">
@@ -407,32 +383,30 @@ node-exporter         Synced        Healthy`}
 
             {/* Document footer — a spec sheet ends with its revision line,
                 not a thanks-for-reading card. */}
-            <FadeUp>
-              <footer className="border-t border-border pt-6">
-                <p className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground mb-4">
-                  Revision — 2024 → ongoing · amended as the flat changes
-                </p>
-                <p className="text-muted-foreground leading-relaxed mb-5">
-                  It&apos;s a flat, not an estate. Ask me about the parts that
-                  were genuinely fiddly.
-                </p>
-                <div className="flex flex-wrap items-center gap-x-6 gap-y-3 font-mono text-sm">
-                  <Link
-                    href="/contact"
-                    className="inline-flex items-center gap-2 text-primary hover:underline group"
-                  >
-                    Say hello
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </Link>
-                  <Link
-                    href="/projects"
-                    className="text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    Other case studies
-                  </Link>
-                </div>
-              </footer>
-            </FadeUp>
+            <footer className="border-t border-border pt-6">
+              <p className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground mb-4">
+                Revision — 2024 → ongoing · amended as the flat changes
+              </p>
+              <p className="text-muted-foreground leading-relaxed mb-5">
+                It&apos;s a flat, not an estate. Ask me about the parts that
+                were genuinely fiddly.
+              </p>
+              <div className="flex flex-wrap items-center gap-x-6 gap-y-3 font-mono text-sm">
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center gap-2 text-primary hover:underline group"
+                >
+                  Say hello
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </Link>
+                <Link
+                  href="/projects"
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
+                  Other case studies
+                </Link>
+              </div>
+            </footer>
           </div>
 
           <SpecMargin />
