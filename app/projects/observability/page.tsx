@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { MetricsShowcase } from "@/components/metrics-showcase";
 import { ObservabilityArchitecture } from "@/components/observability-architecture";
+import { SessionVitals } from "@/components/session-vitals";
 import { PHOSPHORS, CaseStudyLayout } from "@/components/case-study-layout";
 
 /* --------------------------------------------------------------------------
@@ -133,6 +134,77 @@ function Exhibit({
   );
 }
 
+/**
+ * The shape of the decision, drawn as the monitoring panel it would be. Two
+ * pricing models, not two data series: per-GB SaaS pricing grows with
+ * telemetry volume, self-hosting on existing capacity stays near flat. The
+ * only numbers on it are the two the page already states — the ~£100k/yr
+ * quote and the ~£5k/yr outcome. Palette validated for CVD separation and
+ * contrast against this surface (#d76f04 / #488acb).
+ */
+function CostShape() {
+  return (
+    <div className="rounded-md border border-border/60 bg-black/40 overflow-hidden">
+      <div className="flex items-center justify-between gap-3 px-5 py-2.5 border-b border-border/60 font-mono text-xs">
+        <span className="text-muted-foreground">cost · quote vs self-hosted, by data volume</span>
+        <span className="text-muted-foreground/60">pricing shape, not measurement</span>
+      </div>
+      <div className="px-4 pt-4 pb-2">
+        <svg viewBox="0 0 640 250" className="w-full" role="img" aria-label="Two cost curves against growing telemetry volume: per-gigabyte SaaS pricing rises steeply toward the roughly £100k a year quote, while self-hosted cost stays near flat at roughly £5k a year.">
+          {/* Recessive grid */}
+          {[60, 110, 160, 210].map((y) => (
+            <line key={y} x1={56} x2={632} y1={y} y2={y} stroke="currentColor" strokeOpacity={0.08} />
+          ))}
+          {/* Axes titles, text tokens not series colour */}
+          <text x={56} y={24} className="fill-muted-foreground" fontSize={11} fontFamily="var(--font-mono, monospace)">
+            annual cost
+          </text>
+          <text x={632} y={242} textAnchor="end" className="fill-muted-foreground" fontSize={11} fontFamily="var(--font-mono, monospace)">
+            telemetry volume →
+          </text>
+
+          {/* SaaS per-GB pricing: grows with volume */}
+          <path
+            d="M 56 206 C 220 198, 420 160, 600 62"
+            fill="none"
+            stroke="#488acb"
+            strokeWidth={2}
+            strokeLinecap="round"
+          />
+          {/* Self-hosted: near flat on existing capacity */}
+          <path
+            d="M 56 214 C 240 213, 440 210, 600 204"
+            fill="none"
+            stroke="#d76f04"
+            strokeWidth={2}
+            strokeLinecap="round"
+          />
+
+          {/* Direct labels at line ends, ink for text + a mark for identity */}
+          <circle cx={600} cy={62} r={4} fill="#488acb" />
+          <text x={592} y={52} textAnchor="end" className="fill-foreground/80" fontSize={12} fontFamily="var(--font-mono, monospace)">
+            per-GB SaaS · the quote, ~£100k/yr
+          </text>
+          <circle cx={600} cy={204} r={4} fill="#d76f04" />
+          <text x={592} y={194} textAnchor="end" className="fill-foreground/80" fontSize={12} fontFamily="var(--font-mono, monospace)">
+            self-hosted · ~£5k/yr all-in
+          </text>
+        </svg>
+      </div>
+      <div className="flex flex-wrap items-center gap-x-5 gap-y-1 px-5 pb-3 font-mono text-[11px] text-muted-foreground">
+        <span className="inline-flex items-center gap-1.5">
+          <span className="w-2.5 h-0.5 rounded-full" style={{ background: "#488acb" }} aria-hidden />
+          per-GB SaaS pricing
+        </span>
+        <span className="inline-flex items-center gap-1.5">
+          <span className="w-2.5 h-0.5 rounded-full" style={{ background: "#d76f04" }} aria-hidden />
+          self-hosted on existing capacity
+        </span>
+      </div>
+    </div>
+  );
+}
+
 const APPENDIX_FIGURES = [
   { label: "Services", value: "20, across 4 envs" },
   { label: "Annual cost", value: "~£5k all-in" },
@@ -254,11 +326,14 @@ export default function ObservabilityPage() {
           </Clause>
 
           <Clause n="2" title="The options, and the call">
+            <Exhibit caption="Figure 1 — the shape of the pricing models, not a measurement. The two anchored figures are the ones this record already states.">
+              <CostShape />
+            </Exhibit>
             <DecisionRecord />
           </Clause>
 
           <Clause n="3" title="How it fits together">
-            <Exhibit caption="Figure 1 — the stack as deployed. Metrics, logs and traces converge on Grafana; cold data ages out to object storage.">
+            <Exhibit caption="Figure 2 — the stack as deployed. Metrics, logs and traces converge on Grafana; cold data ages out to object storage.">
               <ObservabilityArchitecture />
             </Exhibit>
             <P>
@@ -366,6 +441,14 @@ export default function ObservabilityPage() {
               it&apos;s just them. Nobody has thanked me for the dashboards.
               They&apos;d notice immediately if they went.
             </P>
+            <P>
+              And because a record about observability should be observable:
+              the panel below is this page measuring itself, in your browser,
+              right now.
+            </P>
+            <Exhibit caption="Exhibit C — your session's real web vitals, measured just now. Nothing here is hardcoded; if a metric can't be measured it shows a dash.">
+              <SessionVitals />
+            </Exhibit>
           </Clause>
 
           {/* Appendix */}
