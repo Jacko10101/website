@@ -24,14 +24,14 @@ export default function Home() {
             lede="My day job is an AI that answers questions about a database and shows you the SQL, so you can check it rather than trust it. This is that, pointed at my own work — real SQLite, running in your browser. Pick a question, read the query, then edit it and run your own."
           />
         </div>
-        <div className="mt-8 max-w-6xl">
+        <div className="mt-8 max-w-6xl 2xl:max-w-7xl">
           <CareerQuery />
         </div>
       </section>
+      <FeaturedProjects />
       <PipelineStory />
       <PipelineStoryMobile />
       <SystemMap />
-      <FeaturedProjects />
       <TestimonialBlock />
       <ContactCTA />
     </>

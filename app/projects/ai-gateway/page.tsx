@@ -3,12 +3,14 @@
 import {
   PHOSPHORS,
   CaseStudyLayout,
-  CaseStudyHero,
-  TechSidebar,
-  CaseStudyCTA,
   EnhancedCodeBlock,
 } from "@/components/case-study-layout";
 import { TraceSection as CaseStudySection } from "@/components/case-section-variants";
+import {
+  IncidentHeader,
+  IncidentAppendices,
+  IncidentSignoff,
+} from "@/components/ai-gateway-incident";
 import { FadeUp } from "@/components/scroll-reveal";
 import { GatewayTracer } from "@/components/gateway-tracer";
 
@@ -37,7 +39,7 @@ const ACTION_ITEMS: { action: string; status: ItemStatus; detail: string }[] = [
     action: "Make an unpermitted model fail closed",
     status: "shipped",
     detail:
-      "A 401, never a silent substitution. A gateway that quietly picks something else makes cost and behaviour unpredictable at the same time, and you find out from the bill.",
+      "A 401, never a silent substitution. A gateway that quietly picks something else makes cost and behaviour unpredictable at the same time.",
   },
   {
     action: "Collapse to one gateway, environment as a tag",
@@ -55,7 +57,7 @@ const ACTION_ITEMS: { action: string; status: ItemStatus; detail: string }[] = [
     action: "Write down the two-step onboarding trap",
     status: "runbook",
     detail:
-      "A model can be fully deployed and still 401 for everybody, because existing and being permitted are different facts. It caught me more than once before it was written down.",
+      "A model can be fully deployed and still 401 for everybody, because no key has been told it may use it. It caught me more than once before it was written down.",
   },
   {
     action: "Write no proxy",
@@ -67,7 +69,7 @@ const ACTION_ITEMS: { action: string; status: ItemStatus; detail: string }[] = [
     action: "Stop dashboard price constants from rotting",
     status: "open",
     detail:
-      "The 4x bug was config drift, not a measurement error: the tokens were counted correctly and multiplied by a price a human had typed in. Closing this properly means something that compares those constants against what the provider actually charges, because a number nobody re-checks is a number that rots.",
+      "The 4x bug was config drift, not a measurement error: the tokens were counted correctly and multiplied by a price a human had typed in. Closing this properly means something that compares those constants against what the provider actually charges.",
   },
 ];
 
@@ -130,15 +132,7 @@ const articleSchema = {
 export default function AIGatewayPage() {
   return (
     <CaseStudyLayout schema={articleSchema} phosphor={PHOSPHORS.amber}>
-      <CaseStudyHero
-        title="AI Gateway"
-        subtitle="One endpoint for every model"
-        description="A self-hosted LLM gateway in front of every AI workload. Services hold a virtual key with an allowlist, not a provider key, and spend lands against the tenant that caused it."
-        date="2026"
-        metrics="every AI workload, one endpoint"
-        command="cat case-studies/ai-gateway.md"
-        phosphor={PHOSPHORS.amber.label}
-      />
+      <IncidentHeader phosphor={PHOSPHORS.amber.label} />
 
       <div className="container px-4 mb-16">
         <div className="max-w-7xl mx-auto">
@@ -149,9 +143,10 @@ export default function AIGatewayPage() {
                 Two different ways to get a 401
               </h2>
               <p className="mt-2 text-muted-foreground max-w-2xl">
-                Pick a consumer and a model. A model can be fully deployed and
-                still refused, because existing and being permitted are separate
-                facts. That catches people constantly, including me.
+                Pick a consumer and a model. Some combinations come back 401
+                even though the model is fully deployed, and the trace shows
+                exactly where the refusal happens. That catches people
+                constantly, including me.
               </p>
             </div>
             <GatewayTracer />
@@ -288,10 +283,9 @@ curl -H "Authorization: Bearer $VIRTUAL_KEY" "$GATEWAY/v1/models"`}
 
             <CaseStudySection eyebrow="// review: action items" title="What changed as a result">
               <p className="text-muted-foreground leading-relaxed mb-6">
-                The honest version of this project&apos;s history is a list of
-                things that were going to hurt and what got done about each one.
-                The last one is still open, which is the normal state of an
-                action list nobody is pretending about.
+                This project&apos;s history reads as a list of things that were
+                about to hurt and what got done about each one. The last item
+                is still open.
               </p>
 
               <ActionItems />
@@ -310,40 +304,11 @@ curl -H "Authorization: Bearer $VIRTUAL_KEY" "$GATEWAY/v1/models"`}
             </CaseStudySection>
           </div>
 
-          <TechSidebar
-            technologies={[
-              "LiteLLM",
-              "Kubernetes",
-              "ArgoCD",
-              "Kustomize",
-              "Gemini",
-              "Prometheus",
-              "Grafana",
-              "AWS Secrets Manager",
-              "Istio",
-            ]}
-            skills={[
-              "LLM platform design",
-              "Cost attribution for AI workloads",
-              "Credential and access boundaries",
-              "GitOps-managed shared services",
-              "Writing the runbook people actually need",
-            ]}
-            metrics={[
-              { label: "Consumers", value: "Every AI workload in the estate" },
-              { label: "Access model", value: "Virtual key + allowlist" },
-              { label: "Attribution", value: "Tenant, environment, feature" },
-              { label: "Model upgrades", value: "Config, not code" },
-            ]}
-            relatedProjects={[
-              { title: "Clarity · natural-language database interface", href: "/projects/clarity" },
-              { title: "Pipeline Platform · shared CI/CD", href: "/projects/pipeline-platform" },
-            ]}
-          />
+          <IncidentAppendices />
         </div>
       </div>
 
-      <CaseStudyCTA line="One action item is still open, and the pricing bug has a longer version. Happy to talk through either." />
+      <IncidentSignoff />
     </CaseStudyLayout>
   );
 }

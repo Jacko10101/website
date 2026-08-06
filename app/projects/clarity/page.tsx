@@ -1,14 +1,11 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import type { ReactNode } from "react";
-import {
-  PHOSPHORS,
-  CaseStudyLayout,
-  CaseStudyHero,
-  TechSidebar,
-  CaseStudyCTA,
-} from "@/components/case-study-layout";
+import { motion } from "framer-motion";
+import { ArrowLeft } from "lucide-react";
+import { PHOSPHORS, CaseStudyLayout } from "@/components/case-study-layout";
 import { ChatSection as CaseStudySection } from "@/components/case-section-variants";
 import { FadeUp } from "@/components/scroll-reveal";
 import { TerminalWindow } from "@/components/terminal-window";
@@ -131,6 +128,139 @@ function Evidence({ of }: { of: keyof typeof SHOTS }) {
 }
 
 /* --------------------------------------------------------------------------
+ * The front page of the ledger. This document's genre is claims-and-receipts,
+ * so it opens the way an audit does: state the claims up front, say which
+ * carry receipts, and be honest about the one that doesn't. Six claims, five
+ * receipts, one left open on purpose — the closing paragraph explains why.
+ * ----------------------------------------------------------------------- */
+const LEDGER: { claim: string; receipt: string; open?: boolean }[] = [
+  { claim: "Answers arrive with the SQL that produced them", receipt: "screenshot" },
+  { claim: "It knows the whole estate, not one table at a time", receipt: "screenshot" },
+  { claim: "Generated SQL can only ever read", receipt: "try it below" },
+  { claim: "A 39,041-row export won't take the pod with it", receipt: "screenshot" },
+  { claim: "A conversation can become a dashboard", receipt: "screenshot" },
+  { claim: "Fabrication is at zero", receipt: "none yet", open: true },
+];
+
+function ClaimsLedgerHeader() {
+  return (
+    <header className="relative pt-28 pb-20 md:pt-32 md:pb-24 overflow-hidden">
+      <div className="absolute inset-0 grid-background pointer-events-none" aria-hidden />
+
+      <div className="container px-4 relative z-10">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <Link
+            href="/projects"
+            className="inline-flex items-center gap-2 text-sm font-mono text-muted-foreground hover:text-primary transition-colors mb-8 group"
+          >
+            <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
+            Back to Projects
+          </Link>
+        </motion.div>
+
+        <div className="max-w-4xl">
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6 }}
+            className="font-mono text-xs uppercase tracking-[0.2em] text-primary mb-4"
+            aria-hidden
+          >
+            claims &amp; receipts
+          </motion.p>
+
+          <motion.h1
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="font-mono font-semibold tracking-tight text-4xl sm:text-5xl md:text-6xl text-foreground mb-4"
+          >
+            Clarity
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.15 }}
+            className="font-mono text-sm text-muted-foreground mb-6"
+          >
+            Natural-language database interface
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-xl text-muted-foreground mb-10 leading-relaxed"
+          >
+            Ask the estate a question in English, get an answer with the SQL
+            that produced it. Generating the SQL was the easy bit. The hard
+            part was proving the answers, so this page is written the way the
+            product works: every claim sits next to the thing that backs it.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="rounded-lg border border-border bg-card/40 overflow-hidden"
+          >
+            <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 px-4 py-2.5 border-b border-border bg-card/60 font-mono text-[11px]">
+              <span className="uppercase tracking-wider text-primary">
+                what this page claims
+              </span>
+              <span className="text-muted-foreground">
+                2025 → ongoing · ~30 tenants · ~20 daily users
+              </span>
+            </div>
+            <ol className="font-mono text-sm">
+              {LEDGER.map((row, i) => (
+                <li
+                  key={row.claim}
+                  className="flex flex-wrap items-baseline gap-x-3 gap-y-1.5 px-4 py-3 border-b border-border/60"
+                >
+                  <span
+                    className="text-xs text-muted-foreground/60 tabular-nums"
+                    aria-hidden
+                  >
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span
+                    className={`flex-1 min-w-[14rem] ${
+                      row.open ? "text-muted-foreground" : "text-foreground"
+                    }`}
+                  >
+                    {row.claim}
+                  </span>
+                  <span
+                    className={`text-[11px] rounded border px-2 py-0.5 ${
+                      row.open
+                        ? "border-border text-muted-foreground"
+                        : "border-primary/30 text-primary"
+                    }`}
+                  >
+                    {row.open ? "no receipt" : `receipt · ${row.receipt}`}
+                  </span>
+                </li>
+              ))}
+            </ol>
+            <p className="px-4 py-3 font-mono text-xs text-muted-foreground leading-relaxed">
+              Five receipts on this page. The sixth claim is left open on
+              purpose — it&apos;s the last paragraph, and it stays open until
+              the evidence exists.
+            </p>
+          </motion.div>
+        </div>
+      </div>
+    </header>
+  );
+}
+
+/* --------------------------------------------------------------------------
  * The enforcement ledger. The argument this whole project rests on is that a
  * guarantee written into a prompt isn't a guarantee, so each one is listed
  * against the place it actually holds. Deliberately not three cards in a row.
@@ -140,19 +270,19 @@ const GUARANTEES: { claim: string; where: string; detail: string }[] = [
     claim: "An answer with a number in it ran a query",
     where: "canary evals, post-deploy",
     detail:
-      "Canned questions replay after every deploy and assert against the audit record rather than the prose. Answer contains a number, SQL must have run. Export claimed, report row must have completed.",
+      "The canary evals from the section above: canned questions after every deploy, asserted against the audit record rather than the prose.",
   },
   {
     claim: "Generated SQL can only ever read",
     where: "a Postgres role, not the prompt",
     detail:
-      "Queries run as a dedicated read-only role provisioned on every tenant database at startup. It fails closed: no pool, no query. It never falls back to the admin connection, which is the sort of helpfulness that ends up in an incident report.",
+      "A dedicated read-only role, provisioned on every tenant database at startup. It fails closed — no pool, no query — and there is no code path that falls back to the admin connection.",
   },
   {
     claim: "The two data stores can never be joined",
     where: "routing, by construction",
     detail:
-      "Operational data lives on a per-tenant database, telemetry in a shared time-series store, and generated SQL is routed to exactly one of them. A cross-store join isn't discouraged, it's unavailable — which kills a whole category of confidently wrong answer.",
+      "Operational data lives on a per-tenant database, telemetry in a shared time-series store, and generated SQL is routed to exactly one of them. A cross-store join can't be expressed at all, which removes a whole category of wrong answer.",
   },
   {
     claim: "A conversation can't become runaway spend",
@@ -193,6 +323,175 @@ function GuaranteeLedger() {
   );
 }
 
+/* --------------------------------------------------------------------------
+ * The audit record. Every case study carries the same facts — stack, skills,
+ * numbers, cross-references — but here they're filed as one continuous
+ * document rather than the shared `$ stack` cards, because on this page even
+ * the sidebar is part of the ledger.
+ * ----------------------------------------------------------------------- */
+function RecordLabel({ children }: { children: ReactNode }) {
+  return (
+    <h3 className="font-mono text-[11px] uppercase tracking-wider text-primary mb-3">
+      {children}
+    </h3>
+  );
+}
+
+function AuditRecord() {
+  return (
+    <aside className="lg:sticky lg:top-24 self-start">
+      <FadeUp delay={0.1}>
+        <div className="rounded-lg border border-border bg-card/40 overflow-hidden">
+          <div className="flex items-center justify-between gap-3 px-5 py-3 border-b border-border bg-card/60 font-mono text-[11px]">
+            <span className="uppercase tracking-wider text-primary">
+              audit record
+            </span>
+            <span className="text-muted-foreground">clarity</span>
+          </div>
+
+          <div className="px-5 py-5 border-b border-border/60">
+            <RecordLabel>built with</RecordLabel>
+            <p className="font-mono text-xs text-muted-foreground leading-loose">
+              Java 21 · Spring Boot · Spring AI · Gemini 2.5 Flash · LiteLLM ·
+              PostgreSQL · TimescaleDB · Flyway · S3 · Caffeine · Micrometer ·
+              OpenTelemetry · Kubernetes
+            </p>
+          </div>
+
+          <div className="px-5 py-5 border-b border-border/60">
+            <RecordLabel>entered in evidence</RecordLabel>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              {[
+                "LLM grounding and hallucination detection",
+                "Evaluation that doesn't rely on a model",
+                "Securing model-generated SQL",
+                "Multi-tenant data isolation",
+                "Streaming exports at constant memory",
+                "Instrumenting AI so failures are visible",
+              ].map((skill) => (
+                <li key={skill} className="flex gap-2">
+                  <span className="text-primary shrink-0" aria-hidden>
+                    –
+                  </span>
+                  {skill}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="px-5 py-5 border-b border-border/60">
+            <RecordLabel>for the record</RecordLabel>
+            <ul className="space-y-2.5 text-sm leading-relaxed">
+              {[
+                { label: "Tenants", value: "~30, isolated per database" },
+                { label: "Grounding checks", value: "5 classes, every turn" },
+                { label: "Vector stores", value: "none — compiled knowledge" },
+                { label: "Export ceiling", value: "50k rows, flat memory" },
+              ].map((metric) => (
+                <li key={metric.label}>
+                  <span className="font-medium text-foreground">
+                    {metric.label}
+                  </span>{" "}
+                  <span className="text-muted-foreground">
+                    — {metric.value}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="px-5 py-5">
+            <RecordLabel>cross-referenced</RecordLabel>
+            <div className="space-y-3">
+              {[
+                {
+                  title: "AI Gateway · one endpoint for every model",
+                  href: "/projects/ai-gateway",
+                },
+                {
+                  title: "Observability · self-hosted monitoring",
+                  href: "/projects/observability",
+                },
+              ].map((project) => (
+                <Link
+                  key={project.href}
+                  href={project.href}
+                  className="group flex items-baseline justify-between gap-3 text-sm font-medium hover:text-primary transition-colors"
+                >
+                  <span>{project.title}</span>
+                  <span
+                    className="font-mono text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all"
+                    aria-hidden
+                  >
+                    →
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 px-5 py-3 border-t border-border bg-card/60 font-mono text-[11px] text-muted-foreground">
+            <span
+              className="w-1.5 h-1.5 rounded-full bg-primary glow-soft"
+              aria-hidden
+            />
+            rendered on phosphor {PHOSPHORS.blue.label}
+          </div>
+        </div>
+      </FadeUp>
+    </aside>
+  );
+}
+
+/* --------------------------------------------------------------------------
+ * Closing the ledger out. Sits after the one claim without a receipt, which
+ * is the whole ending — this just balances the books and says goodbye.
+ * ----------------------------------------------------------------------- */
+function LedgerSignOff() {
+  return (
+    <section className="container px-4 py-16">
+      <div className="max-w-2xl mx-auto">
+        <FadeUp>
+          <div className="rounded-lg border border-border bg-card/40 overflow-hidden font-mono">
+            <div className="px-5 py-3 border-b border-border bg-card/60 text-[11px] uppercase tracking-wider text-primary">
+              ledger closed
+            </div>
+            <dl className="px-5 py-4 space-y-2 text-sm">
+              <div className="flex justify-between gap-4">
+                <dt className="text-muted-foreground">receipts attached</dt>
+                <dd className="text-foreground tabular-nums">5</dd>
+              </div>
+              <div className="flex justify-between gap-4">
+                <dt className="text-muted-foreground">claims left open</dt>
+                <dd className="text-primary">1 · marked above</dd>
+              </div>
+            </dl>
+          </div>
+          <p className="mt-6 text-sm text-muted-foreground leading-relaxed">
+            Everything above has its receipt except the last paragraph, and I
+            told you which one that was. I&apos;d hold work to the same
+            standard —{" "}
+            <Link
+              href="/contact"
+              className="text-primary hover:underline underline-offset-4"
+            >
+              say hello
+            </Link>{" "}
+            if that sounds useful, or head{" "}
+            <Link
+              href="/projects"
+              className="text-primary hover:underline underline-offset-4"
+            >
+              back to the projects
+            </Link>
+            .
+          </p>
+        </FadeUp>
+      </div>
+    </section>
+  );
+}
+
 const articleSchema = {
   "@context": "https://schema.org",
   "@type": "TechArticle",
@@ -218,15 +517,7 @@ const articleSchema = {
 export default function ClarityPage() {
   return (
     <CaseStudyLayout schema={articleSchema} phosphor={PHOSPHORS.blue}>
-      <CaseStudyHero
-        title="Clarity"
-        subtitle="Natural-language database interface"
-        description="Ask the estate a question in English, get an answer with the SQL that produced it. Around thirty tenant databases, about twenty people daily. Generating SQL was the easy bit."
-        date="2025 → ongoing"
-        metrics="~30 tenants, ~20 daily users"
-        command="cat case-studies/clarity.md"
-        phosphor={PHOSPHORS.blue.label}
-      />
+      <ClaimsLedgerHeader />
 
       <div className="container px-4 mb-16">
         <div className="max-w-7xl mx-auto">
@@ -261,12 +552,13 @@ export default function ClarityPage() {
               <p className="text-muted-foreground leading-relaxed mb-4">
                 Day two is the problem. It answers from a table that died a year
                 ago. It quotes a number without running a query. It says your
-                export is ready when nothing was ever written. Each one beats a
-                stack trace for damage, because nobody can tell it happened.
+                export is ready when nothing was ever written. Each of those
+                does more damage than an error, because nobody can tell it
+                happened.
               </p>
               <p className="text-muted-foreground leading-relaxed mb-4">
                 So I stopped reading feature requests and read transcripts
-                instead. The gap was never capability. It was trust.
+                instead. The gap wasn&apos;t capability, it was trust.
               </p>
               <p className="text-muted-foreground leading-relaxed">
                 Which is why everything below comes with the thing that proves
@@ -365,15 +657,14 @@ export default function ClarityPage() {
                 LLM-as-judge is the obvious approach and I rejected it. A grader
                 that hallucinates can&apos;t certify a system whose defining
                 failure is hallucination. The bad case isn&apos;t a wrong score,
-                it&apos;s two models agreeing confidently in the same wrong
-                direction with a green dashboard on top.
+                it&apos;s two models agreeing in the same wrong direction.
               </p>
               <p className="text-muted-foreground leading-relaxed">
-                Canned questions replay after every deploy, asserted against the
-                audit record rather than the prose. Answer contains a number, SQL
-                must have run. Fabricated-names list must be empty. Export
-                claimed, report row must have completed. Nothing to argue with at
-                2am.
+                So the evals are canary questions instead. Canned questions
+                replay after every deploy, asserted against the audit record
+                rather than the prose. Answer contains a number, SQL must have
+                run. Fabricated-names list must be empty. Export claimed, report
+                row must have completed.
               </p>
             </CaseStudySection>
 
@@ -383,8 +674,8 @@ export default function ClarityPage() {
             >
               <p className="text-muted-foreground leading-relaxed mb-6">
                 A system prompt is a request. Everything below is a property of
-                the system, which is the difference between a rule and a wish.
-                Each one names where it&apos;s actually enforced.
+                the system, and each entry names where it&apos;s actually
+                enforced.
               </p>
 
               <GuaranteeLedger />
@@ -398,8 +689,7 @@ export default function ClarityPage() {
             >
               <p className="text-muted-foreground leading-relaxed mb-4">
                 It answers questions people used to queue up for an analyst to
-                run, and it builds them things — the point at which it stops
-                being a chat toy and starts being a product.
+                run, and it builds them things they keep using afterwards.
               </p>
 
               <Evidence of="dashboard" />
@@ -415,45 +705,11 @@ export default function ClarityPage() {
             </CaseStudySection>
           </div>
 
-          <TechSidebar
-            technologies={[
-              "Java 21",
-              "Spring Boot",
-              "Spring AI",
-              "Gemini 2.5 Flash",
-              "LiteLLM",
-              "PostgreSQL",
-              "TimescaleDB",
-              "Flyway",
-              "S3",
-              "Caffeine",
-              "Micrometer",
-              "OpenTelemetry",
-              "Kubernetes",
-            ]}
-            skills={[
-              "LLM grounding and hallucination detection",
-              "Evaluation that doesn't rely on a model",
-              "Securing model-generated SQL",
-              "Multi-tenant data isolation",
-              "Streaming exports at constant memory",
-              "Instrumenting AI so failures are visible",
-            ]}
-            metrics={[
-              { label: "Tenants", value: "~30, isolated per database" },
-              { label: "Grounding checks", value: "5 classes, every turn" },
-              { label: "Vector stores", value: "None. Compiled knowledge" },
-              { label: "Export ceiling", value: "50k rows, flat memory" },
-            ]}
-            relatedProjects={[
-              { title: "AI Gateway · one endpoint for every model", href: "/projects/ai-gateway" },
-              { title: "Observability · self-hosted monitoring", href: "/projects/observability" },
-            ]}
-          />
+          <AuditRecord />
         </div>
       </div>
 
-      <CaseStudyCTA line="Everything above has its receipt except the last paragraph, and I told you which one that was. I'd hold work to the same standard." />
+      <LedgerSignOff />
     </CaseStudyLayout>
   );
 }

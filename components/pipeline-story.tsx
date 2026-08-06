@@ -221,7 +221,7 @@ function PipelineHeader() {
         aria-hidden
         className="text-outline absolute -top-10 right-0 font-mono font-bold text-[9rem] sm:text-[12rem] leading-none pointer-events-none select-none"
       >
-        01
+        02
       </span>
       <p className="font-mono text-sm text-primary mb-3" aria-hidden>
         <span className="text-muted-foreground">$</span> git push && watch the promotion

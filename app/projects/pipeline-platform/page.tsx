@@ -6,12 +6,14 @@ import { CicdArchitecture } from "@/components/cicd-architecture";
 import {
   PHOSPHORS,
   CaseStudyLayout,
-  CaseStudyHero,
-  TechSidebar,
   EnhancedCodeBlock,
-  CaseStudyCTA,
 } from "@/components/case-study-layout";
 import { StepSection as CaseStudySection } from "@/components/case-section-variants";
+import {
+  PrHeader,
+  PrSidebar,
+  PrMergeFooter,
+} from "@/components/pipeline-page-pr";
 import { FadeUp } from "@/components/scroll-reveal";
 import { TerminalWindow } from "@/components/terminal-window";
 
@@ -172,15 +174,7 @@ function Screenshot({
 export default function CicdGitopsPage() {
   return (
     <CaseStudyLayout schema={articleSchema} phosphor={PHOSPHORS.white}>
-      <CaseStudyHero
-        title="Pipeline platform"
-        subtitle="Shared CI/CD library"
-        description="One Bitbucket pipeline library, imported by every Java and Node service. Tests live in their own repo. Promotion and reporting belong to ArgoCD."
-        date="2023 → ongoing"
-        metrics="20 services, ~400 deploys/month"
-        command="cat case-studies/pipeline-platform.md"
-        phosphor={PHOSPHORS.white.label}
-      />
+      <PrHeader />
 
       <div className="container px-4">
         <div className="grid gap-8 lg:grid-cols-[2fr_1fr] max-w-7xl mx-auto">
@@ -395,43 +389,11 @@ gitops:
             </CaseStudySection>
           </div>
 
-          <TechSidebar
-            technologies={[
-              "Bitbucket Shared Pipelines",
-              "ArgoCD",
-              "ArgoCD Image Updater",
-              "ArgoCD Notifications",
-              "Kubernetes",
-              "Kustomize",
-              "AWS ECR",
-              "Veracode",
-              "SourceClear",
-              "Allure",
-              "Jira",
-              "Bash",
-            ]}
-            skills={[
-              "Extracting shared concerns into versioned libraries",
-              "Decoupling build from promotion",
-              "Env-gated optional steps",
-              "Fleet observability for tests",
-              "Internal tooling as a product",
-            ]}
-            metrics={[
-              { label: "Status", value: "Live, ongoing" },
-              { label: "Pipeline library", value: "java + node, semver-tagged" },
-              { label: "Per-service config", value: "one .ci/builds.yaml" },
-              { label: "Deploys", value: "~400/month across 4 envs" },
-            ]}
-            relatedProjects={[
-              { title: "Heimdall · deployment intelligence", href: "/projects/heimdall" },
-              { title: "Observability stack", href: "/projects/observability" },
-            ]}
-          />
+          <PrSidebar />
         </div>
       </div>
 
-      <CaseStudyCTA line="Merged, and I'd do it the same way again. The bash reporter is not missed." />
+      <PrMergeFooter />
     </CaseStudyLayout>
   );
 }

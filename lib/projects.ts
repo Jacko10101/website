@@ -19,6 +19,23 @@ export interface Project {
    */
   context: string | null;
   description: string;
+  /**
+   * Optional index-only copy override. The projects index renders this
+   * instead of `description` when set; every other consumer keeps
+   * reading `description`.
+   */
+  indexDescription?: string;
+  /**
+   * Document genre badge for the projects index, e.g. "POSTMORTEM",
+   * "ADR-001". Each case study is a different document type; this is
+   * how the index shows it before the click.
+   */
+  docType?: string;
+  /**
+   * Genre-specific link text on the index card, e.g. "read the
+   * postmortem". Falls back to "case study" when unset.
+   */
+  docCta?: string;
   status: ProjectStatus;
   statusLabel: string;
   year: string;
@@ -36,6 +53,8 @@ export const projects: Project[] = [
     subtitle: "Natural-language database interface",
     description:
       "Ask the estate a question in English, get an answer backed by SQL that actually ran. Around thirty tenant databases, about twenty people using it daily. There's no vector store anywhere; compiled schema knowledge does the grounding, and five classes of hallucination get caught on every turn.",
+    docType: "Claims + receipts",
+    docCta: "check the receipts",
     status: "production",
     statusLabel: "Synced · Healthy",
     year: "2025–26",
@@ -60,6 +79,8 @@ export const projects: Project[] = [
     subtitle: "One endpoint for every model",
     description:
       "A self-hosted LLM gateway in front of every AI workload. Services hold virtual keys with allowlists that fail closed, so I can tell you what any tenant or feature spent, and nothing reaches a model I didn't approve.",
+    docType: "Postmortem",
+    docCta: "read the postmortem",
     status: "production",
     statusLabel: "Synced · Healthy",
     year: "2026",
@@ -84,6 +105,8 @@ export const projects: Project[] = [
     subtitle: "Deployment intelligence platform",
     description:
       "The dashboard the platform team checks every morning. Answers one question: where is my ticket right now? Used daily by 20+ engineers across 20 services.",
+    docType: "Day log",
+    docCta: "read the day log",
     status: "production",
     statusLabel: "Synced · Healthy",
     year: "2025",
@@ -108,6 +131,8 @@ export const projects: Project[] = [
     subtitle: "Shared CI/CD library",
     description:
       "One Bitbucket pipeline library, imported by every Java and Node service. Tests live in their own repo, promotion belongs to ArgoCD. ~400 deploys/month across 20 services on a single .ci/builds.yaml.",
+    docType: "PR · Merged",
+    docCta: "review the PR",
     status: "production",
     statusLabel: "Synced · Healthy",
     year: "2024–25",
@@ -132,6 +157,10 @@ export const projects: Project[] = [
     subtitle: "Self-hosted monitoring",
     description:
       "Prometheus, Grafana and Loki for 20 services across four environments. Built in-house because the commercial quotes were silly money and we already had the cluster capacity going spare.",
+    indexDescription:
+      "Prometheus, Grafana and Loki for 20 services across four environments. Built in-house because commercial quotes came in around £100k a year against roughly £5k to run it ourselves, and we already had the cluster capacity going spare.",
+    docType: "ADR-001",
+    docCta: "read the ADR",
     status: "production",
     statusLabel: "Synced · Healthy",
     year: "2024–25",
@@ -156,6 +185,8 @@ export const projects: Project[] = [
     subtitle: "Self-hosted home automation",
     description:
       "A single-node K3s cluster on a Raspberry Pi 5, reconciled by ArgoCD and watched by Prometheus. Twenty-plus lights, plugs and sensors, and not one port open to the internet. It's the discipline I use at work, sized to a flat.",
+    docType: "Spec sheet",
+    docCta: "read the spec sheet",
     status: "homelab",
     statusLabel: "Synced · Healthy",
     year: "2025",
@@ -180,6 +211,7 @@ export const projects: Project[] = [
     subtitle: "MSc dissertation, in progress",
     description:
       "When a machine dies, nothing decides how the workload comes back: displaced pods rejoin the queue blind to what matters and to how loaded the survivors already are. I'm building a capacity-aware recovery scheduler and measuring it against stock kube-scheduler and PriorityClass preemption, on real clusters where node failure means actually killing the machine. Submission September 2026.",
+    docType: "Study · In progress",
     status: "in-progress",
     statusLabel: "In progress",
     year: "2026",

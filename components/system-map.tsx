@@ -134,7 +134,7 @@ export function SystemMap() {
         <SectionHeading
           command="cat platform.svg"
           title="What I build"
-          index="02"
+          index="03"
           lede="Not a list of logos. The system itself. Select a node; everything here is something I have run in production or at home."
         />
 

@@ -7,13 +7,29 @@ import { TypedLines } from "@/components/terminal-window";
 import { SectionHeading } from "@/components/section-heading";
 import { ContactCTA } from "@/components/contact-cta";
 
-function StatusPill({ project }: { project: Project }) {
+// Each case study is a different document genre — postmortem, ADR, day log —
+// and this badge is how the index says so before the click. It takes the
+// accent colour; the k8s status pill below defers to it.
+function DocTypeBadge({ project }: { project: Project }) {
+  if (!project.docType) return null;
   const tone =
     project.status === "in-progress"
-      ? "text-warn border-warn/50"
-      : "text-primary border-primary/50";
+      ? "text-warn border-warn/50 bg-warn/10"
+      : "text-primary border-primary/50 bg-primary/10";
   return (
-    <span className={`font-mono text-[10px] px-2 py-0.5 rounded border whitespace-nowrap ${tone}`}>
+    <span
+      className={`font-mono text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded-sm border whitespace-nowrap ${tone}`}
+    >
+      {project.docType}
+    </span>
+  );
+}
+
+// Deliberately muted: the genre badge owns the accent colour, this stays a
+// quiet kubectl joke in the corner.
+function StatusPill({ project }: { project: Project }) {
+  return (
+    <span className="font-mono text-[10px] px-2 py-0.5 rounded border border-border/60 text-muted-foreground whitespace-nowrap">
       {project.statusLabel}
     </span>
   );
@@ -24,19 +40,22 @@ function ProjectRow({ project, index }: { project: Project; index: number }) {
 
   const inner = (
     <>
-      {/* Header row, reads like a dashboard entry */}
+      {/* Document stamp row: genre badge leads, status pill defers */}
       <div className="flex flex-wrap items-center justify-between gap-3 px-6 md:px-8 pt-6">
-        <div className="flex items-baseline gap-3">
-          <h2
-            className={`font-mono font-semibold tracking-tight text-2xl text-foreground ${
-              clickable ? "group-hover:text-primary transition-colors" : ""
-            }`}
-          >
-            {project.title}
-          </h2>
-          <span className="font-mono text-xs text-muted-foreground">{project.year}</span>
-        </div>
+        <DocTypeBadge project={project} />
         <StatusPill project={project} />
+      </div>
+
+      {/* Title row */}
+      <div className="flex items-baseline gap-3 px-6 md:px-8 mt-3">
+        <h2
+          className={`font-mono font-semibold tracking-tight text-2xl text-foreground ${
+            clickable ? "group-hover:text-primary transition-colors" : ""
+          }`}
+        >
+          {project.title}
+        </h2>
+        <span className="font-mono text-xs text-muted-foreground">{project.year}</span>
       </div>
 
       <p className="px-6 md:px-8 mt-1 font-mono text-xs text-muted-foreground">
@@ -53,7 +72,7 @@ function ProjectRow({ project, index }: { project: Project; index: number }) {
       <div className="grid lg:grid-cols-[1fr_minmax(0,360px)] gap-6 lg:gap-10 px-6 md:px-8 mt-5">
         <div className="flex flex-col">
           <p className="text-sm text-muted-foreground leading-relaxed">
-            {project.description}
+            {project.indexDescription ?? project.description}
           </p>
 
           <div className="mt-6 grid grid-cols-3 gap-4 border-t border-border/60 pt-5">
@@ -90,7 +109,7 @@ function ProjectRow({ project, index }: { project: Project; index: number }) {
       <div className="px-6 md:px-8 pb-6 mt-5">
         {clickable ? (
           <span className="inline-block font-mono text-xs text-primary group-hover:translate-x-1 transition-transform">
-            case study →
+            {project.docCta ?? "case study"} →
           </span>
         ) : (
           <span className="font-mono text-xs text-muted-foreground">

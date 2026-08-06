@@ -207,8 +207,9 @@ html.lenis {
 
 @media (min-width: 1536px) {
   .container {
-    padding-left: 6rem;
-    padding-right: 6rem;
+    max-width: 1536px;
+    padding-left: 4rem;
+    padding-right: 4rem;
   }
 }
 

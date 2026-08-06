@@ -4,14 +4,13 @@ import Image from "next/image";
 import { ReactNode } from "react";
 import { HeimdallArchitecture } from "@/components/heimdall-architecture";
 import { HeimdallDemo } from "@/components/heimdall-demo";
-import {
-  PHOSPHORS,
-  CaseStudyLayout,
-  CaseStudyHero,
-  TechSidebar,
-  CaseStudyCTA,
-} from "@/components/case-study-layout";
+import { PHOSPHORS, CaseStudyLayout } from "@/components/case-study-layout";
 import { DaySection as CaseStudySection } from "@/components/case-section-variants";
+import {
+  DayLogHeader,
+  DayLogSidebar,
+  DayLogClose,
+} from "@/components/heimdall-page-frame";
 import { FadeUp } from "@/components/scroll-reveal";
 import { TerminalWindow } from "@/components/terminal-window";
 
@@ -41,7 +40,7 @@ const SOURCES: {
   },
   {
     system: "Kubernetes",
-    reads: "Pod state, read directly. This is what health actually means here, and it's why the dashboard stays honest when the abstraction above it isn't.",
+    reads: "Pod state, read directly. This is what health actually means here, and it's why Heimdall can disagree with ArgoCD.",
   },
   {
     system: "Test runs",
@@ -141,15 +140,7 @@ function Screenshot({
 export default function HeimdallPage() {
   return (
     <CaseStudyLayout schema={articleSchema} phosphor={PHOSPHORS.green}>
-      <CaseStudyHero
-        title="Heimdall"
-        subtitle="Deployment intelligence platform"
-        description="The dashboard the platform team checks every morning. One question: where is my ticket right now? Across 20 services and four environments."
-        date="2025 → ongoing"
-        metrics="20+ engineers, daily"
-        command="cat case-studies/heimdall.md"
-        phosphor={PHOSPHORS.green.label}
-      />
+      <DayLogHeader />
 
       <div className="container px-4 mb-16">
         <div className="max-w-7xl mx-auto">
@@ -298,8 +289,8 @@ export default function HeimdallPage() {
                 One Python service. A background job pulls from the upstream sources
                 every ten minutes and writes everything down: once into a database,
                 once into an in-memory cache the web app reads from. The web app
-                itself does no fetching, no joins, no slow work. That&apos;s the whole
-                trick. Pages stay fast under load because the work happens elsewhere.
+                itself does no fetching, no joins, no slow work. Pages stay fast
+                under load because the work happens elsewhere.
               </p>
 
               <HeimdallArchitecture />
@@ -347,13 +338,21 @@ export default function HeimdallPage() {
                 The thing I&apos;d tell anyone building an internal tool: the
                 original DORA collector was a back-end service, it was correct,
                 and nobody opened it. Same data, no front door, no users. The UI
-                is what made the work count — and 20+ people open this one every
-                morning, which is the only metric I fully trust.
+                is what made the work count. Twenty-plus people open this one
+                every morning, and that&apos;s the only metric I fully trust.
               </p>
             </CaseStudySection>
+
+            <DayLogClose />
           </div>
 
-          <TechSidebar
+          <DayLogSidebar
+            vitals={[
+              { label: "status", value: "Live, ongoing" },
+              { label: "users", value: "20+ engineers, daily" },
+              { label: "tracking", value: "20 services · 4 environments" },
+              { label: "freshness", value: "Every 10 minutes" },
+            ]}
             technologies={[
               "Python",
               "Flask",
@@ -372,21 +371,13 @@ export default function HeimdallPage() {
               "Zero-downtime data migrations",
               "Operability and documentation",
             ]}
-            metrics={[
-              { label: "Status", value: "Live, ongoing" },
-              { label: "Users", value: "20+ engineers, daily" },
-              { label: "Services tracked", value: "20, across 4 environments" },
-              { label: "Data freshness", value: "Every 10 minutes" },
-            ]}
-            relatedProjects={[
+            related={[
               { title: "Pipeline Platform · shared CI/CD", href: "/projects/pipeline-platform" },
               { title: "Observability Stack", href: "/projects/observability" },
             ]}
           />
         </div>
       </div>
-
-      <CaseStudyCTA line="Twenty-odd people open it before they open their email. That's the only review of it that counts." />
     </CaseStudyLayout>
   );
 }
