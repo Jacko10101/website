@@ -6,26 +6,31 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 
 /* --------------------------------------------------------------------------
  * Incident-report frame for the AI Gateway case study. The page's genre is
- * a postmortem, so it opens with front matter, carries its appendices in
- * the sidebar, and closes with a sign-off — instead of the shared hero,
- * TechSidebar and CTA the other case studies use.
+ * a postmortem, so it is set the way an incident review is set: front matter
+ * as an aligned field table, body sections numbered as findings on the
+ * trace rail, appendices as flat end-matter, and a sign-off with the open
+ * item still on record. No card glow — report density, hairline rules, the
+ * flat calm of a document written after the pager stopped.
  * ----------------------------------------------------------------------- */
 
-function FrontMatterField({
+/* One row of a report field table: aligned label column, hairline rule. */
+function ReportField({
   label,
   children,
-  wide = false,
+  muted = false,
 }: {
   label: string;
   children: ReactNode;
-  wide?: boolean;
+  muted?: boolean;
 }) {
   return (
-    <div
-      className={`grid grid-cols-[6rem_1fr] gap-1 ${wide ? "sm:col-span-2" : ""}`}
-    >
-      <dt className="font-mono text-xs text-primary/90 pt-0.5">{label}</dt>
-      <dd className="text-sm text-muted-foreground leading-relaxed">
+    <div className="grid grid-cols-[6.5rem_1fr] sm:grid-cols-[9rem_1fr] gap-x-6 py-2.5 border-b border-border/60">
+      <dt className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground pt-0.5">
+        {label}
+      </dt>
+      <dd
+        className={`text-sm leading-relaxed ${muted ? "text-muted-foreground" : "text-foreground/85"}`}
+      >
         {children}
       </dd>
     </div>
@@ -64,41 +69,37 @@ export function IncidentHeader() {
           </h1>
 
           {/* Subtitle */}
-          <p className="font-mono text-sm text-muted-foreground mb-6">
+          <p className="font-mono text-sm text-muted-foreground mb-8">
             One endpoint for every model
           </p>
 
-          {/* Front matter */}
-          <div className="rounded-lg border border-border bg-card/40 overflow-hidden">
-            <div className="flex flex-wrap items-center gap-2 px-5 py-2.5 border-b border-border font-mono text-xs">
-              <span className="w-2 h-2 rounded-full bg-primary" aria-hidden />
-              <span className="text-primary font-semibold">front matter</span>
-              <span className="text-muted-foreground">· ai-gateway</span>
-            </div>
-            <dl className="px-5 py-3.5 grid gap-x-10 gap-y-2.5 sm:grid-cols-2">
-              <FrontMatterField label="status">
-                <span className="inline-flex items-center gap-2 text-foreground/90">
-                  <span
-                    className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"
-                    aria-hidden
-                  />
-                  resolved · monitoring
-                </span>
-              </FrontMatterField>
-              <FrontMatterField label="date">2026</FrontMatterField>
-              <FrontMatterField label="scope">
-                every AI workload, one endpoint
-              </FrontMatterField>
-              <FrontMatterField label="impact">
-                none — caught at the third key
-              </FrontMatterField>
-              <FrontMatterField label="summary" wide>
-                A self-hosted LLM gateway in front of every AI workload.
-                Services hold a virtual key with an allowlist, not a provider
-                key, and spend lands against the tenant that caused it.
-              </FrontMatterField>
-            </dl>
-          </div>
+          {/* Front matter — the report's field table */}
+          <p className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground mb-2">
+            front matter <span className="normal-case">· ai-gateway</span>
+          </p>
+          <dl className="border-t border-border/60">
+            <ReportField label="status">
+              <span className="inline-flex items-center gap-2 text-foreground/90">
+                <span
+                  className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"
+                  aria-hidden
+                />
+                resolved · monitoring
+              </span>
+            </ReportField>
+            <ReportField label="date">2026</ReportField>
+            <ReportField label="scope">
+              every AI workload, one endpoint
+            </ReportField>
+            <ReportField label="impact">
+              none — caught at the third key
+            </ReportField>
+            <ReportField label="summary">
+              A self-hosted LLM gateway in front of every AI workload. Services
+              hold a virtual key with an allowlist, not a provider key, and
+              spend lands against the tenant that caused it.
+            </ReportField>
+          </dl>
         </div>
       </div>
     </header>
@@ -106,8 +107,73 @@ export function IncidentHeader() {
 }
 
 /* --------------------------------------------------------------------------
- * Sidebar — the review's appendices. Same facts a TechSidebar would carry,
- * dressed as attachments to the document.
+ * Body sections — findings on the trace rail. The span dot and rail stay
+ * from the trace anatomy; the marker line numbers each section the way a
+ * postmortem numbers its findings. Sections without a number (action items,
+ * the closing status) keep the rail and carry their label in primary.
+ * ----------------------------------------------------------------------- */
+
+export function ReportSection({
+  finding,
+  eyebrow,
+  title,
+  children,
+  className = "",
+}: {
+  /** postmortem finding number; omit for non-finding sections */
+  finding?: number;
+  eyebrow?: string;
+  title?: string;
+  children: ReactNode;
+  className?: string;
+}) {
+  const label = eyebrow?.replace(/^\/\/\s*/, "");
+  return (
+    <section className={`mb-14 relative pl-8 ${className}`}>
+      <span
+        className="absolute left-[5px] top-6 bottom-0 w-px bg-border"
+        aria-hidden
+      />
+      <span
+        className="absolute left-0 top-1.5 w-[11px] h-[11px] rounded-full border-2 border-primary bg-background glow-border"
+        aria-hidden
+      />
+      {(finding !== undefined || label) && (
+        <p className="mb-3 font-mono text-xs tracking-wider">
+          {finding !== undefined && (
+            <span className="text-primary font-semibold uppercase">
+              finding {finding}
+            </span>
+          )}
+          {finding !== undefined && label && (
+            <span className="mx-2 text-muted-foreground/50" aria-hidden>
+              ·
+            </span>
+          )}
+          {label && (
+            <span
+              className={
+                finding !== undefined ? "text-muted-foreground" : "text-primary"
+              }
+            >
+              {label}
+            </span>
+          )}
+        </p>
+      )}
+      {title && (
+        <h2 className="font-mono font-semibold tracking-tight text-2xl sm:text-3xl text-foreground mb-6">
+          {title}
+        </h2>
+      )}
+      {children}
+    </section>
+  );
+}
+
+/* --------------------------------------------------------------------------
+ * Sidebar — the review's appendices, set as flat end-matter. Same facts a
+ * TechSidebar would carry, ruled like the rest of the report.
  * ----------------------------------------------------------------------- */
 
 const SYSTEMS = [
@@ -154,77 +220,76 @@ function AppendixLabel({ index, label }: { index: string; label: string }) {
 export function IncidentAppendices() {
   return (
     <aside className="lg:sticky lg:top-24 self-start">
-      <div className="rounded-lg border border-border bg-card/30 overflow-hidden">
-        <div className="px-5 py-3 border-b border-border font-mono text-xs text-muted-foreground">
-          appendices · attached to this review
-        </div>
+      <p className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground pb-3 border-b border-border/60">
+        appendices <span className="normal-case">· attached to this review</span>
+      </p>
 
-        <section className="px-5 py-4 border-b border-border">
-          <AppendixLabel index="A" label="systems involved" />
-          <p className="font-mono text-sm text-muted-foreground leading-relaxed">
-            {SYSTEMS.map((system, i) => (
-              <span key={system}>
-                <span className="whitespace-nowrap">{system}</span>
-                {i < SYSTEMS.length - 1 && (
-                  <span className="mx-1.5 text-muted-foreground/40" aria-hidden>
-                    ·
-                  </span>
-                )}
-              </span>
-            ))}
-          </p>
-        </section>
-
-        <section className="px-5 py-4 border-b border-border">
-          <AppendixLabel index="B" label="the work" />
-          <ul className="space-y-2 text-sm text-muted-foreground">
-            {WORK.map((item) => (
-              <li key={item} className="flex gap-2">
-                <span className="text-primary shrink-0" aria-hidden>
-                  —
+      <section className="py-5 border-b border-border/60">
+        <AppendixLabel index="A" label="systems involved" />
+        <p className="font-mono text-sm text-muted-foreground leading-relaxed">
+          {SYSTEMS.map((system, i) => (
+            <span key={system}>
+              <span className="whitespace-nowrap">{system}</span>
+              {i < SYSTEMS.length - 1 && (
+                <span className="mx-1.5 text-muted-foreground/40" aria-hidden>
+                  ·
                 </span>
-                {item}
-              </li>
-            ))}
-          </ul>
-        </section>
+              )}
+            </span>
+          ))}
+        </p>
+      </section>
 
-        <section className="px-5 py-4 border-b border-border">
-          <AppendixLabel index="C" label="facts on file" />
-          <dl className="space-y-3 text-sm">
-            {FACTS.map((fact) => (
-              <div key={fact.label} className="grid grid-cols-[7rem_1fr] gap-1">
-                <dt className="font-mono text-xs text-primary/90 pt-0.5">
-                  {fact.label}
-                </dt>
-                <dd className="text-muted-foreground">{fact.value}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
+      <section className="py-5 border-b border-border/60">
+        <AppendixLabel index="B" label="the work" />
+        <ul className="space-y-2 text-sm text-muted-foreground">
+          {WORK.map((item) => (
+            <li key={item} className="flex gap-2">
+              <span className="text-primary shrink-0" aria-hidden>
+                —
+              </span>
+              {item}
+            </li>
+          ))}
+        </ul>
+      </section>
 
-        <section className="px-5 py-4">
-          <AppendixLabel index="D" label="linked reviews" />
-          <div className="space-y-3">
-            {LINKED_REVIEWS.map((review) => (
-              <Link
-                key={review.href}
-                href={review.href}
-                className="flex items-center justify-between gap-2 text-sm font-medium hover:text-primary transition-colors group"
-              >
-                <span>{review.title}</span>
-                <ArrowRight className="w-4 h-4 shrink-0 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            ))}
-          </div>
-        </section>
-      </div>
+      <section className="py-5 border-b border-border/60">
+        <AppendixLabel index="C" label="facts on file" />
+        <dl className="space-y-3 text-sm">
+          {FACTS.map((fact) => (
+            <div key={fact.label} className="grid grid-cols-[7rem_1fr] gap-1">
+              <dt className="font-mono text-xs text-primary/90 pt-0.5">
+                {fact.label}
+              </dt>
+              <dd className="text-muted-foreground">{fact.value}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+
+      <section className="py-5 border-b border-border/60">
+        <AppendixLabel index="D" label="linked reviews" />
+        <div className="space-y-3">
+          {LINKED_REVIEWS.map((review) => (
+            <Link
+              key={review.href}
+              href={review.href}
+              className="flex items-center justify-between gap-2 text-sm font-medium hover:text-primary transition-colors group"
+            >
+              <span>{review.title}</span>
+              <ArrowRight className="w-4 h-4 shrink-0 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          ))}
+        </div>
+      </section>
     </aside>
   );
 }
 
 /* --------------------------------------------------------------------------
  * Sign-off — the review closed out, with the one item still open on record.
+ * Same field-table register as the front matter.
  * ----------------------------------------------------------------------- */
 
 export function IncidentSignoff() {
@@ -233,60 +298,47 @@ export function IncidentSignoff() {
       <div className="absolute inset-0 grid-background pointer-events-none" aria-hidden />
 
       <div className="container px-4 relative z-10">
-        <div className="max-w-3xl mx-auto rounded-lg border border-border bg-card/40 overflow-hidden">
-          <div className="flex items-center gap-2 px-5 py-3 border-b border-border font-mono text-xs">
+        <div className="max-w-3xl mx-auto">
+          <div className="flex flex-wrap items-center gap-2 pb-3 border-b border-border/60 font-mono text-xs">
             <span className="w-2 h-2 rounded-full bg-primary" aria-hidden />
             <span className="text-primary font-semibold">review closed</span>
             <span className="text-muted-foreground">· ai-gateway · sign-off</span>
           </div>
 
-          <div className="px-5 py-5 md:px-8 md:py-6">
-            <dl className="space-y-3 text-sm mb-6">
-              <div className="grid sm:grid-cols-[7rem_1fr] gap-1">
-                <dt className="font-mono text-xs text-primary/90 pt-0.5">
-                  reviewed by
-                </dt>
-                <dd className="text-muted-foreground">Jack Devlin</dd>
-              </div>
-              <div className="grid sm:grid-cols-[7rem_1fr] gap-1">
-                <dt className="font-mono text-xs text-primary/90 pt-0.5">
-                  status
-                </dt>
-                <dd className="text-muted-foreground">resolved · monitoring</dd>
-              </div>
-              <div className="grid sm:grid-cols-[7rem_1fr] gap-1">
-                <dt className="font-mono text-xs text-primary/90 pt-0.5">
-                  follow-up
-                </dt>
-                <dd className="text-muted-foreground">
-                  Dashboard price constants still need checking against what
-                  the provider actually charges.{" "}
-                  <span className="ml-1 font-mono text-[10px] uppercase tracking-wider border rounded px-2 py-0.5 text-warn border-warn/50 align-middle">
-                    open
-                  </span>
-                </dd>
-              </div>
-            </dl>
+          <dl>
+            <ReportField label="reviewed by" muted>
+              Jack Devlin
+            </ReportField>
+            <ReportField label="status" muted>
+              resolved · monitoring
+            </ReportField>
+            <ReportField label="follow-up" muted>
+              Dashboard price constants still need checking against what the
+              provider actually charges.{" "}
+              <span className="ml-1 font-mono text-[10px] uppercase tracking-wider border rounded px-2 py-0.5 text-warn border-warn/50 bg-warn/10 align-middle whitespace-nowrap">
+                open
+              </span>
+            </ReportField>
+          </dl>
 
-            <p className="text-sm text-muted-foreground leading-relaxed border-t border-border pt-5">
-              One action item is still open, and the pricing bug has a longer
-              version. Happy to talk through either —{" "}
-              <Link
-                href="/contact"
-                className="text-primary hover:underline underline-offset-4"
-              >
-                say hello
-              </Link>
-              . Or head back to the{" "}
-              <Link
-                href="/projects"
-                className="text-primary hover:underline underline-offset-4"
-              >
-                other case studies
-              </Link>
-              .
-            </p>
-          </div>
+          <p className="text-sm text-muted-foreground leading-relaxed pt-5">
+            One action item is still open, and the pricing bug has a longer
+            version. Happy to talk through either —{" "}
+            <Link
+              href="/contact"
+              className="text-primary hover:underline underline-offset-4"
+            >
+              say hello
+            </Link>
+            . Or head back to the{" "}
+            <Link
+              href="/projects"
+              className="text-primary hover:underline underline-offset-4"
+            >
+              other case studies
+            </Link>
+            .
+          </p>
         </div>
       </div>
     </section>

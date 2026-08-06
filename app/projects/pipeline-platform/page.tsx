@@ -2,14 +2,13 @@
 
 import Image from "next/image";
 import { ReactNode } from "react";
+import { Check } from "lucide-react";
 import { CicdArchitecture } from "@/components/cicd-architecture";
-import {
-  PHOSPHORS,
-  CaseStudyLayout,
-  EnhancedCodeBlock,
-} from "@/components/case-study-layout";
+import { PHOSPHORS, CaseStudyLayout } from "@/components/case-study-layout";
 import { StepSection as CaseStudySection } from "@/components/case-section-variants";
 import {
+  DIFF,
+  FileDiff,
   PrHeader,
   PrSidebar,
   PrMergeFooter,
@@ -18,7 +17,9 @@ import { TerminalWindow } from "@/components/terminal-window";
 
 /* --------------------------------------------------------------------------
  * This project was a migration, so the page is shaped like the pull request
- * that landed it: the objections raised in review, then the merge summary.
+ * that landed it — and set the way a code-review interface would set it:
+ * threaded review comments, files rendered as diffs, the summary as a
+ * unified diff. The objections raised in review, then the merge.
  * ----------------------------------------------------------------------- */
 const REVIEW_THREADS: { anchor: string; question: string; answer: string }[] = [
   {
@@ -44,28 +45,119 @@ const REVIEW_THREADS: { anchor: string; question: string; answer: string }[] = [
   },
 ];
 
+/* Each thread is a review comment anchored on a file, and its reply. The
+   objection → reply structure IS the thread — no names, no avatars. */
 function ReviewThreads() {
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       {REVIEW_THREADS.map((t) => (
-        <div key={t.anchor} className="rounded-lg border border-border overflow-hidden">
-          <div className="px-4 py-2 border-b border-border bg-card/60 font-mono text-xs text-muted-foreground">
-            {t.anchor}
+        <div key={t.anchor} className="rounded-md border border-border overflow-hidden">
+          <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 px-4 py-2 border-b border-border bg-card/60 font-mono text-xs">
+            <span className="text-foreground/90">{t.anchor}</span>
+            <span className="inline-flex items-center gap-1.5 text-muted-foreground">
+              <Check className="w-3.5 h-3.5" style={{ color: DIFF.add }} aria-hidden />
+              resolved
+            </span>
           </div>
-          <div className="p-5 space-y-4">
-            <p className="text-sm text-foreground/90 leading-relaxed border-l-2 border-border pl-4">
-              {t.question}
-            </p>
-            <div className="flex gap-3">
-              <span className="font-mono text-xs text-primary shrink-0 pt-0.5" aria-hidden>
-                ↳
-              </span>
-              <p className="text-sm text-muted-foreground leading-relaxed">{t.answer}</p>
+          <div className="divide-y divide-border/60">
+            <div className="px-4 py-4 sm:px-5">
+              <p className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground mb-2">
+                review · objection
+              </p>
+              <p className="text-sm text-foreground/90 leading-relaxed">
+                {t.question}
+              </p>
+            </div>
+            {/* The reply sits behind a comment rail, one level in. */}
+            <div className="relative px-4 py-4 pl-9 sm:pl-11 bg-card/40">
+              <span
+                className="absolute left-4 sm:left-5 top-4 bottom-4 w-px bg-border"
+                aria-hidden
+              />
+              <p className="font-mono text-[11px] uppercase tracking-wider text-primary mb-2">
+                ↳ reply
+              </p>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                {t.answer}
+              </p>
             </div>
           </div>
         </div>
       ))}
     </div>
+  );
+}
+
+/* The then/now instrument, drawn as the split diff it is: deletions on the
+   left, additions on the right, hairline gutters, diff colouring. */
+const THEN_LINES = [
+  "~500-line bitbucket-pipelines.yml, per service",
+  "1071-line bash reporter, one file, zero tests",
+  "a build-pattern change = a PR to twenty repos",
+];
+
+const NOW_LINES = [
+  "a six-line import, pinned to a tag",
+  "142-line orchestrator, five modules, each tested",
+  "a build-pattern change = one release, adopted by bump",
+];
+
+function ThenNowDiff() {
+  return (
+    <figure className="mb-6">
+      <div className="rounded-md border border-border overflow-hidden font-mono text-[13px]">
+        <div className="grid sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-border">
+          <div>
+            <div className="px-4 py-1.5 border-b border-border bg-error/10 font-semibold text-xs text-error/90">
+              then
+            </div>
+            <ul>
+              {THEN_LINES.map((line) => (
+                <li key={line} className="flex bg-error/5">
+                  <span
+                    className="w-7 shrink-0 text-center select-none border-r border-border/60 text-error bg-error/10"
+                    aria-hidden
+                  >
+                    −
+                  </span>
+                  <span className="flex-1 px-3 py-1 leading-relaxed text-foreground/70">
+                    {line}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <div
+              className="px-4 py-1.5 border-b border-border font-semibold text-xs"
+              style={{ color: DIFF.add, background: DIFF.addBg }}
+            >
+              now
+            </div>
+            <ul>
+              {NOW_LINES.map((line) => (
+                <li key={line} className="flex" style={{ background: DIFF.addBgFaint }}>
+                  <span
+                    className="w-7 shrink-0 text-center select-none border-r border-border/60"
+                    style={{ color: DIFF.add, background: DIFF.addBg }}
+                    aria-hidden
+                  >
+                    +
+                  </span>
+                  <span className="flex-1 px-3 py-1 leading-relaxed text-foreground/90">
+                    {line}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+      <figcaption className="mt-2.5 text-[13px] text-muted-foreground leading-relaxed">
+        Line two on each side is the diffstat in the header: the 1,071-line
+        reporter became a 142-line orchestrator in five tested modules.
+      </figcaption>
+    </figure>
   );
 }
 
@@ -78,27 +170,50 @@ const MERGE_LINES: { sign: "+" | "-"; text: string }[] = [
   { sign: "+", text: "Sentry verifying ~400 deploys a month after they land" },
 ];
 
+/* The merge summary as the unified diff it claims to be: sign gutter,
+   hairline rule, hunk header, deletion and addition tints. */
 function MergeSummary() {
   return (
-    <div className="rounded-lg border border-primary/40 overflow-hidden">
-      <div className="flex items-center gap-2 px-5 py-3 border-b border-border bg-primary/10 font-mono text-xs">
-        <span className="w-2 h-2 rounded-full bg-primary" aria-hidden />
-        <span className="text-primary font-semibold">Merged</span>
-        <span className="text-muted-foreground">· 20 services · one library</span>
+    <div className="rounded-md border border-border overflow-hidden font-mono text-[13px] leading-6">
+      <div className="px-4 py-2 border-b border-border bg-card/60 text-xs text-muted-foreground">
+        the change, in six lines
       </div>
-      <ul className="font-mono text-[13px] leading-6 p-5 space-y-0.5">
+      <div className="bg-black/40">
+        <div className="flex">
+          <span
+            className="w-8 shrink-0 border-r border-border/60 bg-card/40"
+            aria-hidden
+          />
+          <span className="flex-1 px-3 py-0.5 text-muted-foreground/70">
+            @@ 20 services · one library @@
+          </span>
+        </div>
         {MERGE_LINES.map((l) => (
-          <li
-            key={l.text}
-            className={l.sign === "+" ? "text-primary" : "text-error/80"}
-          >
-            <span aria-hidden>{l.sign} </span>
-            <span className={l.sign === "+" ? "text-foreground/85" : "text-muted-foreground line-through decoration-error/40"}>
+          <div key={l.text} className="flex">
+            <span
+              className={`w-8 shrink-0 text-center select-none border-r border-border/60 ${
+                l.sign === "-" ? "text-error bg-error/10" : ""
+              }`}
+              style={
+                l.sign === "+"
+                  ? { color: DIFF.add, background: DIFF.addBg }
+                  : undefined
+              }
+              aria-hidden
+            >
+              {l.sign === "-" ? "−" : "+"}
+            </span>
+            <span
+              className={`flex-1 px-3 py-0.5 ${
+                l.sign === "-" ? "bg-error/5 text-foreground/70" : "text-foreground/90"
+              }`}
+              style={l.sign === "+" ? { background: DIFF.addBgFaint } : undefined}
+            >
               {l.text}
             </span>
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
@@ -173,28 +288,11 @@ export default function CicdGitopsPage() {
     <CaseStudyLayout schema={articleSchema} phosphor={PHOSPHORS.white}>
       <PrHeader />
 
-      <div className="container px-4">
-        <div className="grid gap-8 lg:grid-cols-[2fr_1fr] max-w-7xl mx-auto">
-          <div className="space-y-12">
+      <div className="container px-4 pt-10 md:pt-12">
+        <div className="grid gap-10 lg:gap-12 lg:grid-cols-[minmax(0,1fr)_15rem] max-w-5xl mx-auto">
+          <div className="space-y-12 min-w-0">
             <CaseStudySection eyebrow="// exit 1 · the shape that broke" title="Twenty pipelines that drifted">
-              <div className="grid sm:grid-cols-2 gap-4 font-mono text-sm mb-6">
-                <div className="rounded-lg border border-error/30 bg-error/5 p-5">
-                  <p className="text-xs text-error/90 font-semibold mb-3">then</p>
-                  <ul className="space-y-2 text-muted-foreground text-[13px] leading-relaxed">
-                    <li>~500-line bitbucket-pipelines.yml, per service</li>
-                    <li>1071-line bash reporter, one file, zero tests</li>
-                    <li>a build-pattern change = a PR to twenty repos</li>
-                  </ul>
-                </div>
-                <div className="rounded-lg border border-primary/30 bg-primary/5 p-5">
-                  <p className="text-xs text-primary font-semibold mb-3">now</p>
-                  <ul className="space-y-2 text-muted-foreground text-[13px] leading-relaxed">
-                    <li>a six-line import, pinned to a tag</li>
-                    <li>142-line orchestrator, five modules, each tested</li>
-                    <li>a build-pattern change = one release, adopted by bump</li>
-                  </ul>
-                </div>
-              </div>
+              <ThenNowDiff />
 
               <p className="text-muted-foreground leading-relaxed mb-4">
                 Twenty services each shipped their own bitbucket-pipelines.yml.
@@ -233,9 +331,9 @@ export default function CicdGitopsPage() {
               </p>
 
               <div className="space-y-4 mb-6">
-                <EnhancedCodeBlock
-                  title=".ci/builds.yaml · the per-service surface"
-                  language="yaml"
+                <FileDiff
+                  path=".ci/builds.yaml"
+                  note="the per-service surface"
                   code={`service:
   name: payments-api
   type: java           # java | node
@@ -252,9 +350,9 @@ gitops:
   strategy: kustomize`}
                 />
 
-                <EnhancedCodeBlock
-                  title="bitbucket-pipelines.yml · the import"
-                  language="yaml"
+                <FileDiff
+                  path="bitbucket-pipelines.yml"
+                  note="the import"
                   code={`pipelines:
   pull-requests:
     '**':

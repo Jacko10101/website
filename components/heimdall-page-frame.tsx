@@ -6,21 +6,95 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 
 /**
  * Heimdall-only page frame. The case study reads as a day on the platform
- * team, so the frame is a shift log: the header is the day starting, the
- * sidebar is the desk, and the closer is clocking off. Deliberately not the
- * shared CaseStudyHero / TechSidebar / CaseStudyCTA the other studies use.
+ * team, so the page is set as the shift log itself: one continuous time rail
+ * runs down the left margin from 08:52 to 18:05, and every section is an
+ * entry appended to it — a node on the rail, the clock time, a hairline rule,
+ * then the entry body. The rail is drawn per-entry (each entry owns the
+ * segment from its node to the next entry's node), so it stays continuous as
+ * long as entries stack with zero vertical margin between them; spacing lives
+ * in each entry's padding-bottom. Deliberately not the shared CaseStudyHero /
+ * TechSidebar / CaseStudyCTA the other studies use.
  */
 
-// The day starting: log preamble, clock, then the title under the rule —
-// entry zero of the same anatomy DaySection gives every section below it.
-// Kept tight so the interactive environments view lands in the first viewport.
+/* Shared rail geometry. Node is 11px wide centred on x = 5.5px; the segment
+   is a 1px line at left: 5px. Entries indent their content clear of both. */
+const ENTRY_INDENT = "pl-7 sm:pl-12";
+
+function RailNode({ top }: { top: string }) {
+  return (
+    <span
+      className="absolute left-0 w-[11px] h-[11px] rounded-full border-2 border-primary bg-background z-10"
+      style={{ top }}
+      aria-hidden
+    />
+  );
+}
+
+/**
+ * One entry in the day's log. `pos` controls the rail segment:
+ * - "first"  — the segment starts at this entry's node and runs down;
+ * - "middle" — the segment runs the full height (the node sits on it);
+ * - "last"   — a stub from the top down to the node, then the rail ends.
+ */
+export function LogEntry({
+  time,
+  label,
+  title,
+  children,
+  pos = "middle",
+  className = "",
+}: {
+  time: string;
+  label: string;
+  title?: string;
+  children: ReactNode;
+  pos?: "first" | "middle" | "last";
+  className?: string;
+}) {
+  const spacing = pos === "last" ? "" : "pb-12 md:pb-16";
+  return (
+    <section className={`relative ${ENTRY_INDENT} ${spacing} ${className}`}>
+      <span
+        className={`absolute left-[5px] w-px bg-border ${
+          pos === "first"
+            ? "top-[14px] bottom-0"
+            : pos === "last"
+              ? "top-0 h-[14px]"
+              : "top-0 bottom-0"
+        }`}
+        aria-hidden
+      />
+      <RailNode top="9px" />
+
+      <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1 font-mono">
+        <span className="text-2xl font-semibold text-primary glow-soft tabular-nums shrink-0">
+          {time}
+        </span>
+        <span className="text-sm text-muted-foreground tracking-wider">{label}</span>
+      </div>
+
+      <div className="border-t border-border/60 mt-3 pt-5">
+        {title && (
+          <h2 className="font-mono font-semibold tracking-tight text-2xl sm:text-3xl text-foreground mb-6">
+            {title}
+          </h2>
+        )}
+        {children}
+      </div>
+    </section>
+  );
+}
+
+// The day starting: back link and log preamble sit above the rail, then the
+// first entry — 08:52, the clock the whole page hangs from — opens the rail
+// that runs unbroken to 18:05. The title block is that entry's body.
 export function DayLogHeader() {
   return (
-    <header className="relative pt-24 pb-10 md:pt-28 md:pb-12 overflow-hidden">
+    <header className="relative pt-24 md:pt-28 overflow-hidden">
       <div className="absolute inset-0 grid-background pointer-events-none" aria-hidden />
 
       <div className="container px-4 relative z-10">
-        <div>
+        <div className="max-w-7xl mx-auto">
           <Link
             href="/projects"
             className="inline-flex items-center gap-2 text-sm font-mono text-muted-foreground hover:text-primary transition-colors mb-6 group"
@@ -28,35 +102,43 @@ export function DayLogHeader() {
             <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
             Back to Projects
           </Link>
-        </div>
 
-        <div className="max-w-4xl">
-          <p className="font-mono text-xs text-muted-foreground tracking-wider mb-4">
+          <p className="font-mono text-xs text-muted-foreground tracking-wider mb-6">
             day log · platform team · 2025 → ongoing
           </p>
 
-          <div className="flex items-baseline gap-4 font-mono">
-            <span className="text-3xl sm:text-4xl font-semibold text-primary glow-soft tabular-nums shrink-0">
-              08:52
-            </span>
-            <span className="text-sm text-muted-foreground tracking-wider">
-              first tab of the day
-            </span>
-          </div>
+          {/* Entry zero. Larger clock than the entries below — the day starts
+              here — so the node and segment offsets are its own. */}
+          <div className={`relative ${ENTRY_INDENT} pb-12 md:pb-14`}>
+            <span
+              className="absolute left-[5px] top-[19px] bottom-0 w-px bg-border"
+              aria-hidden
+            />
+            <RailNode top="14px" />
 
-          <div className="border-t border-border/60 mt-3 pt-5">
-            <h1 className="font-mono font-semibold tracking-tight text-4xl sm:text-5xl md:text-6xl text-foreground mb-3">
-              Heimdall
-            </h1>
-            <p className="font-mono text-sm text-muted-foreground mb-4">
-              Deployment intelligence platform
-            </p>
-            <p className="text-xl text-muted-foreground leading-relaxed">
-              Before standup, before email, the platform team opens the same page.
-              It answers one question across 20 services and four environments:
-              where is my ticket right now? Twenty-plus engineers ask it every
-              morning. Today goes like this.
-            </p>
+            <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1 font-mono">
+              <span className="text-3xl sm:text-4xl font-semibold text-primary glow-soft tabular-nums shrink-0">
+                08:52
+              </span>
+              <span className="text-sm text-muted-foreground tracking-wider">
+                first tab of the day
+              </span>
+            </div>
+
+            <div className="border-t border-border/60 mt-3 pt-5 max-w-4xl">
+              <h1 className="font-mono font-semibold tracking-tight text-4xl sm:text-5xl md:text-6xl text-foreground mb-3">
+                Heimdall
+              </h1>
+              <p className="font-mono text-sm text-muted-foreground mb-4">
+                Deployment intelligence platform
+              </p>
+              <p className="text-xl text-muted-foreground leading-relaxed">
+                Before standup, before email, the platform team opens the same page.
+                It answers one question across 20 services and four environments:
+                where is my ticket right now? Twenty-plus engineers ask it every
+                morning. Today goes like this.
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -64,7 +146,10 @@ export function DayLogHeader() {
   );
 }
 
-function DeskPanel({
+/* The one panel that earns a box: the wall display beside the log, showing
+   the dashboard's own vitals. Set as a screen — dark glass, chrome bar,
+   live dot — not a card. */
+function WallDisplay({
   label,
   note,
   children,
@@ -74,8 +159,8 @@ function DeskPanel({
   children: ReactNode;
 }) {
   return (
-    <div className="rounded-lg border border-border overflow-hidden">
-      <div className="flex items-center justify-between gap-3 px-4 py-2.5 border-b border-border bg-card/50">
+    <div className="rounded-md border border-border bg-black/40 overflow-hidden">
+      <div className="flex items-center justify-between gap-3 px-4 py-2.5 border-b border-border">
         <h3 className="font-mono text-xs tracking-wider text-primary">{label}</h3>
         {note && (
           <span className="font-mono text-[10px] text-muted-foreground">{note}</span>
@@ -86,9 +171,31 @@ function DeskPanel({
   );
 }
 
-// The desk: what's running, what the day needs, the dashboard's own vitals,
-// and the other tabs open. Same facts TechSidebar carries elsewhere, worn
-// as day-log furniture instead of `$ label` blocks.
+/* Everything else on the desk is just a list under a mono heading and a
+   hairline rule — notes pinned beside the display, not more boxes. */
+function DeskList({
+  label,
+  note,
+  children,
+}: {
+  label: string;
+  note?: string;
+  children: ReactNode;
+}) {
+  return (
+    <div className="border-t border-border/60 pt-4">
+      <h3 className="flex items-baseline justify-between gap-3 font-mono text-xs tracking-wider mb-4">
+        <span className="text-primary">{label}</span>
+        {note && <span className="text-[10px] text-muted-foreground">{note}</span>}
+      </h3>
+      {children}
+    </div>
+  );
+}
+
+// The desk: the dashboard's own vitals on a wall display, then what's
+// running, what the day needs, and the other tabs open — same facts
+// TechSidebar carries elsewhere, worn as day-log furniture.
 export function DayLogSidebar({
   vitals,
   technologies,
@@ -101,8 +208,8 @@ export function DayLogSidebar({
   related: Array<{ title: string; href: string }>;
 }) {
   return (
-    <aside className="space-y-5 lg:sticky lg:top-24 self-start">
-      <DeskPanel
+    <aside className="space-y-8 lg:sticky lg:top-24 self-start">
+      <WallDisplay
         label="vitals"
         note={
           <span className="inline-flex items-center gap-1.5">
@@ -124,22 +231,19 @@ export function DayLogSidebar({
             </div>
           ))}
         </dl>
-      </DeskPanel>
+      </WallDisplay>
 
-      <DeskPanel label="on the desk" note="stack">
-        <div className="flex flex-wrap gap-2">
+      <DeskList label="on the desk" note="stack">
+        <div className="flex flex-wrap gap-x-3 gap-y-1.5 font-mono text-xs text-muted-foreground">
           {technologies.map((tech) => (
-            <span
-              key={tech}
-              className="px-2.5 py-1 text-xs font-mono rounded bg-secondary text-secondary-foreground border border-border hover:border-primary/30 transition-colors"
-            >
+            <span key={tech} className="hover:text-foreground transition-colors">
               {tech}
             </span>
           ))}
         </div>
-      </DeskPanel>
+      </DeskList>
 
-      <DeskPanel label="what the day asks for" note="skills">
+      <DeskList label="what the day asks for" note="skills">
         <ul className="space-y-2 text-sm text-muted-foreground">
           {skills.map((skill) => (
             <li key={skill} className="flex gap-2.5">
@@ -150,9 +254,9 @@ export function DayLogSidebar({
             </li>
           ))}
         </ul>
-      </DeskPanel>
+      </DeskList>
 
-      <DeskPanel label="also open" note="related">
+      <DeskList label="also open" note="related">
         <div className="space-y-3">
           {related.map((project) => (
             <Link
@@ -165,45 +269,37 @@ export function DayLogSidebar({
             </Link>
           ))}
         </div>
-      </DeskPanel>
+      </DeskList>
     </aside>
   );
 }
 
-// The day ending: one last entry after 17:40, closing the loop the header
-// opened, then a quiet way out.
+// The day ending: the last entry on the rail. `pos="last"` stops the rail at
+// the 18:05 node, closing the line the header opened.
 export function DayLogClose() {
   return (
-    <div className="pt-4">
-      <div className="flex items-baseline gap-4 mb-1 font-mono">
-        <span className="text-2xl font-semibold text-primary glow-soft tabular-nums shrink-0">
-          18:05
-        </span>
-        <span className="text-sm text-muted-foreground tracking-wider">clocking off</span>
-      </div>
-      <div className="border-t border-border/60 pt-5 mt-3">
-        <p className="text-muted-foreground leading-relaxed">
-          Last entry. The dashboard stays up overnight, and whoever is in first
-          tomorrow will open the same tab and ask the same question.
-        </p>
-        <p className="mt-6 text-sm text-muted-foreground">
-          If you want to dig into the parts I didn&apos;t write up,{" "}
-          <Link
-            href="/contact"
-            className="text-primary hover:underline underline-offset-4"
-          >
-            say hello
-          </Link>
-          . Or head back to{" "}
-          <Link
-            href="/projects"
-            className="text-primary hover:underline underline-offset-4"
-          >
-            all projects
-          </Link>
-          .
-        </p>
-      </div>
-    </div>
+    <LogEntry time="18:05" label="clocking off" pos="last">
+      <p className="text-muted-foreground leading-relaxed">
+        Last entry. The dashboard stays up overnight, and whoever is in first
+        tomorrow will open the same tab and ask the same question.
+      </p>
+      <p className="mt-6 text-sm text-muted-foreground">
+        If you want to dig into the parts I didn&apos;t write up,{" "}
+        <Link
+          href="/contact"
+          className="text-primary hover:underline underline-offset-4"
+        >
+          say hello
+        </Link>
+        . Or head back to{" "}
+        <Link
+          href="/projects"
+          className="text-primary hover:underline underline-offset-4"
+        >
+          all projects
+        </Link>
+        .
+      </p>
+    </LogEntry>
   );
 }

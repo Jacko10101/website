@@ -1,22 +1,24 @@
 "use client";
 
+import { ReactNode } from "react";
 import {
   PHOSPHORS,
   CaseStudyLayout,
   EnhancedCodeBlock,
 } from "@/components/case-study-layout";
-import { TraceSection as CaseStudySection } from "@/components/case-section-variants";
 import {
   IncidentHeader,
   IncidentAppendices,
   IncidentSignoff,
+  ReportSection,
 } from "@/components/ai-gateway-incident";
 import { GatewayTracer } from "@/components/gateway-tracer";
 
 /* --------------------------------------------------------------------------
  * Action items. This project exists because of a problem that was about to
  * happen, and it contains a real postmortem, so the page ends the way an
- * incident review does: a list with statuses, including the ones still open.
+ * incident review does: a tracked table with statuses, including the one
+ * still open.
  * ----------------------------------------------------------------------- */
 type ItemStatus = "shipped" | "runbook" | "by design" | "open";
 
@@ -24,7 +26,7 @@ const STATUS_TONE: Record<ItemStatus, string> = {
   shipped: "text-primary border-primary/40",
   runbook: "text-muted-foreground border-border",
   "by design": "text-muted-foreground border-border",
-  open: "text-warn border-warn/50",
+  open: "text-warn border-warn/50 bg-warn/10",
 };
 
 const ACTION_ITEMS: { action: string; status: ItemStatus; detail: string }[] = [
@@ -72,30 +74,95 @@ const ACTION_ITEMS: { action: string; status: ItemStatus; detail: string }[] = [
   },
 ];
 
-function ActionItems() {
+function StatusChip({ status }: { status: ItemStatus }) {
   return (
-    <ul className="space-y-px">
-      {ACTION_ITEMS.map((item) => (
-        <li
-          key={item.action}
-          className="bg-card/30 border border-border rounded-md p-5"
-        >
-          <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2 mb-2">
-            <h3 className="font-mono font-semibold tracking-tight text-foreground">
-              {item.action}
-            </h3>
-            <span
-              className={`shrink-0 font-mono text-[10px] uppercase tracking-wider border rounded px-2 py-0.5 ${STATUS_TONE[item.status]}`}
-            >
-              {item.status}
-            </span>
-          </div>
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            {item.detail}
-          </p>
-        </li>
-      ))}
-    </ul>
+    <span
+      className={`inline-flex w-[5.75rem] items-center justify-center gap-1.5 rounded border px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wider whitespace-nowrap ${STATUS_TONE[status]}`}
+    >
+      {status === "open" && (
+        <span className="w-1.5 h-1.5 rounded-full bg-warn animate-pulse" aria-hidden />
+      )}
+      {status}
+    </span>
+  );
+}
+
+/* The tracked table an action-item list becomes once the review is filed:
+   id column, action with its note, status chips aligned in a column. */
+function ActionItems() {
+  const open = ACTION_ITEMS.filter((item) => item.status === "open").length;
+  return (
+    <div className="rounded-md border border-border overflow-hidden">
+      <div className="flex flex-wrap items-center justify-between gap-2 px-4 sm:px-5 py-2.5 border-b border-border font-mono text-xs">
+        <span className="text-primary font-semibold">action items</span>
+        <span className="text-muted-foreground">
+          {ACTION_ITEMS.length} on file · {open} open
+        </span>
+      </div>
+      <div className="overflow-x-auto">
+        <table className="w-full">
+          <thead>
+            <tr className="border-b border-border text-left font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+              <th scope="col" className="hidden sm:table-cell w-12 pl-5 pr-4 py-2 font-medium">
+                id
+              </th>
+              <th scope="col" className="px-4 sm:px-0 py-2 font-medium">
+                action
+              </th>
+              <th scope="col" className="w-28 px-4 sm:pr-5 py-2 font-medium">
+                status
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {ACTION_ITEMS.map((item, i) => (
+              <tr
+                key={item.action}
+                className="border-b border-border/60 last:border-b-0 align-top"
+              >
+                <td className="hidden sm:table-cell pl-5 pr-4 py-4 font-mono text-xs text-muted-foreground/70 tabular-nums">
+                  {String(i + 1).padStart(2, "0")}
+                </td>
+                <td className="px-4 sm:px-0 py-4">
+                  <p className="font-mono text-sm font-semibold tracking-tight text-foreground">
+                    {item.action}
+                  </p>
+                  <p className="mt-1.5 text-sm text-muted-foreground leading-relaxed max-w-prose">
+                    {item.detail}
+                  </p>
+                </td>
+                <td className="px-4 sm:pr-5 py-4">
+                  <StatusChip status={item.status} />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+/* One row of the embedded postmortem's field table — the warn-toned cousin
+   of the report fields in the front matter. */
+function PostmortemField({
+  label,
+  children,
+  strong = false,
+}: {
+  label: string;
+  children: ReactNode;
+  strong?: boolean;
+}) {
+  return (
+    <div className="grid sm:grid-cols-[7rem_1fr] gap-x-4 gap-y-1 px-5 py-3 border-b border-warn/20 last:border-b-0 text-sm leading-relaxed">
+      <dt className="font-mono text-[11px] uppercase tracking-wider text-warn/90 pt-0.5">
+        {label}
+      </dt>
+      <dd className={strong ? "text-foreground/90" : "text-muted-foreground"}>
+        {children}
+      </dd>
+    </div>
   );
 }
 
@@ -133,28 +200,40 @@ export default function AIGatewayPage() {
     <CaseStudyLayout schema={articleSchema} phosphor={PHOSPHORS.amber}>
       <IncidentHeader />
 
-      <div className="container px-4 mb-12">
+      {/* The instrument — the review's interactive exhibit */}
+      <div className="container px-4 pt-8 mb-16">
         <div className="max-w-7xl mx-auto">
-          <div className="mb-4">
-            <span className="font-mono text-sm text-primary">// try it</span>
-            <h2 className="mt-2 font-mono font-semibold tracking-tight text-2xl sm:text-3xl text-foreground">
-              Two different ways to get a 401
-            </h2>
-            <p className="mt-2 text-muted-foreground max-w-2xl">
-              Pick a consumer and a model. Some combinations come back 401
-              even though the model is fully deployed, and the trace shows
-              exactly where the refusal happens. That catches people
-              constantly, including me.
-            </p>
-          </div>
-          <GatewayTracer />
+          <figure>
+            <div className="mb-4">
+              <p className="font-mono text-xs tracking-wider">
+                <span className="text-primary font-semibold uppercase">
+                  exhibit
+                </span>
+                <span className="mx-2 text-muted-foreground/50" aria-hidden>
+                  ·
+                </span>
+                <span className="text-muted-foreground">try it</span>
+              </p>
+              <h2 className="mt-2 font-mono font-semibold tracking-tight text-2xl sm:text-3xl text-foreground">
+                Two different ways to get a 401
+              </h2>
+            </div>
+            <GatewayTracer />
+            <figcaption className="mt-3 text-sm text-muted-foreground text-center max-w-2xl mx-auto">
+              Pick a consumer and a model. Some combinations come back 401 even
+              though the model is fully deployed, and the trace shows exactly
+              where the refusal happens. That catches people constantly,
+              including me.
+            </figcaption>
+          </figure>
         </div>
       </div>
 
       <div className="container px-4">
         <div className="grid gap-8 lg:grid-cols-[2fr_1fr] max-w-7xl mx-auto">
           <div className="space-y-12">
-            <CaseStudySection
+            <ReportSection
+              finding={1}
               eyebrow="// before: no gateway"
               title="The third API key is the one that hurts"
             >
@@ -170,9 +249,10 @@ export default function AIGatewayPage() {
                 while we had two consumers, which is the only reason it was a
                 small job.
               </p>
-            </CaseStudySection>
+            </ReportSection>
 
-            <CaseStudySection
+            <ReportSection
+              finding={2}
               eyebrow="// request · auth + allowlist"
               title="Virtual keys, and a model list you can't talk your way past"
             >
@@ -209,9 +289,13 @@ curl -H "Authorization: Bearer $VIRTUAL_KEY" "$GATEWAY/v1/models"`}
                 and still 401 for everybody, because existing and being permitted
                 are different facts. It&apos;s written down now.
               </p>
-            </CaseStudySection>
+            </ReportSection>
 
-            <CaseStudySection eyebrow="// request · spend tags" title="Whose spend is it?">
+            <ReportSection
+              finding={3}
+              eyebrow="// request · spend tags"
+              title="Whose spend is it?"
+            >
               <p className="text-muted-foreground leading-relaxed mb-4">
                 Every call carries its tenant, plus tags for environment and
                 feature. Chat, scheduled estate summaries and the nightly schema
@@ -223,47 +307,39 @@ curl -H "Authorization: Bearer $VIRTUAL_KEY" "$GATEWAY/v1/models"`}
                 tenant and per feature, which matters the first time somebody
                 asks about cost to serve.
               </p>
-              <div className="rounded-lg border border-warn/40 bg-warn/5 overflow-hidden">
-                <div className="flex items-center gap-2 px-5 py-3 border-b border-warn/30 font-mono text-xs">
+              <div className="rounded-md border border-warn/40 bg-warn/5 overflow-hidden">
+                <div className="flex flex-wrap items-center gap-2 px-5 py-2.5 border-b border-warn/30 font-mono text-xs">
                   <span className="w-2 h-2 rounded-full bg-warn" aria-hidden />
                   <span className="text-warn font-semibold">postmortem</span>
                   <span className="text-muted-foreground">
                     · the 4x pricing bug · severity: embarrassing
                   </span>
                 </div>
-                <dl className="px-5 py-4 space-y-3 text-sm leading-relaxed">
-                  <div className="grid sm:grid-cols-[7rem_1fr] gap-1">
-                    <dt className="font-mono text-xs text-warn/90 pt-0.5">symptom</dt>
-                    <dd className="text-muted-foreground">
-                      Spend read about fourfold high. For weeks.
-                    </dd>
-                  </div>
-                  <div className="grid sm:grid-cols-[7rem_1fr] gap-1">
-                    <dt className="font-mono text-xs text-warn/90 pt-0.5">cause</dt>
-                    <dd className="text-muted-foreground">
-                      The cost dashboard multiplies tokens by per-million prices
-                      held as dashboard variables, and ours were set to a
-                      different model&apos;s pricing than the one deployed.
-                    </dd>
-                  </div>
-                  <div className="grid sm:grid-cols-[7rem_1fr] gap-1">
-                    <dt className="font-mono text-xs text-warn/90 pt-0.5">why it lived</dt>
-                    <dd className="text-muted-foreground">
-                      Nobody questioned it, because the number was in a
-                      dashboard and dashboards look authoritative.
-                    </dd>
-                  </div>
-                  <div className="grid sm:grid-cols-[7rem_1fr] gap-1">
-                    <dt className="font-mono text-xs text-warn/90 pt-0.5">lesson</dt>
-                    <dd className="text-foreground/90">
-                      Tokens are measured. Prices are config, and config rots.
-                    </dd>
-                  </div>
+                <dl>
+                  <PostmortemField label="symptom">
+                    Spend read about fourfold high. For weeks.
+                  </PostmortemField>
+                  <PostmortemField label="cause">
+                    The cost dashboard multiplies tokens by per-million prices
+                    held as dashboard variables, and ours were set to a
+                    different model&apos;s pricing than the one deployed.
+                  </PostmortemField>
+                  <PostmortemField label="why it lived">
+                    Nobody questioned it, because the number was in a
+                    dashboard and dashboards look authoritative.
+                  </PostmortemField>
+                  <PostmortemField label="lesson" strong>
+                    Tokens are measured. Prices are config, and config rots.
+                  </PostmortemField>
                 </dl>
               </div>
-            </CaseStudySection>
+            </ReportSection>
 
-            <CaseStudySection eyebrow="// after: what got cheap" title="What it made cheap">
+            <ReportSection
+              finding={4}
+              eyebrow="// after: what got cheap"
+              title="What it made cheap"
+            >
               <p className="text-muted-foreground leading-relaxed mb-4">
                 The point of a seam is what gets easy afterwards. There&apos;s
                 an automated pull request review agent running on PRs across
@@ -276,9 +352,12 @@ curl -H "Authorization: Bearer $VIRTUAL_KEY" "$GATEWAY/v1/models"`}
                 estate followed three generations of the same model family
                 without anyone rewriting a consumer.
               </p>
-            </CaseStudySection>
+            </ReportSection>
 
-            <CaseStudySection eyebrow="// review: action items" title="What changed as a result">
+            <ReportSection
+              eyebrow="// review: action items"
+              title="What changed as a result"
+            >
               <p className="text-muted-foreground leading-relaxed mb-6">
                 This project&apos;s history reads as a list of things that were
                 about to hurt and what got done about each one. The last item
@@ -286,9 +365,12 @@ curl -H "Authorization: Bearer $VIRTUAL_KEY" "$GATEWAY/v1/models"`}
               </p>
 
               <ActionItems />
-            </CaseStudySection>
+            </ReportSection>
 
-            <CaseStudySection eyebrow="// 200 OK · resolved, monitoring" title="Where it stands">
+            <ReportSection
+              eyebrow="// 200 OK · resolved, monitoring"
+              title="Where it stands"
+            >
               <p className="text-muted-foreground leading-relaxed">
                 It&apos;s an unglamorous piece of infrastructure and that&apos;s
                 roughly the recommendation. Built before the sprawl rather than
@@ -298,7 +380,7 @@ curl -H "Authorization: Bearer $VIRTUAL_KEY" "$GATEWAY/v1/models"`}
                 is the interesting one, and I&apos;d rather not find out what it
                 says.
               </p>
-            </CaseStudySection>
+            </ReportSection>
           </div>
 
           <IncidentAppendices />

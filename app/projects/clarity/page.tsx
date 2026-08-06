@@ -93,11 +93,47 @@ const SHOTS: Record<string, Shot> = {
 };
 
 /**
+ * The rubber stamp that reconciles a receipt in the body back to its row in
+ * the ledger up top. Same entry number both ends, so a reader can run a
+ * finger down the book: claim 01 in the header, receipt 01 in the margin.
+ */
+function ReceiptStamp({
+  entry,
+  note,
+  open = false,
+}: {
+  entry: string;
+  note?: string;
+  open?: boolean;
+}) {
+  return (
+    <span className="inline-flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
+      <span
+        className={`inline-block font-mono text-[10px] uppercase tracking-[0.18em] border-[3px] border-double rounded-sm px-2 py-0.5 -rotate-1 select-none ${
+          open
+            ? "border-border text-muted-foreground"
+            : "border-primary/50 text-primary"
+        }`}
+      >
+        {open ? "no receipt" : "receipt"} ·{" "}
+        <span className="tabular-nums">{entry}</span>
+      </span>
+      {note && (
+        <span className="font-mono text-[11px] text-muted-foreground">
+          {note}
+        </span>
+      )}
+    </span>
+  );
+}
+
+/**
  * A claim's receipt. Renders nothing if the capture doesn't exist yet, so the
  * page degrades to prose rather than to a broken image — same rule the product
- * follows when it has no data to stand an answer on.
+ * follows when it has no data to stand an answer on. `entry` is the ledger
+ * row this receipt reconciles against.
  */
-function Evidence({ of }: { of: keyof typeof SHOTS }) {
+function Evidence({ of, entry }: { of: keyof typeof SHOTS; entry: string }) {
   const shot = SHOTS[of];
   if (!shot) return null;
   const { src, alt, caption, label, width, height } = shot;
@@ -113,8 +149,8 @@ function Evidence({ of }: { of: keyof typeof SHOTS }) {
           sizes="(max-width: 1024px) 100vw, 800px"
         />
         <figcaption className="px-5 py-4 border-t border-border bg-card/50 text-sm text-muted-foreground leading-relaxed">
-          <span className="font-mono text-[11px] uppercase tracking-wider text-primary block mb-1.5">
-            the receipt
+          <span className="block mb-2">
+            <ReceiptStamp entry={entry} />
           </span>
           {caption}
         </figcaption>
@@ -175,39 +211,50 @@ function ClaimsLedgerHeader() {
             product works: every claim sits next to the thing that backs it.
           </p>
 
-          <div className="rounded-lg border border-border bg-card/40 overflow-hidden">
-            <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 px-4 py-2.5 border-b border-border bg-card/60 font-mono text-[11px]">
+          <div className="rounded-lg border border-border bg-card/40 overflow-hidden font-mono">
+            <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 px-4 py-2.5 border-b border-border bg-card/60 text-[11px]">
               <span className="uppercase tracking-wider text-primary">
                 what this page claims
               </span>
-              <span className="text-muted-foreground">
+              <span className="text-muted-foreground tabular-nums">
                 2025 → ongoing · ~30 tenants · ~20 daily users
               </span>
             </div>
-            <ol className="font-mono text-sm">
+            {/* Column rule, the way an account book names its columns once. */}
+            <div
+              className="hidden sm:flex items-baseline gap-x-3 px-4 pt-2 pb-1.5 border-b border-border text-[10px] uppercase tracking-[0.15em] text-muted-foreground/60"
+              aria-hidden
+            >
+              <span className="w-7 shrink-0">no.</span>
+              <span className="flex-1">claim</span>
+              <span>receipt</span>
+            </div>
+            <ol className="text-sm tabular-nums">
               {LEDGER.map((row, i) => (
                 <li
                   key={row.claim}
-                  className="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-4 py-1.5 border-b border-border/60"
+                  className="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-4 py-2 border-b border-border/60"
                 >
                   <span
-                    className="text-xs text-muted-foreground/60 tabular-nums"
+                    className="w-7 shrink-0 text-xs text-muted-foreground/60"
                     aria-hidden
                   >
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <span
-                    className={`flex-1 min-w-[14rem] ${
+                    className={`min-w-[14rem] max-w-full ${
                       row.open ? "text-muted-foreground" : "text-foreground"
                     }`}
                   >
                     {row.claim}
                   </span>
                   <span
-                    className={`text-[11px] rounded border px-2 py-0.5 ${
-                      row.open
-                        ? "border-border text-muted-foreground"
-                        : "border-primary/30 text-primary"
+                    className="flex-1 min-w-8 self-center border-b border-dotted border-border"
+                    aria-hidden
+                  />
+                  <span
+                    className={`text-[10px] uppercase tracking-wider text-right ${
+                      row.open ? "text-muted-foreground" : "text-primary"
                     }`}
                   >
                     {row.open ? "no receipt" : `receipt · ${row.receipt}`}
@@ -215,7 +262,7 @@ function ClaimsLedgerHeader() {
                 </li>
               ))}
             </ol>
-            <p className="px-4 py-2.5 font-mono text-xs text-muted-foreground leading-relaxed">
+            <p className="px-4 py-2.5 text-xs text-muted-foreground leading-relaxed">
               Five receipts on this page. The sixth claim is left open on
               purpose — it&apos;s the last paragraph, and it stays open until
               the evidence exists.
@@ -267,26 +314,44 @@ const GUARANTEES: { claim: string; where: string; detail: string }[] = [
 
 function GuaranteeLedger() {
   return (
-    <ol className="border-t border-border">
-      {GUARANTEES.map((g, i) => (
-        <li key={g.claim} className="border-b border-border py-5">
-          <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-2">
-            <span className="font-mono text-xs text-muted-foreground/60 tabular-nums" aria-hidden>
-              {String(i + 1).padStart(2, "0")}
-            </span>
-            <h3 className="font-mono font-semibold tracking-tight text-foreground">
-              {g.claim}
-            </h3>
-            <span className="font-mono text-[11px] text-primary border border-primary/30 rounded px-2 py-0.5">
-              {g.where}
-            </span>
-          </div>
-          <p className="text-sm text-muted-foreground leading-relaxed pl-0 sm:pl-8">
-            {g.detail}
-          </p>
-        </li>
-      ))}
-    </ol>
+    <div className="font-mono">
+      {/* Same column rule as the claims ledger — this is the same book. */}
+      <div
+        className="hidden sm:flex items-baseline gap-x-3 pb-1.5 border-b border-border text-[10px] uppercase tracking-[0.15em] text-muted-foreground/60"
+        aria-hidden
+      >
+        <span className="w-7 shrink-0">no.</span>
+        <span className="flex-1">guarantee</span>
+        <span>enforced at</span>
+      </div>
+      <ol className="border-t border-border sm:border-t-0">
+        {GUARANTEES.map((g, i) => (
+          <li key={g.claim} className="border-b border-border/60 py-4">
+            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <span
+                className="w-7 shrink-0 text-xs text-muted-foreground/60 tabular-nums"
+                aria-hidden
+              >
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <h3 className="font-semibold tracking-tight text-foreground">
+                {g.claim}
+              </h3>
+              <span
+                className="flex-1 min-w-8 self-center border-b border-dotted border-border"
+                aria-hidden
+              />
+              <span className="text-[10px] uppercase tracking-wider text-primary text-right">
+                {g.where}
+              </span>
+            </div>
+            <p className="font-sans text-sm text-muted-foreground leading-relaxed mt-2 pl-0 sm:pl-10">
+              {g.detail}
+            </p>
+          </li>
+        ))}
+      </ol>
+    </div>
   );
 }
 
@@ -412,15 +477,30 @@ function LedgerSignOff() {
           <div className="px-5 py-3 border-b border-border bg-card/60 text-[11px] uppercase tracking-wider text-primary">
             ledger closed
           </div>
-          <dl className="px-5 py-4 space-y-2 text-sm">
-            <div className="flex justify-between gap-4">
+          <dl className="px-5 py-4 text-sm">
+            <div className="flex items-baseline gap-x-3 py-1">
               <dt className="text-muted-foreground">receipts attached</dt>
-              <dd className="text-foreground tabular-nums">5</dd>
+              <span
+                className="flex-1 min-w-8 self-center border-b border-dotted border-border"
+                aria-hidden
+              />
+              <dd className="text-foreground tabular-nums">
+                5{" "}
+                <span className="text-xs text-muted-foreground/60">
+                  · nos 01–05
+                </span>
+              </dd>
             </div>
-            <div className="flex justify-between gap-4">
+            <div className="flex items-baseline gap-x-3 py-1">
               <dt className="text-muted-foreground">claims left open</dt>
-              <dd className="text-primary">1 · marked above</dd>
+              <span
+                className="flex-1 min-w-8 self-center border-b border-dotted border-border"
+                aria-hidden
+              />
+              <dd className="text-primary tabular-nums">1 · marked above</dd>
             </div>
+            {/* The double rule that closes an account. */}
+            <div className="mt-3 border-t-[3px] border-double border-border" aria-hidden />
           </dl>
         </div>
         <p className="mt-6 text-sm text-muted-foreground leading-relaxed">
@@ -519,7 +599,7 @@ export default function ClarityPage() {
                 behind it, and this page holds itself to the same standard.
               </p>
 
-              <Evidence of="answerSql" />
+              <Evidence of="answerSql" entry="01" />
             </CaseStudySection>
 
             <CaseStudySection eyebrow="> where's the vector store?" title="No vector store. Anywhere.">
@@ -548,7 +628,7 @@ export default function ClarityPage() {
                 at once rather than one table at a time:
               </p>
 
-              <Evidence of="briefing" />
+              <Evidence of="briefing" entry="02" />
             </CaseStudySection>
 
             <CaseStudySection eyebrow="> which sites are running hottest?" title="The bug that changed the design">
@@ -591,6 +671,9 @@ export default function ClarityPage() {
                 helpfulness that ends up in an incident report.
               </p>
 
+              <div className="mb-3">
+                <ReceiptStamp entry="03" note="the ledger's 'try it below'" />
+              </div>
               <SqlPlayground />
 
               <p className="text-muted-foreground mt-6 leading-relaxed">
@@ -633,7 +716,7 @@ export default function ClarityPage() {
 
               <GuaranteeLedger />
 
-              <Evidence of="exports" />
+              <Evidence of="exports" entry="04" />
             </CaseStudySection>
 
             <CaseStudySection
@@ -645,9 +728,12 @@ export default function ClarityPage() {
                 run, and it builds them things they keep using afterwards.
               </p>
 
-              <Evidence of="dashboard" />
+              <Evidence of="dashboard" entry="05" />
 
-              <p className="text-muted-foreground leading-relaxed mt-2">
+              <div className="mt-6 mb-3">
+                <ReceiptStamp entry="06" open note="left open in the ledger" />
+              </div>
+              <p className="text-muted-foreground leading-relaxed">
                 And the part I can&apos;t show you: the trust layer is built and
                 running, but the proof it has driven fabrication to zero
                 isn&apos;t in yet. The transcript analysis that started all of
