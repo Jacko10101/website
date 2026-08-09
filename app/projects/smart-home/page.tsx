@@ -5,16 +5,21 @@ import { LocalPath } from "@/components/local-path";
 
 /* --------------------------------------------------------------------------
  * This page is a spec sheet, so it is set as one: a hardware datasheet.
- * Part summary table up top, numbered sections addressed by MQTT topic,
- * prose as terse annotations, one figure and one table with numbered
- * captions. Ruled lines and tabular numerals do the styling; nothing
- * animates in and nothing pulses. Deliberately the shortest page.
+ * Part summary table up top, numbered sections, prose as terse annotations,
+ * one figure with a numbered caption. Ruled lines and tabular numerals do
+ * the styling; nothing animates in and nothing pulses. Deliberately the
+ * shortest page, and the only one that isn't professional work.
  * ----------------------------------------------------------------------- */
 
+/**
+ * The one thing on this page that broke and what changed because of it.
+ * Set it to a sentence or two and section 7 renders; leave it null and the
+ * section stays hidden. The site never shows a placeholder.
+ */
+const WHAT_I_GOT_WRONG: string | null = null;
+
 const HEADLINE_FIGURES: { value: string; label: string }[] = [
-  { value: "1", label: "node · Raspberry Pi 5, 8GB" },
   { value: "20+", label: "lights, plugs and sensors" },
-  { value: "6", label: "apps, GitOps-reconciled" },
   { value: "0", label: "ports open to the internet" },
 ];
 
@@ -36,22 +41,13 @@ const SPEC: { label: string; value: string; note?: string }[] = [
   },
 ];
 
-const ARGO_APPS: { name: string; sync: string; health: string }[] = [
-  { name: "home-assistant", sync: "Synced", health: "Healthy" },
-  { name: "zigbee2mqtt", sync: "Synced", health: "Healthy" },
-  { name: "mosquitto", sync: "Synced", health: "Healthy" },
-  { name: "prometheus", sync: "Synced", health: "Healthy" },
-  { name: "grafana", sync: "Synced", health: "Healthy" },
-  { name: "node-exporter", sync: "Synced", health: "Healthy" },
-];
-
 /* The part summary table. Everything the build is, before any annotation. */
 function SpecPlate() {
   return (
     <div className="border border-border overflow-hidden bg-card/20">
       {/* Nameplate strip */}
       <div className="flex flex-wrap items-baseline justify-between gap-x-4 px-5 sm:px-7 py-2 border-b border-border bg-card/50 font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
-        <span>Spec sheet · in service 2024 → ongoing</span>
+        <span>Personal project · spec sheet · my flat, 2024 → ongoing</span>
         <span className="text-muted-foreground/60" aria-hidden>
           smart-home · 1 of 1
         </span>
@@ -62,29 +58,27 @@ function SpecPlate() {
         <h1 className="font-mono font-semibold tracking-tight text-3xl sm:text-4xl md:text-5xl text-foreground mb-2">
           Smart home on K3s
         </h1>
-        <p className="text-muted-foreground">Self-hosted home automation</p>
+        <p className="text-muted-foreground">
+          Self-hosted home automation, in my own flat
+        </p>
       </div>
 
-      {/* Design constraint — the one that picked everything else */}
-      <div className="px-5 sm:px-7 py-3 border-b border-border bg-primary/5">
-        <p className="text-sm text-foreground/90 leading-relaxed">
-          <span className="font-mono text-[11px] uppercase tracking-wider text-primary mr-3">
-            Design constraint
-          </span>
+      {/* The one sentence the rest of the build follows from. */}
+      <div className="px-5 sm:px-7 py-5 border-b border-border bg-primary/5">
+        <p className="text-xl sm:text-2xl text-foreground leading-snug tracking-tight">
           If the internet goes down, the lights still work. Everything below
           follows from that.
+        </p>
+        <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
+          It&apos;s a flat, not an estate. Ask me about the parts that were
+          genuinely fiddly.
         </p>
       </div>
 
       {/* Headline figures */}
-      <dl className="grid grid-cols-2 sm:grid-cols-4 border-b border-border sm:divide-x sm:divide-border">
-        {HEADLINE_FIGURES.map((f, i) => (
-          <div
-            key={f.label}
-            className={`flex flex-col-reverse px-5 py-3 border-border max-sm:odd:border-r ${
-              i < 2 ? "max-sm:border-b" : ""
-            }`}
-          >
+      <dl className="grid grid-cols-2 border-b border-border divide-x divide-border">
+        {HEADLINE_FIGURES.map((f) => (
+          <div key={f.label} className="flex flex-col-reverse px-5 py-3">
             <dt className="text-xs text-muted-foreground leading-snug">{f.label}</dt>
             <dd className="font-mono font-semibold text-2xl text-primary tabular-nums mb-0.5">
               {f.value}
@@ -127,41 +121,30 @@ function SpecPlate() {
           </div>
         ))}
       </dl>
-
-      {/* Plate footer */}
-      <div className="px-5 sm:px-7 py-2.5 border-t border-border bg-card/50 font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
-        0 cloud accounts · 0 vendor apps required to turn on a light
-      </div>
     </div>
   );
 }
 
-/* Datasheet section: a numbered heading on a rule, addressed by its MQTT
- * topic in the right margin. No dots, no chips — the ruled line is the
- * furniture. */
+/* Datasheet section: a numbered heading on a rule. No dots, no chips — the
+ * ruled line is the furniture. */
 function SpecSection({
   n,
-  topic,
   title,
   children,
 }: {
   n: string;
-  topic: string;
   title: string;
   children: React.ReactNode;
 }) {
   return (
     <section className="mb-10">
-      <div className="flex items-baseline justify-between gap-4 border-b border-border pb-2 mb-4">
+      <div className="border-b border-border pb-2 mb-4">
         <h2 className="font-mono font-semibold tracking-tight text-lg sm:text-xl text-foreground">
           <span className="text-primary tabular-nums mr-3" aria-hidden>
             {n}
           </span>
           {title}
         </h2>
-        <span className="hidden sm:block font-mono text-[11px] text-muted-foreground shrink-0">
-          {topic}
-        </span>
       </div>
       {children}
     </section>
@@ -216,16 +199,8 @@ function SpecMargin() {
               <dd className="text-foreground/90 text-right">Live, ongoing</dd>
             </div>
             <div className="flex justify-between gap-4">
-              <dt>Devices</dt>
-              <dd className="text-foreground/90 text-right tabular-nums">20+</dd>
-            </div>
-            <div className="flex justify-between gap-4">
-              <dt>Apps</dt>
-              <dd className="text-foreground/90 text-right tabular-nums">6</dd>
-            </div>
-            <div className="flex justify-between gap-4">
-              <dt>Ports exposed</dt>
-              <dd className="text-foreground/90 text-right">Zero</dd>
+              <dt>Nodes</dt>
+              <dd className="text-foreground/90 text-right tabular-nums">1</dd>
             </div>
             <div className="flex justify-between gap-4">
               <dt>Remote access</dt>
@@ -235,18 +210,7 @@ function SpecMargin() {
         </section>
 
         <section className="px-5 py-4">
-          <h3 className={marginHeading}>A.4 · Practices</h3>
-          <ul className="space-y-1.5 text-muted-foreground">
-            <li>Self-hosting on constrained hardware</li>
-            <li>GitOps applied to small systems</li>
-            <li>Local-first architecture</li>
-            <li>Network segmentation</li>
-            <li>Treating side-projects like production</li>
-          </ul>
-        </section>
-
-        <section className="px-5 py-4">
-          <h3 className={marginHeading}>A.5 · Cross-references</h3>
+          <h3 className={marginHeading}>A.4 · Cross-references</h3>
           <div className="space-y-2.5">
             <Link
               href="/projects/heimdall"
@@ -274,7 +238,7 @@ const articleSchema = {
   "@type": "TechArticle",
   headline: "Smart Home on K3s · self-hosted home automation",
   description:
-    "K3s on a Raspberry Pi 5 running Home Assistant, Zigbee2MQTT, ArgoCD and Prometheus. The platform stack at home, scaled down. Zero internet exposure.",
+    "A personal project: K3s on a Raspberry Pi 5 in my flat, running Home Assistant, Zigbee2MQTT, ArgoCD and Prometheus. Everything local, nothing exposed to the internet.",
   author: {
     "@type": "Person",
     name: "Jack Devlin",
@@ -325,7 +289,7 @@ export default function SmartHomePage() {
       <div className="container px-4 pb-20">
         <div className="grid gap-8 lg:grid-cols-[2fr_1fr] max-w-7xl mx-auto">
           <div>
-            <SpecSection n="1" topic="home/why-local" title="The same discipline, in miniature">
+            <SpecSection n="1" title="Why it all runs locally">
               <Annotations>
                 <Annot>
                   Most smart-home setups end up as a pile of vendor apps tied
@@ -335,52 +299,50 @@ export default function SmartHomePage() {
                 </Annot>
                 <Annot>
                   I wanted the opposite: everything local, and every change to
-                  it in version control. It&apos;s the same shape as the
-                  platform I run at work, sized to a flat — less out of rigour
-                  than because I already know how to debug this stack at eleven
-                  on a Sunday night.
+                  it in version control. It&apos;s the same stack I run at
+                  work, sized to a flat. Mostly because I already know how to
+                  debug it.
                 </Annot>
               </Annotations>
             </SpecSection>
 
-            <SpecSection n="2" topic="zigbee2mqtt/coordinator" title="One Pi, no cloud">
+            <SpecSection n="2" title="Everything runs on one Pi">
               <Annotations>
                 <Annot>
                   A Raspberry Pi 5 (8GB) is the whole control plane. I run NVMe
                   over USB because SD cards die under sustained writes, and a
                   UPS on the power side because Home Assistant restarting at
                   3am after a tripped fuse isn&apos;t an experience I wanted
-                  twice. Hardwired ethernet, because Wi-Fi isn&apos;t a
-                  network.
+                  twice. It&apos;s on wired ethernet. The Pi is the thing every
+                  light depends on, and I didn&apos;t want it depending on the
+                  router&apos;s Wi-Fi as well.
                 </Annot>
                 <Annot>
                   A SONOFF Zigbee USB coordinator handles the radio. Devices
                   pair directly with Zigbee2MQTT, which talks to Home Assistant
-                  over MQTT. No bridges, no cloud round-trip. Bulb to
-                  coordinator to broker to automation in single-digit
-                  milliseconds.
+                  over MQTT. No bridges, no cloud round-trip.
                 </Annot>
                 <Annot>
                   I&apos;m at twenty-plus endpoints today: Hue bulbs, Innr
                   plugs on power-monitored circuits, temperature and humidity
                   sensors, motion and contact sensors, and a solar-powered
-                  camera. The temptation to add a second node is a trap — for a
-                  flat, the right number of nodes is one.
+                  camera. One node covers all of it, and I&apos;ve had no
+                  reason to add a second.
                 </Annot>
               </Annotations>
             </SpecSection>
 
-            <SpecSection n="3" topic="the path" title="Where a light switch press actually goes">
+            <SpecSection n="3" title="What happens when I press a light switch">
               <figure>
                 <LocalPath />
                 <figcaption className="mt-2 font-mono text-[11px] text-muted-foreground">
-                  <span className="text-primary">Figure 1</span> — the claim
-                  this whole build rests on. Same press, two topologies.
+                  <span className="text-primary">Figure 1</span> — the same
+                  press, with and without a cloud in the path.
                 </figcaption>
               </figure>
             </SpecSection>
 
-            <SpecSection n="4" topic="argocd/apps · 6 synced" title="GitOps for the living room">
+            <SpecSection n="4" title="The whole flat is a git repo">
               <Annotations>
                 <Annot>
                   Everything on the Pi is a Kubernetes deployment, reconciled
@@ -398,42 +360,9 @@ export default function SmartHomePage() {
                   brings everything back.
                 </Annot>
               </Annotations>
-
-              <figure className="mt-5 border border-border overflow-hidden bg-card/20">
-                <div className="px-4 py-2 border-b border-border/60 font-mono text-xs text-muted-foreground">
-                  <span className="text-muted-foreground/60" aria-hidden>
-                    ${" "}
-                  </span>
-                  kubectl get applications -n argocd
-                </div>
-                <div className="overflow-x-auto">
-                  <table className="w-full font-mono text-xs">
-                    <thead>
-                      <tr className="border-b border-border/60 text-left text-muted-foreground">
-                        <th className="px-4 py-1.5 font-normal">NAME</th>
-                        <th className="px-4 py-1.5 font-normal">SYNC STATUS</th>
-                        <th className="px-4 py-1.5 font-normal">HEALTH STATUS</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-border/40">
-                      {ARGO_APPS.map((app) => (
-                        <tr key={app.name}>
-                          <td className="px-4 py-1.5 text-foreground/90">{app.name}</td>
-                          <td className="px-4 py-1.5 text-primary">{app.sync}</td>
-                          <td className="px-4 py-1.5 text-primary">{app.health}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-                <figcaption className="px-4 py-2 border-t border-border/60 font-mono text-[11px] text-muted-foreground">
-                  <span className="text-primary">Table 1</span> — argocd apps
-                  in the cluster.
-                </figcaption>
-              </figure>
             </SpecSection>
 
-            <SpecSection n="5" topic="home/sensors/#" title="Power draw and humidity, in Grafana">
+            <SpecSection n="5" title="Power draw and humidity, in Grafana">
               <Annotations>
                 <Annot>
                   Prometheus scrapes metrics from Home Assistant&apos;s
@@ -444,13 +373,12 @@ export default function SmartHomePage() {
                 </Annot>
                 <Annot>
                   Grafana sits on top, with dashboards for power draw and
-                  room-by-room temperature. It&apos;s a small platform
-                  monitoring stack in every way that matters.
+                  room-by-room temperature.
                 </Annot>
               </Annotations>
             </SpecSection>
 
-            <SpecSection n="6" topic="tailscale/status" title="Tailscale, not port-forwarding">
+            <SpecSection n="6" title="Remote access goes over Tailscale">
               <Annotations>
                 <Annot>
                   Zero ports exposed to the internet. Remote access goes
@@ -466,20 +394,27 @@ export default function SmartHomePage() {
               </Annotations>
             </SpecSection>
 
-            <SpecSection n="7" topic="home/backlog" title="Next">
+            {/* TODO(jack): the page has no failure in it, and the ADR works
+                precisely because it has one. What actually broke — Zigbee mesh
+                range? The NVMe-over-USB firmware? An ArgoCD sync that took the
+                lights out? Put it in WHAT_I_GOT_WRONG and the section appears.
+                Nothing renders until then, so this is safe to leave. */}
+            {WHAT_I_GOT_WRONG && (
+              <SpecSection n="7" title="What I got wrong">
+                <Annotations>
+                  <Annot>{WHAT_I_GOT_WRONG}</Annot>
+                </Annotations>
+              </SpecSection>
+            )}
+
+            <SpecSection n={WHAT_I_GOT_WRONG ? "8" : "7"} title="Next">
               <Annotations>
                 <Annot>
-                  Smart TRV valves, so heating schedules per room rather than
-                  per house. Then presence detection good enough to retire the
-                  motion sensors — they&apos;re fine for &quot;is someone in
-                  the hallway&quot; and useless for &quot;is anyone home&quot;.
-                </Annot>
-                <Annot>
-                  The longer arc is a small local model on its own node, so
-                  voice control doesn&apos;t round-trip to somebody&apos;s API.
-                  Same instinct as the rest of it: local data, countable
-                  dependencies, nothing that stops working because a company
-                  changed its mind.
+                  Smart TRV valves next, so heating schedules run per room
+                  rather than per flat. After that, presence detection good
+                  enough to retire the motion sensors. They&apos;re fine for
+                  &quot;is someone in the hallway&quot; and useless for &quot;is
+                  anyone home&quot;.
                 </Annot>
               </Annotations>
             </SpecSection>
@@ -487,12 +422,8 @@ export default function SmartHomePage() {
             {/* Document footer — a spec sheet ends with its revision line,
                 not a thanks-for-reading card. */}
             <footer className="border-t border-border pt-6">
-              <p className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground mb-4">
+              <p className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground mb-5">
                 Revision — 2024 → ongoing · amended as the flat changes
-              </p>
-              <p className="text-sm text-muted-foreground leading-relaxed mb-5">
-                It&apos;s a flat, not an estate. Ask me about the parts that
-                were genuinely fiddly.
               </p>
               <div className="flex flex-wrap items-center gap-x-6 gap-y-3 font-mono text-sm">
                 <Link

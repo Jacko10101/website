@@ -42,17 +42,24 @@ export function TerminalWindow({
 /**
  * Terminal lines that type themselves when scrolled into view, line by line.
  * Reduced-motion users (and completed runs) see the full static output.
+ *
+ * Pass `animate={false}` anywhere several of these share a viewport. Six panes
+ * typing at once read as six empty boxes on arrival, and they compete with the
+ * copy beside them — the static version is what reduced-motion users already
+ * get, and it's the better one.
  */
 export function TypedLines({
   lines,
   charDelay = 14,
   lineDelay = 180,
   className = "",
+  animate = true,
 }: {
   lines: TerminalLine[];
   charDelay?: number;
   lineDelay?: number;
   className?: string;
+  animate?: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
@@ -60,11 +67,12 @@ export function TypedLines({
   const [progress, setProgress] = useState({ line: 0, char: 0 });
 
   const done =
+    !animate ||
     reduceMotion ||
     progress.line >= lines.length;
 
   useEffect(() => {
-    if (!inView || reduceMotion || progress.line >= lines.length) return;
+    if (!animate || !inView || reduceMotion || progress.line >= lines.length) return;
     const current = lines[progress.line];
     const timer = setTimeout(
       () => {
@@ -77,7 +85,7 @@ export function TypedLines({
       progress.char === 0 ? lineDelay : charDelay
     );
     return () => clearTimeout(timer);
-  }, [inView, reduceMotion, progress, lines, charDelay, lineDelay]);
+  }, [animate, inView, reduceMotion, progress, lines, charDelay, lineDelay]);
 
   return (
     <div ref={ref} className={`font-mono text-xs space-y-1 ${className}`}>

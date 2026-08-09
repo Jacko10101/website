@@ -13,10 +13,10 @@ import {
  * PR-native chrome for the pipeline-platform case study. The genre is the
  * migration PR, and a pull request is a web application document — so the
  * authentic register is UI chrome, not prose furniture: a sans title with a
- * Merged chip, branch lozenges, a diffstat with real +/− diff colouring, a
- * slim meta rail where a PR keeps its labels, and a merge event to close.
- * Every number here already appears in the page body — nothing is invented,
- * no PR number, no reviewers, no avatars.
+ * Merged chip, branch lozenges, an author row, a diffstat with real +/− diff
+ * colouring, a slim meta rail where a PR keeps its labels, and a merge event
+ * to close. Every number here already appears in the page body. No PR
+ * number, no reviewers, no avatars.
  *
  * Diff colouring is the genre's own palette, like the ADR's chart colours:
  * additions are diff-green regardless of this page's white phosphor,
@@ -88,10 +88,21 @@ export function PrHeader() {
             <MergedBadge />
           </div>
 
-          <p className="flex flex-wrap items-center gap-x-2 gap-y-2 font-mono text-xs text-muted-foreground mb-6">
-            <BranchLozenge>twenty-bespoke-pipelines</BranchLozenge>
+          <p className="flex flex-wrap items-center gap-x-2 gap-y-2 font-mono text-xs text-muted-foreground mb-3">
+            <BranchLozenge>platform/shared-pipeline-library</BranchLozenge>
             <span aria-hidden>→</span>
-            <BranchLozenge>one-shared-library</BranchLozenge>
+            <BranchLozenge>main</BranchLozenge>
+          </p>
+
+          {/* The one field this genre has that the others don't: an author. */}
+          <p className="flex flex-wrap items-baseline gap-x-2 gap-y-1 font-mono text-xs text-muted-foreground mb-6">
+            <span className="text-muted-foreground/70">Author</span>
+            <span aria-hidden>·</span>
+            <span className="text-foreground/90">Jack Devlin</span>
+            <span aria-hidden>·</span>
+            <span>platform engineer</span>
+            <span aria-hidden>·</span>
+            <span>Loweconex, a UK IoT platform business</span>
           </p>
 
           <p className="text-lg text-muted-foreground mb-6 leading-relaxed max-w-2xl">
@@ -132,11 +143,12 @@ export function PrHeader() {
             {/* The instrument carries its own reading. */}
             <p className="px-4 pb-3 text-[13px] text-muted-foreground leading-relaxed">
               The −1,071 is the bash reporter that posted to Teams at every
-              stage and nobody wanted to touch. The +142 is its replacement:
-              an orchestrator in five modules, each tested.
+              stage. It worked, and it had grown to the point where changing it
+              safely was hard. The +142 is its replacement: an orchestrator in
+              five modules, each tested.
             </p>
             <div className="flex flex-wrap items-center gap-x-5 gap-y-2 px-4 py-2.5 border-t border-border bg-card/40 font-mono text-xs text-muted-foreground">
-              <span>2023 → ongoing</span>
+              <span>2024 → ongoing</span>
               <span>20 services</span>
               <span>~400 deploys/month</span>
             </div>
@@ -226,11 +238,11 @@ const NUMBERS: { label: string; value: string }[] = [
 ];
 
 const SKILLS = [
-  "Extracting shared concerns into versioned libraries",
-  "Decoupling build from promotion",
-  "Env-gated optional steps",
-  "Fleet observability for tests",
-  "Internal tooling as a product",
+  "Bitbucket shared pipelines, semver-tagged and imported by tag",
+  "Build that stops at the image, with promotion left to ArgoCD",
+  "Optional scan and Jira gates switched by env var, not by forking",
+  "Tests run from an ArgoCD PostSync hook, after the deploy is healthy",
+  "Test results from 20 services aggregated into one dashboard",
 ];
 
 const LINKED: { title: string; href: string }[] = [
@@ -342,8 +354,8 @@ export function PrMergeFooter() {
                 </span>
               </p>
               <p className="mt-3 text-muted-foreground leading-relaxed max-w-2xl">
-                Merged, and I&apos;d do it the same way again. The bash
-                reporter is not missed.
+                I&apos;d do it the same way again. If you want the awkward
+                parts of the migration, ask me.
               </p>
               <div className="mt-6 flex flex-wrap items-center gap-x-8 gap-y-3 font-mono text-sm">
                 <Link

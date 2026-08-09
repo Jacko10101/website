@@ -12,47 +12,58 @@ export function ObservabilityArchitecture() {
   const nodes = {
     services: {
       title: "Microservices",
-      description: "20+ services exposing /metrics endpoints - custom business metrics via Prometheus client libraries",
+      description:
+        "The 20 services each expose a /metrics endpoint, including counters we added for business events rather than plumbing.",
     },
     exporters: {
-      title: "Infrastructure Exporters",
-      description: "Node Exporter, Kube State Metrics, Kafka Exporter, Postgres Exporter, Redis Exporter",
+      title: "Infrastructure exporters",
+      description:
+        "Off-the-shelf exporters cover the things that can't instrument themselves — nodes, Kubernetes objects, Kafka, Postgres and Redis.",
     },
     prometheus: {
       title: "Prometheus",
-      description: "Metrics collection with 30s scrape interval - 50+ alert rules with inhibition",
+      description:
+        "Scrapes every target on a 30-second interval and evaluates the alert rules against what it finds.",
     },
     thanos: {
       title: "Thanos",
-      description: "Long-term storage with data compression and downsampling - unlimited retention",
+      description:
+        "Compacts and downsamples older metrics so we can keep years of history without keeping it hot.",
     },
     s3: {
       title: "AWS S3",
-      description: "Object storage for historical metrics - cost-effective long-term retention",
+      description:
+        "Where the cold metrics end up, at object-storage prices rather than cluster-disk prices.",
     },
     promtail: {
       title: "Promtail",
-      description: "Log collector running as DaemonSet - labels enrichment with pod/namespace context",
+      description:
+        "Runs on every node and tags each log line with its pod and namespace before shipping it on.",
     },
     loki: {
       title: "Loki",
-      description: "Log aggregation in microservices mode - label-based indexing for fast queries",
+      description:
+        "Indexes logs by label instead of by content, which is the reason it stays cheap to run.",
     },
     tempo: {
       title: "Tempo",
-      description: "Distributed tracing - trace collection and storage with OpenTelemetry",
+      description:
+        "Holds the traces, using the OpenTelemetry and trace-to-log conventions I set for services to build against.",
     },
     grafana: {
       title: "Grafana",
-      description: "22 custom dashboards for metrics, logs, and traces - unified observability interface",
+      description:
+        "The one place people actually look — 22 dashboards reading metrics, logs and traces side by side.",
     },
     alertmanager: {
       title: "Alertmanager",
-      description: "Alert routing with smart grouping - environment-specific channels and inhibition rules",
+      description:
+        "Groups related alerts, suppresses the downstream noise with inhibition rules, and routes what's left by environment.",
     },
     teams: {
       title: "Teams",
-      description: "Notifications via Power Automate - Dev (business hours), QA/Prod (24/7)",
+      description:
+        "Where alerts land, via Power Automate — dev in business hours, QA and prod around the clock.",
     },
   };
 
@@ -71,8 +82,15 @@ export function ObservabilityArchitecture() {
         toggle(key);
       }
     },
-    onMouseEnter: () => setHovered(key),
-    onMouseLeave: () => setHovered(null),
+    // Pointer events rather than mouse events: a tap on a touch screen fires a
+    // synthetic mouseenter that never gets a matching mouseleave, which used to
+    // leave the panel stuck on whichever node you last touched.
+    onPointerEnter: (e: React.PointerEvent<SVGGElement>) => {
+      if (e.pointerType === "mouse") setHovered(key);
+    },
+    onPointerLeave: (e: React.PointerEvent<SVGGElement>) => {
+      if (e.pointerType === "mouse") setHovered(null);
+    },
     onFocus: () => setHovered(key),
     onBlur: () => setHovered(null),
     className: "cursor-pointer outline-none",
@@ -86,17 +104,39 @@ export function ObservabilityArchitecture() {
 
   return (
     <div className="rounded-lg border border-border bg-card p-6">
-      <h3 className="mb-1 text-lg font-semibold">Observability stack · system overview</h3>
-      <p className="mb-4 text-xs text-muted-foreground">
-        Click, tap or hover any node for a one-line explanation.
-      </p>
+      <h3 className="mb-3 text-lg font-semibold">Observability stack · system overview</h3>
+
+      {/* The explanation sits above the diagram, not below it: the SVG is wider
+          than the column, so anything underneath scrolls out of view the moment
+          you pan right. Fixed height so selecting a node doesn't shift the page. */}
+      <div
+        aria-live="polite"
+        className="mb-4 min-h-[5.5rem] rounded-md border border-border/60 bg-secondary/20 p-4"
+      >
+        {activeNode ? (
+          <>
+            <h4 className="mb-1 font-semibold text-foreground">
+              {nodes[activeNode as keyof typeof nodes].title}
+            </h4>
+            <p className="text-sm text-muted-foreground">
+              {nodes[activeNode as keyof typeof nodes].description}
+            </p>
+          </>
+        ) : (
+          <p className="text-sm text-muted-foreground">
+            Select any box in the diagram for a line on what it does. The
+            diagram is wider than this column, so it scrolls sideways.
+          </p>
+        )}
+      </div>
+
       <div className="relative">
         <div className="overflow-x-auto" data-lenis-prevent tabIndex={0}>
         <svg
-          viewBox="0 0 950 720"
-          className="min-w-[950px] w-full"
+          viewBox="0 0 880 600"
+          className="min-w-[880px] w-full"
           role="group"
-          aria-label="Enterprise observability platform architecture diagram showing Prometheus metrics scraping from Kubernetes microservices and infrastructure exporters, Thanos long-term storage on AWS S3, Loki log aggregation with Promtail collectors, Tempo distributed tracing with OpenTelemetry, Grafana unified visualization dashboards for metrics logs and traces, Alertmanager alert routing with smart inhibition, and Microsoft Teams notification integration for DevOps incident management"
+          aria-label="Diagram of the observability stack: metrics, logs and traces flow from the services to Grafana, and alerts route on to Teams."
         >
           <defs>
             <marker
@@ -175,7 +215,7 @@ export function ObservabilityArchitecture() {
               Microservices
             </text>
             <text x="130" y="242" textAnchor="middle" className="fill-muted-foreground text-[9px]">
-              20+ services
+              20 services
             </text>
             <text x="130" y="255" textAnchor="middle" className="fill-muted-foreground text-[9px]">
               /metrics endpoints
@@ -447,57 +487,8 @@ export function ObservabilityArchitecture() {
           <text x="450" y="450" className="fill-muted-foreground text-[8px]">query</text>
           <text x="520" y="250" className="fill-error text-[8px]">alerts</text>
           <text x="780" y="395" className="fill-error text-[8px]">notify</text>
-
-          {/* Cost savings legend */}
-          <g>
-            <rect x="50" y="620" width="840" height="90" rx="6" className="fill-secondary/30 stroke-border" strokeWidth="1" />
-            <text x="470" y="640" textAnchor="middle" className="fill-foreground text-[11px] font-bold">
-              Business Impact & Scale
-            </text>
-            <text x="470" y="657" textAnchor="middle" className="fill-muted-foreground text-[9px]">
-              Self-hosted on cluster capacity we already had • one stack across four environments
-            </text>
-            <text x="470" y="673" textAnchor="middle" className="fill-muted-foreground text-[9px]">
-              22 custom dashboards • 50+ alert rules • 6 exporters • Full LGTM stack • OpenTelemetry tracing
-            </text>
-            <text x="470" y="689" textAnchor="middle" className="fill-muted-foreground text-[8px]">
-              Platform: Cluster health, infrastructure, service mesh • Service: IoT gateway, multi-tenant analytics • Business: Cost tracking, SLA monitoring
-            </text>
-          </g>
         </svg>
         </div>
-
-        {/* Info panel for the selected-or-hovered node */}
-        <div aria-live="polite">
-        {activeNode && (
-          <div className="mt-4 rounded-lg border border-primary/50 bg-primary/10 p-4">
-            <h4 className="mb-1 font-semibold text-foreground">
-              {nodes[activeNode as keyof typeof nodes].title}
-            </h4>
-            <p className="text-sm text-muted-foreground">
-              {nodes[activeNode as keyof typeof nodes].description}
-            </p>
-          </div>
-        )}
-        </div>
-      </div>
-
-      <div className="mt-4 text-xs text-muted-foreground space-y-2">
-        <p>
-          <strong className="text-primary">Metrics Flow:</strong> Services (expose /metrics) + Exporters → Prometheus (scrape) → Thanos → S3
-        </p>
-        <p>
-          <strong className="text-primary">Logs Flow:</strong> Services (stdout/stderr) → Promtail (DaemonSet collector) → Loki (aggregate)
-        </p>
-        <p>
-          <strong className="text-foreground">Traces Flow:</strong> Services (OpenTelemetry instrumentation) → Tempo (distributed trace storage)
-        </p>
-        <p>
-          <strong className="text-foreground">Visualization:</strong> Grafana queries Prometheus, Loki, and Tempo for unified observability (metrics + logs + traces)
-        </p>
-        <p>
-          <strong className="text-error">Alerting:</strong> Prometheus → Alertmanager (routing + inhibition) → Teams (environment-specific channels)
-        </p>
       </div>
     </div>
   );

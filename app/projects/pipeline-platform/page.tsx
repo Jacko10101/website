@@ -34,14 +34,14 @@ const REVIEW_THREADS: { anchor: string; question: string; answer: string }[] = [
     question:
       "The old pipeline deployed. This one stops after the build. Isn't that a step backwards?",
     answer:
-      "The pipeline emits build metadata and stops; Image Updater does the GitOps bump separately. So a service can't break its own deploy by misconfiguring its yaml, and fixing promotion behaviour doesn't need a new pipeline release for twenty repos.",
+      "It is, deliberately. The pipeline stops at an image and a build.json, and Image Updater watches ECR and opens the GitOps commit itself. The old arrangement had the deploy credentials and the promotion rules sitting inside every service's pipeline, so a service could break its own deploy with a typo in its own yaml, and any change to how promotion worked had to ship as a pipeline release and then be adopted, repo by repo, before it was actually in effect. Promotion is one controller's job now.",
   },
   {
     anchor: "postsync/tests",
     question:
       "Why are the tests outside the pipeline? I want the build to go red when they fail.",
     answer:
-      "A pipeline that finishes before the pods are healthy is telling you about the build, not the deploy. PostSync runs tests against what's actually running, and Sentry surfaces the result whether or not anyone was watching. Most of the flaky-test bucket turned out to be the readiness assumption nobody had written down.",
+      "A pipeline that finishes before the pods are healthy is telling you about the build, not the deploy. PostSync runs the tests against what's actually running, and Sentry surfaces the result whether or not anyone was watching. Most of the failures we'd been calling flaky were tests hitting a pod that had started but wasn't serving yet. Nobody had written down that the tests assumed readiness.",
   },
 ];
 
@@ -88,81 +88,8 @@ function ReviewThreads() {
   );
 }
 
-/* The then/now instrument, drawn as the split diff it is: deletions on the
-   left, additions on the right, hairline gutters, diff colouring. */
-const THEN_LINES = [
-  "~500-line bitbucket-pipelines.yml, per service",
-  "1071-line bash reporter, one file, zero tests",
-  "a build-pattern change = a PR to twenty repos",
-];
-
-const NOW_LINES = [
-  "a six-line import, pinned to a tag",
-  "142-line orchestrator, five modules, each tested",
-  "a build-pattern change = one release, adopted by bump",
-];
-
-function ThenNowDiff() {
-  return (
-    <figure className="mb-6">
-      <div className="rounded-md border border-border overflow-hidden font-mono text-[13px]">
-        <div className="grid sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-border">
-          <div>
-            <div className="px-4 py-1.5 border-b border-border bg-error/10 font-semibold text-xs text-error/90">
-              then
-            </div>
-            <ul>
-              {THEN_LINES.map((line) => (
-                <li key={line} className="flex bg-error/5">
-                  <span
-                    className="w-7 shrink-0 text-center select-none border-r border-border/60 text-error bg-error/10"
-                    aria-hidden
-                  >
-                    −
-                  </span>
-                  <span className="flex-1 px-3 py-1 leading-relaxed text-foreground/70">
-                    {line}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <div
-              className="px-4 py-1.5 border-b border-border font-semibold text-xs"
-              style={{ color: DIFF.add, background: DIFF.addBg }}
-            >
-              now
-            </div>
-            <ul>
-              {NOW_LINES.map((line) => (
-                <li key={line} className="flex" style={{ background: DIFF.addBgFaint }}>
-                  <span
-                    className="w-7 shrink-0 text-center select-none border-r border-border/60"
-                    style={{ color: DIFF.add, background: DIFF.addBg }}
-                    aria-hidden
-                  >
-                    +
-                  </span>
-                  <span className="flex-1 px-3 py-1 leading-relaxed text-foreground/90">
-                    {line}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </div>
-      <figcaption className="mt-2.5 text-[13px] text-muted-foreground leading-relaxed">
-        Line two on each side is the diffstat in the header: the 1,071-line
-        reporter became a 142-line orchestrator in five tested modules.
-      </figcaption>
-    </figure>
-  );
-}
-
 const MERGE_LINES: { sign: "+" | "-"; text: string }[] = [
-  { sign: "-", text: "1,071-line bash reporter, one file, zero tests" },
+  { sign: "-", text: "the bash reporter, one file, zero tests" },
   { sign: "-", text: "20 bespoke bitbucket-pipelines.yml, drifted apart" },
   { sign: "+", text: "1 shared pipeline library, versioned by tag" },
   { sign: "+", text: "1 .ci/builds.yaml per service, ~5 min build" },
@@ -172,6 +99,13 @@ const MERGE_LINES: { sign: "+" | "-"; text: string }[] = [
 
 /* The merge summary as the unified diff it claims to be: sign gutter,
    hairline rule, hunk header, deletion and addition tints. */
+/* TODO(jack): none of the "+" lines has a baseline, so the reader can't tell
+   what changed. Fill these in from real records and they go in as paired
+   lines (a "−" line with the before, a "+" line with the after):
+     build time     before: ___ min                 after: ~5 min
+     onboarding     before: ___ per new service     after: one builds.yaml + one import
+     deploys/month  before: ~___                    after: ~400
+   Anything you can't source, leave blank and it stays out. Do not estimate. */
 function MergeSummary() {
   return (
     <div className="rounded-md border border-border overflow-hidden font-mono text-[13px] leading-6">
@@ -234,7 +168,7 @@ const articleSchema = {
     name: "DevlinOps",
     url: "https://devlinops.com",
   },
-  datePublished: "2025-01-01",
+  datePublished: "2024-01-01",
   dateModified: "2026-04-25",
   proficiencyLevel: "Expert",
   keywords: [
@@ -291,17 +225,22 @@ export default function CicdGitopsPage() {
       <div className="container px-4 pt-10 md:pt-12">
         <div className="grid gap-10 lg:gap-12 lg:grid-cols-[minmax(0,1fr)_15rem] max-w-5xl mx-auto">
           <div className="space-y-12 min-w-0">
-            <CaseStudySection eyebrow="// exit 1 · the shape that broke" title="Twenty pipelines that drifted">
-              <ThenNowDiff />
-
+            <CaseStudySection eyebrow="// exit 1 · twenty drifting pipelines" title="Every service had its own CI">
               <p className="text-muted-foreground leading-relaxed mb-4">
-                Twenty services each shipped their own bitbucket-pipelines.yml.
-                Same rough shape: build, test, scan, push, deploy, but each
-                one slightly different. A change in the build pattern meant a
-                PR to twenty repos.
+                Loweconex runs a UK IoT platform. Behind it are twenty Java and
+                Node services, deployed across four environments: dev, qa,
+                preprod and prod.
               </p>
               <p className="text-muted-foreground leading-relaxed mb-4">
-                A 1071-line bash pipeline reporter lived in the base image and
+                Each of those twenty shipped its own
+                bitbucket-pipelines.yml, around five hundred lines apiece. Same
+                rough shape every time: build, test, scan, push, deploy, but no
+                two of them the same. A change to the build pattern meant a PR
+                to twenty repos, and in practice that meant it didn&apos;t get
+                made.
+              </p>
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                A 1,071-line bash pipeline reporter lived in the base image and
                 posted to Teams at every stage. It worked. Nobody wanted to
                 touch it.
               </p>
@@ -364,11 +303,12 @@ gitops:
               </div>
 
               <p className="text-muted-foreground leading-relaxed mb-4">
-                Optional gates, Veracode SAST, SourceClear SCA, Jira Fix
-                Version validation, are env-gated in the same library. One
-                library handles services that need them and services that
-                don&apos;t. The difference is an env var on the import, not a
-                fork of the pipeline.
+                Three gates are optional: Veracode SAST, SourceClear SCA, and
+                Jira Fix Version validation. All three live in the same
+                library and are switched on by env var. One library handles
+                the services that need them and the services that don&apos;t.
+                The difference is an env var on the import, not a fork of the
+                pipeline.
               </p>
               <p className="text-muted-foreground leading-relaxed">
                 The library is semver-tagged. Services adopt a new version on
@@ -385,10 +325,20 @@ gitops:
                 tests run against the real running thing rather than half a
                 pod.
               </p>
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                Every run produces an Allure report, and pass/fail goes into a
+                result store. I built a dashboard on top of that store. I
+                called it Sentry, which was a mistake given the error-tracking
+                product of the same name, but it&apos;s what everyone calls it
+                now. It answers one question: is the fleet green?
+              </p>
               <p className="text-muted-foreground leading-relaxed mb-6">
-                Allure reports per run. Pass/fail published to a result store.
-                Sentry, a small dashboard I built on top, is where you go to
-                ask &quot;is the fleet green?&quot;.
+                It scores the platform separately from the services on it.
+                Cluster, Kafka, databases and secrets sit across the top as
+                Platform Foundation; per-service test health sits below.
+                &quot;The cluster is broken&quot; and &quot;Data Flow has a
+                flaky test&quot; are different conversations, and they usually
+                need different people, so they get scored separately.
               </p>
 
               <div className="space-y-6">
@@ -400,13 +350,10 @@ gitops:
                   alt="Sentry fleet dashboard with platform foundation tiles and per-service test cards"
                   caption={
                     <>
-                      Eleven services green, four red. Platform Foundation
-                      sits across the top (cluster, Kafka, databases, secrets)
-                      and is scored separately from per-service test health,
-                      because &quot;the cluster is broken&quot; and &quot;Data
-                      Flow has a flaky test&quot; are different conversations.
-                      POSTSYNC and CONTINUOUS triggers are tagged so it&apos;s
-                      obvious what kind of run produced the result.
+                      Eleven services green, four red, with Platform
+                      Foundation scored on its own across the top. POSTSYNC and
+                      CONTINUOUS triggers are tagged, so it&apos;s obvious what
+                      kind of run produced each result.
                     </>
                   }
                 />
@@ -448,7 +395,7 @@ gitops:
               </p>
             </CaseStudySection>
 
-            <CaseStudySection eyebrow="// the whole run" title="How it fits together">
+            <CaseStudySection eyebrow="// step: the run, end to end" title="How it fits together">
               <p className="text-muted-foreground mb-6 leading-relaxed">
                 Four layers, top to bottom. A service repo and the shared
                 libraries it imports. A Bitbucket run that produces an image
@@ -474,12 +421,14 @@ gitops:
             <CaseStudySection eyebrow="// exit 0 · merged" title="What the diff came to">
               <MergeSummary />
 
+              {/* TODO(jack): if you can source it, the onboarding figure goes
+                  here — "used to take about ___ per new service". Left out
+                  rather than guessed. */}
               <p className="text-muted-foreground mt-6 leading-relaxed">
-                None of which is the real change. Onboarding a service used to
-                mean copy-pasting somebody else&apos;s yaml and quietly hoping.
-                Now it&apos;s a builds.yaml and a tag, and the difference
-                between two services&apos; CI fits on one screen — which means a
-                change to how everything builds is one merge, not twenty.
+                Onboarding a new service used to mean copying someone
+                else&apos;s yaml and editing it until it built. It now takes
+                one builds.yaml and one import line, and the difference between
+                any two services&apos; CI fits on a screen.
               </p>
             </CaseStudySection>
           </div>

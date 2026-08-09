@@ -20,8 +20,11 @@ const rise: Variants = {
 /**
  * The hero leads with the site's most differentiated artefact: a real SQLite
  * database about the work, queryable in the visitor's browser. Identity on the
- * left, evidence on the right. The identity column gets the one entrance
- * animation the page allows itself; everything else renders instantly.
+ * left, evidence on the right.
+ *
+ * Who Jack is renders immediately — the name, the role line and the actions
+ * are never hidden behind an animation, because they are the whole point of
+ * the first second. Only the supporting detail below them fades up.
  */
 export function Hero() {
   return (
@@ -30,46 +33,46 @@ export function Hero() {
       <AsciiField className="[mask-image:radial-gradient(ellipse_75%_90%_at_72%_30%,black_0%,transparent_72%)] opacity-80" />
 
       <div className="container relative z-10">
-        <div className="grid lg:grid-cols-[1fr_1.05fr] gap-12 lg:gap-16 items-center">
-          {/* Identity, staggered entrance */}
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={{
-              hidden: {},
-              visible: { transition: { staggerChildren: 0.12, delayChildren: 0.15 } },
-            }}
-          >
-            <motion.p variants={rise} className="font-mono text-sm text-primary mb-5">
+        <div className="grid lg:grid-cols-[1fr_1.05fr] gap-12 lg:gap-16 items-start">
+          {/* Identity. Renders instantly; see the note above. */}
+          <div>
+            <p className="font-mono text-sm text-primary mb-5">
               <span className="text-muted-foreground">jack@devlinops:~</span> $ whoami
-            </motion.p>
+            </p>
 
-            <motion.h1 variants={rise} className="font-mono font-semibold tracking-tighter text-6xl sm:text-7xl md:text-8xl text-foreground mb-6 glow-soft">
+            {/* The cursor is absolutely positioned: as an inline element it
+                wrapped onto its own line and pushed ~110px of dead space
+                under the name. */}
+            <h1 className="relative font-mono font-semibold tracking-tighter text-6xl sm:text-7xl md:text-8xl text-foreground mb-6 glow-soft">
               <DecodeText text="Jack Devlin" duration={900} />
-              <span className="cursor-blink glow-text !w-[0.14em] !h-[0.85em]" aria-hidden />
-            </motion.h1>
+              <span
+                className="cursor-blink glow-text absolute !w-[0.1em] !h-[0.75em] ml-[0.08em] self-center"
+                aria-hidden
+              />
+            </h1>
 
-            <motion.p variants={rise} className="text-xl sm:text-2xl text-foreground/90 mb-4 leading-snug">
+            <p className="text-xl sm:text-2xl text-foreground/90 mb-4 leading-snug">
               Platform engineer. I build the infrastructure AI products run on:
-              Kubernetes and CI/CD underneath, an LLM gateway and guardrails on top.
-            </motion.p>
+              Kubernetes and CI/CD underneath, an LLM gateway and the guardrails
+              that keep it honest on top.
+            </p>
 
-            <motion.p variants={rise} className="text-base text-muted-foreground mb-8 max-w-xl">
-              Three years of production Kubernetes, GitOps and observability.
-              The last year went to AI workloads: a gateway in front of every
-              model call, and a natural-language query product live across ~30
-              tenant databases.{" "}
-              {profile.msc.label}
-              {profile.msc.result ? `, ${profile.msc.result},` : ""} finishing{" "}
+            <p className="text-base text-muted-foreground mb-8 max-w-xl">
+              Three years at Loweconex, a UK IoT platform business, where
+              engineering went from five people to around forty. The last year
+              went to AI workloads: a gateway in front of every model call, and a
+              natural-language query product live across ~30 tenant databases.
+              I finish an {profile.msc.label}
+              {profile.msc.result ? `, ${profile.msc.result},` : ""} in{" "}
               {profile.msc.finishes}.
-            </motion.p>
+            </p>
 
-            <motion.div variants={rise} className="flex flex-wrap gap-4 items-center mb-8">
+            <div className="flex flex-wrap gap-4 items-center mb-8">
               <Link
-                href="/projects/clarity"
+                href="/projects"
                 className="px-7 py-3.5 rounded-md bg-primary text-primary-foreground font-mono font-semibold hover:bg-primary/90 hover:shadow-[0_0_28px_oklch(0.72_0.19_150_/_0.35)] transition-all"
               >
-                See Clarity
+                Read the case studies
               </Link>
               <Link
                 href="/contact"
@@ -79,22 +82,28 @@ export function Hero() {
               </Link>
               <a
                 href="/cv.pdf"
+                download="jack-devlin-cv.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 font-mono text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
-                cv.pdf
+                Download CV
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V3" />
                 </svg>
               </a>
-            </motion.div>
+            </div>
 
-            <motion.p variants={rise} className="inline-flex items-start gap-2 font-mono text-sm text-muted-foreground max-w-xl">
-              <span className="w-2 h-2 mt-1.5 rounded-full bg-primary animate-pulse shrink-0" aria-hidden />
+            <motion.p
+              initial="hidden"
+              animate="visible"
+              variants={rise}
+              className="inline-flex items-start gap-2 font-mono text-sm text-muted-foreground max-w-xl"
+            >
+              <span className="w-2 h-2 mt-1.5 rounded-full bg-primary shrink-0" aria-hidden />
               {profile.availability.status}
             </motion.p>
-          </motion.div>
+          </div>
 
           {/* The artefact: ask the site a question, get the SQL back. */}
           <div>
@@ -102,10 +111,8 @@ export function Hero() {
               Don&apos;t take my word for any of it
             </p>
             <p className="text-sm text-muted-foreground mb-4 max-w-xl">
-              My day job is an AI that answers questions about a database and
-              shows you the SQL. This is that, pointed at my own work — real
-              SQLite, running in your browser. Pick a question, read the query,
-              then edit it and run your own.
+              This is a real SQLite database of my work, running in your tab.
+              Pick a question, read the SQL, then edit it and run your own.
             </p>
             <CareerQuery />
           </div>

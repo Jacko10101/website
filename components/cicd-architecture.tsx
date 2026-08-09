@@ -30,7 +30,7 @@ const nodeInfo: Record<NodeKey, { title: string; description: string }> = {
   scripts: {
     title: "shared-scripts",
     description:
-      "Reusable commands the shared pipelines call into: tagging, ECR push, scan helpers. Where the useful bits of the old 1000-line bash reporter ended up.",
+      "Reusable commands the shared pipelines call into: tagging, ECR push, scan helpers. Where the useful bits of the old bash reporter ended up.",
   },
   bitbucket: {
     title: "Bitbucket Pipelines",
@@ -64,7 +64,7 @@ const nodeInfo: Record<NodeKey, { title: string; description: string }> = {
   },
   k8s: {
     title: "Kubernetes",
-    description: "Four environments: dev, qa, preprod, prod.",
+    description: "Four environments: dev, qa, preprod and prod.",
   },
   postsync: {
     title: "PostSync → test-infra",
@@ -72,13 +72,28 @@ const nodeInfo: Record<NodeKey, { title: string; description: string }> = {
       "An ArgoCD PostSync hook triggers a test job after the deploy is healthy. Tests live in their own repo, not in the pipeline.",
   },
   sentry: {
-    title: "Sentry",
+    title: "Sentry (the dashboard I built, not the SaaS)",
     description:
       "Fleet test-health dashboard. Aggregates POSTSYNC and CONTINUOUS test runs, surfaces pass rates per service, links to per-run Allure reports.",
   },
 };
 
 const ACTIVE_FILL = "oklch(0.72 0.19 150 / 0.1)";
+
+/* Row 1 — the three things a build reads. */
+const INPUT_NODES = [
+  { key: "service", x: 64, label: "Service repo", sub: ".ci/builds.yaml" },
+  { key: "shared", x: 264, label: "Shared pipelines", sub: "java + node, by tag" },
+  { key: "scripts", x: 464, label: "shared-scripts", sub: "reusable commands" },
+] as const;
+
+/* Row 4 — build artefact to running pod. */
+const DELIVERY_NODES = [
+  { key: "updater", x: 64, label: "Image Updater", sub: "watches ECR" },
+  { key: "gitops", x: 216, label: "GitOps repo", sub: "kustomize bump" },
+  { key: "argocd", x: 368, label: "ArgoCD", sub: "sync" },
+  { key: "k8s", x: 520, label: "Kubernetes", sub: "4 environments" },
+] as const;
 
 export function CicdArchitecture() {
   const [selected, setSelected] = useState<NodeKey | null>(null);
@@ -109,17 +124,42 @@ export function CicdArchitecture() {
   });
 
   return (
-    <div className="rounded-lg border border-border bg-card p-6">
-      <h3 className="mb-1 text-lg font-semibold">Pipeline platform · system overview</h3>
+    <div className="rounded-lg border border-border bg-card p-5 sm:p-6">
+      <h3 className="mb-1 text-lg font-semibold">
+        Pipeline platform · system overview
+      </h3>
       <p className="mb-4 text-xs text-muted-foreground">
-        Click, tap or hover any node for a one-line explanation.
+        Select any node for a one-line explanation of what it does.
       </p>
 
-      <div className="relative">
-        <div className="overflow-x-auto" data-lenis-prevent tabIndex={0}>
+      {/* The panel sits above the drawing, so the explanation is never off
+          the bottom of a scrolled diagram. Fixed height, so selecting a node
+          doesn't shove the diagram down the page. */}
+      <div
+        aria-live="polite"
+        className="mb-4 min-h-[6.25rem] sm:min-h-[5.25rem] rounded-lg border border-border bg-secondary/40 p-4"
+      >
+        {active ? (
+          <>
+            <h4 className="mb-1 font-semibold text-foreground">
+              {nodeInfo[active].title}
+            </h4>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              {nodeInfo[active].description}
+            </p>
+          </>
+        ) : (
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            Nothing selected. Every box below is a real repo, controller or
+            service; pick one and its description appears here.
+          </p>
+        )}
+      </div>
+
+      <div className="overflow-x-auto" data-lenis-prevent tabIndex={0}>
         <svg
-          viewBox="0 0 900 600"
-          className="min-w-[900px] w-full"
+          viewBox="0 0 680 540"
+          className="min-w-[560px] w-full"
           role="group"
           aria-label="CI/CD architecture: a service repo and two shared pipeline libraries feed Bitbucket Pipelines, which produces an ECR image and build metadata; ArgoCD Image Updater promotes via the GitOps repo, ArgoCD syncs to Kubernetes, and a PostSync hook triggers the test infra repo with results aggregated in Sentry."
         >
@@ -136,42 +176,32 @@ export function CicdArchitecture() {
             </marker>
           </defs>
 
-          <text x="20" y="30" className="fill-muted-foreground text-[10px] font-mono">
-            inputs
-          </text>
+          {/* Stage labels live in the left gutter, level with their row. */}
+          {[
+            { text: "inputs", y: 56 },
+            { text: "ci", y: 166 },
+            { text: "output", y: 266 },
+            { text: "deliver", y: 376 },
+            { text: "verify", y: 476 },
+          ].map((l) => (
+            <text
+              key={l.text}
+              x="6"
+              y={l.y}
+              className="fill-muted-foreground text-[10px] font-mono"
+            >
+              {l.text}
+            </text>
+          ))}
 
-          {/* Row 1, three input boxes */}
-          {(
-            [
-              {
-                key: "service",
-                x: 60,
-                w: 200,
-                label: "Service repo",
-                sub: ".ci/builds.yaml",
-              },
-              {
-                key: "shared",
-                x: 350,
-                w: 200,
-                label: "Shared pipelines",
-                sub: "java + node, semver-tagged",
-              },
-              {
-                key: "scripts",
-                x: 640,
-                w: 200,
-                label: "shared-scripts",
-                sub: "reusable commands",
-              },
-            ] as const
-          ).map((n) => (
+          {/* Row 1 — inputs */}
+          {INPUT_NODES.map((n) => (
             <g key={n.key} {...nodeProps(n.key)}>
               <rect
                 x={n.x}
-                y="50"
-                width={n.w}
-                height="60"
+                y="20"
+                width="184"
+                height="64"
                 rx="8"
                 className={`fill-secondary ${
                   isActive(n.key) ? "stroke-primary" : "stroke-border"
@@ -180,16 +210,16 @@ export function CicdArchitecture() {
                 strokeWidth="2"
               />
               <text
-                x={n.x + n.w / 2}
-                y="75"
+                x={n.x + 92}
+                y="48"
                 textAnchor="middle"
                 className="fill-foreground text-sm font-semibold"
               >
                 {n.label}
               </text>
               <text
-                x={n.x + n.w / 2}
-                y="93"
+                x={n.x + 92}
+                y="66"
                 textAnchor="middle"
                 className="fill-muted-foreground text-[10px]"
               >
@@ -198,14 +228,14 @@ export function CicdArchitecture() {
             </g>
           ))}
 
-          {/* Inputs → Bitbucket */}
-          {[160, 450, 740].map((x) => (
+          {/* inputs → Bitbucket */}
+          {[156, 356, 556].map((x) => (
             <line
               key={x}
               x1={x}
-              y1="110"
-              x2="450"
-              y2="170"
+              y1="84"
+              x2="356"
+              y2="130"
               className="stroke-primary"
               strokeWidth="1.5"
               markerEnd="url(#arrow-cicd)"
@@ -213,17 +243,13 @@ export function CicdArchitecture() {
             />
           ))}
 
-          <text x="20" y="200" className="fill-muted-foreground text-[10px] font-mono">
-            ci
-          </text>
-
-          {/* Row 2, Bitbucket Pipelines */}
+          {/* Row 2 — Bitbucket Pipelines */}
           <g {...nodeProps("bitbucket")}>
             <rect
-              x="240"
-              y="180"
-              width="420"
-              height="60"
+              x="134"
+              y="130"
+              width="444"
+              height="64"
               rx="10"
               className={`fill-card ${
                 isActive("bitbucket") ? "stroke-primary" : "stroke-border"
@@ -232,16 +258,16 @@ export function CicdArchitecture() {
               strokeWidth="3"
             />
             <text
-              x="450"
-              y="206"
+              x="356"
+              y="158"
               textAnchor="middle"
               className="fill-foreground text-base font-bold"
             >
               Bitbucket Pipelines
             </text>
             <text
-              x="450"
-              y="225"
+              x="356"
+              y="177"
               textAnchor="middle"
               className="fill-muted-foreground text-[11px]"
             >
@@ -249,132 +275,49 @@ export function CicdArchitecture() {
             </text>
           </g>
 
-          {/* Pipelines → outputs */}
+          {/* Bitbucket → outputs */}
           <line
-            x1="350"
-            y1="240"
-            x2="280"
-            y2="280"
+            x1="270"
+            y1="194"
+            x2="199"
+            y2="236"
             className="stroke-primary"
             strokeWidth="2"
             markerEnd="url(#arrow-cicd)"
           />
           <line
-            x1="550"
-            y1="240"
-            x2="630"
-            y2="280"
+            x1="442"
+            y1="194"
+            x2="513"
+            y2="236"
             className="stroke-primary"
             strokeWidth="2"
             markerEnd="url(#arrow-cicd)"
           />
 
-          {/* Outputs */}
-          <g {...nodeProps("ecr")}>
-            <rect
-              x="160"
-              y="280"
-              width="180"
-              height="50"
-              rx="8"
-              className={`fill-card ${
-                isActive("ecr") ? "stroke-primary" : "stroke-border"
-              }`}
-              style={isActive("ecr") ? { fill: ACTIVE_FILL } : undefined}
-              strokeWidth="2"
-            />
-            <text
-              x="250"
-              y="302"
-              textAnchor="middle"
-              className="fill-foreground text-sm font-semibold"
-            >
-              AWS ECR
-            </text>
-            <text
-              x="250"
-              y="318"
-              textAnchor="middle"
-              className="fill-muted-foreground text-[10px]"
-            >
-              image · multi-tagged
-            </text>
-          </g>
-
-          <g {...nodeProps("buildjson")}>
-            <rect
-              x="560"
-              y="280"
-              width="180"
-              height="50"
-              rx="8"
-              className={`fill-card ${
-                isActive("buildjson") ? "stroke-primary" : "stroke-border"
-              }`}
-              style={isActive("buildjson") ? { fill: ACTIVE_FILL } : undefined}
-              strokeWidth="2"
-            />
-            <text
-              x="650"
-              y="302"
-              textAnchor="middle"
-              className="fill-foreground text-sm font-semibold"
-            >
-              build.json
-            </text>
-            <text
-              x="650"
-              y="318"
-              textAnchor="middle"
-              className="fill-muted-foreground text-[10px]"
-            >
-              metadata · output contract
-            </text>
-          </g>
-
-          <text x="20" y="365" className="fill-muted-foreground text-[10px] font-mono">
-            delivery
-          </text>
-
-          {/* Row 3, delivery chain */}
+          {/* Row 3 — what the build leaves behind */}
           {(
             [
               {
-                key: "updater",
-                x: 40,
-                w: 180,
-                label: "Image Updater",
-                sub: "watches ECR",
+                key: "ecr",
+                x: 64,
+                label: "AWS ECR",
+                sub: "image · multi-tagged",
               },
               {
-                key: "gitops",
-                x: 250,
-                w: 160,
-                label: "GitOps repo",
-                sub: "kustomize bump",
-              },
-              {
-                key: "argocd",
-                x: 440,
-                w: 140,
-                label: "ArgoCD",
-                sub: "sync",
-              },
-              {
-                key: "k8s",
-                x: 610,
-                w: 180,
-                label: "Kubernetes",
-                sub: "dev · qa · preprod · prod",
+                key: "buildjson",
+                x: 378,
+                label: "build.json",
+                sub: "metadata · output contract",
               },
             ] as const
           ).map((n) => (
             <g key={n.key} {...nodeProps(n.key)}>
               <rect
                 x={n.x}
-                y="380"
-                width={n.w}
-                height="60"
+                y="236"
+                width="270"
+                height="52"
                 rx="8"
                 className={`fill-card ${
                   isActive(n.key) ? "stroke-primary" : "stroke-border"
@@ -383,16 +326,16 @@ export function CicdArchitecture() {
                 strokeWidth="2"
               />
               <text
-                x={n.x + n.w / 2}
-                y="405"
+                x={n.x + 135}
+                y="259"
                 textAnchor="middle"
                 className="fill-foreground text-sm font-semibold"
               >
                 {n.label}
               </text>
               <text
-                x={n.x + n.w / 2}
-                y="423"
+                x={n.x + 135}
+                y="276"
                 textAnchor="middle"
                 className="fill-muted-foreground text-[10px]"
               >
@@ -403,129 +346,143 @@ export function CicdArchitecture() {
 
           {/* ECR → Image Updater */}
           <line
-            x1="190"
-            y1="330"
-            x2="130"
-            y2="380"
+            x1="180"
+            y1="288"
+            x2="136"
+            y2="340"
             className="stroke-primary"
             strokeWidth="2"
             markerEnd="url(#arrow-cicd)"
           />
 
-          {/* delivery chain arrows */}
+          {/* Row 4 — delivery */}
+          {DELIVERY_NODES.map((n) => (
+            <g key={n.key} {...nodeProps(n.key)}>
+              <rect
+                x={n.x}
+                y="340"
+                width="126"
+                height="64"
+                rx="8"
+                className={`fill-card ${
+                  isActive(n.key) ? "stroke-primary" : "stroke-border"
+                }`}
+                style={isActive(n.key) ? { fill: ACTIVE_FILL } : undefined}
+                strokeWidth="2"
+              />
+              <text
+                x={n.x + 63}
+                y="368"
+                textAnchor="middle"
+                className="fill-foreground text-[13px] font-semibold"
+              >
+                {n.label}
+              </text>
+              <text
+                x={n.x + 63}
+                y="385"
+                textAnchor="middle"
+                className="fill-muted-foreground text-[10px]"
+              >
+                {n.sub}
+              </text>
+            </g>
+          ))}
+
           {[
-            { x1: 220, x2: 250 },
-            { x1: 410, x2: 440 },
-            { x1: 580, x2: 610 },
+            { x1: 190, x2: 216 },
+            { x1: 342, x2: 368 },
+            { x1: 494, x2: 520 },
           ].map((arr) => (
             <line
               key={arr.x1}
               x1={arr.x1}
-              y1="410"
+              y1="372"
               x2={arr.x2}
-              y2="410"
+              y2="372"
               className="stroke-primary"
               strokeWidth="2"
               markerEnd="url(#arrow-cicd)"
             />
           ))}
 
-          <text x="20" y="485" className="fill-muted-foreground text-[10px] font-mono">
-            verify
-          </text>
+          {/* Row 5 — verify */}
+          {(
+            [
+              {
+                key: "postsync",
+                x: 64,
+                label: "PostSync → test-infra",
+                sub: "tests run once the deploy is healthy",
+              },
+              {
+                key: "sentry",
+                x: 378,
+                label: "Sentry",
+                sub: "fleet test health · Allure per run",
+              },
+            ] as const
+          ).map((n) => (
+            <g key={n.key} {...nodeProps(n.key)}>
+              <rect
+                x={n.x}
+                y="440"
+                width="270"
+                height="64"
+                rx="8"
+                className={`fill-secondary ${
+                  isActive(n.key) ? "stroke-primary" : "stroke-border"
+                }`}
+                style={isActive(n.key) ? { fill: ACTIVE_FILL } : undefined}
+                strokeWidth="2"
+              />
+              <text
+                x={n.x + 135}
+                y="468"
+                textAnchor="middle"
+                className="fill-foreground text-sm font-semibold"
+              >
+                {n.label}
+              </text>
+              <text
+                x={n.x + 135}
+                y="486"
+                textAnchor="middle"
+                className="fill-muted-foreground text-[10px]"
+              >
+                {n.sub}
+              </text>
+            </g>
+          ))}
 
-          {/* Row 4, verify */}
-          <g {...nodeProps("postsync")}>
-            <rect
-              x="120"
-              y="500"
-              width="280"
-              height="60"
-              rx="8"
-              className={`fill-secondary ${
-                isActive("postsync") ? "stroke-primary" : "stroke-border"
-              }`}
-              style={isActive("postsync") ? { fill: ACTIVE_FILL } : undefined}
-              strokeWidth="2"
-            />
-            <text
-              x="260"
-              y="525"
-              textAnchor="middle"
-              className="fill-foreground text-sm font-semibold"
-            >
-              PostSync → test-infra
-            </text>
-            <text
-              x="260"
-              y="543"
-              textAnchor="middle"
-              className="fill-muted-foreground text-[10px]"
-            >
-              tests run after the deploy is healthy
-            </text>
-          </g>
-
-          <g {...nodeProps("sentry")}>
-            <rect
-              x="500"
-              y="500"
-              width="280"
-              height="60"
-              rx="8"
-              className={`fill-secondary ${
-                isActive("sentry") ? "stroke-primary" : "stroke-border"
-              }`}
-              style={isActive("sentry") ? { fill: ACTIVE_FILL } : undefined}
-              strokeWidth="2"
-            />
-            <text
-              x="640"
-              y="525"
-              textAnchor="middle"
-              className="fill-foreground text-sm font-semibold"
-            >
-              Sentry
-            </text>
-            <text
-              x="640"
-              y="543"
-              textAnchor="middle"
-              className="fill-muted-foreground text-[10px]"
-            >
-              fleet test health · per-run Allure reports
-            </text>
-          </g>
-
-          {/* k8s → postsync */}
+          {/* Kubernetes → PostSync */}
           <line
-            x1="650"
-            y1="440"
-            x2="320"
-            y2="500"
+            x1="540"
+            y1="404"
+            x2="250"
+            y2="440"
             className="stroke-primary"
             strokeWidth="2"
             markerEnd="url(#arrow-cicd)"
             opacity="0.6"
           />
 
-          {/* postsync → sentry */}
+          {/* PostSync → Sentry */}
           <line
-            x1="400"
-            y1="530"
-            x2="500"
-            y2="530"
+            x1="334"
+            y1="472"
+            x2="378"
+            y2="472"
             className="stroke-primary"
             strokeWidth="2"
             markerEnd="url(#arrow-cicd)"
           />
 
-          {/* build.json → sentry (dashed, metadata) */}
-          <line
-            x1="650"
-            y1="330"
-            x2="650"
-            y2="500"
+          {/* build.json → Sentry, dashed: metadata, not a trigger. Routed
+              round the right edge so it doesn't cross the delivery row. */}
+          <path
+            d="M 620 288 H 662 V 472 H 656"
+            fill="none"
             className="stroke-primary"
             strokeWidth="1.5"
             strokeDasharray="4 4"
@@ -533,18 +490,6 @@ export function CicdArchitecture() {
             opacity="0.4"
           />
         </svg>
-        </div>
-
-        <div aria-live="polite">
-        {active && (
-          <div className="mt-4 rounded-lg border border-primary/40 bg-primary/5 p-4">
-            <h4 className="mb-1 font-semibold text-foreground">{nodeInfo[active].title}</h4>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              {nodeInfo[active].description}
-            </p>
-          </div>
-        )}
-        </div>
       </div>
     </div>
   );

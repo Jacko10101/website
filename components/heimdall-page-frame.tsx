@@ -6,14 +6,20 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 
 /**
  * Heimdall-only page frame. The case study reads as a day on the platform
- * team, so the page is set as the shift log itself: one continuous time rail
- * runs down the left margin from 08:52 to 18:05, and every section is an
- * entry appended to it — a node on the rail, the clock time, a hairline rule,
- * then the entry body. The rail is drawn per-entry (each entry owns the
- * segment from its node to the next entry's node), so it stays continuous as
- * long as entries stack with zero vertical margin between them; spacing lives
- * in each entry's padding-bottom. Deliberately not the shared CaseStudyHero /
- * TechSidebar / CaseStudyCTA the other studies use.
+ * team, so the page is set as the shift log itself: one continuous rail runs
+ * down the left margin and every section is an entry appended to it — a node
+ * on the rail, a hairline rule, then the entry body.
+ *
+ * Clock times are only printed where they are true: the morning entries when
+ * the tool actually gets opened, and the end-of-day close. Entries that
+ * explain how the thing is built sit on the same rail with no time, because
+ * "how it's wired" does not happen at half twelve.
+ *
+ * The rail is drawn per-entry (each entry owns the segment from its node to
+ * the next entry's node), so it stays continuous as long as entries stack
+ * with zero vertical margin between them; spacing lives in each entry's
+ * padding-bottom. Deliberately not the shared CaseStudyHero / TechSidebar /
+ * CaseStudyCTA the other studies use.
  */
 
 /* Shared rail geometry. Node is 11px wide centred on x = 5.5px; the segment
@@ -31,7 +37,9 @@ function RailNode({ top }: { top: string }) {
 }
 
 /**
- * One entry in the day's log. `pos` controls the rail segment:
+ * One entry in the day's log. `time` is optional: omit it for entries that
+ * belong on the rail but don't happen at a particular hour. `pos` controls
+ * the rail segment:
  * - "first"  — the segment starts at this entry's node and runs down;
  * - "middle" — the segment runs the full height (the node sits on it);
  * - "last"   — a stub from the top down to the node, then the rail ends.
@@ -44,7 +52,7 @@ export function LogEntry({
   pos = "middle",
   className = "",
 }: {
-  time: string;
+  time?: string;
   label: string;
   title?: string;
   children: ReactNode;
@@ -52,6 +60,9 @@ export function LogEntry({
   className?: string;
 }) {
   const spacing = pos === "last" ? "" : "pb-12 md:pb-16";
+  // Untimed entries have a shorter header line, so their node sits higher.
+  const nodeTop = time ? "9px" : "5px";
+  const stubHeight = time ? "h-[14px]" : "h-[10px]";
   return (
     <section className={`relative ${ENTRY_INDENT} ${spacing} ${className}`}>
       <span
@@ -59,17 +70,19 @@ export function LogEntry({
           pos === "first"
             ? "top-[14px] bottom-0"
             : pos === "last"
-              ? "top-0 h-[14px]"
+              ? `top-0 ${stubHeight}`
               : "top-0 bottom-0"
         }`}
         aria-hidden
       />
-      <RailNode top="9px" />
+      <RailNode top={nodeTop} />
 
       <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1 font-mono">
-        <span className="text-2xl font-semibold text-primary glow-soft tabular-nums shrink-0">
-          {time}
-        </span>
+        {time && (
+          <span className="text-2xl font-semibold text-primary glow-soft tabular-nums shrink-0">
+            {time}
+          </span>
+        )}
         <span className="text-sm text-muted-foreground tracking-wider">{label}</span>
       </div>
 
@@ -104,7 +117,7 @@ export function DayLogHeader() {
           </Link>
 
           <p className="font-mono text-xs text-muted-foreground tracking-wider mb-6">
-            day log · platform team · 2025 → ongoing
+            day log · platform team
           </p>
 
           {/* Entry zero. Larger clock than the entries below — the day starts
@@ -129,14 +142,19 @@ export function DayLogHeader() {
               <h1 className="font-mono font-semibold tracking-tight text-4xl sm:text-5xl md:text-6xl text-foreground mb-3">
                 Heimdall
               </h1>
-              <p className="font-mono text-sm text-muted-foreground mb-4">
-                Deployment intelligence platform
+              <p className="font-mono text-sm text-muted-foreground mb-3">
+                One page showing where every ticket and every service actually is.
+              </p>
+              <p className="font-mono text-xs text-muted-foreground mb-5">
+                Built and run it solo · Loweconex, a UK IoT platform business ·
+                2025 → ongoing
               </p>
               <p className="text-xl text-muted-foreground leading-relaxed">
                 Before standup, before email, the platform team opens the same page.
                 It answers one question across 20 services and four environments:
-                where is my ticket right now? Twenty-plus engineers ask it every
-                morning. Today goes like this.
+                where is my ticket right now? More than 20 engineers ask it every
+                morning. Below: the tool itself, how it&apos;s wired, and the one
+                source it refuses to believe.
               </p>
             </div>
           </div>
@@ -173,21 +191,10 @@ function WallDisplay({
 
 /* Everything else on the desk is just a list under a mono heading and a
    hairline rule — notes pinned beside the display, not more boxes. */
-function DeskList({
-  label,
-  note,
-  children,
-}: {
-  label: string;
-  note?: string;
-  children: ReactNode;
-}) {
+function DeskList({ label, children }: { label: string; children: ReactNode }) {
   return (
     <div className="border-t border-border/60 pt-4">
-      <h3 className="flex items-baseline justify-between gap-3 font-mono text-xs tracking-wider mb-4">
-        <span className="text-primary">{label}</span>
-        {note && <span className="text-[10px] text-muted-foreground">{note}</span>}
-      </h3>
+      <h3 className="font-mono text-xs tracking-wider text-primary mb-4">{label}</h3>
       {children}
     </div>
   );
@@ -233,7 +240,7 @@ export function DayLogSidebar({
         </dl>
       </WallDisplay>
 
-      <DeskList label="on the desk" note="stack">
+      <DeskList label="stack">
         <div className="flex flex-wrap gap-x-3 gap-y-1.5 font-mono text-xs text-muted-foreground">
           {technologies.map((tech) => (
             <span key={tech} className="hover:text-foreground transition-colors">
@@ -243,7 +250,7 @@ export function DayLogSidebar({
         </div>
       </DeskList>
 
-      <DeskList label="what the day asks for" note="skills">
+      <DeskList label="skills">
         <ul className="space-y-2 text-sm text-muted-foreground">
           {skills.map((skill) => (
             <li key={skill} className="flex gap-2.5">
@@ -256,7 +263,7 @@ export function DayLogSidebar({
         </ul>
       </DeskList>
 
-      <DeskList label="also open" note="related">
+      <DeskList label="related">
         <div className="space-y-3">
           {related.map((project) => (
             <Link
@@ -280,8 +287,9 @@ export function DayLogClose() {
   return (
     <LogEntry time="18:05" label="clocking off" pos="last">
       <p className="text-muted-foreground leading-relaxed">
-        Last entry. The dashboard stays up overnight, and whoever is in first
-        tomorrow will open the same tab and ask the same question.
+        Last entry. The lesson I took from Heimdall is that an internal tool
+        competes with sending a message to a colleague. It has to answer the
+        question faster than asking a human would, or nobody opens it twice.
       </p>
       <p className="mt-6 text-sm text-muted-foreground">
         If you want to dig into the parts I didn&apos;t write up,{" "}

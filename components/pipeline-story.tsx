@@ -32,8 +32,8 @@ const stages = [
     id: "preprod",
     name: "preprod",
     gate: "image updater",
-    headline: "Git says; the cluster converges.",
-    copy: "Image Updater bumps the tag, ArgoCD notices and reconciles. No hands on the wheel.",
+    headline: "Nothing here is done by hand.",
+    copy: "Image Updater bumps the tag and ArgoCD reconciles the cluster to match.",
     log: ["tag bumped by image-updater", "argocd sync ✓  Healthy"],
   },
   {
@@ -41,7 +41,7 @@ const stages = [
     name: "prod",
     gate: "argocd",
     headline: "Promotion is a commit.",
-    copy: "Rollback is a revert. The audit log is git log. That's the whole trick, and it's why it holds up at 2am.",
+    copy: "Rollback is a revert, and the audit log is git log. I've rolled a release back at 2am with git revert and gone back to sleep.",
     log: ["argocd sync ✓  Healthy", "serving traffic"],
   },
 ];
@@ -115,7 +115,10 @@ export function PipelineStory() {
   const chipX = useTransform(scrollYProgress, [0.05, 0.92], ["0%", "100%"]);
 
   useMotionValueEvent(scrollYProgress, "change", (v) => {
-    const idx = Math.min(stages.length - 1, Math.floor(v * (stages.length + 0.4)));
+    // Divide by the stage count exactly, so the last stage lands at 75% and
+    // the final quarter is its dwell. The old `+ 0.4` locked the last stage in
+    // at 68% and left the remaining third of the scroll showing nothing new.
+    const idx = Math.min(stages.length - 1, Math.floor(v * stages.length));
     if (idx !== stageIndex) setStageIndex(idx);
   });
 
@@ -138,7 +141,7 @@ export function PipelineStory() {
   }
 
   return (
-    <section ref={outerRef} className="relative h-[340vh] hidden md:block">
+    <section ref={outerRef} className="relative h-[200vh] hidden md:block">
       <div className="sticky top-0 h-screen flex items-center overflow-hidden">
         <div className="absolute inset-0 grid-background pointer-events-none" aria-hidden />
         <div className="container relative">
@@ -206,7 +209,7 @@ export function PipelineStory() {
           <p className="mt-10 font-mono text-xs text-muted-foreground">
             {BUILD.shortSha
               ? `${sha} is the commit serving you this page.`
-              : "every promotion is a commit; every rollback is a revert."}
+              : "this is how every service here reaches production."}
           </p>
         </div>
       </div>

@@ -2,37 +2,42 @@
 
 import { useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion, useScroll } from "framer-motion";
 import { Download } from "lucide-react";
 import { SectionHeading } from "@/components/section-heading";
 import { ContactCTA } from "@/components/contact-cta";
 import { profile } from "@/lib/profile";
+import { roles, education, tradingAs, stackTiers } from "@/lib/experience";
 
-// Journey timeline data, styled as git log entries. Hashes are decorative.
+// The narrative version of the CV. The hard facts — employers, titles, dates —
+// live in lib/experience.ts and render above this.
 const journey = [
   {
-    hash: "a1b2c3f",
+    year: "2021",
+    title: "Placement year at OD3",
+    description:
+      "A year out of my degree writing Tekla Structures API applications, automating drafting work for the in-house architects. First time I'd shipped anything people depended on.",
+  },
+  {
     year: "2023",
     title: "Joined as a graduate, inherited a migration",
     description:
-      "I graduated with a BSc in Computer Science and landed in the middle of a monolith → microservices migration, writing the test automation that kept it honest.",
+      "I finished my BSc and landed in the middle of a monolith → microservices migration, writing the test automation that kept it honest. Engineering was five people.",
   },
   {
-    hash: "d4e5f6a",
     year: "2024",
     title: "Earned the platform",
     description:
-      "The test work kept exposing infrastructure problems, so I started fixing those instead. Observability from zero, then GitOps with ArgoCD, until 20+ services deployed the same way.",
+      "The test work kept exposing infrastructure problems, so I started fixing those instead. Observability from zero, then GitOps with ArgoCD, until 20 services deployed the same way.",
   },
   {
-    hash: "b7c8d9e",
     year: "2025",
     title: "Standardised it, then instrumented it",
     description:
       "I moved CI onto one shared pipeline library across every service, and started the deployment-metrics tool that grew into Heimdall. The team went from asking \"did it deploy?\" to reading the answer off a screen.",
   },
   {
-    hash: "f0a1b2c",
     year: "2026",
     title: "Built the AI platform on top",
     description:
@@ -40,12 +45,12 @@ const journey = [
   },
 ];
 
-// Things I've come to believe after a few years on platform teams
+// Three things I actually believe, each with the work that taught me it.
 const philosophy = [
   {
-    title: "Build for the morning standup",
+    title: "A correct system nobody opens is not finished",
     description:
-      "Most of my best work has been adding a UI to something that already ran headless. Nobody trusts a system they can't see.",
+      "The DORA collector behind Heimdall was right for months and nobody ever looked at it. Same data, no front door. Building the UI is what turned it into something twenty people use every morning, and I've stopped treating the interface as the optional half.",
   },
   {
     title: "Boring is a compliment",
@@ -55,72 +60,7 @@ const philosophy = [
   {
     title: "Operability is a feature",
     description:
-      "If a teammate can't tell whether your service is healthy in under a minute, you haven't finished it yet. I default to one-curl health checks and a runbook.",
-  },
-  {
-    title: "Ship the diff, not the rewrite",
-    description:
-      "Every project I'm proud of started as a small thing that quietly became load-bearing. Big-bang plans almost never survive contact with reality.",
-  },
-];
-
-// Tech stack, tiered honestly: what the case studies evidence in production
-// versus what I've used but wouldn't claim to have operated at scale.
-const stackTiers = [
-  {
-    id: "production",
-    label: "run-in-production/",
-    note: "Evidenced by the case studies. I have carried a pager for these.",
-    items: [
-      "Kubernetes",
-      "EKS",
-      "ArgoCD",
-      "Kustomize",
-      "Bitbucket Pipelines",
-      "Prometheus",
-      "Grafana",
-      "Loki",
-      "Thanos",
-      "Alertmanager",
-      "Tempo",
-      "Kafka",
-      "Java 21",
-      "Spring AI",
-      "LiteLLM",
-      "Python",
-      "Flask",
-      "TimescaleDB",
-      "PostgreSQL",
-      "Veracode",
-      "AWS",
-      "K3s",
-      "Home Assistant",
-      "Zigbee2MQTT",
-      "Tailscale",
-    ],
-  },
-  {
-    id: "working",
-    label: "working-knowledge/",
-    note: "Used in projects, coursework or smaller doses, not yet run at production scale.",
-    items: [
-      "Helm",
-      "Terraform",
-      "AWS CDK",
-      "CloudFormation",
-      "Bash",
-      "TypeScript",
-      "Go",
-      "PyTorch",
-      "MLflow",
-      "KubeFlow",
-      "NVIDIA GPU Operator",
-      "Triton",
-      "Istio",
-      "OPA",
-      "Falco",
-      "Redis",
-    ],
+      "If a teammate can't tell whether your service is healthy in under a minute, you haven't finished it yet. I default to one-curl health checks and a runbook per alert.",
   },
 ];
 
@@ -144,22 +84,22 @@ function AboutHero() {
                   src="/jack-photo.jpg"
                   alt="Jack Devlin"
                   fill
-                  className="object-cover grayscale contrast-125 brightness-90 [filter:grayscale(1)_contrast(1.2)_brightness(0.9)_sepia(1)_hue-rotate(90deg)_saturate(1.4)]"
+                  className="object-cover [filter:grayscale(0.55)_contrast(1.08)_sepia(0.5)_hue-rotate(90deg)_saturate(1.15)]"
                   priority
                 />
                 <div
                   aria-hidden
-                  className="absolute inset-0 pointer-events-none [background-image:repeating-linear-gradient(0deg,transparent_0_2px,oklch(0_0_0_/_0.18)_2px_3px)]"
+                  className="absolute inset-0 pointer-events-none [background-image:repeating-linear-gradient(0deg,transparent_0_2px,oklch(0_0_0_/_0.09)_2px_3px)]"
                 />
                 <div
                   aria-hidden
-                  className="absolute inset-0 pointer-events-none [background:radial-gradient(ellipse_at_center,transparent_55%,oklch(0_0_0_/_0.45)_100%)]"
+                  className="absolute inset-0 pointer-events-none [background:radial-gradient(ellipse_at_center,transparent_68%,oklch(0_0_0_/_0.25)_100%)]"
                 />
               </div>
 
               {/* Exif-style caption */}
               <div className="mt-3 rounded-md border border-border bg-card px-4 py-3 font-mono text-xs text-muted-foreground space-y-1">
-                <p>jack.jpg · UK · platform engineer</p>
+                <p>Jack Devlin · Northern Ireland · platform engineer</p>
                 <p className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-primary" aria-hidden />
                   <span className="text-foreground/80">{profile.availability.from}</span>
@@ -177,33 +117,13 @@ function AboutHero() {
                   Hey, I&apos;m Jack
                 </h1>
                 <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed">
-                  Platform engineer in the UK. I put AI systems into production
-                  and run the Kubernetes they sit on. Day job: Clarity, a
-                  natural-language database product live across ~30 tenants, and
-                  the LLM gateway every AI workload goes through. The unusual bit
-                  is having both halves: the LLM systems and the clusters,
-                  pipelines and observability underneath them. Night job: MSc in
-                  Artificial Intelligence, finishing September 2026.
+                  Platform engineer, based in Northern Ireland. Day job is
+                  Clarity, a natural-language database product running across
+                  about thirty tenants, and the LLM gateway every AI workload at
+                  the company goes through. I built the Kubernetes, pipelines and
+                  observability underneath them as well. I&apos;m finishing an MSc
+                  in Artificial Intelligence in September 2026.
                 </p>
-              </div>
-
-              <div
-                className="flex flex-wrap gap-2 justify-center lg:justify-start mb-8"
-              >
-                {[
-                  "AI Infrastructure",
-                  "MLOps",
-                  "Kubernetes",
-                  "Platform Engineering",
-                  "Observability",
-                ].map((tag) => (
-                  <span
-                    key={tag}
-                    className="px-3 py-1.5 text-sm font-mono rounded-md bg-secondary text-secondary-foreground border border-border"
-                  >
-                    {tag}
-                  </span>
-                ))}
               </div>
 
               <div
@@ -211,6 +131,7 @@ function AboutHero() {
               >
                 <a
                   href="/cv.pdf"
+                  download="jack-devlin-cv.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-7 py-3.5 rounded-md border border-border text-foreground font-mono font-semibold hover:border-primary/60 hover:text-primary transition-colors"
@@ -218,6 +139,9 @@ function AboutHero() {
                   Download CV
                   <Download className="w-4 h-4" aria-hidden />
                 </a>
+                <span className="font-mono text-xs text-muted-foreground">
+                  PDF · updated August 2026
+                </span>
               </div>
             </div>
           </div>
@@ -239,9 +163,8 @@ function JourneyTimeline() {
     <section className="relative py-24">
       <div className="container px-4">
         <SectionHeading
-          command="git log --oneline --reverse"
-          title="The story"
-          lede="Four years, one company, compounding scope. Each year built on what the last one shipped."
+          title="How it went"
+          lede="Three years at Loweconex, and the scope kept growing. Each year built on what the last one shipped."
           align="center"
         />
 
@@ -270,10 +193,7 @@ function JourneyTimeline() {
                   aria-hidden
                 />
 
-                <p className="font-mono text-sm mb-2">
-                  <span className="text-primary">{item.hash}</span>{" "}
-                  <span className="text-muted-foreground">(tag: {item.year})</span>
-                </p>
+                <p className="font-mono text-sm mb-2 text-primary">{item.year}</p>
                 <h3 className="font-mono font-semibold tracking-tight text-xl text-foreground mb-2">
                   {item.title}
                 </h3>
@@ -289,6 +209,99 @@ function JourneyTimeline() {
   );
 }
 
+// The facts a recruiter would otherwise go to LinkedIn for. Deliberately
+// plain: employers named, real dates, no bullet-point CV register.
+function ExperienceSection() {
+  return (
+    <section className="relative py-24">
+      <div className="container px-4">
+        <SectionHeading
+          title="Where I've worked"
+          lede="Named, dated and checkable. There's a PDF of the same thing if you'd rather have one."
+          align="center"
+        />
+
+        <div className="max-w-3xl mx-auto space-y-5">
+          {roles.map((role) => (
+            <div
+              key={role.company}
+              className="rounded-md border border-border bg-card p-6 md:p-8"
+            >
+              <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 mb-1">
+                <h3 className="font-mono font-semibold tracking-tight text-xl text-foreground">
+                  {role.company}
+                  {role.companyNote ? (
+                    <span className="font-normal text-base text-muted-foreground">
+                      {" "}
+                      — {role.companyNote}
+                    </span>
+                  ) : null}
+                </h3>
+                <p className="font-mono text-sm text-primary shrink-0">{role.dates}</p>
+              </div>
+              <p className="font-mono text-sm text-muted-foreground mb-4">
+                {role.title} · {role.location}
+              </p>
+              <p className="text-muted-foreground leading-relaxed">{role.summary}</p>
+
+              {role.evidence ? (
+                <p className="mt-4 text-sm text-muted-foreground">
+                  What came out of it:{" "}
+                  {role.evidence.map((item, i) => (
+                    <span key={item.href}>
+                      {i > 0 ? ", " : ""}
+                      <Link href={item.href} className="text-primary hover:underline">
+                        {item.label}
+                      </Link>
+                    </span>
+                  ))}
+                  .
+                </p>
+              ) : null}
+            </div>
+          ))}
+
+          <div className="rounded-md border border-border bg-card p-6 md:p-8">
+            <h3 className="font-mono font-semibold tracking-tight text-xl text-foreground mb-5">
+              Education
+            </h3>
+            <div className="space-y-5">
+              {education.map((item) => (
+                <div key={item.award}>
+                  <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                    <p className="font-mono text-base text-foreground">
+                      {item.award}
+                      {item.result ? (
+                        <span className="text-primary">, {item.result}</span>
+                      ) : null}
+                    </p>
+                    <p className="font-mono text-sm text-muted-foreground shrink-0">
+                      {item.dates}
+                    </p>
+                  </div>
+                  <p className="font-mono text-sm text-muted-foreground">
+                    {item.institution}
+                  </p>
+                  {item.note ? (
+                    <p className="mt-1.5 text-sm text-muted-foreground leading-relaxed">
+                      {item.note}
+                    </p>
+                  ) : null}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            Since {tradingAs.since} I&apos;ve worked through {tradingAs.name},{" "}
+            {tradingAs.note}. {profile.visaNote}
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 // Philosophy section
 function PhilosophySection() {
   return (
@@ -297,7 +310,7 @@ function PhilosophySection() {
         <SectionHeading
           command="cat principles.md"
           title="How I work"
-          lede="A few things I've come to believe after a few years on platform teams."
+          lede="Three things I've come to believe after a few years on platform teams."
           align="center"
         />
 
@@ -332,7 +345,7 @@ function TechStackSection() {
         <SectionHeading
           command="ls stack/"
           title="Tech stack"
-          lede="What I work with, split honestly: things I've run in production, and things I know my way around."
+          lede="Split three ways, so you know which is which: what I've been on call for, what runs in my flat, and what I've only used."
           align="center"
         />
 
@@ -382,24 +395,24 @@ function CurrentlySection() {
             <p className="font-mono text-sm text-primary mb-6">
               Shipping Clarity · Finishing the MSc · Available now
             </p>
+            <p className="text-lg text-foreground leading-relaxed mb-5">
+              I&apos;m available now, permanent or contract, remote-first, and
+              happy to relocate for the right role. AI platform and
+              infrastructure work first, with SRE and platform engineering close
+              behind.
+            </p>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              Wrapping up my current contract on the platform team I helped
-              build. Most of this year went to the AI side: Clarity live across
-              ~30 tenant databases, and the gateway that fronts every AI
+              I&apos;m wrapping up my current contract on the platform team I
+              helped build. Most of this year went to the AI side: Clarity live
+              across ~30 tenant databases, and the gateway that fronts every AI
               workload. Heimdall still opens every morning.
             </p>
-            <p className="text-muted-foreground leading-relaxed mb-4">
-              Finishing an MSc in Artificial Intelligence in September 2026. The
-              dissertation builds a capacity-aware scheduler for recovering
-              Kubernetes workloads after node failure, measured on real clusters
-              where failure means actually killing the machine. It&apos;s the
-              same problem I keep hitting on the platform side, so the two
-              halves have converged.
-            </p>
-            <p className="text-sm text-muted-foreground/70">
-              Available now, permanent or contract, remote-first, and happy to
-              relocate for the right role. AI platform and infrastructure work
-              first, MLOps, SRE and platform engineering close behind.
+            <p className="text-muted-foreground leading-relaxed">
+              The MSc finishes in September 2026. The dissertation builds a
+              capacity-aware scheduler for recovering Kubernetes workloads after
+              node failure, measured on real clusters where failure means
+              actually killing the machine. It&apos;s the same problem I keep
+              hitting on the platform side, so the two halves have converged.
             </p>
           </div>
         </div>
@@ -413,6 +426,7 @@ export default function AboutPage() {
   return (
     <div className="bg-background">
       <AboutHero />
+      <ExperienceSection />
       <JourneyTimeline />
       <PhilosophySection />
       <TechStackSection />

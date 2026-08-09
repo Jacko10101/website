@@ -6,15 +6,22 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { TerminalWindow } from "@/components/terminal-window";
 
+/** Where the backoff settles. Past this the counter would just be noise. */
+const MAX_RESTARTS = 3;
+
 export default function NotFound() {
   const pathname = usePathname();
   const [restarts, setRestarts] = useState(0);
   const [timeAgo, setTimeAgo] = useState("0s");
 
   useEffect(() => {
-    // Simulate restart count increasing
+    // Restarts climb to the backoff threshold and stop. A tab left open all
+    // afternoon shouldn't be reporting four hundred of them.
     const interval = setInterval(() => {
-      setRestarts((r) => r + 1);
+      setRestarts((r) => {
+        if (r >= MAX_RESTARTS - 1) clearInterval(interval);
+        return Math.min(MAX_RESTARTS, r + 1);
+      });
     }, 3000);
 
     // Update time ago
@@ -101,56 +108,10 @@ export default function NotFound() {
               </table>
             </div>
 
-            {/* Describe Command */}
-            <div className="flex items-center gap-2 mt-6">
-              <span className="text-primary">❯</span>
-              <span className="text-foreground/90">kubectl describe pod {podName.substring(0, 20)}... | tail -20</span>
-            </div>
-
-            {/* Events */}
-            <div className="bg-black/50 rounded-lg p-4 border border-border">
-              <div className="text-muted-foreground text-xs mb-3">Events:</div>
-              <div className="space-y-2 text-xs">
-                <div className="flex gap-4">
-                  <span className="text-muted-foreground w-16 flex-shrink-0">Warning</span>
-                  <span className="text-warn w-24 flex-shrink-0">BackOff</span>
-                  <span className="text-foreground/70">Back-off restarting failed container</span>
-                </div>
-                <div className="flex gap-4">
-                  <span className="text-muted-foreground w-16 flex-shrink-0">Warning</span>
-                  <span className="text-error w-24 flex-shrink-0">Failed</span>
-                  <span className="text-foreground/70">Error: Route "{pathname}" not found in cluster</span>
-                </div>
-                <div className="flex gap-4">
-                  <span className="text-muted-foreground w-16 flex-shrink-0">Normal</span>
-                  <span className="text-primary w-24 flex-shrink-0">Pulled</span>
-                  <span className="text-foreground/70">Container image "devlinops/404:latest" already present</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Logs Command */}
-            <div className="flex items-center gap-2 mt-6">
-              <span className="text-primary">❯</span>
-              <span className="text-foreground/90">kubectl logs {podName.substring(0, 20)}... --tail=5</span>
-            </div>
-
-            <div className="bg-black/50 rounded-lg p-4 border border-border text-xs space-y-1">
-              <div><span className="text-muted-foreground">[ERROR]</span> <span className="text-error">404 - Page not found</span></div>
-              <div><span className="text-muted-foreground">[INFO]</span> <span className="text-foreground/70">Requested path: {pathname}</span></div>
-              <div><span className="text-muted-foreground">[INFO]</span> <span className="text-foreground/70">Searching for alternative routes...</span></div>
-              <div><span className="text-muted-foreground">[WARN]</span> <span className="text-warn">No matching ingress rule found</span></div>
-              <div><span className="text-muted-foreground">[INFO]</span> <span className="text-primary">Redirecting to healthy endpoints...</span></div>
-            </div>
-
-            {/* Suggested Fix */}
-            <div className="mt-6 pt-4 border-t border-border">
-              <div className="text-muted-foreground text-xs mb-3">Suggested remediation:</div>
-              <div className="space-y-2 text-xs">
-                <code className="block bg-card rounded px-3 py-2 text-primary">
-                  kubectl port-forward svc/homepage 3000:3000
-                </code>
-              </div>
+            {/* What actually happened, in plain English */}
+            <div className="text-xs text-muted-foreground pt-2">
+              There is no page at <span className="text-foreground/90">{pathname}</span>.
+              Either it moved or the link was wrong. The two below both work.
             </div>
 
             {/* Blinking cursor */}

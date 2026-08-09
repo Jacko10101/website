@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { featuredProjects, type Project } from "@/lib/projects";
-import { TypedLines } from "@/components/terminal-window";
 import { SectionHeading } from "@/components/section-heading";
 
 function StatusPill({ project }: { project: Project }) {
@@ -65,23 +64,10 @@ function ProjectTile({ project }: { project: Project }) {
           ))}
         </div>
 
-        {/* Terminal pane */}
-        <div className="mx-6 my-5 rounded-md border border-border/60 bg-black/50 p-4">
-          <TypedLines lines={project.terminal} />
-        </div>
-
-        {/* Tags + link */}
-        <div className="px-6 pb-5 flex items-center justify-between gap-4">
-          <div className="flex flex-wrap gap-1.5">
-            {project.tags.slice(0, 4).map((tag) => (
-              <span
-                key={tag}
-                className="px-2 py-0.5 text-[10px] font-mono rounded bg-secondary text-muted-foreground border border-border/60"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
+        {/* The terminal pane and the tag list live on /projects. Six panes
+            typing at once read as six empty boxes, and duplicating the index
+            here left "All projects" with nothing to offer. */}
+        <div className="px-6 pt-4 pb-5 flex items-center justify-end">
           <span className="font-mono text-xs text-primary whitespace-nowrap group-hover:translate-x-1 transition-transform">
             {project.docCta ?? "case study"} →
           </span>
@@ -97,7 +83,7 @@ export function FeaturedProjects() {
         <SectionHeading
           title="Shipped and running"
           index="01"
-          lede="Six things I've owned end-to-end. What they are, what changed, and a few decisions worth flagging."
+          lede="Six things I built and still look after. All but the last were at Loweconex, a UK IoT platform business in Northern Ireland."
         />
 
         <div className="grid md:grid-cols-2 gap-6 max-w-6xl">
@@ -111,7 +97,7 @@ export function FeaturedProjects() {
             href="/projects"
             className="inline-flex items-center gap-2 font-mono text-primary hover:text-foreground transition-colors"
           >
-            All projects, including the dissertation →
+            All seven in full, with the stack and the dissertation →
           </Link>
         </div>
       </div>

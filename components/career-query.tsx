@@ -60,9 +60,15 @@ function getDb(): Promise<SqlDb> {
   return dbPromise;
 }
 
+// Opens on the every-number question rather than "what's running in
+// production?" — that one returned the same six project tiles the reader is
+// about to scroll into, so the site's best artefact led on a worse version of
+// the next section.
+const OPENING = 3;
+
 export function CareerQuery() {
-  const [asked, setAsked] = useState(QUESTIONS[0].ask);
-  const [sql, setSql] = useState(QUESTIONS[0].sql);
+  const [asked, setAsked] = useState(QUESTIONS[OPENING].ask);
+  const [sql, setSql] = useState(QUESTIONS[OPENING].sql);
   const [state, setState] = useState<State>({ kind: "idle" });
   const [showSchema, setShowSchema] = useState(false);
   const firstRun = useRef(true);
@@ -107,7 +113,7 @@ export function CareerQuery() {
   useEffect(() => {
     if (!firstRun.current) return;
     firstRun.current = false;
-    run(QUESTIONS[0].sql);
+    run(QUESTIONS[OPENING].sql);
   }, [run]);
 
   const pick = (q: (typeof QUESTIONS)[number]) => {
@@ -177,7 +183,7 @@ export function CareerQuery() {
             onClick={() => run(sql)}
             className="rounded-md bg-primary px-3 py-1 font-mono text-[11px] font-semibold text-primary-foreground hover:bg-primary/90 transition-colors"
           >
-            run ⌘⏎
+            run
           </button>
         </div>
         <textarea
@@ -192,6 +198,7 @@ export function CareerQuery() {
           spellCheck={false}
           rows={Math.min(9, sql.split("\n").length + 1)}
           aria-label="SQL query, editable"
+          title="Edit the query, then press Cmd/Ctrl + Enter to run it"
           className="w-full resize-y rounded-md border border-border bg-black/50 p-3 font-mono text-[12px] leading-6 text-foreground/90 outline-none focus:border-primary/50"
         />
       </div>
@@ -224,17 +231,17 @@ export function CareerQuery() {
           <>
             {state.rows.length === 0 ? (
               <p className="font-mono text-[11px] text-muted-foreground">
-                0 rows. A real empty result, not an apology.
+                0 rows.
               </p>
             ) : (
-              <div className="overflow-x-auto">
+              <div className="max-h-[15rem] overflow-auto rounded-md border border-border/40">
                 <table className="w-full font-mono text-[12px]">
-                  <thead>
+                  <thead className="sticky top-0 bg-card">
                     <tr className="text-left">
                       {columns.map((c) => (
                         <th
                           key={c}
-                          className="border-b border-border pb-1.5 pr-5 font-normal text-[10px] uppercase tracking-wider text-muted-foreground"
+                          className="border-b border-border py-2 pl-3 pr-5 font-normal text-[10px] uppercase tracking-wider text-muted-foreground"
                         >
                           {c}
                         </th>
@@ -247,7 +254,7 @@ export function CareerQuery() {
                         {columns.map((c) => (
                           <td
                             key={c}
-                            className="border-b border-border/40 py-1.5 pr-5 text-foreground/85"
+                            className="border-b border-border/40 py-1.5 pl-3 pr-5 text-foreground/85"
                           >
                             {String(row[c] ?? "")}
                           </td>
@@ -266,12 +273,9 @@ export function CareerQuery() {
         )}
       </div>
 
-      {/* The honest bit */}
       <p className="px-4 py-3 border-t border-border text-[11px] leading-relaxed text-muted-foreground/80">
-        The questions are written by me. The database, the query and the result
-        are real — edit the SQL and run your own. There is no model here and no
-        request leaving your browser; claiming otherwise would break the exact
-        rule this is meant to demonstrate.
+        Questions are mine. Database, query and result are real, and nothing
+        leaves your browser.
       </p>
     </div>
   );

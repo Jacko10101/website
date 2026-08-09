@@ -25,9 +25,12 @@ export function BackToTop() {
   }, []);
 
   const scrollToTop = () => {
+    // Same check smooth-scroll.tsx makes: a reduced-motion user gets the jump,
+    // not a two-second glide back up the page.
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     window.scrollTo({
       top: 0,
-      behavior: "smooth",
+      behavior: reduceMotion ? "auto" : "smooth",
     });
   };
 

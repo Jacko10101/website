@@ -13,9 +13,11 @@ export interface Project {
   title: string;
   subtitle: string;
   /**
-   * Role/duration/setting line, e.g. "Sole platform engineer · 8 months ·
-   * UK IoT company (anonymised)". Renders under the subtitle when set;
-   * hidden when null. TODO(jack): only you know these — fill them in.
+   * What Jack did on this, and where. Renders under the subtitle when set,
+   * hidden when null. The employer is named once at the top of the projects
+   * index rather than repeated on every card.
+   * TODO(jack): the one thing still missing here is team size — worth adding
+   * if you're comfortable with it ("… · platform team of 3", say).
    */
   context: string | null;
   description: string;
@@ -48,7 +50,7 @@ export interface Project {
 export const projects: Project[] = [
   {
     id: "clarity",
-    context: null, // TODO(jack): e.g. role · duration · company setting
+    context: "Built the infrastructure and trust layer · Loweconex",
     title: "Clarity",
     subtitle: "Natural-language database interface",
     description:
@@ -56,7 +58,7 @@ export const projects: Project[] = [
     docType: "Claims + receipts",
     docCta: "check the receipts",
     status: "production",
-    statusLabel: "Synced · Healthy",
+    statusLabel: "Live",
     year: "2025–26",
     stats: [
       { value: "~30", label: "tenants, a database each" },
@@ -74,7 +76,7 @@ export const projects: Project[] = [
   },
   {
     id: "ai-gateway",
-    context: null, // TODO(jack): e.g. role · duration · company setting
+    context: "Built it and still own it · Loweconex",
     title: "AI Gateway",
     subtitle: "One endpoint for every model",
     description:
@@ -82,7 +84,7 @@ export const projects: Project[] = [
     docType: "Postmortem",
     docCta: "read the postmortem",
     status: "production",
-    statusLabel: "Synced · Healthy",
+    statusLabel: "Live",
     year: "2026",
     stats: [
       { value: "1", label: "endpoint, every AI workload" },
@@ -100,15 +102,15 @@ export const projects: Project[] = [
   },
   {
     id: "heimdall",
-    context: null, // TODO(jack): e.g. role · duration · company setting
+    context: "Built and run it · Loweconex",
     title: "Heimdall",
-    subtitle: "Deployment intelligence platform",
+    subtitle: "Where every ticket and service actually is",
     description:
       "The dashboard the platform team checks every morning. Answers one question: where is my ticket right now? Used daily by 20+ engineers across 20 services.",
     docType: "Day log",
     docCta: "read the day log",
     status: "production",
-    statusLabel: "Synced · Healthy",
+    statusLabel: "Live",
     year: "2025",
     stats: [
       { value: "20", label: "services tracked" },
@@ -126,7 +128,7 @@ export const projects: Project[] = [
   },
   {
     id: "pipeline-platform",
-    context: null, // TODO(jack): e.g. role · duration · company setting
+    context: "Built the shared pipeline library · Loweconex · still in use",
     title: "Pipeline Platform",
     subtitle: "Shared CI/CD library",
     description:
@@ -134,8 +136,8 @@ export const projects: Project[] = [
     docType: "PR · Merged",
     docCta: "review the PR",
     status: "production",
-    statusLabel: "Synced · Healthy",
-    year: "2024–25",
+    statusLabel: "Live",
+    year: "2024–26",
     stats: [
       { value: "20", label: "services, one library" },
       { value: "~400", label: "deploys/month" },
@@ -152,17 +154,15 @@ export const projects: Project[] = [
   },
   {
     id: "observability",
-    context: null, // TODO(jack): e.g. role · duration · company setting
+    context: "Built and run the stack · Loweconex",
     title: "Observability Stack",
     subtitle: "Self-hosted monitoring",
     description:
-      "Prometheus, Grafana and Loki for 20 services across four environments. Built in-house because the commercial quotes were silly money and we already had the cluster capacity going spare.",
-    indexDescription:
-      "Prometheus, Grafana and Loki for 20 services across four environments. Built in-house because commercial quotes came in around £100k a year against roughly £5k to run it ourselves, and we already had the cluster capacity going spare.",
+      "Prometheus, Grafana and Loki for 20 services across four environments. Built in-house because the commercial quotes came in near £100k a year against roughly £5k to run it ourselves, and we already had the cluster capacity going spare.",
     docType: "ADR-001",
     docCta: "read the ADR",
     status: "production",
-    statusLabel: "Synced · Healthy",
+    statusLabel: "Live",
     year: "2024–25",
     stats: [
       { value: "4", label: "environments, one stack" },
@@ -180,7 +180,7 @@ export const projects: Project[] = [
   },
   {
     id: "smart-home",
-    context: null, // TODO(jack): e.g. role · duration · company setting
+    context: "Personal project · my flat",
     title: "Smart Home on K3s",
     subtitle: "Self-hosted home automation",
     description:
@@ -188,8 +188,8 @@ export const projects: Project[] = [
     docType: "Spec sheet",
     docCta: "read the spec sheet",
     status: "homelab",
-    statusLabel: "Synced · Healthy",
-    year: "2025",
+    statusLabel: "Homelab",
+    year: "2024–26",
     stats: [
       { value: "Single-node", label: "K3s control plane" },
       { value: "20+", label: "lights, plugs and sensors" },
@@ -206,7 +206,7 @@ export const projects: Project[] = [
   },
   {
     id: "ml-scheduler",
-    context: null, // TODO(jack): e.g. role · duration · company setting
+    context: "MSc dissertation · Queen's University Belfast",
     title: "Recovery Scheduling under Node Failure",
     subtitle: "MSc dissertation, in progress",
     description:
@@ -235,7 +235,7 @@ export const featuredProjects = projects.filter((p) => p.href !== null);
 
 // Aggregate proof points, surfaced in the hero. Each traces to a case study.
 export const proofPoints = [
-  { value: "20+", label: "engineers use Heimdall daily", href: "/projects/heimdall" },
-  { value: "~400", label: "deploys/month on my pipeline library", href: "/projects/pipeline-platform" },
-  { value: "~30", label: "tenants live on Clarity, my AI query product", href: "/projects/clarity" },
+  { value: "20+", label: "engineers open my deployment dashboard daily", href: "/projects/heimdall" },
+  { value: "~400", label: "deploys a month through my shared pipeline library", href: "/projects/pipeline-platform" },
+  { value: "~30", label: "tenants on the AI query product I built", href: "/projects/clarity" },
 ];

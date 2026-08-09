@@ -239,50 +239,6 @@ html.lenis {
 }
 
 /* Chaos mode — glitch for "crashing" sections, flash for healing */
-@keyframes chaos-glitch {
-  0% {
-    transform: translate(0, 0);
-    clip-path: inset(0 0 0 0);
-  }
-  20% {
-    transform: translate(-3px, 2px);
-    clip-path: inset(12% 0 68% 0);
-  }
-  40% {
-    transform: translate(3px, -1px);
-    clip-path: inset(52% 0 24% 0);
-  }
-  60% {
-    transform: translate(-2px, -2px);
-    clip-path: inset(80% 0 4% 0);
-  }
-  80% {
-    transform: translate(2px, 2px);
-    clip-path: inset(30% 0 48% 0);
-  }
-  100% {
-    transform: translate(0, 0);
-    clip-path: inset(0 0 0 0);
-  }
-}
-
-.chaos-crash {
-  animation: chaos-glitch 0.35s steps(2) infinite;
-  filter: saturate(0.15) brightness(0.55) contrast(1.2);
-}
-
-@keyframes chaos-heal-flash {
-  0% {
-    box-shadow: inset 0 0 0 2px color-mix(in oklab, var(--color-primary) 90%, transparent), 0 0 42px color-mix(in oklab, var(--color-primary) 40%, transparent);
-  }
-  100% {
-    box-shadow: inset 0 0 0 2px transparent, 0 0 0 transparent;
-  }
-}
-
-.chaos-heal {
-  animation: chaos-heal-flash 1.1s ease-out 1;
-}
 
 /* Blinking block cursor — the one signature animation. */
 @keyframes cursor-blink {

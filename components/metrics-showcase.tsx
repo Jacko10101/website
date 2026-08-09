@@ -87,7 +87,7 @@ export function MetricsShowcase({ metrics }: MetricsShowcaseProps) {
               <h3 className="mb-2 font-semibold group-hover:text-primary transition-colors">
                 {metric.title}
               </h3>
-              <p className="text-sm text-muted-foreground line-clamp-2">
+              <p className="text-sm text-muted-foreground">
                 {metric.description}
               </p>
             </div>

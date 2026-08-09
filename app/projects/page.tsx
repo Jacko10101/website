@@ -34,7 +34,7 @@ function StatusPill({ project }: { project: Project }) {
   );
 }
 
-function ProjectRow({ project, index }: { project: Project; index: number }) {
+function ProjectRow({ project }: { project: Project }) {
   const clickable = project.href !== null;
 
   const inner = (
@@ -100,7 +100,7 @@ function ProjectRow({ project, index }: { project: Project; index: number }) {
         </div>
 
         <div className="rounded-md border border-border/60 bg-black/50 p-4 self-start lg:self-stretch">
-          <TypedLines lines={project.terminal} />
+          <TypedLines lines={project.terminal} animate={false} />
         </div>
       </div>
 
@@ -144,14 +144,13 @@ export default function ProjectsPage() {
         <div className="container">
           <SectionHeading
             as="h1"
-            command="kubectl get projects --all-namespaces"
             title="Case studies"
-            lede="Six projects shipped end-to-end, one dissertation in flight. What each one is, and what actually changed."
+            lede="Six projects and a dissertation. Everything except the smart home and the dissertation was built at Loweconex, a UK IoT platform business in Northern Ireland, where I've been since August 2023."
           />
 
           <div className="max-w-5xl space-y-8">
-            {projects.map((project, index) => (
-              <ProjectRow key={project.id} project={project} index={index} />
+            {projects.map((project) => (
+              <ProjectRow key={project.id} project={project} />
             ))}
           </div>
         </div>

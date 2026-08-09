@@ -22,10 +22,17 @@ export function DecodeText({
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
   const reduceMotion = useReducedMotion();
+  // Starts on the real text so the server-rendered HTML is readable and the
+  // page is correct without JS. `armed` flips on mount, before paint, so the
+  // effect never scrambles text the visitor has already read.
   const [display, setDisplay] = useState(text);
   const [done, setDone] = useState(false);
+  const [armed, setArmed] = useState(false);
+
+  useEffect(() => setArmed(true), []);
 
   useEffect(() => {
+    if (!armed) return;
     if (!inView || reduceMotion) {
       setDisplay(text);
       setDone(true);
@@ -51,7 +58,7 @@ export function DecodeText({
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [inView, reduceMotion, text, duration]);
+  }, [armed, inView, reduceMotion, text, duration]);
 
   return (
     <span ref={ref} className={className}>

@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Heimdall · Deployment Intelligence Platform",
+  title: "Heimdall · Where Every Ticket and Service Actually Is",
   description:
-    "An internal SRE dashboard answering 'where is my ticket right now?' across 20 services and four environments, built end-to-end, used daily by 20+ engineers.",
+    "An internal dashboard answering 'where is my ticket right now?' across 20 services and four environments. Built and run by Jack Devlin at Loweconex, opened daily by more than 20 engineers.",
   openGraph: {
-    title: "Heimdall · Deployment Intelligence Platform",
+    title: "Heimdall · Where Every Ticket and Service Actually Is",
     description:
-      "An internal SRE dashboard answering 'where is my ticket right now?' across 20 services, used daily by a 20+ person engineering team.",
+      "An internal dashboard answering 'where is my ticket right now?' across 20 services, opened every day by more than 20 engineers.",
     url: "https://devlinops.com/projects/heimdall",
   },
 };

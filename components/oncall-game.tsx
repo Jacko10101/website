@@ -802,12 +802,33 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
   }, [spawn]);
 
   // Error budget drains while an incident is open, faster later in the shift.
+  // It stops while the tab is hidden: coming back from a phone call to a
+  // breached SLO you couldn't see happening isn't a game, it's an ambush.
   useEffect(() => {
     if (phase !== "active") return;
-    const interval = setInterval(() => {
-      setBudget((b) => b - (1 + round * 0.5));
-    }, 2000);
-    return () => clearInterval(interval);
+
+    let interval: ReturnType<typeof setInterval> | null = null;
+
+    const start = () => {
+      if (interval !== null) return;
+      interval = setInterval(() => {
+        setBudget((b) => b - (1 + round * 0.5));
+      }, 2000);
+    };
+    const stop = () => {
+      if (interval === null) return;
+      clearInterval(interval);
+      interval = null;
+    };
+
+    const onVisibility = () => (document.hidden ? stop() : start());
+
+    if (!document.hidden) start();
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => {
+      stop();
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
   }, [phase, round]);
 
   // Budget exhausted: the shift ends badly.
@@ -892,6 +913,17 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
   // Keyboard: escape closes, digits investigate, letters remediate, enter advances.
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
+      // Never read keystrokes meant for a text field. Without this, typing in
+      // any input on the page (the CLI's included) burns error budget.
+      const target = e.target as HTMLElement | null;
+      if (
+        target &&
+        (target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          target.isContentEditable)
+      ) {
+        return;
+      }
       if (e.key === "Escape") {
         onClose();
         return;
@@ -926,7 +958,7 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
     output: "text-foreground/80",
     bad: "text-warn",
     good: "text-primary",
-    note: "text-muted-foreground/70",
+    note: "text-muted-foreground",
   };
 
   const totals = useMemo(() => {
@@ -1004,7 +1036,7 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
               fixes cost a lot. Every incident in here is one that actually
               happens.
             </p>
-            <p className="font-mono text-[11px] text-muted-foreground/70 mb-8">
+            <p className="font-mono text-[11px] text-muted-foreground mb-8">
               1 2 3 investigate · a s d f remediate · enter for the next page
             </p>
             <button
@@ -1033,7 +1065,7 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
 
             {shift.length > 0 ? (
               <div className="mb-6 rounded-md border border-border overflow-hidden">
-                <div className="grid grid-cols-[1fr_auto_auto] gap-4 px-4 py-2 bg-card/60 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                <div className="grid grid-cols-[1fr_auto_auto] gap-4 px-4 py-2 bg-card/60 font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
                   <span>incident</span>
                   <span className="text-right">mttr</span>
                   <span className="text-right">wrong moves</span>
@@ -1135,7 +1167,7 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
                 </div>
               ) : (
                 <>
-                  <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground mb-2">
+                  <p className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground mb-2">
                     investigate <span className="normal-case">(−3% each)</span>
                   </p>
                   <div className="space-y-1.5 mb-5">
@@ -1156,7 +1188,7 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
                     ))}
                   </div>
 
-                  <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground mb-2">
+                  <p className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground mb-2">
                     remediate <span className="normal-case">(wrong: −12%)</span>
                   </p>
                   <div className="space-y-1.5">

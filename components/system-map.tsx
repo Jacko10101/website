@@ -36,7 +36,7 @@ const nodes: MapNode[] = [
     sub: "SAST · SCA · policy",
     title: "Security automation",
     description:
-      "SAST and SCA scanning wired into CI so it isn't optional, runtime security on the cluster, policy-as-code for the things people forget.",
+      "Veracode SAST and SourceClear SCA wired into CI so scanning isn't optional, with findings filed straight to Jira. Falco and Suricata I've used, but not carried a pager for.",
     x: 190, y: 90, w: 160, h: 58,
   },
   {
@@ -54,7 +54,7 @@ const nodes: MapNode[] = [
     sub: "gitops",
     title: "GitOps with ArgoCD",
     description:
-      "ArgoCD and Image Updater reconcile the cluster to what git says. Promotion is a commit, rollback is a revert, the audit log is git log.",
+      "ArgoCD and Image Updater reconcile the cluster to whatever git says, so nobody deploys by hand and the audit trail is the repository history.",
     x: 410, y: 210, w: 150, h: 64,
   },
   {
@@ -78,10 +78,10 @@ const nodes: MapNode[] = [
   {
     id: "gpu",
     label: "gpu pool",
-    sub: "ml workloads",
-    title: "MLOps & AI infrastructure",
+    sub: "not shipped yet",
+    title: "GPU scheduling — research, not production",
     description:
-      "Where the platform work is heading: model serving on K8s, GPU scheduling and reproducible training pipelines. MSc dissertation in progress on recovery scheduling after node failure.",
+      "The one box here I haven't run in production. It's my MSc dissertation: capacity-aware recovery scheduling for Kubernetes, measured on real EKS clusters under induced node failure. Submitting September 2026.",
     x: 640, y: 236, w: 180, h: 48,
     variant: "sub",
   },
@@ -91,7 +91,7 @@ const nodes: MapNode[] = [
     sub: "streams",
     title: "Data platforms",
     description:
-      "Kafka and stream processing: training data pipelines and schema evolution that doesn't break consumers.",
+      "Kafka for service-to-service events, and the schema discipline that stops a producer change breaking every consumer downstream.",
     x: 640, y: 300, w: 180, h: 48,
     variant: "sub",
   },
@@ -135,7 +135,7 @@ export function SystemMap() {
           command="cat platform.svg"
           title="What I build"
           index="03"
-          lede="Not a list of logos. The system itself. Select a node; everything here is something I have run in production or at home."
+          lede="Not a list of logos, the system itself. Select any box. Everything here is something I've run in production or at home, except the one that says otherwise."
         />
 
         <div className="xl:grid xl:grid-cols-[1fr_20rem] xl:gap-8 xl:items-start">

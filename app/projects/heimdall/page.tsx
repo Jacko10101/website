@@ -14,14 +14,16 @@ import {
 import { TerminalWindow } from "@/components/terminal-window";
 
 /* --------------------------------------------------------------------------
- * A day on the platform team, set as the shift log itself: one time rail
- * runs down the left margin from 08:52 to 18:05 and every section is an
- * entry appended to it. The rail geometry lives in heimdall-page-frame.
+ * A day on the platform team, set as the shift log itself: one rail runs down
+ * the left margin and every section is an entry appended to it. Clock times
+ * appear only on the entries that really are moments in a day (the morning
+ * ones and the 17:40 close); the build and source-map entries sit on the same
+ * rail without a time. The rail geometry lives in heimdall-page-frame.
  * ----------------------------------------------------------------------- */
 
 /* --------------------------------------------------------------------------
  * The source map. Heimdall is an aggregator, so the decision that matters is
- * which upstream it believes for each fact — and the one case where the
+ * which upstream it believes for each fact, including the one case where the
  * obvious source is confidently wrong.
  * ----------------------------------------------------------------------- */
 const SOURCES: {
@@ -41,7 +43,7 @@ const SOURCES: {
     system: "ArgoCD",
     reads: "Sync status and the revision each environment is meant to be running.",
     caveat:
-      "Not its health verdict. ArgoCD will happily report a service healthy while its new pods crashloop behind it — the exact moment you most need the truth.",
+      "Not its health verdict. ArgoCD will report a service healthy while its new pods crashloop behind it. That's precisely when you need the truth, so Heimdall doesn't take its word for it.",
   },
   {
     system: "Kubernetes",
@@ -49,7 +51,7 @@ const SOURCES: {
   },
   {
     system: "Test runs",
-    reads: "Post-deploy verification, so 'deployed' and 'working' stay separate words.",
+    reads: "Post-deploy verification. Heimdall records whether the tests came back green after the new pods came up.",
   },
 ];
 
@@ -81,7 +83,7 @@ const articleSchema = {
   "@type": "TechArticle",
   headline: "Heimdall · Deployment Intelligence Platform",
   description:
-    "An internal SRE dashboard answering 'where is my ticket right now?' across 20 services. Used daily by a 20+ person engineering team.",
+    "An internal SRE dashboard answering 'where is my ticket right now?' across 20 services. Built solo at Loweconex and used every day by more than 20 engineers.",
   author: {
     "@type": "Person",
     name: "Jack Devlin",
@@ -152,14 +154,14 @@ export default function HeimdallPage() {
           <LogEntry
             time="08:55"
             label="try it first"
-            title="The environments view, live"
+            title="The environments view, in your browser"
           >
             <figure>
               <figcaption className="text-sm text-muted-foreground leading-relaxed max-w-2xl mb-5">
-                The screenshots below are the real thing. This one you can poke at.
-                Pick a ticket to trace it across the pipeline, toggle drift, or
-                click any cell for the commit, pods and who shipped it. Mock data,
-                real interaction model.
+                This is the environments view, rebuilt so you can use it. It opens
+                on PLAT-2033, a change that reached QA and stopped there. Pick a
+                different ticket to trace it across the pipeline, or click any cell
+                for the commit, the pods and who shipped it.
               </figcaption>
               <HeimdallDemo />
             </figure>
@@ -173,20 +175,23 @@ export default function HeimdallPage() {
                 title="Five tabs, one question"
               >
                 <p className="text-muted-foreground leading-relaxed mb-4">
-                  Across 20 services and a dev → QA → preprod → prod pipeline, the state
-                  of any given ticket is scattered. The commit&apos;s in Bitbucket. The
-                  desired state is in the GitOps repo. The pods are in Kubernetes. The
-                  test results are in the CI / test-report system. The ticket is in JIRA.
+                  Across 20 services and a dev → QA → preprod → prod pipeline, the
+                  state of any given ticket is spread across five systems. Bitbucket
+                  holds the commit and the PR, JIRA holds the ticket, and Kubernetes
+                  holds the pods that are actually running. In between sits the GitOps
+                  repo, which holds the desired state: the commit each environment is
+                  supposed to be on, which isn&apos;t always the one it&apos;s on.
                 </p>
                 <p className="text-muted-foreground leading-relaxed mb-4">
-                  Heimdall started life as a small Python service that exposed DORA
-                  counters to Prometheus. Handy for leadership, but it didn&apos;t help
-                  anyone shipping a feature on a Tuesday afternoon. So I built a UI on
-                  top, and kept building until it was the first tab people opened.
+                  Heimdall started as a small Python service that pushed the four DORA
+                  metrics (deploy frequency, lead time, change failure rate, time to
+                  restore) into Prometheus. The original collector was correct and
+                  nobody ever opened it. Same data, no front door. Building the UI is
+                  what turned it into something people use.
                 </p>
                 <p className="text-muted-foreground leading-relaxed">
-                  It&apos;s now used daily by the engineering team and runs the morning
-                  stand-up.
+                  More than 20 engineers now open it every day, and the morning
+                  stand-up runs off it.
                 </p>
               </LogEntry>
 
@@ -196,7 +201,8 @@ export default function HeimdallPage() {
                 title="A short tour"
               >
                 <p className="text-muted-foreground mb-6">
-                  Six pages. Each one answers a question someone&apos;s about to ask in Teams.
+                  Six pages, each answering a question someone&apos;s about to ask in
+                  Teams. These three do most of the work.
                 </p>
 
                 <div className="space-y-6">
@@ -232,22 +238,6 @@ export default function HeimdallPage() {
                   />
 
                   <Screenshot
-                    label="environments"
-                    src="/heimdall/environments.png"
-                    width={2222}
-                    height={1774}
-                    alt="Heimdall environments view with per-env activity and SHA matrix"
-                    caption={
-                      <>
-                        Per-environment cards on top. The matrix below is one row per
-                        service, one column per environment. A green cell means the env
-                        is on the latest commit, red means it&apos;s drifted. This view
-                        replaced about five recurring Teams threads.
-                      </>
-                    }
-                  />
-
-                  <Screenshot
                     label="environment detail"
                     src="/heimdall/environment-detail.png"
                     width={2172}
@@ -262,40 +252,17 @@ export default function HeimdallPage() {
                       </>
                     }
                   />
-
-                  <Screenshot
-                    label="pull requests"
-                    src="/heimdall/pull-requests.png"
-                    width={2356}
-                    height={1562}
-                    alt="Heimdall pull request triage sorted ready, CI failing, needs review, stale"
-                    caption={
-                      <>
-                        The same PRs Bitbucket has, but sorted by what unblocks shipping
-                        rather than what&apos;s most recent. Ready first, then CI failing,
-                        then needs review, then stale.
-                      </>
-                    }
-                  />
-
-                  <Screenshot
-                    label="activity"
-                    src="/heimdall/activity.png"
-                    width={2316}
-                    height={1764}
-                    alt="Heimdall activity feed of deploys, syncs and promotions"
-                    caption={
-                      <>
-                        A chronological feed of every deploy, sync, and promotion. The
-                        first place you look during an incident, and a useful way to
-                        open standup.
-                      </>
-                    }
-                  />
                 </div>
+
+                <p className="text-muted-foreground leading-relaxed mt-6">
+                  There&apos;s also a PR triage view sorted by what unblocks shipping
+                  rather than what&apos;s most recent, and an activity feed of every
+                  deploy, sync and promotion, which is the first place anyone looks
+                  during an incident.
+                </p>
               </LogEntry>
 
-              <LogEntry time="12:30" label="how it's wired" title="How it&apos;s built">
+              <LogEntry label="architecture" title="How it's built">
                 <p className="text-muted-foreground mb-6 leading-relaxed">
                   One Python service. A background job pulls from the upstream sources
                   every ten minutes and writes everything down: once into a database,
@@ -315,15 +282,13 @@ export default function HeimdallPage() {
               </LogEntry>
 
               <LogEntry
-                time="15:00"
-                label="five sources, one of them a liar"
+                label="source map"
                 title="What it reads, and what it refuses to believe"
               >
                 <p className="text-muted-foreground mb-6 leading-relaxed">
-                  Heimdall&apos;s only real job is reconciling five systems that
-                  each hold one piece of the answer. Which means the interesting
-                  design work isn&apos;t what it reads — it&apos;s the one place
-                  where the obvious source is wrong.
+                  Heimdall&apos;s real job is reconciling five systems that each
+                  hold one piece of the answer. The design decision that mattered
+                  was which one to believe when they disagree.
                 </p>
 
                 <SourceMap />
@@ -333,9 +298,9 @@ export default function HeimdallPage() {
                   Heimdall has to be diagnosable by someone who has never seen its
                   code. The README opens with &quot;is it healthy?&quot; and
                   answers it in one curl: collection age, pool usage, every
-                  circuit breaker. That&apos;s the bar I try to hit whenever I
-                  hand something to a team — if the on-call engineer needs me,
-                  I&apos;ve not finished it.
+                  circuit breaker. That&apos;s the bar I try to hit when I hand
+                  something over. If the on-call engineer has to ring me, I
+                  haven&apos;t finished it.
                 </p>
               </LogEntry>
 
@@ -344,18 +309,11 @@ export default function HeimdallPage() {
                 label="end of the day"
                 title="What actually changed"
               >
-                <p className="text-muted-foreground leading-relaxed mb-4">
+                <p className="text-muted-foreground leading-relaxed">
                   The team stopped pasting kubectl output into Teams to ask
                   whether a deploy had worked. Standup got shorter. Release
                   management started using the same view as the engineers, so
                   fewer tickets fell down the gap between them.
-                </p>
-                <p className="text-muted-foreground leading-relaxed">
-                  The thing I&apos;d tell anyone building an internal tool: the
-                  original DORA collector was a back-end service, it was correct,
-                  and nobody opened it. Same data, no front door, no users. The UI
-                  is what made the work count. Twenty-plus people open this one
-                  every morning, and that&apos;s the only metric I fully trust.
                 </p>
               </LogEntry>
 

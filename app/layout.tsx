@@ -10,6 +10,7 @@ import { SmoothScroll } from "@/components/smooth-scroll";
 import { CliNavigation } from "@/components/cli-navigation";
 import { BackToTop } from "@/components/back-to-top";
 import { MotionProvider } from "@/components/motion-provider";
+import { roles, education, knowsAbout } from "@/lib/experience";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -68,21 +69,12 @@ export const metadata: Metadata = {
     url: "https://devlinops.com",
     siteName: "Jack Devlin",
     type: "website",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Jack Devlin · Platform Engineer",
-      },
-    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Jack Devlin · Platform & AI Infrastructure Engineer",
     description:
       "Platform engineer for AI systems. Production LLM infrastructure on Kubernetes: gateway, guardrails, GitOps and observability. Available now, permanent or contract, remote-first, open to relocation.",
-    images: ["/og-image.png"],
   },
 };
 
@@ -95,41 +87,52 @@ export default function RootLayout({
     "@context": "https://schema.org",
     "@graph": [
       {
+        "@type": "ProfilePage",
+        "@id": "https://devlinops.com/#profilepage",
+        "url": "https://devlinops.com",
+        "name": "Jack Devlin · Platform & AI Infrastructure Engineer",
+        "mainEntity": { "@id": "https://devlinops.com/#person" },
+      },
+      {
         "@type": "Person",
         "@id": "https://devlinops.com/#person",
         "name": "Jack Devlin",
-        "jobTitle": "Platform Engineer",
+        "jobTitle": "Platform & Site Reliability Engineer",
         "url": "https://devlinops.com",
         "email": "jack@devlinops.com",
+        "image": "https://devlinops.com/jack-photo.jpg",
+        "nationality": ["Irish", "British"],
         "address": {
           "@type": "PostalAddress",
           "addressCountry": "GB",
+          "addressRegion": "Northern Ireland",
         },
+        "worksFor": roles
+          .filter((role) => role.endDate === null)
+          .map((role) => ({
+            "@type": "Organization",
+            "name": role.company,
+          })),
+        "alumniOf": [...new Set(education.map((item) => item.institution))].map(
+          (name) => ({ "@type": "CollegeOrUniversity", "name": name })
+        ),
+        "hasCredential": education.map((item) => ({
+          "@type": "EducationalOccupationalCredential",
+          "name": item.result ? `${item.award}, ${item.result}` : item.award,
+          "credentialCategory": "degree",
+          "recognizedBy": {
+            "@type": "CollegeOrUniversity",
+            "name": item.institution,
+          },
+        })),
         "sameAs": [
           "https://github.com/Jacko10101",
         ],
-        "knowsAbout": [
-          "Platform Engineering",
-          "MLOps",
-          "AI Infrastructure",
-          "Site Reliability Engineering",
-          "Kubernetes",
-          "GPU Scheduling on Kubernetes",
-          "ArgoCD",
-          "GitOps",
-          "Observability",
-          "Prometheus",
-          "Grafana",
-          "AWS",
-          "PyTorch",
-          "Python",
-          "CI/CD",
-        ],
+        "knowsAbout": knowsAbout,
         "hasOccupation": {
           "@type": "Occupation",
-          "name": "Platform Engineer",
-          "skills":
-            "Kubernetes, MLOps, GPU scheduling, AWS, ArgoCD, GitOps, CI/CD, Observability, Python, PyTorch",
+          "name": "Platform & Site Reliability Engineer",
+          "skills": knowsAbout.join(", "),
         },
       },
       {
@@ -144,10 +147,10 @@ export default function RootLayout({
       {
         "@type": "ProfessionalService",
         "@id": "https://devlinops.com/#service",
-        "name": "DevlinOps",
+        "name": "Devlinops Ltd",
         "url": "https://devlinops.com",
         "description":
-          "Independent platform & MLOps engineering for teams running AI workloads and distributed systems, Kubernetes, GPU scheduling, GitOps, CI/CD and observability.",
+          "Devlinops Ltd is the limited company Jack Devlin contracts through. Platform and AI infrastructure engineering: Kubernetes, GitOps, CI/CD, observability and LLM gateways.",
         "provider": {
           "@id": "https://devlinops.com/#person",
         },

@@ -35,8 +35,9 @@ export function ContactForm() {
       if (data.success) {
         setStatus("success");
         form.reset();
-        // Re-enable the form after a moment so a second message can be sent.
-        setTimeout(() => setStatus("idle"), 6000);
+        // The confirmation stays until the visitor types again. It used to
+        // clear itself after six seconds, so anyone who looked away came back
+        // to a blank form with no evidence anything had been sent.
       } else {
         setStatus("error");
         setErrorMessage(data.message || "Something went wrong. Please try again.");
@@ -48,7 +49,14 @@ export function ContactForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form
+      onSubmit={handleSubmit}
+      onInput={() => {
+        if (status === "success" || status === "error") setStatus("idle");
+      }}
+      aria-describedby={status === "error" ? "form-error" : undefined}
+      className="space-y-6"
+    >
       <input type="hidden" name="access_key" value={WEB3FORMS_KEY} />
       <input type="hidden" name="from_name" value="DevlinOps Contact Form" />
 
@@ -159,9 +167,12 @@ export function ContactForm() {
 
         <div aria-live="polite" role="status">
           {status === "success" && (
-            <div className="flex items-center gap-2 text-sm text-primary">
-              <CheckCircle className="h-4 w-4" />
-              Message sent. I usually reply within a day.
+            <div className="flex items-start gap-2 text-sm text-primary">
+              <CheckCircle className="h-4 w-4 mt-0.5 shrink-0" />
+              <span>
+                Sent. It lands in jack@devlinops.com and I usually reply within
+                a day.
+              </span>
             </div>
           )}
         </div>

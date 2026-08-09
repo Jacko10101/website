@@ -37,9 +37,8 @@ const SHOTS: Record<string, Shot> = {
     caption: (
       <>
         518 sites, and underneath it the two statements that counted them.
-        Showing the query costs screen space and turns an oracle into a tool —
-        these people read SQL, and letting them check beats any amount of
-        confident phrasing.
+        These users read SQL. Showing the query costs screen space, but it
+        means they can check the answer instead of taking my word for it.
       </>
     ),
   },
@@ -51,8 +50,9 @@ const SHOTS: Record<string, Shot> = {
     height: 1027,
     caption: (
       <>
-        The briefing compiles the same grounded context into a readout. Nine
-        sites, 170 devices, one HVAC unit offline for over 24 hours. Each card
+        The briefing compiles the same grounded context into a readout. A
+        smaller tenant: nine sites, 170 devices, one HVAC unit offline for over
+        24 hours. Each card
         names the site it came from rather than summarising the estate in prose,
         so anything surprising can be checked against the thing it describes.
       </>
@@ -66,10 +66,9 @@ const SHOTS: Record<string, Shot> = {
     height: 1003,
     caption: (
       <>
-        39,041 rows, 2.6MB, retained 30 days. Exports stream row by row and
-        never assemble the result set in heap, which is the whole reason a
-        question that returns forty thousand rows doesn&apos;t take the pod with
-        it.
+        39,041 rows against a 50,000-row ceiling, 2.6MB, retained 30 days.
+        Exports stream row by row and never assemble the result set in heap, so
+        memory stays flat whether the answer is forty rows or forty thousand.
       </>
     ),
   },
@@ -161,17 +160,17 @@ function Evidence({ of, entry }: { of: keyof typeof SHOTS; entry: string }) {
 
 /* --------------------------------------------------------------------------
  * The front page of the ledger. This document's genre is claims-and-receipts,
- * so it opens the way an audit does: state the claims up front, say which
- * carry receipts, and be honest about the one that doesn't. Six claims, five
- * receipts, one left open on purpose — the closing paragraph explains why.
+ * so it opens the way an audit does: state the claims up front and be honest
+ * about the one that doesn't carry a receipt. Six claims, one left open on
+ * purpose — the closing paragraph explains why.
  * ----------------------------------------------------------------------- */
-const LEDGER: { claim: string; receipt: string; open?: boolean }[] = [
-  { claim: "Answers arrive with the SQL that produced them", receipt: "screenshot" },
-  { claim: "It knows the whole estate, not one table at a time", receipt: "screenshot" },
-  { claim: "Generated SQL can only ever read", receipt: "try it below" },
-  { claim: "A 39,041-row export won't take the pod with it", receipt: "screenshot" },
-  { claim: "A conversation can become a dashboard", receipt: "screenshot" },
-  { claim: "Fabrication is at zero", receipt: "none yet", open: true },
+const LEDGER: { claim: string; open?: boolean }[] = [
+  { claim: "Answers arrive with the SQL that produced them" },
+  { claim: "It can answer about the whole estate, not one table at a time" },
+  { claim: "Generated SQL can only ever read" },
+  { claim: "A 39,041-row export streams instead of filling memory" },
+  { claim: "A conversation can become a dashboard" },
+  { claim: "Fabrication is at zero", open: true },
 ];
 
 function ClaimsLedgerHeader() {
@@ -200,15 +199,28 @@ function ClaimsLedgerHeader() {
             Clarity
           </h1>
 
-          <p className="font-mono text-sm text-muted-foreground mb-5">
+          <p className="font-mono text-sm text-muted-foreground mb-1.5">
             Natural-language database interface
           </p>
 
-          <p className="text-xl text-muted-foreground mb-6 leading-relaxed">
-            Ask the estate a question in English, get an answer with the SQL
-            that produced it. Generating the SQL was the easy bit. The hard
-            part was proving the answers, so this page is written the way the
-            product works: every claim sits next to the thing that backs it.
+          <p className="font-mono text-sm text-muted-foreground mb-5">
+            Built the infrastructure and trust layer · Loweconex, a UK IoT
+            platform business
+          </p>
+
+          <p className="text-xl text-muted-foreground mb-4 leading-relaxed">
+            Clarity&apos;s users run hundreds of physical sites, supermarkets
+            and warehouses full of sensors and HVAC kit. Clarity lets them ask
+            about that estate in English and get an answer back with the SQL
+            that produced it.
+          </p>
+
+          <p className="text-muted-foreground mb-6 leading-relaxed">
+            Before Clarity, a customer wanting a number out of their estate
+            raised a ticket and waited for an analyst to run the query. Now
+            about twenty people a day ask directly, across roughly thirty
+            tenants. Generating the SQL was the easy bit. Proving the answers
+            took the other eight months.
           </p>
 
           <div className="rounded-lg border border-border bg-card/40 overflow-hidden font-mono">
@@ -217,23 +229,14 @@ function ClaimsLedgerHeader() {
                 what this page claims
               </span>
               <span className="text-muted-foreground tabular-nums">
-                2025 → ongoing · ~30 tenants · ~20 daily users
+                2025 → ongoing · live in production
               </span>
-            </div>
-            {/* Column rule, the way an account book names its columns once. */}
-            <div
-              className="hidden sm:flex items-baseline gap-x-3 px-4 pt-2 pb-1.5 border-b border-border text-[10px] uppercase tracking-[0.15em] text-muted-foreground/60"
-              aria-hidden
-            >
-              <span className="w-7 shrink-0">no.</span>
-              <span className="flex-1">claim</span>
-              <span>receipt</span>
             </div>
             <ol className="text-sm tabular-nums">
               {LEDGER.map((row, i) => (
                 <li
                   key={row.claim}
-                  className="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-4 py-2 border-b border-border/60"
+                  className="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-4 py-2 border-b border-border/60 last:border-b-0"
                 >
                   <span
                     className="w-7 shrink-0 text-xs text-muted-foreground/60"
@@ -242,31 +245,20 @@ function ClaimsLedgerHeader() {
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <span
-                    className={`min-w-[14rem] max-w-full ${
+                    className={
                       row.open ? "text-muted-foreground" : "text-foreground"
-                    }`}
+                    }
                   >
                     {row.claim}
                   </span>
-                  <span
-                    className="flex-1 min-w-8 self-center border-b border-dotted border-border"
-                    aria-hidden
-                  />
-                  <span
-                    className={`text-[10px] uppercase tracking-wider text-right ${
-                      row.open ? "text-muted-foreground" : "text-primary"
-                    }`}
-                  >
-                    {row.open ? "no receipt" : `receipt · ${row.receipt}`}
-                  </span>
+                  {row.open && (
+                    <span className="text-[10px] uppercase tracking-wider text-muted-foreground/70 border border-border rounded-sm px-1.5 py-0.5">
+                      no receipt
+                    </span>
+                  )}
                 </li>
               ))}
             </ol>
-            <p className="px-4 py-2.5 text-xs text-muted-foreground leading-relaxed">
-              Five receipts on this page. The sixth claim is left open on
-              purpose — it&apos;s the last paragraph, and it stays open until
-              the evidence exists.
-            </p>
           </div>
         </div>
       </div>
@@ -302,13 +294,7 @@ const GUARANTEES: { claim: string; where: string; detail: string }[] = [
     claim: "A conversation can't become runaway spend",
     where: "around the agent loop",
     detail:
-      "Every turn carries a tool-call cap enforced around the loop, not requested inside it. Blow it and the model is told to summarise what it found and stop. A per-tenant token bucket sits on top.",
-  },
-  {
-    claim: "The documentation can't drift from the metrics",
-    where: "a unit test, both directions",
-    detail:
-      "Every registered metric is compared against the documented table and back again. That's how a series nobody could query survived for months, and how a total-outage signal sat there unalerted.",
+      "Every turn carries a tool-call cap enforced around the loop, not requested inside it. Blow it and the model is told to summarise what it found and stop. A per-tenant rate limit sits on top.",
   },
 ];
 
@@ -356,10 +342,11 @@ function GuaranteeLedger() {
 }
 
 /* --------------------------------------------------------------------------
- * The audit record. Every case study carries the same facts — stack, skills,
- * numbers, cross-references — but here they're filed as one continuous
- * document rather than the shared `$ stack` cards, because on this page even
- * the sidebar is part of the ledger.
+ * The details column. Every case study carries the same facts: stack, skills,
+ * numbers, cross-references. Here they're filed as one continuous document
+ * rather than the shared `$ stack` cards, because on this page even the
+ * sidebar is part of the ledger. Named plainly so it doesn't collide with the
+ * per-turn audit record the body keeps talking about.
  * ----------------------------------------------------------------------- */
 function RecordLabel({ children }: { children: ReactNode }) {
   return (
@@ -369,13 +356,13 @@ function RecordLabel({ children }: { children: ReactNode }) {
   );
 }
 
-function AuditRecord() {
+function ProjectDetails() {
   return (
     <aside className="lg:sticky lg:top-24 self-start">
       <div className="rounded-lg border border-border bg-card/40 overflow-hidden">
         <div className="flex items-center justify-between gap-3 px-5 py-3 border-b border-border bg-card/60 font-mono text-[11px]">
           <span className="uppercase tracking-wider text-primary">
-            audit record
+            details
           </span>
           <span className="text-muted-foreground">clarity</span>
         </div>
@@ -465,48 +452,15 @@ function AuditRecord() {
   );
 }
 
-/* --------------------------------------------------------------------------
- * Closing the ledger out. Sits after the one claim without a receipt, which
- * is the whole ending — this just balances the books and says goodbye.
- * ----------------------------------------------------------------------- */
+/* Closing the ledger out. The claim without a receipt is the ending; this
+   just says goodbye. */
 function LedgerSignOff() {
   return (
     <section className="container px-4 py-16">
       <div className="max-w-2xl mx-auto">
-        <div className="rounded-lg border border-border bg-card/40 overflow-hidden font-mono">
-          <div className="px-5 py-3 border-b border-border bg-card/60 text-[11px] uppercase tracking-wider text-primary">
-            ledger closed
-          </div>
-          <dl className="px-5 py-4 text-sm">
-            <div className="flex items-baseline gap-x-3 py-1">
-              <dt className="text-muted-foreground">receipts attached</dt>
-              <span
-                className="flex-1 min-w-8 self-center border-b border-dotted border-border"
-                aria-hidden
-              />
-              <dd className="text-foreground tabular-nums">
-                5{" "}
-                <span className="text-xs text-muted-foreground/60">
-                  · nos 01–05
-                </span>
-              </dd>
-            </div>
-            <div className="flex items-baseline gap-x-3 py-1">
-              <dt className="text-muted-foreground">claims left open</dt>
-              <span
-                className="flex-1 min-w-8 self-center border-b border-dotted border-border"
-                aria-hidden
-              />
-              <dd className="text-primary tabular-nums">1 · marked above</dd>
-            </div>
-            {/* The double rule that closes an account. */}
-            <div className="mt-3 border-t-[3px] border-double border-border" aria-hidden />
-          </dl>
-        </div>
-        <p className="mt-6 text-sm text-muted-foreground leading-relaxed">
-          Everything above has its receipt except the last paragraph, and I
-          told you which one that was. I&apos;d hold work to the same
-          standard —{" "}
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          That&apos;s the ledger closed. I&apos;d hold other work to the same
+          standard, so{" "}
           <Link
             href="/contact"
             className="text-primary hover:underline underline-offset-4"
@@ -554,24 +508,7 @@ export default function ClarityPage() {
     <CaseStudyLayout schema={articleSchema} phosphor={PHOSPHORS.blue}>
       <ClaimsLedgerHeader />
 
-      <div className="container px-4 mb-16">
-        <div className="max-w-7xl mx-auto">
-          <div className="mb-4">
-            <span className="font-mono text-sm text-primary">&gt; try it yourself</span>
-            <h2 className="mt-1.5 font-mono font-semibold tracking-tight text-2xl sm:text-3xl text-foreground">
-              Five ways an answer can lie
-            </h2>
-            <p className="mt-1.5 text-muted-foreground max-w-2xl">
-              Toggle it off for what the model said. On for what ships. All
-              five are simplified from cases the detectors caught in
-              production.
-            </p>
-          </div>
-          <GroundingDemo />
-        </div>
-      </div>
-
-      <div className="container px-4">
+      <div className="container px-4 pt-6">
         <div className="grid gap-8 lg:grid-cols-[2fr_1fr] max-w-7xl mx-auto">
           <div className="space-y-12">
             <CaseStudySection
@@ -591,12 +528,13 @@ export default function ClarityPage() {
               </p>
               <p className="text-muted-foreground leading-relaxed mb-4">
                 So I stopped reading feature requests and read transcripts
-                instead. The gap wasn&apos;t capability, it was trust.
+                instead. They weren&apos;t asking for more features. They
+                didn&apos;t trust the answers.
               </p>
               <p className="text-muted-foreground leading-relaxed">
                 Which is why everything below comes with the thing that proves
                 it. Clarity won&apos;t assert a number without showing the query
-                behind it, and this page holds itself to the same standard.
+                behind it.
               </p>
 
               <Evidence of="answerSql" entry="01" />
@@ -649,9 +587,14 @@ export default function ClarityPage() {
                 <code className="text-primary">(no rows)</code>,{" "}
                 <code className="text-primary">(no new data since …)</code>. The
                 model routes around dead tables because it can see they&apos;re
-                dead. Freshness stays out of the change-detection hash, or a
-                timestamp moving nightly would re-summarise the whole estate
-                nightly to tell us nothing changed.
+                dead.
+              </p>
+              <p className="text-muted-foreground leading-relaxed mt-4">
+                The compile only rewrites a table&apos;s summary when the table
+                itself has changed, which it works out by hashing the structure.
+                Freshness timestamps are deliberately left out of that hash. A
+                clock ticking forward every night would otherwise rebuild the
+                whole estate to tell us nothing had changed.
               </p>
             </CaseStudySection>
 
@@ -667,12 +610,11 @@ export default function ClarityPage() {
               <p className="text-muted-foreground leading-relaxed mb-4">
                 Queries run as a dedicated read-only role, provisioned on every
                 tenant database at startup. It fails closed: no pool, no query.
-                It never falls back to the admin connection, which is the sort of
-                helpfulness that ends up in an incident report.
+                There is no code path that falls back to the admin connection.
               </p>
 
               <div className="mb-3">
-                <ReceiptStamp entry="03" note="the ledger's 'try it below'" />
+                <ReceiptStamp entry="03" note="run it yourself, below" />
               </div>
               <SqlPlayground />
 
@@ -702,16 +644,29 @@ export default function ClarityPage() {
                 run. Fabricated-names list must be empty. Export claimed, report
                 row must have completed.
               </p>
+
+              <div className="mt-8">
+                <h3 className="font-mono font-semibold tracking-tight text-xl text-foreground mb-2">
+                  Five ways an answer can lie
+                </h3>
+                <p className="text-muted-foreground leading-relaxed mb-4">
+                  These are the five classes the grounding layer checks on every
+                  turn, all of them simplified from cases the detectors caught
+                  in production. The toggle switches the grounding layer off and
+                  on. Off is what the model produced. On is what a user actually
+                  sees.
+                </p>
+                <GroundingDemo />
+              </div>
             </CaseStudySection>
 
             <CaseStudySection
               eyebrow="> what stops it, though?"
-              title="Five guarantees, none of them a prompt"
+              title="Where each guarantee is actually enforced"
             >
               <p className="text-muted-foreground leading-relaxed mb-6">
                 A system prompt is a request. Everything below is a property of
-                the system, and each entry names where it&apos;s actually
-                enforced.
+                the system, and each entry names the place it holds.
               </p>
 
               <GuaranteeLedger />
@@ -724,8 +679,9 @@ export default function ClarityPage() {
               title="An honest answer"
             >
               <p className="text-muted-foreground leading-relaxed mb-4">
-                It answers questions people used to queue up for an analyst to
-                run, and it builds them things they keep using afterwards.
+                The questions that used to become a ticket now get asked
+                directly. Some of those conversations end as a dashboard the
+                tenant keeps rather than a one-off answer.
               </p>
 
               <Evidence of="dashboard" entry="05" />
@@ -744,7 +700,7 @@ export default function ClarityPage() {
             </CaseStudySection>
           </div>
 
-          <AuditRecord />
+          <ProjectDetails />
         </div>
       </div>
 

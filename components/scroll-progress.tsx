@@ -6,35 +6,47 @@ export function ScrollProgress() {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
+    // Lenis drives scroll at rAF frequency, so reading scrollHeight inside the
+    // handler forced a layout on every frame. Measure on resize instead.
+    let scrollable = 0;
+
+    const measure = () => {
+      scrollable = document.documentElement.scrollHeight - window.innerHeight;
+    };
+
     const updateProgress = () => {
-      const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-      setProgress(scrollPercent);
+      setProgress(scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0);
+    };
+
+    measure();
+    updateProgress();
+
+    const onResize = () => {
+      measure();
+      updateProgress();
     };
 
     window.addEventListener("scroll", updateProgress, { passive: true });
-    updateProgress(); // Initial calculation
+    window.addEventListener("resize", onResize);
 
-    return () => window.removeEventListener("scroll", updateProgress);
+    // Scroll-reveal sections change the document height as they mount, so the
+    // cached value needs a nudge from something other than window resizes.
+    const observer = new ResizeObserver(onResize);
+    observer.observe(document.documentElement);
+
+    return () => {
+      window.removeEventListener("scroll", updateProgress);
+      window.removeEventListener("resize", onResize);
+      observer.disconnect();
+    };
   }, []);
 
   return (
     <div className="fixed top-0 left-0 right-0 z-50 h-1 bg-secondary/30">
-      {/* Pipeline stages background */}
-      <div className="absolute inset-0 flex">
-        <div className="flex-1 border-r border-border/50" />
-        <div className="flex-1 border-r border-border/50" />
-        <div className="flex-1 border-r border-border/50" />
-        <div className="flex-1" />
-      </div>
-
-      {/* Progress bar */}
       <div
         className="h-full bg-gradient-to-r from-primary/60 to-primary transition-all duration-150 ease-out relative"
         style={{ width: `${progress}%` }}
       >
-        {/* Animated pulse at the end */}
         <div className="absolute right-0 top-0 h-full w-2 bg-foreground/50 animate-pulse" />
       </div>
     </div>

@@ -8,14 +8,12 @@ import { useReducedMotion } from "framer-motion";
 // sitting directly beneath it repeating them read as padding.
 const items = [
   "every answer ships with the SQL that produced it",
-  "5 classes of hallucination caught mechanically, every turn",
-  "0 vector stores · compiled schema knowledge instead",
+  "an answer naming a site that isn't in the database gets refused, every turn",
+  "0 vector stores · the database schema is compiled nightly instead",
   "50+ alerts, a runbook for every one",
-  "promotion is a commit · rollback is a revert",
   "one endpoint in front of every model call",
   "homelab: 0 ports exposed to the internet",
   "MSc AI · Distinction · September 2026",
-  "available now · permanent or contract · remote-first",
 ];
 
 /**

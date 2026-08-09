@@ -36,7 +36,7 @@ export function Footer() {
   const links = [
     { name: "Projects", href: "/projects" },
     { name: "About", href: "/about" },
-    { name: "Colophon", href: "/colophon" },
+    { name: "How this site works", href: "/colophon" },
     { name: "Contact", href: "/contact" },
   ];
 
@@ -156,7 +156,7 @@ export function Footer() {
               </span>
             )}
             <span className="flex items-center px-4 py-2 -ml-2 bg-secondary text-muted-foreground [clip-path:polygon(9px_0,calc(100%-9px)_0,100%_100%,0_100%)] pl-6 pr-6">
-              static · no cookies
+              no cookies · page counts only
             </span>
             <Link
               href="/colophon"
@@ -166,7 +166,7 @@ export function Footer() {
             </Link>
           </div>
           <div className="px-4 py-2 border-t border-border/60 text-center text-muted-foreground">
-            press <kbd className="px-1.5 py-0.5 mx-1 rounded bg-secondary border border-border text-foreground/70 text-[10px]">/</kbd> for the terminal · <kbd className="px-1.5 py-0.5 mx-1 rounded bg-secondary border border-border text-foreground/70 text-[10px]">↑↑↓↓←→←→BA</kbd> if the pager finds you
+            press <kbd className="px-1.5 py-0.5 mx-1 rounded bg-secondary border border-border text-foreground/70 text-[10px]">/</kbd> for the terminal
           </div>
         </div>
 
@@ -176,7 +176,7 @@ export function Footer() {
             © {new Date().getFullYear()} Jack Devlin
           </p>
           <div className="flex items-center gap-2 text-muted-foreground text-sm">
-            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" aria-hidden />
+            <span className="w-2 h-2 rounded-full bg-primary" aria-hidden />
             <span>{profile.availability.short}</span>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import { Mail, Github } from "lucide-react";
+import { Mail, Github, Download } from "lucide-react";
 import { ContactForm } from "@/components/contact-form";
 import { profile } from "@/lib/profile";
 
@@ -16,21 +16,21 @@ export default function ContactPage() {
           <span className="text-muted-foreground">$</span> mail jack@devlinops.com
         </p>
         <h1 className="mb-6 font-mono font-semibold tracking-tight text-4xl sm:text-5xl md:text-6xl">
-          Want to chat?
+          How to reach me
         </h1>
         <p className="mb-4 text-lg text-muted-foreground leading-relaxed">
-          The fastest way to reach me is the form below or just an email.
-          I&apos;m available now, for permanent roles or contracts, and
-          I&apos;ll relocate for the right one. Remote-first either way.
+          The form below or an email, whichever suits. I&apos;m available now,
+          for permanent roles or contracts, and I&apos;ll relocate for the right
+          one. Remote-first either way.
         </p>
-        <p className="mb-12 text-lg text-muted-foreground leading-relaxed">
+        <p className="mb-8 text-lg text-muted-foreground leading-relaxed">
           Best fit: teams putting AI workloads on Kubernetes, or platforms that
           need observability and GitOps brought up to a real standard. Always
           happy to talk shop.
         </p>
 
         {profile.visaNote && (
-          <p className="mb-12 -mt-6 font-mono text-sm text-muted-foreground border-l-2 border-primary/50 pl-4">
+          <p className="mb-12 font-mono text-sm text-muted-foreground border-l-2 border-primary/50 pl-4">
             {profile.visaNote}
           </p>
         )}
@@ -79,13 +79,37 @@ export default function ContactPage() {
                   GitHub
                 </h3>
                 <p className="text-sm text-muted-foreground mb-2">
-                  The occasional side project and dotfile.
+                  Config for the homelab, and the scripts that run it.
                 </p>
                 <p className="text-sm font-medium text-primary">@Jacko10101</p>
               </div>
             </div>
           </a>
 
+          <a
+            href="/cv.pdf"
+            download="jack-devlin-cv.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group block rounded-lg border border-border bg-card p-6 transition-all hover:border-primary hover:shadow-lg"
+          >
+            <div className="flex flex-col gap-4">
+              <div className="rounded-lg bg-primary/10 p-3 w-fit">
+                <Download className="h-6 w-6 text-primary" />
+              </div>
+              <div>
+                <h3 className="mb-1 text-xl font-semibold group-hover:text-primary transition-colors">
+                  CV
+                </h3>
+                <p className="text-sm text-muted-foreground mb-2">
+                  Employers, dates and titles, on one page.
+                </p>
+                <p className="text-sm font-medium text-primary">
+                  PDF · updated August 2026
+                </p>
+              </div>
+            </div>
+          </a>
         </div>
 
         <p className="mt-12 text-center text-sm text-muted-foreground">

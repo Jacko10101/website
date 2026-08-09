@@ -20,57 +20,32 @@ import { GatewayTracer } from "@/components/gateway-tracer";
  * incident review does: a tracked table with statuses, including the one
  * still open.
  * ----------------------------------------------------------------------- */
-type ItemStatus = "shipped" | "runbook" | "by design" | "open";
+type ItemStatus = "shipped" | "runbook" | "open";
 
 const STATUS_TONE: Record<ItemStatus, string> = {
   shipped: "text-primary border-primary/40",
   runbook: "text-muted-foreground border-border",
-  "by design": "text-muted-foreground border-border",
   open: "text-warn border-warn/50 bg-warn/10",
 };
 
 const ACTION_ITEMS: { action: string; status: ItemStatus; detail: string }[] = [
   {
-    action: "Get provider credentials out of service repos",
-    status: "shipped",
-    detail:
-      "Services hold a virtual key with an explicit model list, not a provider key. The credential that actually costs money lives in one place.",
-  },
-  {
-    action: "Make an unpermitted model fail closed",
-    status: "shipped",
-    detail:
-      "A 401, never a silent substitution. A gateway that quietly picks something else makes cost and behaviour unpredictable at the same time.",
-  },
-  {
     action: "Collapse to one gateway, environment as a tag",
     status: "shipped",
     detail:
-      "It started as a deployment per environment. One instance means fewer moving parts and spend I can compare across environments rather than sum across dashboards.",
-  },
-  {
-    action: "Make spend attributable to the thing that caused it",
-    status: "shipped",
-    detail:
-      "Tenant, environment and feature on every call. Chat, scheduled estate summaries and the nightly schema compile bill to one service but answer completely different questions about cost.",
+      "It started as a deployment per environment. One instance means fewer moving parts, and spend I can compare across environments rather than sum across dashboards.",
   },
   {
     action: "Write down the two-step onboarding trap",
     status: "runbook",
     detail:
-      "A model can be fully deployed and still 401 for everybody, because no key has been told it may use it. It caught me more than once before it was written down.",
-  },
-  {
-    action: "Write no proxy",
-    status: "by design",
-    detail:
-      "This is LiteLLM doing what it says on the tin, on Kubernetes, through GitOps like everything else. The engineering worth doing was the key and allowlist model, the attribution scheme and the runbook.",
+      "The first time it caught me I lost an afternoon to a model that was demonstrably deployed.",
   },
   {
     action: "Stop dashboard price constants from rotting",
     status: "open",
     detail:
-      "The 4x bug was config drift, not a measurement error: the tokens were counted correctly and multiplied by a price a human had typed in. Closing this properly means something that compares those constants against what the provider actually charges.",
+      "Closing this properly means something that compares those constants against what the provider actually charges, on a schedule.",
   },
 ];
 
@@ -220,10 +195,10 @@ export default function AIGatewayPage() {
             </div>
             <GatewayTracer />
             <figcaption className="mt-3 text-sm text-muted-foreground text-center max-w-2xl mx-auto">
-              Pick a consumer and a model. Some combinations come back 401 even
-              though the model is fully deployed, and the trace shows exactly
-              where the refusal happens. That catches people constantly,
-              including me.
+              It opens on the trap: a key that was issued and never given an
+              allowlist. Pick a different consumer or model and the trace shows
+              exactly where the refusal happens, including the combinations that
+              401 for a model which is fully deployed.
             </figcaption>
           </figure>
         </div>
@@ -243,11 +218,17 @@ export default function AIGatewayPage() {
                 heading: keys scattering across repos, and nobody able to say
                 what any of it cost.
               </p>
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                None of that is an AI problem. It&apos;s the same problem as
+                unmanaged database credentials, and the fix is the same one:
+                put the credential somewhere central and hand out scoped access
+                instead.
+              </p>
               <p className="text-muted-foreground leading-relaxed">
-                None of that is an AI problem. It&apos;s unmanaged database
-                credentials wearing a hat, and it has the same fix. I built this
-                while we had two consumers, which is the only reason it was a
-                small job.
+                LiteLLM is an open-source LLM proxy. I didn&apos;t write a
+                proxy, I ran that one on Kubernetes through GitOps like
+                everything else we deploy. The work worth describing is the key
+                and allowlist model, the attribution scheme, and the runbook.
               </p>
             </ReportSection>
 
@@ -302,17 +283,31 @@ curl -H "Authorization: Bearer $VIRTUAL_KEY" "$GATEWAY/v1/models"`}
                 compile all bill to one service but answer completely different
                 questions about cost.
               </p>
-              <p className="text-muted-foreground leading-relaxed mb-4">
+              <p className="text-muted-foreground leading-relaxed">
                 So &quot;what is the AI costing us&quot; became answerable per
                 tenant and per feature, which matters the first time somebody
                 asks about cost to serve.
+              </p>
+            </ReportSection>
+
+            <ReportSection
+              finding={4}
+              eyebrow="// postmortem · attached"
+              title="The 4x pricing bug"
+            >
+              <p className="text-muted-foreground leading-relaxed mb-6">
+                Attribution being right is not the same as the number being
+                right. This one is the reason the last action item is still
+                open.
+                {/* TODO(jack): rough order of magnitude for monthly gateway spend,
+                    so "fourfold high" means something concrete to a reader */}
               </p>
               <div className="rounded-md border border-warn/40 bg-warn/5 overflow-hidden">
                 <div className="flex flex-wrap items-center gap-2 px-5 py-2.5 border-b border-warn/30 font-mono text-xs">
                   <span className="w-2 h-2 rounded-full bg-warn" aria-hidden />
                   <span className="text-warn font-semibold">postmortem</span>
                   <span className="text-muted-foreground">
-                    · the 4x pricing bug · severity: embarrassing
+                    · severity: low, caught internally
                   </span>
                 </div>
                 <dl>
@@ -336,49 +331,40 @@ curl -H "Authorization: Bearer $VIRTUAL_KEY" "$GATEWAY/v1/models"`}
             </ReportSection>
 
             <ReportSection
-              finding={4}
+              finding={5}
               eyebrow="// after: what got cheap"
               title="What it made cheap"
             >
               <p className="text-muted-foreground leading-relaxed mb-4">
-                The point of a seam is what gets easy afterwards. There&apos;s
-                an automated pull request review agent running on PRs across
-                eight production services now, and building it needed no
-                provider credentials, no billing conversation, no new secret.
+                There&apos;s an automated pull request review agent running on
+                PRs across eight production services now, and building it needed
+                no provider credentials, no billing conversation, no new secret.
               </p>
-              <p className="text-muted-foreground leading-relaxed">
+              <p className="text-muted-foreground leading-relaxed mb-8">
                 Model upgrades became config too. Moving a consumer between
-                versions is an allowlist entry and an env var, which is how the
-                estate followed three generations of the same model family
-                without anyone rewriting a consumer.
+                versions is an allowlist entry and an env var, which is how
+                every consumer followed three generations of the same model
+                family without anyone rewriting one.
               </p>
-            </ReportSection>
 
-            <ReportSection
-              eyebrow="// review: action items"
-              title="What changed as a result"
-            >
               <p className="text-muted-foreground leading-relaxed mb-6">
-                This project&apos;s history reads as a list of things that were
-                about to hurt and what got done about each one. The last item
-                is still open.
+                What the review tracked, and the one item still open:
               </p>
 
               <ActionItems />
             </ReportSection>
 
             <ReportSection
-              eyebrow="// 200 OK · resolved, monitoring"
+              marker="resolution"
+              eyebrow="// 200 OK · monitoring"
               title="Where it stands"
             >
               <p className="text-muted-foreground leading-relaxed">
-                It&apos;s an unglamorous piece of infrastructure and that&apos;s
-                roughly the recommendation. Built before the sprawl rather than
-                after it, which is the only reason adding an AI feature here is
-                now a config change instead of a procurement conversation. The
-                version of this page I&apos;d have had to write two years later
-                is the interesting one, and I&apos;d rather not find out what it
-                says.
+                It&apos;s dull infrastructure, which is the recommendation. I
+                built it while there were two consumers rather than twelve, so
+                adding an AI feature is now a config change. Doing it later
+                would have meant unpicking a dozen scattered provider keys
+                first.
               </p>
             </ReportSection>
           </div>

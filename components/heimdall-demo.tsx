@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 /* -------------------------------------------------------------------------- */
 /*  Mock data — deliberately static (no Date.now / Math.random at render) so   */
-/*  server and client first paint match. The "live" feel comes from a client   */
-/*  interval that only runs after mount.                                        */
+/*  server and client first paint match. Nothing here ticks or animates a      */
+/*  clock: this is a frozen snapshot, and it says so, rather than dressing     */
+/*  mock data up as a live feed.                                               */
 /* -------------------------------------------------------------------------- */
 
 const ENVS = ["dev", "qa", "preprod", "prod"] as const;
@@ -190,25 +191,21 @@ function fmtAge(min: number): string {
 
 function Metric({ label, value, sub }: { label: string; value: string; sub: string }) {
   return (
-    <div className="rounded-lg border border-border bg-black/40 px-4 py-3">
+    <div className="rounded-lg border border-dashed border-border bg-black/40 px-4 py-3">
       <div className="text-[10px] uppercase tracking-wider text-muted-foreground">{label}</div>
-      <div className="mt-1 font-mono text-xl font-bold text-foreground">{value}</div>
+      <div className="mt-1 font-mono text-xl font-bold text-muted-foreground">{value}</div>
       <div className="text-[11px] text-muted-foreground/80">{sub}</div>
     </div>
   );
 }
 
 export function HeimdallDemo() {
-  const [activeTicket, setActiveTicket] = useState<string | null>(null);
+  // Opens on a ticket rather than an empty grid: PLAT-2033 reached QA and
+  // stopped there, so one glance shows a ticket, the environments it reached,
+  // how each was attributed, and why it went no further.
+  const [activeTicket, setActiveTicket] = useState<string | null>("PLAT-2033");
   const [selectedCell, setSelectedCell] = useState<{ service: string; env: Env } | null>(null);
   const [driftOnly, setDriftOnly] = useState(false);
-  const [elapsed, setElapsed] = useState(0); // seconds since last collection (client-only)
-
-  // "Live" collection cycle — runs every 10 min in the real thing; sped-up cosmetic ticker here.
-  useEffect(() => {
-    const t = setInterval(() => setElapsed((e) => (e + 1) % 600), 1000);
-    return () => clearInterval(t);
-  }, []);
 
   const ticket = useMemo(() => TICKETS.find((t) => t.id === activeTicket) ?? null, [activeTicket]);
 
@@ -229,10 +226,6 @@ export function HeimdallDemo() {
     ? SERVICES.find((s) => s.name === selectedCell.service)?.cells[selectedCell.env] ?? null
     : null;
 
-  const nextSync = 600 - elapsed;
-  const mm = Math.floor(nextSync / 60);
-  const ss = String(nextSync % 60).padStart(2, "0");
-
   return (
     <div className="rounded-xl border border-border bg-card/60 backdrop-blur-sm overflow-hidden">
       {/* window chrome */}
@@ -244,11 +237,8 @@ export function HeimdallDemo() {
         </div>
         <span className="font-mono text-xs text-muted-foreground">heimdall · environments</span>
         <div className="ml-auto flex items-center gap-2 font-mono text-[11px] text-muted-foreground">
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
-          </span>
-          live · next sync {mm}:{ss}
+          <span className="h-2 w-2 rounded-full bg-muted-foreground/50" aria-hidden />
+          frozen snapshot
         </div>
       </div>
 
@@ -263,12 +253,24 @@ export function HeimdallDemo() {
           </span>
         </div>
 
-        {/* DORA tiles */}
-        <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
-          <Metric label="Deploy frequency" value="5.2/day" sub="last 30 days" />
-          <Metric label="Lead time" value="1d 6h" sub="merge → prod, median" />
-          <Metric label="Change failure" value="11%" sub="rollbacks / deploys" />
-          <Metric label="MTTR" value="34m" sub="median recovery" />
+        {/* DORA tiles. Shapes of the real thing, made-up figures — labelled on
+            the row itself so nobody quotes them back as measurements. */}
+        <div className="mb-6">
+          <div className="mb-2 flex flex-wrap items-center gap-2">
+            <span className="font-mono text-xs text-muted-foreground">DORA summary</span>
+            <span className="rounded bg-warn/15 px-1.5 py-0.5 font-mono text-[10px] font-semibold text-warn">
+              illustrative figures
+            </span>
+            <span className="font-mono text-[11px] text-muted-foreground/70">
+              made up for this demo, not measurements
+            </span>
+          </div>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <Metric label="Deploy frequency" value="5.2/day" sub="last 30 days" />
+            <Metric label="Lead time" value="1d 6h" sub="merge → prod, median" />
+            <Metric label="Change failure" value="11%" sub="rollbacks / deploys" />
+            <Metric label="MTTR" value="34m" sub="median recovery" />
+          </div>
         </div>
 
         {/* "where is my ticket" search */}
@@ -476,8 +478,8 @@ export function HeimdallDemo() {
                 <p className="font-mono text-xs leading-relaxed text-muted-foreground">
                   Cluster metrics aren&apos;t reachable for this environment, so Heimdall shows{" "}
                   <span className="text-foreground">no data</span> rather than assuming a healthy
-                  state. Honest beats green. A grey cell is a prompt to go and look, not a
-                  silent false-positive.
+                  state. A grey cell is a prompt to go and look, not a silent
+                  false-positive.
                 </p>
               ) : (
               <div className="grid grid-cols-2 gap-x-6 gap-y-1.5 font-mono text-xs text-muted-foreground sm:grid-cols-4">

@@ -58,9 +58,7 @@ export function IncidentHeader() {
           {/* Document class */}
           <p className="font-mono text-sm text-primary mb-3">
             incident review{" "}
-            <span className="text-muted-foreground">
-              · filed before the incident
-            </span>
+            <span className="text-muted-foreground">· ai-gateway</span>
           </p>
 
           {/* Title */}
@@ -88,11 +86,15 @@ export function IncidentHeader() {
               </span>
             </ReportField>
             <ReportField label="date">2026</ReportField>
+            <ReportField label="filed by">
+              Jack Devlin, platform engineer · Loweconex, a UK IoT platform
+              business
+            </ReportField>
             <ReportField label="scope">
               every AI workload, one endpoint
             </ReportField>
             <ReportField label="impact">
-              none — caught at the third key
+              none — built while there were two consumers, not twelve
             </ReportField>
             <ReportField label="summary">
               A self-hosted LLM gateway in front of every AI workload. Services
@@ -109,12 +111,14 @@ export function IncidentHeader() {
 /* --------------------------------------------------------------------------
  * Body sections — findings on the trace rail. The span dot and rail stay
  * from the trace anatomy; the marker line numbers each section the way a
- * postmortem numbers its findings. Sections without a number (action items,
- * the closing status) keep the rail and carry their label in primary.
+ * postmortem numbers its findings. Every section carries a marker: findings
+ * are numbered, and the closing status names itself instead ("resolution"),
+ * so the rail never runs unlabelled.
  * ----------------------------------------------------------------------- */
 
 export function ReportSection({
   finding,
+  marker,
   eyebrow,
   title,
   children,
@@ -122,12 +126,15 @@ export function ReportSection({
 }: {
   /** postmortem finding number; omit for non-finding sections */
   finding?: number;
+  /** marker text for a section that isn't a numbered finding, e.g. "resolution" */
+  marker?: string;
   eyebrow?: string;
   title?: string;
   children: ReactNode;
   className?: string;
 }) {
   const label = eyebrow?.replace(/^\/\/\s*/, "");
+  const markerText = finding !== undefined ? `finding ${finding}` : marker;
   return (
     <section className={`mb-14 relative pl-8 ${className}`}>
       <span
@@ -138,14 +145,14 @@ export function ReportSection({
         className="absolute left-0 top-1.5 w-[11px] h-[11px] rounded-full border-2 border-primary bg-background glow-border"
         aria-hidden
       />
-      {(finding !== undefined || label) && (
+      {(markerText || label) && (
         <p className="mb-3 font-mono text-xs tracking-wider">
-          {finding !== undefined && (
+          {markerText && (
             <span className="text-primary font-semibold uppercase">
-              finding {finding}
+              {markerText}
             </span>
           )}
-          {finding !== undefined && label && (
+          {markerText && label && (
             <span className="mx-2 text-muted-foreground/50" aria-hidden>
               ·
             </span>
@@ -153,7 +160,7 @@ export function ReportSection({
           {label && (
             <span
               className={
-                finding !== undefined ? "text-muted-foreground" : "text-primary"
+                markerText ? "text-muted-foreground" : "text-primary"
               }
             >
               {label}
@@ -194,13 +201,6 @@ const WORK = [
   "Credential and access boundaries",
   "GitOps-managed shared services",
   "Writing the runbook people actually need",
-];
-
-const FACTS: { label: string; value: string }[] = [
-  { label: "consumers", value: "Every AI workload in the estate" },
-  { label: "access model", value: "Virtual key + allowlist" },
-  { label: "attribution", value: "Tenant, environment, feature" },
-  { label: "model upgrades", value: "Config, not code" },
 ];
 
 const LINKED_REVIEWS = [
@@ -255,21 +255,7 @@ export function IncidentAppendices() {
       </section>
 
       <section className="py-5 border-b border-border/60">
-        <AppendixLabel index="C" label="facts on file" />
-        <dl className="space-y-3 text-sm">
-          {FACTS.map((fact) => (
-            <div key={fact.label} className="grid grid-cols-[7rem_1fr] gap-1">
-              <dt className="font-mono text-xs text-primary/90 pt-0.5">
-                {fact.label}
-              </dt>
-              <dd className="text-muted-foreground">{fact.value}</dd>
-            </div>
-          ))}
-        </dl>
-      </section>
-
-      <section className="py-5 border-b border-border/60">
-        <AppendixLabel index="D" label="linked reviews" />
+        <AppendixLabel index="C" label="linked reviews" />
         <div className="space-y-3">
           {LINKED_REVIEWS.map((review) => (
             <Link
@@ -288,8 +274,9 @@ export function IncidentAppendices() {
 }
 
 /* --------------------------------------------------------------------------
- * Sign-off — the review closed out, with the one item still open on record.
- * Same field-table register as the front matter.
+ * Sign-off. Deliberately just the rule and a paragraph: status and the open
+ * item are already on record above, and repeating them here made the page
+ * end four times.
  * ----------------------------------------------------------------------- */
 
 export function IncidentSignoff() {
@@ -305,25 +292,9 @@ export function IncidentSignoff() {
             <span className="text-muted-foreground">· ai-gateway · sign-off</span>
           </div>
 
-          <dl>
-            <ReportField label="reviewed by" muted>
-              Jack Devlin
-            </ReportField>
-            <ReportField label="status" muted>
-              resolved · monitoring
-            </ReportField>
-            <ReportField label="follow-up" muted>
-              Dashboard price constants still need checking against what the
-              provider actually charges.{" "}
-              <span className="ml-1 font-mono text-[10px] uppercase tracking-wider border rounded px-2 py-0.5 text-warn border-warn/50 bg-warn/10 align-middle whitespace-nowrap">
-                open
-              </span>
-            </ReportField>
-          </dl>
-
           <p className="text-sm text-muted-foreground leading-relaxed pt-5">
-            One action item is still open, and the pricing bug has a longer
-            version. Happy to talk through either —{" "}
+            The pricing bug has a longer version than fits here, and so does
+            the runbook. Happy to talk through either,{" "}
             <Link
               href="/contact"
               className="text-primary hover:underline underline-offset-4"

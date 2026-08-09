@@ -76,7 +76,7 @@ const STAGES: Stage[] = [
     detail: (_c, m) =>
       MODEL_LIST.includes(m)
         ? `${m} found in model_list`
-        : `${m} is not in model_list at all`,
+        : `${m} is not deployed: no model_list entry`,
   },
   {
     key: "allow",
@@ -103,7 +103,11 @@ const STAGES: Stage[] = [
 
 function outcomeFor(c: Consumer, m: string) {
   if (!MODEL_LIST.includes(m))
-    return { failAt: 1, code: 401, why: "unknown model. Nothing in the gateway config answers to that name." };
+    return {
+      failAt: 1,
+      code: 401,
+      why: "that model isn't deployed. Nothing in the gateway config answers to that name.",
+    };
   if (!c.allow.includes(m))
     return {
       failAt: 2,
@@ -117,7 +121,9 @@ function outcomeFor(c: Consumer, m: string) {
 }
 
 export function GatewayTracer() {
-  const [consumer, setConsumer] = useState<Consumer>(CONSUMERS[0]);
+  // opens on `new-service`: a key with an empty allowlist, which is the trap
+  // the whole exhibit exists to show
+  const [consumer, setConsumer] = useState<Consumer>(CONSUMERS[3]);
   const [model, setModel] = useState<string>(MODELS[0]);
   const [step, setStep] = useState<number>(-1);
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
@@ -208,7 +214,7 @@ export function GatewayTracer() {
         </div>
 
         {consumer.note && (
-          <p className="mt-3 font-mono text-[11px] text-amber-500">
+          <p className="mt-3 font-mono text-xs text-warn">
             {consumer.note}
           </p>
         )}
@@ -225,7 +231,7 @@ export function GatewayTracer() {
               st === "pass"
                 ? "text-primary"
                 : st === "fail"
-                  ? "text-amber-500"
+                  ? "text-error"
                   : "text-muted-foreground/60";
             return (
               <motion.div
@@ -267,13 +273,13 @@ export function GatewayTracer() {
               className={`mt-4 rounded-md border p-3 ${
                 outcome.code === 200
                   ? "border-primary/40 bg-primary/5"
-                  : "border-amber-500/40 bg-amber-500/5"
+                  : "border-error/50 bg-error/5"
               }`}
             >
               <div className="font-mono text-xs font-semibold mb-1">
                 <span
                   className={
-                    outcome.code === 200 ? "text-primary" : "text-amber-500"
+                    outcome.code === 200 ? "text-primary" : "text-error"
                   }
                 >
                   HTTP {outcome.code}

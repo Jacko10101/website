@@ -75,7 +75,7 @@ WHERE status = 'production'
 ORDER BY year DESC`,
   },
   {
-    ask: "Which tools has he used on more than one project?",
+    ask: "Which tools have you used on more than one project?",
     sql: `SELECT name AS tool, COUNT(*) AS projects
 FROM tech
 GROUP BY name
@@ -83,7 +83,7 @@ HAVING COUNT(*) > 1
 ORDER BY projects DESC, tool ASC`,
   },
   {
-    ask: "What has he actually built on Kubernetes?",
+    ask: "What have you actually built on Kubernetes?",
     sql: `SELECT p.name, p.subtitle, p.year
 FROM project p
 JOIN tech t ON t.project_id = p.id
@@ -91,7 +91,7 @@ WHERE t.name = 'Kubernetes'
 ORDER BY p.year DESC`,
   },
   {
-    ask: "Show me every number he claims, and which project it belongs to.",
+    ask: "Show me every number you claim, and which project it belongs to.",
     sql: `SELECT p.name AS project, s.value, s.label
 FROM stat s
 JOIN project p ON p.id = s.project_id
@@ -106,7 +106,7 @@ WHERE t.name IN ('Gemini', 'LiteLLM', 'Spring AI', 'PyTorch')
 ORDER BY p.name`,
   },
   {
-    ask: "What was he shipping each year?",
+    ask: "What were you shipping each year?",
     sql: `SELECT year, COUNT(*) AS projects
 FROM project
 GROUP BY year
