@@ -35,4 +35,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-CLAUDE.mdphoto-original.jpeg
+CLAUDE.md
+photo-original.jpeg
