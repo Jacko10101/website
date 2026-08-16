@@ -22,6 +22,18 @@ export interface Project {
   context: string | null;
   description: string;
   /**
+   * The skim line: what changed because this exists, readable in isolation.
+   * Not a description of the system. Leads the homepage tile and the index
+   * row; `description` stays the fuller account. Optional only because the
+   * dissertation has no outcome to claim yet.
+   */
+  outcome?: string;
+  /**
+   * The one case study a first-time reader should open. Rendered as a chip
+   * on the homepage tile and the index row. Set on exactly one project.
+   */
+  startHere?: boolean;
+  /**
    * Optional index-only copy override. The projects index renders this
    * instead of `description` when set; every other consumer keeps
    * reading `description`.
@@ -55,6 +67,11 @@ export const projects: Project[] = [
     subtitle: "Natural-language database interface",
     description:
       "Ask the estate a question in English, get an answer backed by SQL that actually ran. Around thirty tenant databases, about twenty people using it daily. There's no vector store anywhere; compiled schema knowledge does the grounding, and five classes of hallucination get caught on every turn.",
+    outcome:
+      "Customers who wanted a number out of their estate used to raise a ticket and wait for an analyst. Now they ask directly — about twenty people a day, across roughly thirty tenants.",
+    indexDescription:
+      "Ask the estate a question in English, get an answer backed by SQL that actually ran. There's no vector store anywhere; compiled schema knowledge does the grounding, and five classes of hallucination get caught on every turn.",
+    startHere: true,
     docType: "Claims + receipts",
     docCta: "check the receipts",
     status: "production",
@@ -81,6 +98,10 @@ export const projects: Project[] = [
     subtitle: "One endpoint for every model",
     description:
       "A self-hosted LLM gateway in front of every AI workload. Services hold virtual keys with allowlists that fail closed, so I can tell you what any tenant or feature spent, and nothing reaches a model I didn't approve.",
+    outcome:
+      "Adding an AI feature stopped meaning a new provider key and a billing conversation. It's a config change now, and spend traces to the tenant and feature that caused it.",
+    indexDescription:
+      "A self-hosted LLM gateway in front of every AI workload. Services hold virtual keys with model allowlists that fail closed, so nothing reaches a model I didn't approve.",
     docType: "Postmortem",
     docCta: "read the postmortem",
     status: "production",
@@ -107,6 +128,8 @@ export const projects: Project[] = [
     subtitle: "Where every ticket and service actually is",
     description:
       "The dashboard the platform team checks every morning. Answers one question: where is my ticket right now? Used daily by 20+ engineers across 20 services.",
+    outcome:
+      "The team stopped pasting kubectl output into Teams to ask whether a deploy had worked. Standup got shorter, and release management reads the same screen as the engineers.",
     docType: "Day log",
     docCta: "read the day log",
     status: "production",
@@ -133,6 +156,8 @@ export const projects: Project[] = [
     subtitle: "Shared CI/CD library",
     description:
       "One Bitbucket pipeline library, imported by every Java and Node service. Tests live in their own repo, promotion belongs to ArgoCD. ~400 deploys/month across 20 services on a single .ci/builds.yaml.",
+    outcome:
+      "A change to the build pattern used to mean a PR to twenty repos, so it didn't get made. It now ships once, and every service adopts it by bumping a tag.",
     docType: "PR · Merged",
     docCta: "review the PR",
     status: "production",
@@ -159,6 +184,10 @@ export const projects: Project[] = [
     subtitle: "Self-hosted monitoring",
     description:
       "Prometheus, Grafana and Loki for 20 services across four environments. Built in-house because the commercial quotes came in near £100k a year against roughly £5k to run it ourselves, and we already had the cluster capacity going spare.",
+    outcome:
+      "Monitoring quoted near £100k a year runs in-house for about £5k, and two years on an incident starts with someone pasting a Grafana link.",
+    indexDescription:
+      "Prometheus, Grafana and Loki for 20 services across four environments, run on cluster capacity we already had going spare. Cold data ages out to object storage, which is why the bill stayed flat while the data grew.",
     docType: "ADR-001",
     docCta: "read the ADR",
     status: "production",
@@ -185,6 +214,10 @@ export const projects: Project[] = [
     subtitle: "Self-hosted home automation",
     description:
       "A single-node K3s cluster on a Raspberry Pi 5, reconciled by ArgoCD and watched by Prometheus. Twenty-plus lights, plugs and sensors, and not one port open to the internet. It's the discipline I use at work, sized to a flat.",
+    outcome:
+      "If the internet goes down, the lights still work — and nothing in the flat is reachable from outside the VPN.",
+    indexDescription:
+      "A single-node K3s cluster on a Raspberry Pi 5, reconciled by ArgoCD and watched by Prometheus. Twenty-plus lights, plugs and sensors on a Zigbee mesh that never talks to a vendor cloud. It's the discipline I use at work, sized to a flat.",
     docType: "Spec sheet",
     docCta: "read the spec sheet",
     status: "homelab",

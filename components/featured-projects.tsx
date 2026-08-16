@@ -23,10 +23,19 @@ function ProjectTile({ project }: { project: Project }) {
         className="group flex flex-col h-full rounded-lg border border-border bg-card/60 hover:border-primary/60 hover:-translate-y-1 hover:shadow-[0_12px_48px_oklch(0.72_0.19_150_/_0.12)] transition-all duration-300 overflow-hidden"
       >
         {/* Document stamp — each case study is a different genre */}
-        {project.docType && (
-          <span className="mx-6 mt-5 self-start font-mono text-[10px] uppercase tracking-[0.2em] px-2 py-0.5 rounded border border-primary/50 bg-primary/10 text-primary">
-            {project.docType}
-          </span>
+        {(project.docType || project.startHere) && (
+          <div className="mx-6 mt-5 flex flex-wrap items-center gap-2">
+            {project.docType && (
+              <span className="font-mono text-[10px] uppercase tracking-[0.2em] px-2 py-0.5 rounded border border-primary/50 bg-primary/10 text-primary">
+                {project.docType}
+              </span>
+            )}
+            {project.startHere && (
+              <span className="font-mono text-[10px] uppercase tracking-[0.2em] px-2 py-0.5 rounded border border-warn/50 bg-warn/10 text-warn">
+                start here
+              </span>
+            )}
+          </div>
         )}
 
         {/* Tile header, reads like a dashboard row */}
@@ -50,8 +59,10 @@ function ProjectTile({ project }: { project: Project }) {
           </p>
         )}
 
-        <p className="px-6 mt-4 text-sm text-muted-foreground leading-relaxed flex-1">
-          {project.description}
+        {/* The skim line: what changed because this exists. The fuller
+            description stays on /projects; a homepage tile gets one job. */}
+        <p className="px-6 mt-4 text-sm text-foreground/85 leading-relaxed flex-1">
+          {project.outcome ?? project.description}
         </p>
 
         {/* Stats row */}

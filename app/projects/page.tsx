@@ -41,7 +41,14 @@ function ProjectRow({ project }: { project: Project }) {
     <>
       {/* Document stamp row: genre badge leads, status pill defers */}
       <div className="flex flex-wrap items-center justify-between gap-3 px-6 md:px-8 pt-6">
-        <DocTypeBadge project={project} />
+        <span className="flex flex-wrap items-center gap-2">
+          <DocTypeBadge project={project} />
+          {project.startHere && (
+            <span className="font-mono text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded-sm border border-warn/50 bg-warn/10 text-warn whitespace-nowrap">
+              start here
+            </span>
+          )}
+        </span>
         <StatusPill project={project} />
       </div>
 
@@ -70,6 +77,12 @@ function ProjectRow({ project }: { project: Project }) {
       {/* Body, copy and stats on the left, terminal pane on the right */}
       <div className="grid lg:grid-cols-[1fr_minmax(0,360px)] gap-6 lg:gap-10 px-6 md:px-8 mt-5">
         <div className="flex flex-col">
+          {/* Outcome first, then what it is. */}
+          {project.outcome && (
+            <p className="text-sm text-foreground/85 leading-relaxed mb-3">
+              {project.outcome}
+            </p>
+          )}
           <p className="text-sm text-muted-foreground leading-relaxed">
             {project.indexDescription ?? project.description}
           </p>
