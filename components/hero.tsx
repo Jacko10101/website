@@ -4,7 +4,6 @@ import Link from "next/link";
 import { motion, type Variants } from "framer-motion";
 import { AsciiField } from "@/components/ascii-field";
 import { DecodeText } from "@/components/decode-text";
-import { CareerQuery } from "@/components/career-query";
 import { proofPoints } from "@/lib/projects";
 import { profile } from "@/lib/profile";
 
@@ -18,9 +17,10 @@ const rise: Variants = {
 };
 
 /**
- * The hero leads with the site's most differentiated artefact: a real SQLite
- * database about the work, queryable in the visitor's browser. Identity on the
- * left, evidence on the right.
+ * The hero has one focal point: who Jack is, at what level, and what he's
+ * looking for. The career-query artefact used to share the top with it; a
+ * forty-second reader had nowhere to land, so the playground now lives in its
+ * own section below the ticker and the hero is identity alone.
  *
  * Who Jack is renders immediately — the name, the role line and the actions
  * are never hidden behind an animation, because they are the whole point of
@@ -28,12 +28,12 @@ const rise: Variants = {
  */
 export function Hero() {
   return (
-    <section className="relative min-h-[92vh] flex flex-col justify-center overflow-hidden pt-28 pb-16">
+    <section className="relative min-h-[88vh] flex flex-col justify-center overflow-hidden pt-28 pb-16">
       <div className="absolute inset-0 phosphor-ambient pointer-events-none" aria-hidden />
       <AsciiField className="[mask-image:radial-gradient(ellipse_75%_90%_at_72%_30%,black_0%,transparent_72%)] opacity-80" />
 
       <div className="container relative z-10">
-        <div className="grid lg:grid-cols-[1fr_1.05fr] gap-12 lg:gap-16 items-start">
+        <div className="max-w-3xl">
           {/* Identity. Renders instantly; see the note above. */}
           <div>
             <p className="font-mono text-sm text-primary mb-5">
@@ -94,27 +94,26 @@ export function Hero() {
               </a>
             </div>
 
-            <motion.p
+            {/* The four facts a recruiter needs before anything else:
+                when, what kind of role, where, and the work-rights position. */}
+            <motion.div
               initial="hidden"
               animate="visible"
               variants={rise}
-              className="inline-flex items-start gap-2 font-mono text-sm text-muted-foreground max-w-xl"
+              className="font-mono text-sm max-w-xl space-y-1.5"
             >
-              <span className="w-2 h-2 mt-1.5 rounded-full bg-primary shrink-0" aria-hidden />
-              {profile.availability.status}
-            </motion.p>
-          </div>
-
-          {/* The artefact: ask the site a question, get the SQL back. */}
-          <div>
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-primary mb-2">
-              Don&apos;t take my word for any of it
-            </p>
-            <p className="text-sm text-muted-foreground mb-4 max-w-xl">
-              This is a real SQLite database of my work, running in your tab.
-              Pick a question, read the SQL, then edit it and run your own.
-            </p>
-            <CareerQuery />
+              <p className="flex items-start gap-2 text-foreground/90">
+                <span className="w-2 h-2 mt-1.5 rounded-full bg-primary shrink-0" aria-hidden />
+                {profile.availability.status}
+              </p>
+              <p className="pl-4 text-muted-foreground">{profile.lookingFor.roles}</p>
+              <p className="pl-4 text-muted-foreground">
+                {profile.lookingFor.locations}
+              </p>
+              <p className="pl-4 text-muted-foreground">
+                {profile.lookingFor.workRights}
+              </p>
+            </motion.div>
           </div>
         </div>
 

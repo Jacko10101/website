@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { QUESTIONS, SCHEMA_SUMMARY, TABLES } from "@/lib/career-db";
 import { validate } from "@/lib/sql-guard";
@@ -65,6 +66,47 @@ function getDb(): Promise<SqlDb> {
 // about to scroll into, so the site's best artefact led on a worse version of
 // the next section.
 const OPENING = 3;
+
+/**
+ * The playground's home on the page. It used to share the hero with the
+ * identity column and the two focal points fought each other, so it now sits
+ * just below the ticker behind its own invitation: still above the case
+ * studies for anyone curious, no longer competing with the first three
+ * seconds.
+ */
+export function CareerQuerySection() {
+  return (
+    <section className="relative py-20 md:py-24">
+      <div className="container">
+        <div className="grid lg:grid-cols-[1fr_1.2fr] gap-10 lg:gap-16 items-start">
+          <div className="lg:sticky lg:top-28">
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-primary mb-3">
+              Don&apos;t take my word for any of it
+            </p>
+            <h2 className="font-mono font-semibold tracking-tight text-2xl sm:text-3xl text-foreground mb-4">
+              Ask the database instead
+            </h2>
+            <p className="text-muted-foreground leading-relaxed mb-4 max-w-xl">
+              This is a real SQLite database of my work, running in your tab.
+              Pick a question, read the SQL that answers it, then edit it and
+              run your own. Nothing leaves the browser.
+            </p>
+            <p className="text-sm text-muted-foreground leading-relaxed max-w-xl">
+              Short on time?{" "}
+              <Link
+                href="/projects/clarity"
+                className="text-primary hover:underline underline-offset-4"
+              >
+                Clarity is the case study to start with →
+              </Link>
+            </p>
+          </div>
+          <CareerQuery />
+        </div>
+      </div>
+    </section>
+  );
+}
 
 export function CareerQuery() {
   const [asked, setAsked] = useState(QUESTIONS[OPENING].ask);
