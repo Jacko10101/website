@@ -43,7 +43,7 @@ const SOURCES: {
     system: "ArgoCD",
     reads: "Sync status and the revision each environment is meant to be running.",
     caveat:
-      "Not its health verdict. ArgoCD will report a service healthy while its new pods crashloop behind it. That's precisely when you need the truth, so Heimdall doesn't take its word for it.",
+      "Not its health verdict. ArgoCD will report a service healthy while its new pods crashloop behind it, so Heimdall checks the pods directly instead.",
   },
   {
     system: "Kubernetes",
@@ -182,16 +182,12 @@ export default function HeimdallPage() {
                   repo, which holds the desired state: the commit each environment is
                   supposed to be on, which isn&apos;t always the one it&apos;s on.
                 </p>
-                <p className="text-muted-foreground leading-relaxed mb-4">
+                <p className="text-muted-foreground leading-relaxed">
                   Heimdall started as a small Python service that pushed the four DORA
                   metrics (deploy frequency, lead time, change failure rate, time to
                   restore) into Prometheus. The original collector was correct and
-                  nobody ever opened it. Same data, no front door. Building the UI is
-                  what turned it into something people use.
-                </p>
-                <p className="text-muted-foreground leading-relaxed">
-                  More than 20 engineers now open it every day, and the morning
-                  stand-up runs off it.
+                  nobody ever opened it. Building the UI is what turned it into
+                  something more than 20 engineers now use every day.
                 </p>
               </LogEntry>
 
@@ -201,8 +197,7 @@ export default function HeimdallPage() {
                 title="A short tour"
               >
                 <p className="text-muted-foreground mb-6">
-                  Six pages, each answering a question someone&apos;s about to ask in
-                  Teams. These three do most of the work.
+                  Six pages; these three do most of the work.
                 </p>
 
                 <div className="space-y-6">
@@ -295,12 +290,10 @@ export default function HeimdallPage() {
 
                 <p className="text-muted-foreground mt-6 leading-relaxed">
                   Reading five systems means five things that can be down, so
-                  Heimdall has to be diagnosable by someone who has never seen its
-                  code. The README opens with &quot;is it healthy?&quot; and
-                  answers it in one curl: collection age, pool usage, every
-                  circuit breaker. That&apos;s the bar I try to hit when I hand
-                  something over. If the on-call engineer has to ring me, I
-                  haven&apos;t finished it.
+                  Heimdall has to be diagnosable by someone who has never seen
+                  its code. The README opens with &quot;is it healthy?&quot;
+                  and answers it in one curl: collection age, pool usage, every
+                  circuit breaker.
                 </p>
               </LogEntry>
 

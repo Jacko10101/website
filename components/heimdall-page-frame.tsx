@@ -150,11 +150,10 @@ export function DayLogHeader() {
                 2025 → ongoing
               </p>
               <p className="text-xl text-muted-foreground leading-relaxed">
-                Before standup, before email, the platform team opens the same page.
-                It answers one question across 20 services and four environments:
-                where is my ticket right now? More than 20 engineers ask it every
-                morning. Below: the tool itself, how it&apos;s wired, and the one
-                source it refuses to believe.
+                Before standup, before email, the platform team opens the same
+                page. It answers one question across 20 services and four
+                environments: where is my ticket right now? More than 20
+                engineers use it every morning, and standup runs off it.
               </p>
             </div>
           </div>
@@ -287,9 +286,9 @@ export function DayLogClose() {
   return (
     <LogEntry time="18:05" label="clocking off" pos="last">
       <p className="text-muted-foreground leading-relaxed">
-        Last entry. The lesson I took from Heimdall is that an internal tool
-        competes with sending a message to a colleague. It has to answer the
-        question faster than asking a human would, or nobody opens it twice.
+        The lesson I took from Heimdall: an internal tool competes with
+        sending a message to a colleague. It has to answer the question faster
+        than asking a human would, or nobody opens it twice.
       </p>
       <p className="mt-6 text-sm text-muted-foreground">
         If you want to dig into the parts I didn&apos;t write up,{" "}

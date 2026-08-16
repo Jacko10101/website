@@ -235,7 +235,7 @@ export default function AIGatewayPage() {
             <ReportSection
               finding={2}
               eyebrow="// request · auth + allowlist"
-              title="Virtual keys, and a model list you can't talk your way past"
+              title="Virtual keys, with explicit model allowlists"
             >
               <p className="text-muted-foreground leading-relaxed mb-4">
                 Services don&apos;t hold provider credentials any more. They
@@ -265,10 +265,10 @@ curl -H "Authorization: Bearer $VIRTUAL_KEY" "$GATEWAY/v1/models"`}
               />
 
               <p className="text-muted-foreground mt-6 leading-relaxed">
-                Those two halves being separate is the sharp edge, and
-                it&apos;s caught me more than once. A model can be fully deployed
-                and still 401 for everybody, because existing and being permitted
-                are different facts. It&apos;s written down now.
+                Those two halves being separate is the sharp edge, and it has
+                caught me more than once: a model can be fully deployed and
+                still 401 for everybody, because being deployed and being
+                permitted are separate facts. It&apos;s in the runbook now.
               </p>
             </ReportSection>
 
@@ -312,7 +312,7 @@ curl -H "Authorization: Bearer $VIRTUAL_KEY" "$GATEWAY/v1/models"`}
                 </div>
                 <dl>
                   <PostmortemField label="symptom">
-                    Spend read about fourfold high. For weeks.
+                    Spend read about fourfold high, for weeks.
                   </PostmortemField>
                   <PostmortemField label="cause">
                     The cost dashboard multiplies tokens by per-million prices
@@ -360,11 +360,10 @@ curl -H "Authorization: Bearer $VIRTUAL_KEY" "$GATEWAY/v1/models"`}
               title="Where it stands"
             >
               <p className="text-muted-foreground leading-relaxed">
-                It&apos;s dull infrastructure, which is the recommendation. I
+                It&apos;s dull infrastructure now, which is what I wanted. I
                 built it while there were two consumers rather than twelve, so
-                adding an AI feature is now a config change. Doing it later
-                would have meant unpicking a dozen scattered provider keys
-                first.
+                adding an AI feature is a config change. Doing it later would
+                have meant unpicking a dozen scattered provider keys first.
               </p>
             </ReportSection>
           </div>
