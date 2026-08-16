@@ -80,7 +80,10 @@ function AboutHero() {
               {/* The photo stays natural — the CRT duotone suited the old
                   placeholder avatar but read as a green filter on a real
                   face (Jack's call, 16 Aug 2026). The frame does the tying-in. */}
-              <div className="relative w-64 h-64 md:w-72 md:h-72 rounded-md border border-border overflow-hidden glow-border">
+              {/* 4:5 rather than square — the source portrait's face fills
+                  ~83% of the widest square crop, so a square frame is always
+                  tight at the chin or the hair. */}
+              <div className="relative w-64 aspect-[4/5] md:w-72 rounded-md border border-border overflow-hidden glow-border">
                 <Image
                   src="/jack-photo.jpg"
                   alt="Jack Devlin"
