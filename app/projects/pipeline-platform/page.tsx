@@ -234,10 +234,9 @@ export default function CicdGitopsPage() {
               <p className="text-muted-foreground leading-relaxed mb-4">
                 Each of those twenty shipped its own
                 bitbucket-pipelines.yml, around five hundred lines apiece. Same
-                rough shape every time: build, test, scan, push, deploy, but no
-                two of them the same. A change to the build pattern meant a PR
-                to twenty repos, and in practice that meant it didn&apos;t get
-                made.
+                rough shape every time — build, test, scan, push, deploy — but
+                no two of them the same, so a change to the build pattern meant
+                a PR to twenty repos.
               </p>
               <p className="text-muted-foreground leading-relaxed mb-4">
                 A 1,071-line bash pipeline reporter lived in the base image and

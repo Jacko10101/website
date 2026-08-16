@@ -257,8 +257,8 @@ export default function ObservabilityPage() {
               Grafana for everyone to actually look at.
             </P>
             <P>
-              Standard pieces. The interesting bit was wiring them so people
-              could find what they needed while something was breaking.
+              The pieces are standard; the work was wiring them so people can
+              find what they need while something is breaking.
             </P>
           </Clause>
 
@@ -289,7 +289,7 @@ export default function ObservabilityPage() {
               maybe five. The rest exist for the once-a-quarter question they
               answer perfectly. Three I&apos;m happy with:
             </P>
-            <Exhibit caption="Exhibit A — three dashboards of the twenty-two, chosen because they earn their keep.">
+            <Exhibit caption="Exhibit A — three of the twenty-two dashboards, the ones with the most traffic.">
               <MetricsShowcase
                 metrics={[
                   {
@@ -309,7 +309,7 @@ export default function ObservabilityPage() {
                   {
                     title: "Node infrastructure",
                     description:
-                      "CPU, memory, disk, network. The boring one that nobody looks at until they need it, then it earns its keep.",
+                      "CPU, memory, disk, network. Nobody looks at it until something is wrong, and then everybody does.",
                     imagePath: "/dashboards/node-exporter.png",
                     category: "Infrastructure",
                   },

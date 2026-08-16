@@ -53,8 +53,8 @@ export function Hero() {
 
             <p className="text-xl sm:text-2xl text-foreground/90 mb-4 leading-snug">
               Platform engineer. I build the infrastructure AI products run on:
-              Kubernetes and CI/CD underneath, an LLM gateway and the guardrails
-              that keep it honest on top.
+              Kubernetes and CI/CD underneath, an LLM gateway and its
+              guardrails on top.
             </p>
 
             <p className="text-base text-muted-foreground mb-8 max-w-xl">

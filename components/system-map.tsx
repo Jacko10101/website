@@ -135,7 +135,7 @@ export function SystemMap() {
           command="cat platform.svg"
           title="What I build"
           index="03"
-          lede="Not a list of logos, the system itself. Select any box. Everything here is something I've run in production or at home, except the one that says otherwise."
+          lede="Select any box. Everything here is something I've run in production or at home, except the one that says otherwise."
         />
 
         <div className="xl:grid xl:grid-cols-[1fr_20rem] xl:gap-8 xl:items-start">
