@@ -15,6 +15,6 @@ export default function Image() {
     eyebrow: "whoami",
     title: "Jack Devlin",
     subtitle:
-      "Platform engineer. Kubernetes, CI/CD and observability underneath; an LLM gateway and guardrails on top. Available now — permanent or contract.",
+      "Platform engineer. Kubernetes, CI/CD and observability underneath; an LLM gateway and guardrails on top. Available from October 2026 — Dublin, London, Amsterdam or remote EU.",
   });
 }

@@ -14,6 +14,7 @@ const items = [
   "one endpoint in front of every model call",
   "homelab: 0 ports exposed to the internet",
   "MSc AI · Distinction · September 2026",
+  "available from October 2026 · Dublin · London · Amsterdam · remote EU",
 ];
 
 /**

@@ -9,6 +9,6 @@ export default function Image() {
     eyebrow: "<about />",
     title: "About Jack Devlin",
     subtitle:
-      "Platform & AI infrastructure engineer. How I work, the systems I've built, and what I'm looking for. Available now.",
+      "Platform & AI infrastructure engineer. How I work, the systems I've built, and what I'm looking for. Available from October 2026.",
   });
 }

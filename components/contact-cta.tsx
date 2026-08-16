@@ -12,7 +12,7 @@ import Link from "next/link";
 export function ContactCTA({
   command = "say-hello",
   title = "Hiring for a platform team?",
-  lede = "I'm most useful to teams putting AI workloads on Kubernetes, or to platforms that need CI/CD and observability sorted properly. I'm open to permanent or contract work, remote-first, and I'll relocate for the right role. I usually reply within a day.",
+  lede = "I'm most useful to teams putting AI workloads on Kubernetes, or to platforms that need CI/CD and observability sorted properly. I'm available from October 2026, permanent or contract, in Dublin, London, Amsterdam or remote-first EU. I usually reply within a day.",
 }: {
   command?: string;
   title?: string;

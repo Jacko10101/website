@@ -393,13 +393,14 @@ function CurrentlySection() {
               Right now
             </h2>
             <p className="font-mono text-sm text-primary mb-6">
-              Shipping Clarity · Finishing the MSc · Available now
+              Shipping Clarity · Finishing the MSc · Available from October 2026
             </p>
             <p className="text-lg text-foreground leading-relaxed mb-5">
-              I&apos;m available now, permanent or contract, remote-first, and
-              happy to relocate for the right role. AI platform and
-              infrastructure work first, with SRE and platform engineering close
-              behind.
+              I&apos;m available from October 2026, permanent or contract, for
+              platform engineering, developer experience, observability or AI
+              infrastructure work. I&apos;m looking at Dublin, London and
+              Amsterdam, or remote-first anywhere in the EU — and as an Irish
+              and British citizen I need no sponsorship for any of them.
             </p>
             <p className="text-muted-foreground leading-relaxed mb-4">
               I&apos;m wrapping up my current contract on the platform team I

@@ -5,7 +5,7 @@ import { profile } from "@/lib/profile";
 export const metadata = {
   title: "Contact",
   description:
-    "Drop Jack Devlin a note. AI platform engineer, available now for permanent or contract work, remote-first.",
+    "Drop Jack Devlin a note. AI platform engineer, available from October 2026 for permanent or contract work in Dublin, London, Amsterdam or remote-first EU.",
 };
 
 export default function ContactPage() {
@@ -19,9 +19,9 @@ export default function ContactPage() {
           How to reach me
         </h1>
         <p className="mb-4 text-lg text-muted-foreground leading-relaxed">
-          The form below or an email, whichever suits. I&apos;m available now,
-          for permanent roles or contracts, and I&apos;ll relocate for the right
-          one. Remote-first either way.
+          The form below or an email, whichever suits. I&apos;m available from
+          October 2026, for permanent roles or contracts, and I&apos;m looking
+          at Dublin, London and Amsterdam, or remote-first anywhere in the EU.
         </p>
         <p className="mb-8 text-lg text-muted-foreground leading-relaxed">
           Best fit: teams putting AI workloads on Kubernetes, or platforms that

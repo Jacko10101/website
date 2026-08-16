@@ -377,7 +377,8 @@ Health Status:      Healthy`;
 ├─ MSc AI${profile.msc.result ? `, ${profile.msc.result}` : ""}, finishing Sep 2026
 └─ ${profile.availability.short}
 
-Location: UK (remote)
+Location: Northern Ireland · open to Dublin, London, Amsterdam or remote (EU)
+Citizenship: Irish + British — no sponsorship needed in the EU or UK
 Shell: bash, with more aliases than is strictly dignified`;
         break;
 

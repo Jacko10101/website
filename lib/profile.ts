@@ -13,15 +13,27 @@ export interface Testimonial {
 export const profile = {
   availability: {
     /** Short badge text — footer photo caption, ticker, OG images. */
-    from: "available now",
+    from: "available from October 2026",
     /** One-liner used in the footer, ticker and CTA. */
-    short: "Available now · permanent or contract · remote-first",
+    short: "Available from October 2026 · permanent or contract",
     /** Fuller status line used in the hero. */
     status:
-      "Available now · UK-based, remote-first, open to relocation · permanent or contract",
+      "Available from October 2026 · permanent or contract",
     /** Sentence form, for prose and meta descriptions. */
     sentence:
-      "Available now, permanent or contract, remote-first, open to relocation.",
+      "Available from October 2026, permanent or contract, in Dublin, London or Amsterdam, or remote-first across the EU and UK.",
+  },
+
+  // What I'm actually looking for, stated so a recruiter doesn't have to
+  // infer it. Rendered as the hero's status block and reused wherever the
+  // question comes up.
+  lookingFor: {
+    roles:
+      "Platform engineering · developer experience · observability · AI infrastructure",
+    locations: "Dublin · London · Amsterdam · remote-first EU",
+    /** The differentiator: no sponsorship question anywhere I'm applying. */
+    workRights:
+      "Irish and British citizen — full right to work in Ireland, the UK and the EU, no sponsorship needed",
   },
 
   msc: {
