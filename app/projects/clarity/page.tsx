@@ -80,12 +80,11 @@ const SHOTS: Record<string, Shot> = {
     height: 856,
     caption: (
       <>
-        A dashboard assembled from a conversation, which is the point at which
-        it stops being a chat toy. The tenant&apos;s name and their trading
-        figures are blacked out — they&apos;re not mine to publish. The note
-        above the widgets is real and worth leaving in: widgets built before
-        dashboard filters existed can&apos;t be reached by them, so the honest
-        fix is to say so in the UI and rebuild from a chat.
+        A dashboard assembled from a conversation. The tenant&apos;s name and
+        their trading figures are blacked out — they&apos;re not mine to
+        publish. The note above the widgets is real: widgets built before
+        dashboard filters existed can&apos;t be reached by them, so the UI
+        says so rather than pretending otherwise.
       </>
     ),
   },
@@ -459,15 +458,14 @@ function LedgerSignOff() {
     <section className="container px-4 py-16">
       <div className="max-w-2xl mx-auto">
         <p className="text-sm text-muted-foreground leading-relaxed">
-          That&apos;s the ledger closed. I&apos;d hold other work to the same
-          standard, so{" "}
+          If you want to talk through any of this,{" "}
           <Link
             href="/contact"
             className="text-primary hover:underline underline-offset-4"
           >
             say hello
-          </Link>{" "}
-          if that sounds useful, or head{" "}
+          </Link>
+          , or head{" "}
           <Link
             href="/projects"
             className="text-primary hover:underline underline-offset-4"
@@ -517,35 +515,32 @@ export default function ClarityPage() {
             >
               <p className="text-muted-foreground leading-relaxed mb-4">
                 Point a decent model at a schema and you&apos;ll have something
-                working before lunch. That part really is easy now.
+                working the same day.
               </p>
               <p className="text-muted-foreground leading-relaxed mb-4">
-                Day two is the problem. It answers from a table that died a year
-                ago. It quotes a number without running a query. It says your
-                export is ready when nothing was ever written. Each of those
-                does more damage than an error, because nobody can tell it
-                happened.
+                The problems start after that. It answers from a table that
+                died a year ago, quotes a number without running a query, or
+                says an export is ready when nothing was written. These are
+                worse than errors, because nobody can tell they happened.
               </p>
               <p className="text-muted-foreground leading-relaxed mb-4">
-                So I stopped reading feature requests and read transcripts
-                instead. They weren&apos;t asking for more features. They
-                didn&apos;t trust the answers.
+                When I read the actual user transcripts, the issue wasn&apos;t
+                missing features. People didn&apos;t trust the answers.
               </p>
               <p className="text-muted-foreground leading-relaxed">
-                Which is why everything below comes with the thing that proves
-                it. Clarity won&apos;t assert a number without showing the query
-                behind it.
+                So the design rule became: Clarity doesn&apos;t assert a number
+                without showing the query behind it.
               </p>
 
               <Evidence of="answerSql" entry="01" />
             </CaseStudySection>
 
-            <CaseStudySection eyebrow="> where's the vector store?" title="No vector store. Anywhere.">
+            <CaseStudySection eyebrow="> where's the vector store?" title="No vector store">
               <p className="text-muted-foreground leading-relaxed mb-4">
-                The default move is embeddings. Chunk the schema, load it into a
-                vector database, retrieve per question. I&apos;d push back on
-                anyone reaching for that first: a schema isn&apos;t an unbounded
-                corpus, it&apos;s a few hundred tables you can simply describe.
+                The default move is embeddings: chunk the schema, load it into
+                a vector database, retrieve per question. I didn&apos;t do
+                that. A schema isn&apos;t an unbounded corpus — it&apos;s a few
+                hundred tables you can describe directly.
               </p>
               <p className="text-muted-foreground leading-relaxed mb-4">
                 A nightly job compiles a knowledge document per tenant. Business
@@ -577,9 +572,9 @@ export default function ClarityPage() {
                 telemetry sat somewhere less obvious.
               </p>
               <p className="text-muted-foreground leading-relaxed mb-4">
-                A wrong &quot;no data&quot; is the nastiest failure in the set.
-                Nobody escalates it. They decide the tool is useless and stop
-                asking, and no metric ever tells you.
+                A wrong &quot;no data&quot; is the worst failure mode, because
+                nobody escalates it. People just stop using the tool, and no
+                metric tells you why.
               </p>
               <p className="text-muted-foreground leading-relaxed">
                 Now the compile probes each table for its newest timestamp and
@@ -604,8 +599,8 @@ export default function ClarityPage() {
             >
               <p className="text-muted-foreground leading-relaxed mb-4">
                 Generated SQL is untrusted input that happens to be executable.
-                The system prompt says read-only, which is worth nothing on its
-                own, so the enforcement lives in the database.
+                The system prompt says read-only, but a prompt isn&apos;t
+                enforcement, so the restriction lives in the database.
               </p>
               <p className="text-muted-foreground leading-relaxed mb-4">
                 Queries run as a dedicated read-only role, provisioned on every
@@ -632,10 +627,10 @@ export default function ClarityPage() {
               title="I won't use a model to grade a model"
             >
               <p className="text-muted-foreground leading-relaxed mb-4">
-                LLM-as-judge is the obvious approach and I rejected it. A grader
-                that hallucinates can&apos;t certify a system whose defining
-                failure is hallucination. The bad case isn&apos;t a wrong score,
-                it&apos;s two models agreeing in the same wrong direction.
+                LLM-as-judge is the obvious approach; I didn&apos;t use it. A
+                grader that hallucinates can&apos;t certify a system whose
+                defining failure is hallucination — two models can agree in the
+                same wrong direction.
               </p>
               <p className="text-muted-foreground leading-relaxed">
                 So the evals are canary questions instead. Canned questions
@@ -690,12 +685,10 @@ export default function ClarityPage() {
                 <ReceiptStamp entry="06" open note="left open in the ledger" />
               </div>
               <p className="text-muted-foreground leading-relaxed">
-                And the part I can&apos;t show you: the trust layer is built and
-                running, but the proof it has driven fabrication to zero
-                isn&apos;t in yet. The transcript analysis that started all of
-                this hasn&apos;t been re-run against the current build. By the
-                standard this page has been holding itself to, that claim has no
-                receipt, so I&apos;m not making it.
+                One claim I can&apos;t back yet: the trust layer is built and
+                running, but I haven&apos;t re-run the transcript analysis
+                against the current build, so I can&apos;t show that
+                fabrication is at zero. I&apos;m not claiming it until I can.
               </p>
             </CaseStudySection>
           </div>
