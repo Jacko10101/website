@@ -77,23 +77,16 @@ function AboutHero() {
             <div
               className="flex-shrink-0 w-64 md:w-72"
             >
-              {/* CRT-phosphor treatment, the photo renders as if on the
-                  site's own monitor: green duotone + scanlines + vignette. */}
+              {/* The photo stays natural — the CRT duotone suited the old
+                  placeholder avatar but read as a green filter on a real
+                  face (Jack's call, 16 Aug 2026). The frame does the tying-in. */}
               <div className="relative w-64 h-64 md:w-72 md:h-72 rounded-md border border-border overflow-hidden glow-border">
                 <Image
                   src="/jack-photo.jpg"
                   alt="Jack Devlin"
                   fill
-                  className="object-cover [filter:grayscale(0.55)_contrast(1.08)_sepia(0.5)_hue-rotate(90deg)_saturate(1.15)]"
+                  className="object-cover"
                   priority
-                />
-                <div
-                  aria-hidden
-                  className="absolute inset-0 pointer-events-none [background-image:repeating-linear-gradient(0deg,transparent_0_2px,oklch(0_0_0_/_0.09)_2px_3px)]"
-                />
-                <div
-                  aria-hidden
-                  className="absolute inset-0 pointer-events-none [background:radial-gradient(ellipse_at_center,transparent_68%,oklch(0_0_0_/_0.25)_100%)]"
                 />
               </div>
 
