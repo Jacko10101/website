@@ -227,6 +227,14 @@ export default function ObservabilityPage() {
                   at about £5k.
                 </dd>
               </div>
+              <div className="grid sm:grid-cols-[9rem_1fr] gap-x-6 gap-y-1 py-4 border-b border-border/60">
+                <dt className={label}>Outcome</dt>
+                <dd className="font-serif text-[1.0625rem] text-foreground/80 leading-[1.75]">
+                  Two years on, an incident starts with someone pasting a
+                  Grafana link, and the bill stayed flat while the data grew.
+                  Section 6 reviews the decision.
+                </dd>
+              </div>
             </dl>
           </div>
         </div>

@@ -106,9 +106,10 @@ export function PrHeader() {
           </p>
 
           <p className="text-lg text-muted-foreground mb-6 leading-relaxed max-w-2xl">
-            One Bitbucket pipeline library, imported by every Java and Node
-            service. Tests live in their own repo. Promotion and reporting
-            belong to ArgoCD.
+            A change to the build pattern used to mean a pull request to twenty
+            repos, so it didn&apos;t get made. It now ships once: one Bitbucket
+            pipeline library, imported by every Java and Node service. Tests
+            live in their own repo. Promotion and reporting belong to ArgoCD.
           </p>
 
           <div className="rounded-md border border-border overflow-hidden max-w-2xl">

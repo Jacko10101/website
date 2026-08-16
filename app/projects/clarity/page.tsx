@@ -209,18 +209,18 @@ function ClaimsLedgerHeader() {
           </p>
 
           <p className="text-xl text-muted-foreground mb-4 leading-relaxed">
-            Clarity&apos;s users run hundreds of physical sites, supermarkets
-            and warehouses full of sensors and HVAC kit. Clarity lets them ask
-            about that estate in English and get an answer back with the SQL
-            that produced it.
-          </p>
-
-          <p className="text-muted-foreground mb-6 leading-relaxed">
             Before Clarity, a customer wanting a number out of their estate
             raised a ticket and waited for an analyst to run the query. Now
             about twenty people a day ask directly, across roughly thirty
-            tenants. Generating the SQL was the easy bit. Proving the answers
-            took the other eight months.
+            tenants.
+          </p>
+
+          <p className="text-muted-foreground mb-6 leading-relaxed">
+            Those customers run hundreds of physical sites, supermarkets and
+            warehouses full of sensors and HVAC kit, and Clarity lets them ask
+            about that estate in English and get an answer back with the SQL
+            that produced it. Generating the SQL was the easy bit. Proving the
+            answers took the other eight months.
           </p>
 
           <div className="rounded-lg border border-border bg-card/40 overflow-hidden font-mono">
