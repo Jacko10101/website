@@ -231,7 +231,9 @@ html.lenis {
 }
 
 .ticker-track {
-  animation: ticker-scroll 42s linear infinite;
+  /* Slow enough to read a whole item mid-scroll; it was 42s and the items
+     went by faster than a sentence can be read. */
+  animation: ticker-scroll 70s linear infinite;
 }
 
 .ticker-track:hover {
