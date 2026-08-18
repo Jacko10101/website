@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
 import { TerminalWindow } from "@/components/terminal-window";
 
 /** Where the backoff settles. Past this the counter would just be noise. */
@@ -45,33 +44,19 @@ export default function NotFound() {
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center p-4">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="w-full max-w-3xl"
-      >
+      <div className="w-full max-w-3xl">
         <h1 className="sr-only">404 · page not found</h1>
 
         {/* Alert Banner */}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.2 }}
-          className="mb-6 flex items-center gap-3 rounded-lg border border-error/30 bg-error/10 px-4 py-3"
-        >
+        <div className="mb-6 flex items-center gap-3 rounded-lg border border-error/30 bg-error/10 px-4 py-3">
           <div className="flex-shrink-0">
-            <motion.div
-              animate={{ scale: [1, 1.2, 1] }}
-              transition={{ duration: 1, repeat: Infinity }}
-              className="w-3 h-3 rounded-full bg-error"
-            />
+            <div className="w-3 h-3 rounded-full bg-error animate-pulse" />
           </div>
           <div className="font-mono text-sm">
             <span className="text-error">ALERT:</span>
-            <span className="text-error/80 ml-2">PodCrashLoopBackOff</span>
+            <span className="text-error ml-2">PodCrashLoopBackOff</span>
           </div>
-        </motion.div>
+        </div>
 
         {/* Main Terminal */}
         <TerminalWindow title="kubectl · namespace: production" className="shadow-2xl">
@@ -117,11 +102,7 @@ export default function NotFound() {
             {/* Blinking cursor */}
             <div className="flex items-center gap-2 mt-4">
               <span className="text-primary">❯</span>
-              <motion.span
-                animate={{ opacity: [1, 0] }}
-                transition={{ duration: 0.8, repeat: Infinity }}
-                className="inline-block w-2 h-4 bg-primary"
-              />
+              <span className="cursor-blink !w-2 !h-4" aria-hidden />
             </div>
           </div>
         </TerminalWindow>
@@ -148,7 +129,7 @@ export default function NotFound() {
         <p className="text-center text-xs text-muted-foreground mt-6 font-mono">
           Pod scheduled on node: devlinops-worker-1 • Cluster: production-eu-west-1
         </p>
-      </motion.div>
+      </div>
     </div>
   );
 }
