@@ -10,7 +10,7 @@ export const metadata = {
 
 export default function ContactPage() {
   return (
-    <div className="container px-4 pt-32 pb-16 md:px-6 md:pb-20">
+    <div className="container pt-28 md:pt-36 pb-16 md:pb-20">
       <div className="mx-auto max-w-4xl">
         <p className="font-mono text-sm text-primary mb-3" aria-hidden>
           <span className="text-muted-foreground">$</span> mail jack@devlinops.com

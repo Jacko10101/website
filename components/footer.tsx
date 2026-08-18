@@ -119,13 +119,13 @@ export function Footer() {
 
         {/* Statusline, tmux-style segments; every value is real or absent. */}
         <div className="mb-8 rounded-md border border-border bg-card/50 overflow-hidden font-mono text-[11px]">
-          <div className="flex flex-wrap items-stretch">
+          <div className="flex flex-wrap items-stretch pl-2">
             {BUILD.branch && BUILD.shortSha && (BUILD.commitUrl ? (
               <a
                 href={BUILD.commitUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1.5 px-4 py-2 bg-primary text-primary-foreground font-semibold [clip-path:polygon(0_0,calc(100%-9px)_0,100%_100%,0_100%)] pr-6 hover:bg-primary/90 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-background"
+                className="flex items-center gap-1.5 -ml-2 px-4 py-2 bg-primary text-primary-foreground font-semibold [clip-path:polygon(0_0,calc(100%-9px)_0,100%_100%,0_100%)] pr-6 hover:bg-primary/90 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-background"
                 title="The exact commit serving you this page"
               >
                 <svg className="w-3 h-3" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={1.5} aria-hidden>
@@ -136,7 +136,7 @@ export function Footer() {
               </a>
             ) : (
               <span
-                className="flex items-center gap-1.5 px-4 py-2 bg-primary text-primary-foreground font-semibold [clip-path:polygon(0_0,calc(100%-9px)_0,100%_100%,0_100%)] pr-6 hover:bg-primary/90 transition-colors"
+                className="flex items-center gap-1.5 -ml-2 px-4 py-2 bg-primary text-primary-foreground font-semibold [clip-path:polygon(0_0,calc(100%-9px)_0,100%_100%,0_100%)] pr-6 hover:bg-primary/90 transition-colors"
                 title="The exact commit serving you this page"
               >
                 <svg className="w-3 h-3" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={1.5} aria-hidden>

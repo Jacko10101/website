@@ -122,7 +122,7 @@ export function DayLogHeader() {
 
           {/* Entry zero. Larger clock than the entries below — the day starts
               here — so the node and segment offsets are its own. */}
-          <div className={`relative ${ENTRY_INDENT} pb-12 md:pb-14`}>
+          <div className={`relative ${ENTRY_INDENT} pb-12 md:pb-16`}>
             <span
               className="absolute left-[5px] top-[19px] bottom-0 w-px bg-border"
               aria-hidden

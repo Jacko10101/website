@@ -53,8 +53,11 @@ export default function ColophonPage() {
   const buildDate = formatBuildDate(BUILD.time);
 
   return (
-    <div className="pt-32 pb-24">
-      <div className="container max-w-4xl">
+    <div className="pt-28 md:pt-36 pb-24">
+      {/* `.container` is unlayered CSS, so a `max-w-*` utility on the same
+          element never wins — the cap has to live on a child. */}
+      <div className="container">
+        <div className="mx-auto max-w-4xl">
         <p className="font-mono text-sm text-primary mb-3" aria-hidden>
           <span className="text-muted-foreground">$</span> cat colophon.md
         </p>
@@ -157,6 +160,7 @@ export default function ColophonPage() {
             <OncallInvite />
           </div>
         </section>
+        </div>
       </div>
     </div>
   );
