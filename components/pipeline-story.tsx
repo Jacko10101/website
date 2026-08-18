@@ -71,7 +71,7 @@ function StageCard({
   const dim = state === "pending" ? "opacity-50" : "opacity-100";
   return (
     <div
-      className={`flex-1 rounded-lg border ${border} ${dim} bg-card/70 backdrop-blur-sm p-4 transition-all duration-500`}
+      className={`flex-1 rounded-lg border ${border} ${dim} bg-card/70 backdrop-blur-sm p-4 transition-[opacity,border-color] duration-300 ease-out`}
     >
       <div className="flex items-center justify-between mb-3">
         <span className="font-mono text-sm font-semibold text-foreground">
@@ -111,8 +111,17 @@ export function PipelineStory() {
     offset: ["start start", "end end"],
   });
 
-  // Commit chip travels the track as you scroll.
-  const chipX = useTransform(scrollYProgress, [0.05, 0.92], ["0%", "100%"]);
+  // The chip rides the track from stage centre to stage centre, arriving over
+  // each card at the instant that card lights (the stage flips at v = 0.25,
+  // 0.5, 0.75). Four flex-1 cards with gap-4 put their centres at roughly
+  // 12.5 / 37.5 / 62.5 / 87.5% of the track. It used to run 0% -> 100% over
+  // [0.05, 0.92], which meant it was never over the card it had just promoted
+  // to and finished past the end of the pipeline instead of on prod.
+  const chipX = useTransform(
+    scrollYProgress,
+    [0, 0.25, 0.5, 0.75, 1],
+    ["12.5%", "37.5%", "62.5%", "87.5%", "87.5%"]
+  );
 
   useMotionValueEvent(scrollYProgress, "change", (v) => {
     // Divide by the stage count exactly, so the last stage lands at 75% and
@@ -249,18 +258,11 @@ export function PipelineStoryMobile() {
         <div className="relative pl-6 space-y-6">
           <div className="absolute left-1.5 top-2 bottom-2 w-px bg-border" aria-hidden />
           {stages.map((s) => (
-            <motion.div
-              key={s.id}
-              initial={{ opacity: 0, x: -12 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.4 }}
-              className="relative"
-            >
+            <div key={s.id} className="relative">
               <span className="absolute -left-6 top-2 w-3 h-3 rounded-full border-2 border-primary bg-background" aria-hidden />
               <StageCard stage={s} state="done" />
               <p className="mt-2 text-sm text-muted-foreground">{s.copy}</p>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
