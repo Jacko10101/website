@@ -73,7 +73,7 @@ function StageCard({
     <div
       className={`flex-1 rounded-lg border ${border} ${dim} bg-card/70 backdrop-blur-sm p-4 transition-[opacity,border-color] duration-300 ease-out`}
     >
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-1.5 mb-3">
         <span className="font-mono text-sm font-semibold text-foreground">
           {stage.name}
         </span>
@@ -238,7 +238,7 @@ function PipelineHeader() {
       <p className="font-mono text-sm text-primary mb-3" aria-hidden>
         <span className="text-muted-foreground">$</span> git push && watch the promotion
       </p>
-      <h2 className="font-mono font-semibold tracking-tight text-3xl sm:text-4xl md:text-5xl text-foreground">
+      <h2 className="font-mono font-semibold tracking-tight text-4xl sm:text-5xl md:text-6xl text-foreground">
         How my platforms ship
       </h2>
     </div>

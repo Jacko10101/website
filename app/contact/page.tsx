@@ -44,20 +44,20 @@ export default function ContactPage() {
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           <a
             href="mailto:jack@devlinops.com"
-            className="group block rounded-lg border border-border bg-card p-6 transition-all hover:border-primary hover:shadow-lg"
+            className="group block rounded-lg border border-border bg-card p-6 transition-[border-color,box-shadow] duration-300 hover:border-primary hover:shadow-[0_12px_48px_oklch(0.72_0.19_150_/_0.12)] active:border-primary/70"
           >
             <div className="flex flex-col gap-4">
               <div className="rounded-lg bg-primary/10 p-3 w-fit">
                 <Mail className="h-6 w-6 text-primary" />
               </div>
               <div>
-                <h3 className="mb-1 text-xl font-semibold group-hover:text-primary transition-colors">
+                <h3 className="mb-1 font-mono font-semibold tracking-tight text-xl group-hover:text-primary transition-colors">
                   Email
                 </h3>
                 <p className="text-sm text-muted-foreground mb-2">
                   Best for anything substantial.
                 </p>
-                <p className="text-sm font-medium text-primary">
+                <p className="text-sm font-mono text-primary">
                   jack@devlinops.com
                 </p>
               </div>
@@ -68,20 +68,20 @@ export default function ContactPage() {
             href="https://github.com/Jacko10101"
             target="_blank"
             rel="noopener noreferrer"
-            className="group block rounded-lg border border-border bg-card p-6 transition-all hover:border-primary hover:shadow-lg"
+            className="group block rounded-lg border border-border bg-card p-6 transition-[border-color,box-shadow] duration-300 hover:border-primary hover:shadow-[0_12px_48px_oklch(0.72_0.19_150_/_0.12)] active:border-primary/70"
           >
             <div className="flex flex-col gap-4">
               <div className="rounded-lg bg-primary/10 p-3 w-fit">
                 <Github className="h-6 w-6 text-primary" />
               </div>
               <div>
-                <h3 className="mb-1 text-xl font-semibold group-hover:text-primary transition-colors">
+                <h3 className="mb-1 font-mono font-semibold tracking-tight text-xl group-hover:text-primary transition-colors">
                   GitHub
                 </h3>
                 <p className="text-sm text-muted-foreground mb-2">
                   Config for the homelab, and the scripts that run it.
                 </p>
-                <p className="text-sm font-medium text-primary">@Jacko10101</p>
+                <p className="text-sm font-mono text-primary">@Jacko10101</p>
               </div>
             </div>
           </a>
@@ -91,20 +91,20 @@ export default function ContactPage() {
             download="jack-devlin-cv.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            className="group block rounded-lg border border-border bg-card p-6 transition-all hover:border-primary hover:shadow-lg"
+            className="group block rounded-lg border border-border bg-card p-6 transition-[border-color,box-shadow] duration-300 hover:border-primary hover:shadow-[0_12px_48px_oklch(0.72_0.19_150_/_0.12)] active:border-primary/70"
           >
             <div className="flex flex-col gap-4">
               <div className="rounded-lg bg-primary/10 p-3 w-fit">
                 <Download className="h-6 w-6 text-primary" />
               </div>
               <div>
-                <h3 className="mb-1 text-xl font-semibold group-hover:text-primary transition-colors">
+                <h3 className="mb-1 font-mono font-semibold tracking-tight text-xl group-hover:text-primary transition-colors">
                   CV
                 </h3>
                 <p className="text-sm text-muted-foreground mb-2">
                   Employers, dates and titles, on one page.
                 </p>
-                <p className="text-sm font-medium text-primary">
+                <p className="text-sm font-mono text-primary">
                   PDF · updated August 2026
                 </p>
               </div>

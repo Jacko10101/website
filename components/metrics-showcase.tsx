@@ -78,9 +78,9 @@ export function MetricsShowcase({ metrics }: MetricsShowcaseProps) {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             </div>
-            <div className="p-4">
+            <div className="p-4 font-serif">
               <div className="mb-2">
-                <span className="text-xs font-medium text-primary">
+                <span className="text-xs text-primary">
                   {metric.category}
                 </span>
               </div>
@@ -126,9 +126,9 @@ export function MetricsShowcase({ metrics }: MetricsShowcaseProps) {
               >
                 <X className="h-5 w-5" />
               </button>
-              <div className="p-6">
+              <div className="p-6 font-serif">
                 <div className="mb-4">
-                  <span className="text-xs font-medium text-primary">
+                  <span className="text-xs text-primary">
                     {selectedMetric.category}
                   </span>
                   <h2 className="mt-2 text-2xl font-bold">
@@ -138,7 +138,7 @@ export function MetricsShowcase({ metrics }: MetricsShowcaseProps) {
                     {selectedMetric.description}
                   </p>
                 </div>
-                <div className="relative aspect-video w-full overflow-hidden rounded-lg border border-border">
+                <div className="relative aspect-[19/9] w-full overflow-hidden rounded-lg border border-border">
                   <Image
                     src={selectedMetric.imagePath}
                     alt={selectedMetric.title}
