@@ -95,7 +95,7 @@ function ActionItems() {
                 key={item.action}
                 className="border-b border-border/60 last:border-b-0 align-top"
               >
-                <td className="hidden sm:table-cell pl-5 pr-4 py-4 font-mono text-xs text-muted-foreground/70 tabular-nums">
+                <td className="hidden sm:table-cell pl-5 pr-4 py-4 font-mono text-xs text-muted-foreground/80 tabular-nums">
                   {String(i + 1).padStart(2, "0")}
                 </td>
                 <td className="px-4 sm:px-0 py-4">

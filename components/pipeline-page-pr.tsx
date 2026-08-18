@@ -96,7 +96,7 @@ export function PrHeader() {
 
           {/* The one field this genre has that the others don't: an author. */}
           <p className="flex flex-wrap items-baseline gap-x-2 gap-y-1 font-mono text-xs text-muted-foreground mb-6">
-            <span className="text-muted-foreground/70">Author</span>
+            <span className="text-muted-foreground/80">Author</span>
             <span aria-hidden>·</span>
             <span className="text-foreground/90">Jack Devlin</span>
             <span aria-hidden>·</span>

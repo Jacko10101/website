@@ -251,7 +251,7 @@ function ClaimsLedgerHeader() {
                     {row.claim}
                   </span>
                   {row.open && (
-                    <span className="text-[10px] uppercase tracking-wider text-muted-foreground/70 border border-border rounded-sm px-1.5 py-0.5">
+                    <span className="text-[10px] uppercase tracking-wider text-muted-foreground/80 border border-border rounded-sm px-1.5 py-0.5">
                       no receipt
                     </span>
                   )}
@@ -302,7 +302,7 @@ function GuaranteeLedger() {
     <div className="font-mono">
       {/* Same column rule as the claims ledger — this is the same book. */}
       <div
-        className="hidden sm:flex items-baseline gap-x-3 pb-1.5 border-b border-border text-[10px] uppercase tracking-[0.15em] text-muted-foreground/60"
+        className="hidden sm:flex items-baseline gap-x-3 pb-1.5 border-b border-border text-[10px] uppercase tracking-[0.15em] text-muted-foreground/80"
         aria-hidden
       >
         <span className="w-7 shrink-0">no.</span>

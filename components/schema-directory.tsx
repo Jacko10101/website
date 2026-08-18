@@ -166,7 +166,7 @@ export function SchemaDirectory() {
           </AnimatePresence>
 
           <div className="mt-6 pt-4 border-t border-border">
-            <p className="text-xs text-muted-foreground/70 leading-relaxed">
+            <p className="text-xs text-muted-foreground/80 leading-relaxed">
               Everything above is sanitised before it reaches the prompt.
               Table comments and sample values are attacker-influenceable, so
               headings, code fences and template tokens are defused at the

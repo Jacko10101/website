@@ -261,7 +261,7 @@ export function HeimdallDemo() {
             <span className="rounded bg-warn/15 px-1.5 py-0.5 font-mono text-[10px] font-semibold text-warn">
               illustrative figures
             </span>
-            <span className="font-mono text-[11px] text-muted-foreground/70">
+            <span className="font-mono text-[11px] text-muted-foreground/80">
               made up for this demo, not measurements
             </span>
           </div>
@@ -484,23 +484,23 @@ export function HeimdallDemo() {
               ) : (
               <div className="grid grid-cols-2 gap-x-6 gap-y-1.5 font-mono text-xs text-muted-foreground sm:grid-cols-4">
                 <div>
-                  <span className="text-muted-foreground/70">commit</span>
+                  <span className="text-muted-foreground/80">commit</span>
                   <div className="text-foreground">{detail.sha}</div>
                 </div>
                 <div>
-                  <span className="text-muted-foreground/70">ticket</span>
+                  <span className="text-muted-foreground/80">ticket</span>
                   <div className="text-warn">{detail.ticket ?? "—"}</div>
                 </div>
                 <div>
-                  <span className="text-muted-foreground/70">deployed</span>
+                  <span className="text-muted-foreground/80">deployed</span>
                   <div className="text-foreground">{fmtAge(detail.ageMin)}</div>
                 </div>
                 <div>
-                  <span className="text-muted-foreground/70">by</span>
+                  <span className="text-muted-foreground/80">by</span>
                   <div className="text-foreground">{detail.by}</div>
                 </div>
                 <div className="col-span-2">
-                  <span className="text-muted-foreground/70">pods</span>
+                  <span className="text-muted-foreground/80">pods</span>
                   <div
                     className={
                       detail.pods.includes("crashloop") ? "text-error" : "text-primary"
@@ -523,7 +523,7 @@ export function HeimdallDemo() {
               {STATUS_META[s].label}
             </span>
           ))}
-          <span className="ml-auto text-muted-foreground/70">
+          <span className="ml-auto text-muted-foreground/80">
             {ticket ? "click a ticket again to clear" : "pick a ticket, or click any cell"}
           </span>
         </div>

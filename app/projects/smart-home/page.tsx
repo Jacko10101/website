@@ -89,7 +89,7 @@ function SpecPlate() {
 
       {/* Column heads for the parameter rows */}
       <div
-        className="hidden sm:grid sm:grid-cols-[9rem_1fr_16rem] gap-x-4 px-5 sm:px-7 py-1.5 border-b border-border font-mono text-[10px] uppercase tracking-[0.15em] text-muted-foreground/70"
+        className="hidden sm:grid sm:grid-cols-[9rem_1fr_16rem] gap-x-4 px-5 sm:px-7 py-1.5 border-b border-border font-mono text-[10px] uppercase tracking-[0.15em] text-muted-foreground/80"
         aria-hidden
       >
         <span>Parameter</span>

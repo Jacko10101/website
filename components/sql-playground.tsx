@@ -72,7 +72,7 @@ export function SqlPlayground() {
             <div className="rounded-md border border-border bg-background/60 p-3 font-mono text-[11px] leading-relaxed text-muted-foreground break-words">
               {parsed.canonical || <span className="opacity-40">empty</span>}
             </div>
-            <p className="mt-2 font-mono text-[11px] text-muted-foreground/70">
+            <p className="mt-2 font-mono text-[11px] text-muted-foreground/80">
               comments stripped · literals masked · identifiers unquoted and
               lower-cased
             </p>
@@ -136,7 +136,7 @@ export function SqlPlayground() {
           )}
 
           <div className="mt-5 pt-4 border-t border-border">
-            <div className="font-mono text-[11px] text-muted-foreground/70 space-y-1">
+            <div className="font-mono text-[11px] text-muted-foreground/80 space-y-1">
               <div>
                 identifiers:{" "}
                 <span className="text-muted-foreground">
@@ -156,7 +156,7 @@ export function SqlPlayground() {
                 </span>
               </div>
             </div>
-            <p className="mt-3 text-xs text-muted-foreground/70 leading-relaxed">
+            <p className="mt-3 text-xs text-muted-foreground/80 leading-relaxed">
               These are the real rule sets and reason codes, ported to run in
               your browser. Nothing is sent anywhere. In production this is the
               outermost layer: underneath it the query still runs as a

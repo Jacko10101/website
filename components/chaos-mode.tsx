@@ -515,7 +515,7 @@ export function ChaosMode() {
               </span>
             </div>
           ))}
-          <p className="mt-1.5 text-[11px] text-muted-foreground/70">
+          <p className="mt-1.5 text-[11px] text-muted-foreground/80">
             {downCount} of {pods.length} workloads down
           </p>
         </div>
