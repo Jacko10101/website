@@ -15,21 +15,25 @@
 }
 
 @theme {
-  --color-background: oklch(0.08 0.01 150);
-  --color-foreground: oklch(0.96 0.005 150);
-  --color-primary: oklch(0.72 0.19 150);
-  --color-primary-foreground: oklch(0.08 0.01 150);
-  --color-secondary: oklch(0.13 0.014 150);
-  --color-secondary-foreground: oklch(0.96 0.005 150);
-  --color-muted: oklch(0.16 0.015 150);
-  --color-muted-foreground: oklch(0.67 0.02 150);
-  --color-accent: oklch(0.16 0.015 150);
-  --color-accent-foreground: oklch(0.96 0.005 150);
-  --color-border: oklch(0.22 0.02 150);
-  --color-card: oklch(0.1 0.012 150);
-  --color-warn: oklch(0.78 0.14 80);
-  --color-error: oklch(0.62 0.19 25);
-  --color-destructive: oklch(0.62 0.19 25);
+  /* The ground sits off pure black. #010201 made every surface above it a
+     hard-edged rectangle and every glow a smear; lifting it to ~#0e1210
+     lets the card, border and secondary steps read as paper rather than
+     as outlines. The whole neutral ramp moves with it. */
+  --color-background: oklch(0.175 0.008 150);
+  --color-foreground: oklch(0.97 0.004 150);
+  --color-primary: oklch(0.75 0.19 150);
+  --color-primary-foreground: oklch(0.16 0.01 150);
+  --color-secondary: oklch(0.235 0.012 150);
+  --color-secondary-foreground: oklch(0.97 0.004 150);
+  --color-muted: oklch(0.25 0.012 150);
+  --color-muted-foreground: oklch(0.70 0.015 150);
+  --color-accent: oklch(0.25 0.012 150);
+  --color-accent-foreground: oklch(0.97 0.004 150);
+  --color-border: oklch(0.285 0.014 150);
+  --color-card: oklch(0.205 0.010 150);
+  --color-warn: oklch(0.80 0.14 80);
+  --color-error: oklch(0.66 0.20 25);
+  --color-destructive: oklch(0.66 0.20 25);
 
   --radius-lg: 0.75rem;
   --radius-md: 0.5rem;
@@ -53,55 +57,43 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Subtle noise texture overlay */
-body::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 9999;
-  opacity: 0.015;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-  background-repeat: repeat;
-}
-
-/* CRT light model — aperture-grille texture + vignette. Static, subtle:
-   light as atmosphere, not decoration. Sits under the noise overlay. */
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 9998;
-  background-image:
-    radial-gradient(ellipse 120% 90% at 50% 0%, transparent 55%, oklch(0 0 0 / 0.32) 100%),
-    repeating-linear-gradient(
-      0deg,
-      transparent 0px,
-      transparent 2px,
-      oklch(0 0 0 / 0.05) 2px,
-      oklch(0 0 0 / 0.05) 3px
-    );
-}
+/* No noise overlay and no CRT scanlines. Five simultaneous decorative
+   layers — grain, scanlines, vignette, grid and bloom — is what makes a page
+   read as costume. The type and the spacing carry it now. */
 
 /* Phosphor bloom for key text and elements */
 .glow-text {
-  text-shadow:
-    0 0 10px color-mix(in oklab, var(--color-primary) 55%, transparent),
-    0 0 32px color-mix(in oklab, var(--color-primary) 22%, transparent);
+  text-shadow: 0 0 24px color-mix(in oklab, var(--color-primary) 22%, transparent);
 }
 
 .glow-soft {
-  text-shadow: 0 0 18px color-mix(in oklab, var(--color-primary) 30%, transparent);
+  text-shadow: none;
 }
 
 .glow-border {
-  box-shadow:
-    0 0 22px color-mix(in oklab, var(--color-primary) 10%, transparent),
-    inset 0 0 42px color-mix(in oklab, var(--color-primary) 4%, transparent);
+  box-shadow: 0 1px 0 0 color-mix(in oklab, var(--color-foreground) 4%, transparent) inset;
+}
+
+/* The display face is the sans, set large and tight. Mono is demoted to what
+   it is good at: labels, data, code and chrome. A mono headline caps how
+   expensive a page can look, and every heading on this site used to be one. */
+.display {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  text-wrap: balance;
+}
+
+/* The accent label above a display heading. The only place the phosphor
+   green leads, and the replacement for the `$ command` eyebrow. */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-primary);
 }
 
 /* Ambient screen-glow for the hero — one stationary light source. */
@@ -211,33 +203,6 @@ html.lenis {
     padding-left: 4rem;
     padding-right: 4rem;
   }
-}
-
-/* Monumental outline numerals behind section headings */
-.text-outline {
-  -webkit-text-stroke: 1.5px color-mix(in oklab, var(--color-primary) 16%, transparent);
-  color: transparent;
-  user-select: none;
-}
-
-/* Status ticker — slow marquee, duplicated content, pauses on hover */
-@keyframes ticker-scroll {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-.ticker-track {
-  /* Slow enough to read a whole item mid-scroll; it was 42s and the items
-     went by faster than a sentence can be read. */
-  animation: ticker-scroll 70s linear infinite;
-}
-
-.ticker-track:hover {
-  animation-play-state: paused;
 }
 
 /* Chaos mode — glitch for "crashing" sections, flash for healing */
