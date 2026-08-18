@@ -743,6 +743,41 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
     dialogRef.current?.focus();
   }, []);
 
+  // The shift is a real modal, so lock the body behind it. Mirrors
+  // cli-navigation's overlay; this component only mounts while open.
+  useEffect(() => {
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, []);
+
+  /**
+   * Take the page behind the shift out of the tab order, and hand focus back
+   * to whatever opened it. `aria-modal` promises this; nothing enforced it, so
+   * one Tab past the last control dropped into the nav and the hero behind the
+   * backdrop, and Escape left focus on <body>.
+   */
+  useEffect(() => {
+    const overlay = dialogRef.current;
+    const returnFocusTo = document.activeElement as HTMLElement | null;
+    const madeInert: HTMLElement[] = [];
+
+    Array.from(document.body.children).forEach((child) => {
+      if (!(child instanceof HTMLElement)) return;
+      if (overlay && (child === overlay || child.contains(overlay))) return;
+      if (child.hasAttribute("inert")) return;
+      child.setAttribute("inert", "");
+      madeInert.push(child);
+    });
+
+    return () => {
+      madeInert.forEach((el) => el.removeAttribute("inert"));
+      returnFocusTo?.focus?.();
+    };
+  }, []);
+
   useEffect(() => {
     logRef.current?.scrollTo({ top: logRef.current.scrollHeight, behavior: "smooth" });
   }, [log]);

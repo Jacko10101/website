@@ -20,6 +20,7 @@ export function MetricsShowcase({ metrics }: MetricsShowcaseProps) {
   const [selectedMetric, setSelectedMetric] = useState<Metric | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
 
   const openModal = (metric: Metric, trigger: HTMLElement) => {
     triggerRef.current = trigger;
@@ -40,7 +41,24 @@ export function MetricsShowcase({ metrics }: MetricsShowcaseProps) {
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") closeModal();
+      if (e.key === "Escape") {
+        closeModal();
+        return;
+      }
+      // `aria-modal` promises the page behind is unreachable. This modal is
+      // not a body child, so `inert` on body children cannot express that —
+      // cycle Tab between its two focusable nodes instead.
+      if (e.key !== "Tab") return;
+      const dialog = dialogRef.current;
+      const close = closeButtonRef.current;
+      if (!dialog || !close) return;
+      const order: HTMLElement[] = [close, dialog];
+      const at = order.indexOf(document.activeElement as HTMLElement);
+      e.preventDefault();
+      const next = e.shiftKey
+        ? order[(at <= 0 ? order.length : at) - 1]
+        : order[(at + 1) % order.length];
+      next.focus();
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => {
@@ -106,6 +124,7 @@ export function MetricsShowcase({ metrics }: MetricsShowcaseProps) {
             className="fixed inset-0 z-50 flex items-center justify-center bg-background/95 p-4 backdrop-blur-sm"
           >
             <motion.div
+              ref={dialogRef}
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}

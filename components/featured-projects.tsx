@@ -4,13 +4,12 @@ import Link from "next/link";
 import { featuredProjects, type Project } from "@/lib/projects";
 import { SectionHeading } from "@/components/section-heading";
 
+// The genre badge owns the accent colour; this stays a quiet kubectl joke in
+// the corner, as it already does on /projects. Six tiles carrying two accent
+// chips each left the white title the only neutral thing in its own header.
 function StatusPill({ project }: { project: Project }) {
-  const tone =
-    project.status === "in-progress"
-      ? "text-warn border-warn/50"
-      : "text-primary border-primary/50";
   return (
-    <span className={`font-mono text-[10px] px-2 py-0.5 rounded border ${tone}`}>
+    <span className="font-mono text-[10px] px-2 py-0.5 rounded border border-border/60 text-muted-foreground whitespace-nowrap">
       {project.statusLabel}
     </span>
   );
