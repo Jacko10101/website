@@ -185,7 +185,7 @@ export function FileDiff({
         </span>
         <span style={{ color: DIFF.add }}>+{lines.length}</span>
       </div>
-      <div className="overflow-x-auto bg-black/40">
+      <div tabIndex={0} data-lenis-prevent className="overflow-x-auto bg-black/40">
         <div className="min-w-full w-fit font-mono text-xs leading-6">
           {lines.map((line, i) => (
             <div key={i} className="flex">
