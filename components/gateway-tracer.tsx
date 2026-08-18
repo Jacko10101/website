@@ -261,7 +261,7 @@ export function GatewayTracer() {
           })}
         </div>
 
-        <div aria-live="polite">
+        <div aria-live="polite" className="mt-4 min-h-[7rem]">
         <AnimatePresence mode="wait">
           {done && (
             <motion.div
@@ -270,7 +270,7 @@ export function GatewayTracer() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.18 }}
-              className={`mt-4 rounded-md border p-3 ${
+              className={`rounded-md border p-3 ${
                 outcome.code === 200
                   ? "border-primary/40 bg-primary/5"
                   : "border-error/50 bg-error/5"
