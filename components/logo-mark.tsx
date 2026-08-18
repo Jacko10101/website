@@ -1,6 +1,7 @@
 "use client";
 
 import { useId } from "react";
+import { useReducedMotion } from "framer-motion";
 
 /**
  * The DevlinOps mark, traced from the original artwork.
@@ -18,7 +19,16 @@ import { useId } from "react";
  * D and closes the O. Both take site colours, so the mark finally meshes with
  * the page it is on, including each case study's own phosphor.
  *
- * The glint sits on the crossover, because the crossover is the whole idea.
+ * Both tones are derived from `currentColor`, so the mark is monochrome green
+ * rather than importing a second hue — but they are not the *same* green. The
+ * original's weave only reads because navy and orange differ in value; flatten
+ * that and the D and the O merge into one blob. So the structure is darkened
+ * toward the page and the ribbon keeps the full phosphor, which is the same
+ * value relationship the original has.
+ *
+ * The shimmer is a band of light travelling diagonally through both letters
+ * every few seconds. It is white at low opacity over green, which reads as a
+ * pale phosphor rather than as a white stripe.
  */
 
 const STRUCTURE =
@@ -27,19 +37,27 @@ const STRUCTURE =
 const RIBBON =
   "M43.06 19.36L45.31 19.48L46.75 19.83L49.55 21.28L50.85 22.44L52.05 23.94L53.04 25.76L53.79 27.91L54.22 30.13L54.31 32.32L54.18 34.24L53.65 36.55L52.62 38.72L51.72 39.97L49.77 41.68L48.48 42.18L48.12 42.09L47.75 41.48L47.31 40.26L47.3 39.47L47.5 38.58L49.02 35.3L49.33 34L49.49 31.07L49.07 28.53L48.09 26.67L46.86 25.36L45.46 24.54L44.05 24.14L41.95 24.25L39.66 25.4L37.73 27.87L34.21 34.36L31.75 37.99L30.41 39.25L29.09 40.1L28.08 40.28L27.49 39.69L28.3 36.56L30.85 30.29L33.37 25.21L34.4 23.65L37.58 20.87L39.56 19.99L42.49 19.38Z";
 
-/** Where the ribbon crosses the D — the point the whole mark turns on. */
-const CROSSOVER = { x: 33, y: 33, r: 13 };
+
 
 export function LogoMark({
   className = "",
   shimmer = false,
 }: {
   className?: string;
-  /** The glint on the crossover. Reserved for the large copy. */
+  /** The travelling highlight. Reserved for the large copy. */
   shimmer?: boolean;
 }) {
   const uid = useId();
-  const glintMask = `glint-${uid}`;
+  const reduceMotion = useReducedMotion();
+  const sweep = shimmer && !reduceMotion;
+  const maskId = `sweep-${uid}`;
+
+  const marks = (fillStructure: string, fillRibbon: string) => (
+    <>
+      <path d={STRUCTURE} fill={fillStructure} fillRule="evenodd" />
+      <path d={RIBBON} fill={fillRibbon} fillRule="evenodd" />
+    </>
+  );
 
   return (
     <svg
@@ -48,34 +66,48 @@ export function LogoMark({
       role="img"
       aria-label="DevlinOps"
     >
-      {shimmer && (
+      {sweep && (
         <defs>
-          <mask id={glintMask} maskUnits="userSpaceOnUse" x="0" y="0" width="64" height="64">
-            <radialGradient
-              id={`${glintMask}-grad`}
-              gradientUnits="userSpaceOnUse"
-              cx={CROSSOVER.x}
-              cy={CROSSOVER.y}
-              r={CROSSOVER.r}
-            >
-              <stop offset="0" stopColor="#fff" />
-              <stop offset="0.45" stopColor="#fff" stopOpacity="0.65" />
-              <stop offset="1" stopColor="#000" />
-            </radialGradient>
-            <rect x="0" y="0" width="64" height="64" fill={`url(#${glintMask}-grad)`} />
+          {/* A diagonal band of light, travelling left to right across the
+              whole face with a rest between passes. userSpaceOnUse so one band
+              crosses both letters rather than each shape lighting up inside
+              its own bounding box. */}
+          <linearGradient
+            id={`${maskId}-grad`}
+            gradientUnits="userSpaceOnUse"
+            x1="-22"
+            y1="6"
+            x2="6"
+            y2="58"
+          >
+            <stop offset="0" stopColor="#000" />
+            <stop offset="0.5" stopColor="#fff" />
+            <stop offset="1" stopColor="#000" />
+            <animateTransform
+              attributeName="gradientTransform"
+              type="translate"
+              values="0 0; 88 0; 88 0"
+              keyTimes="0; 0.55; 1"
+              dur="4.8s"
+              repeatCount="indefinite"
+            />
+          </linearGradient>
+          <mask id={maskId} maskUnits="userSpaceOnUse" x="0" y="0" width="64" height="64">
+            <rect x="0" y="0" width="64" height="64" fill={`url(#${maskId}-grad)`} />
           </mask>
         </defs>
       )}
 
-      {/* Hexagon, D, and the far side of the O. */}
-      <path d={STRUCTURE} fill="currentColor" fillRule="evenodd" />
-      {/* The sweep that crosses the D and closes the O. */}
-      <path d={RIBBON} fill="var(--color-foreground)" fillRule="evenodd" />
+      {/* Hexagon, D and the far side of the O, darkened toward the page so the
+          ribbon crossing them still reads. */}
+      {marks(
+        "color-mix(in oklab, currentColor 58%, var(--color-background))",
+        "currentColor"
+      )}
 
-      {shimmer && (
-        <g className="logo-glint" mask={`url(#${glintMask})`}>
-          <path d={STRUCTURE} fill="var(--color-foreground)" fillRule="evenodd" />
-          <path d={RIBBON} fill="#ffffff" fillRule="evenodd" />
+      {sweep && (
+        <g mask={`url(#${maskId})`} opacity={0.5}>
+          {marks("#ffffff", "#ffffff")}
         </g>
       )}
     </svg>
