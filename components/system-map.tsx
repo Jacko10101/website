@@ -1,286 +1,139 @@
-"use client";
-
-import { useState } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { SectionHeading } from "@/components/section-heading";
 
-interface MapNode {
+/**
+ * What I run, as a manifest rather than a diagram.
+ *
+ * This was a boxes-and-arrows SVG with a detail panel: eleven nodes, one
+ * visible description at a time, and nothing readable until you clicked
+ * something. A stack diagram of a stack everyone already knows the shape of
+ * tells a reader very little — what they want is which parts are actually
+ * yours, and how much of each.
+ *
+ * So it is a ruled index now: the name on the left, the evidence on the
+ * right, every row legible without touching anything. Same facts, same
+ * wording. Anything that isn't production would say so on its own line.
+ */
+
+interface Capability {
   id: string;
-  label: string;
-  sub?: string;
   title: string;
+  /** The concrete tooling, set as a spec line under the name. */
+  spec: string;
   description: string;
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-  variant?: "plain" | "sub" | "foundation";
+  /** Set where the honest answer isn't "in production". */
+  caveat?: string;
 }
 
-// One diagram instead of seven cards: the stack I actually run, drawn as the
-// system it is. Every node is focusable; details render below the SVG.
-const nodes: MapNode[] = [
+const capabilities: Capability[] = [
   {
-    id: "git",
-    label: "git",
-    sub: "source of truth",
-    title: "Git as the control plane",
+    id: "cluster",
+    title: "Kubernetes & EKS",
+    spec: "EKS · K3s",
     description:
-      "Everything downstream of this node is derived state. Deploys, rollbacks, promotions and infrastructure all trace back to a commit.",
-    x: 20, y: 210, w: 130, h: 64,
+      "Cluster operations end to end: node groups, zero-downtime upgrades, right-sizing for cost. The same discipline runs my single-node K3s homelab.",
   },
   {
-    id: "security",
-    label: "security",
-    sub: "SAST · SCA · policy",
-    title: "Security automation",
+    id: "gitops",
+    title: "GitOps with ArgoCD",
+    spec: "ArgoCD · Image Updater · git",
     description:
-      "Veracode SAST and SourceClear SCA wired into CI so scanning isn't optional, with findings filed straight to Jira. Falco and Suricata I've used, but not carried a pager for.",
-    x: 190, y: 90, w: 160, h: 58,
+      "ArgoCD and Image Updater reconcile the cluster to whatever git says, so nobody deploys by hand and the audit trail is the repository history. Everything downstream is derived state.",
   },
   {
     id: "ci",
-    label: "ci pipeline",
-    sub: "shared library",
     title: "CI/CD pipelines",
+    spec: "shared pipeline library",
     description:
       "One shared pipeline library imported by every service: build, test, scan, push. ~400 deploys/month across 20 services on a single .ci/builds.yaml.",
-    x: 190, y: 210, w: 160, h: 64,
-  },
-  {
-    id: "argocd",
-    label: "argocd",
-    sub: "gitops",
-    title: "GitOps with ArgoCD",
-    description:
-      "ArgoCD and Image Updater reconcile the cluster to whatever git says, so nobody deploys by hand and the audit trail is the repository history.",
-    x: 410, y: 210, w: 150, h: 64,
-  },
-  {
-    id: "cluster",
-    label: "kubernetes",
-    sub: "EKS · K3s",
-    title: "Kubernetes & EKS",
-    description:
-      "Cluster operations end to end: node groups, zero-downtime upgrades, right-sizing for cost. The same discipline runs my single-node K3s homelab.",
-    x: 620, y: 120, w: 220, h: 250,
-  },
-  {
-    id: "services",
-    label: "services",
-    title: "Production services",
-    description:
-      "Twenty Java and Node services, deployed through the shared pipeline and watched by Heimdall.",
-    x: 640, y: 172, w: 180, h: 48,
-    variant: "sub",
-  },
-  {
-    id: "gpu",
-    label: "gpu pool",
-    sub: "not shipped yet",
-    title: "GPU scheduling — research, not production",
-    description:
-      "The one box here I haven't run in production. It's my MSc dissertation: capacity-aware recovery scheduling for Kubernetes, measured on real EKS clusters under induced node failure. Submitting September 2026.",
-    x: 640, y: 236, w: 180, h: 48,
-    variant: "sub",
-  },
-  {
-    id: "data",
-    label: "kafka",
-    sub: "streams",
-    title: "Data platforms",
-    description:
-      "Kafka for service-to-service events, and the schema discipline that stops a producer change breaking every consumer downstream.",
-    x: 640, y: 300, w: 180, h: 48,
-    variant: "sub",
   },
   {
     id: "obs",
-    label: "observability",
-    sub: "prom · grafana · loki",
     title: "Observability",
+    spec: "Prometheus · Grafana · Loki",
     description:
       "Self-hosted Prometheus, Grafana and Loki. 22 dashboards managed as code, 50+ alerts with a runbook each, across four environments.",
-    x: 620, y: 410, w: 220, h: 58,
+  },
+  {
+    id: "security",
+    title: "Security automation",
+    spec: "SAST · SCA · policy",
+    description:
+      "Veracode SAST and SourceClear SCA wired into CI so scanning isn't optional, with findings filed straight to Jira. Falco and Suricata I've used, but not carried a pager for.",
+  },
+  {
+    id: "data",
+    title: "Data platforms",
+    spec: "Kafka · MSK",
+    description:
+      "Kafka for service-to-service events, and the schema discipline that stops a producer change breaking every consumer downstream.",
   },
   {
     id: "aws",
-    label: "aws",
-    sub: "EKS · VPC · IAM · MSK",
     title: "AWS",
+    spec: "EKS · VPC · IAM · MSK · RDS",
     description:
       "EKS, IAM, VPC, Route 53, S3, MSK, RDS. The boring fundamentals, done properly.",
-    x: 20, y: 410, w: 540, h: 58,
-    variant: "foundation",
+  },
+  {
+    id: "agents",
+    title: "AI agents doing platform work",
+    spec: "security triage · incident response",
+    description:
+      "Agents pointed at the platform's own operational load rather than at a chat box: turning security findings into tickets, and taking the first pass on an incident against the runbooks that already exist.",
   },
 ];
 
-const edges = [
-  { from: "git", to: "ci", d: "M150 242 H190" },
-  { from: "security", to: "ci", d: "M270 148 V210" },
-  { from: "ci", to: "argocd", d: "M350 242 H410" },
-  { from: "argocd", to: "cluster", d: "M560 242 H620" },
-  { from: "cluster", to: "obs", d: "M730 370 V410", dashed: true },
-];
+function CapabilityRow({ item, index }: { item: Capability; index: number }) {
+  return (
+    <div className="grid gap-x-10 gap-y-3 border-t border-border py-8 md:grid-cols-[minmax(0,20rem)_minmax(0,1fr)]">
+      <div>
+        <div className="flex items-baseline gap-3">
+          <span className="font-mono text-xs tabular-nums text-muted-foreground">
+            {String(index + 1).padStart(2, "0")}
+          </span>
+          <h3 className="display text-2xl text-foreground sm:text-[1.75rem]">
+            {item.title}
+          </h3>
+        </div>
+        <p className="mt-2 pl-8 font-mono text-xs tracking-wide text-primary/90">
+          {item.spec}
+        </p>
+      </div>
+
+      <div>
+        <p className="text-[0.9375rem] leading-relaxed text-muted-foreground">
+          {item.description}
+        </p>
+        {item.caveat && (
+          <p className="mt-2 font-mono text-xs text-warn">{item.caveat}</p>
+        )}
+      </div>
+    </div>
+  );
+}
 
 export function SystemMap() {
-  const [selected, setSelected] = useState("cluster");
-  const active = nodes.find((n) => n.id === selected)!;
-
   return (
-    <section className="relative py-24 md:py-32 overflow-hidden">
+    <section className="relative py-28 md:py-36">
       <div className="container">
         <SectionHeading
-          command="cat platform.svg"
+          label="capability"
           title="What I build"
           index="03"
-          lede="Select any box. Everything here is something I've run in production or at home, except the one that says otherwise."
+          lede="Everything here is something I run in production or at home."
         />
 
-        <div className="xl:grid xl:grid-cols-[1fr_20rem] xl:gap-8 xl:items-start">
-        <div className="overflow-x-auto pb-2" tabIndex={0}>
-          <motion.svg
-            viewBox="0 0 860 490"
-            className="min-w-[720px] w-full max-w-5xl"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-80px" }}
-            role="group"
-            aria-label="Diagram of the platform stack: git feeds CI, CI feeds ArgoCD, ArgoCD reconciles Kubernetes, observability watches everything, all running on AWS"
-          >
-            {/* Edges */}
-            {edges.map((edge) => (
-              <motion.path
-                key={`${edge.from}-${edge.to}`}
-                d={edge.d}
-                fill="none"
-                stroke="var(--color-border)"
-                strokeWidth={1.5}
-                strokeDasharray={edge.dashed ? "4 4" : undefined}
-                variants={{
-                  hidden: { pathLength: 0, opacity: 0 },
-                  visible: {
-                    pathLength: 1,
-                    opacity: 1,
-                    transition: { duration: 0.8, delay: 0.3 },
-                  },
-                }}
-              />
-            ))}
-            {/* Flow arrows */}
-            {[{ x: 178, y: 242 }, { x: 398, y: 242 }, { x: 608, y: 242 }].map((p, i) => (
-              <motion.path
-                key={i}
-                d={`M${p.x - 8} ${p.y - 5} L${p.x} ${p.y} L${p.x - 8} ${p.y + 5}`}
-                fill="none"
-                stroke="var(--color-primary)"
-                strokeWidth={1.5}
-                variants={{
-                  hidden: { opacity: 0 },
-                  visible: { opacity: 0.7, transition: { delay: 0.9 + i * 0.15 } },
-                }}
-              />
-            ))}
-
-            {/* Nodes */}
-            {nodes.map((node, i) => {
-              const isActive = node.id === selected;
-              const isCluster = node.id === "cluster";
-              return (
-                <motion.g
-                  key={node.id}
-                  tabIndex={0}
-                  role="button"
-                  aria-pressed={isActive}
-                  aria-label={`${node.title} · select for details`}
-                  className="group cursor-pointer"
-                  onClick={() => setSelected(node.id)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault();
-                      setSelected(node.id);
-                    }
-                  }}
-                  variants={{
-                    hidden: { opacity: 0, y: 8 },
-                    visible: {
-                      opacity: 1,
-                      y: 0,
-                      transition: { duration: 0.4, delay: 0.1 + i * 0.06 },
-                    },
-                  }}
-                >
-                  <rect
-                    x={node.x}
-                    y={node.y}
-                    width={node.w}
-                    height={node.h}
-                    rx={6}
-                    className={`transition-[fill,stroke,stroke-width] duration-150 ${
-                      isActive ? "" : "group-hover:stroke-primary/50"
-                    }`}
-                    fill={
-                      isCluster
-                        ? "transparent"
-                        : isActive
-                          ? "oklch(0.72 0.19 150 / 0.1)"
-                          : "var(--color-card)"
-                    }
-                    stroke={isActive ? "var(--color-primary)" : "var(--color-border)"}
-                    strokeWidth={isActive ? 1.5 : 1}
-                    strokeDasharray={node.variant === "foundation" ? "5 4" : undefined}
-                  />
-                  <text
-                    x={isCluster ? node.x + 12 : node.x + node.w / 2}
-                    y={isCluster ? node.y + 24 : node.y + (node.sub ? node.h / 2 - 4 : node.h / 2 + 4)}
-                    textAnchor={isCluster ? "start" : "middle"}
-                    className="font-mono"
-                    fontSize={13}
-                    fontWeight={600}
-                    fill={isActive ? "var(--color-primary)" : "var(--color-foreground)"}
-                  >
-                    {node.label}
-                  </text>
-                  {node.sub && (
-                    <text
-                      x={isCluster ? node.x + 12 : node.x + node.w / 2}
-                      y={isCluster ? node.y + 40 : node.y + node.h / 2 + 14}
-                      textAnchor={isCluster ? "start" : "middle"}
-                      className="font-mono"
-                      fontSize={10}
-                      fill="var(--color-muted-foreground)"
-                    >
-                      {node.sub}
-                    </text>
-                  )}
-                </motion.g>
-              );
-            })}
-          </motion.svg>
-        </div>
-
-        {/* Detail panel, beside the diagram on wide screens */}
-        <motion.div
-          key={active.id}
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-6 xl:mt-2 max-w-3xl rounded-lg border border-primary/30 bg-card/70 p-6 glow-border xl:sticky xl:top-28"
-          aria-live="polite"
-        >
-          <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground mb-2">selected node</p>
-          <h3 className="font-mono font-semibold text-lg text-primary mb-2">
-            {active.title}
-          </h3>
-          <p className="text-muted-foreground leading-relaxed text-sm">{active.description}</p>
-        </motion.div>
+        <div className="border-b border-border">
+          {capabilities.map((item, i) => (
+            <CapabilityRow key={item.id} item={item} index={i} />
+          ))}
         </div>
 
         <div className="mt-12">
           <Link
             href="/projects"
-            className="inline-flex items-center gap-2 font-mono text-primary hover:text-foreground transition-colors"
+            className="inline-flex items-center gap-2 font-mono text-primary transition-colors hover:text-foreground"
           >
             Or just look at what I&apos;ve shipped →
           </Link>
