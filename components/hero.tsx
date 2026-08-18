@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { AsciiField } from "@/components/ascii-field";
 import { LogoMark } from "@/components/logo-mark";
 import { proofPoints } from "@/lib/projects";
 import { profile } from "@/lib/profile";
@@ -22,6 +23,7 @@ export function Hero() {
   return (
     <section className="relative flex min-h-[92vh] flex-col justify-center overflow-hidden pt-32 pb-20">
       <div className="absolute inset-0 phosphor-ambient pointer-events-none" aria-hidden />
+      <AsciiField className="[mask-image:radial-gradient(ellipse_70%_85%_at_72%_45%,black_0%,transparent_72%)] opacity-70" />
 
       <div className="container relative z-10">
         <div className="grid items-center gap-16 lg:grid-cols-[minmax(0,1fr)_auto]">
@@ -81,7 +83,7 @@ export function Hero() {
           {/* The mark, given room, with the wordmark set under it. */}
           <div className="hidden flex-col items-center lg:flex">
             <LogoMark shimmer className="w-[22rem] text-primary xl:w-[26rem]" />
-            <p className="-mt-2 font-mono text-lg tracking-[0.42em] text-muted-foreground xl:text-xl">
+            <p className="mt-6 font-mono text-lg tracking-[0.42em] text-muted-foreground xl:text-xl">
               <span className="text-primary">devlin</span>ops
             </p>
           </div>

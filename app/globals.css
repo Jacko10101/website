@@ -74,6 +74,29 @@ body {
   box-shadow: 0 1px 0 0 color-mix(in oklab, var(--color-foreground) 4%, transparent) inset;
 }
 
+/* The logo's shimmer. The gradient repeats, so translating the band by exactly
+   one wavelength loops seamlessly — the light never stops and never jumps.
+   A CSS transform rather than SMIL, which does not start reliably. */
+@keyframes logo-sweep {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(34px, 18px);
+  }
+}
+
+.logo-sweep {
+  animation: logo-sweep 2.6s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-sweep {
+    animation: none;
+    opacity: 0;
+  }
+}
+
 /* The display face is the sans, set large and tight. Mono is demoted to what
    it is good at: labels, data, code and chrome. A mono headline caps how
    expensive a page can look, and every heading on this site used to be one. */
@@ -206,6 +229,25 @@ html.lenis {
 }
 
 /* Chaos mode — glitch for "crashing" sections, flash for healing */
+
+/* Status ticker — slow marquee, duplicated content, pauses on hover */
+@keyframes ticker-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.ticker-track {
+  /* Slow enough to read a whole item mid-scroll. */
+  animation: ticker-scroll 70s linear infinite;
+}
+
+.ticker-track:hover {
+  animation-play-state: paused;
+}
 
 /* Blinking block cursor — the one signature animation. */
 @keyframes cursor-blink {
