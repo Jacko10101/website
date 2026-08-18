@@ -66,7 +66,7 @@ export function MetricsShowcase({ metrics }: MetricsShowcaseProps) {
             role="button"
             tabIndex={0}
             aria-label={`View ${metric.title}`}
-            className="group cursor-pointer overflow-hidden rounded-lg border border-border bg-card transition-all hover:border-primary hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            className="group cursor-pointer overflow-hidden rounded-lg border border-border bg-card transition-colors duration-200 hover:border-primary active:border-primary/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
           >
             <div className="relative aspect-video overflow-hidden bg-secondary">
               <Image
@@ -109,6 +109,7 @@ export function MetricsShowcase({ metrics }: MetricsShowcaseProps) {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
               onClick={(e) => e.stopPropagation()}
               role="dialog"
               aria-modal="true"

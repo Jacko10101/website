@@ -41,8 +41,14 @@ export function BackToTop() {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.8 }}
+          transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
           onClick={scrollToTop}
-          className="fixed bottom-8 right-8 z-50 rounded-full bg-primary p-3 text-primary-foreground shadow-lg transition-all hover:bg-primary/90 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+          // The transition is scoped: `transition-all` also interpolated the
+          // opacity and transform framer writes inline every frame, which
+          // smeared the pop-in. The focus ring is left to the site-wide
+          // `:focus-visible` rule in globals.css — Tailwind's default ring
+          // offset colour is white, which is the brightest pixel on the site.
+          className="fixed bottom-8 right-8 z-50 rounded-full bg-primary p-3 text-primary-foreground shadow-lg transition-[background-color,scale] duration-150 hover:bg-primary/90 hover:scale-110 active:scale-95 active:duration-75"
           aria-label="Back to top"
         >
           <ArrowUp className="h-5 w-5" />

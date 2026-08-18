@@ -44,7 +44,7 @@ export function ScrollProgress() {
   return (
     <div className="fixed top-0 left-0 right-0 z-50 h-1 bg-secondary/30">
       <div
-        className="h-full bg-gradient-to-r from-primary/60 to-primary transition-all duration-150 ease-out relative"
+        className="h-full bg-gradient-to-r from-primary/60 to-primary relative"
         style={{ width: `${progress}%` }}
       >
         <div className="absolute right-0 top-0 h-full w-2 bg-foreground/50 animate-pulse" />
