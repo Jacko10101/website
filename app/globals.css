@@ -74,6 +74,34 @@ body {
   box-shadow: 0 1px 0 0 color-mix(in oklab, var(--color-foreground) 4%, transparent) inset;
 }
 
+/* The glint where the D and the O cross. It sits still, fades up, and fades
+   back down — the shine is the join catching the light, not a sweep across
+   the whole mark. Both keyframe ends are 0 so the blanket reduced-motion
+   clamp lands on "invisible" rather than on a flash. */
+@keyframes logo-glint {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  42% {
+    opacity: 0.85;
+  }
+  58% {
+    opacity: 0.85;
+  }
+}
+
+.logo-glint {
+  opacity: 0;
+  animation: logo-glint 4.5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-glint {
+    display: none;
+  }
+}
+
 /* The display face is the sans, set large and tight. Mono is demoted to what
    it is good at: labels, data, code and chrome. A mono headline caps how
    expensive a page can look, and every heading on this site used to be one. */

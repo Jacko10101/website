@@ -36,7 +36,7 @@ export function Footer() {
   const links = [
     { name: "Projects", href: "/projects" },
     { name: "About", href: "/about" },
-    { name: "How this site works", href: "/colophon" },
+    { name: "Playground", href: "/playground" },
     { name: "Contact", href: "/contact" },
   ];
 
@@ -160,10 +160,10 @@ export function Footer() {
               no cookies · page counts only
             </span>
             <Link
-              href="/colophon"
+              href="/playground"
               className="flex items-center px-4 py-2 -ml-2 bg-card text-primary [clip-path:polygon(9px_0,100%_0,100%_100%,0_100%)] pl-6 hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary"
             >
-              how this site runs →
+              playground →
             </Link>
           </div>
           <div className="px-4 py-2 border-t border-border/60 text-center text-muted-foreground">

@@ -40,7 +40,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     {
-      url: `${baseUrl}/colophon`,
+      url: `${baseUrl}/playground`,
       lastModified: currentDate,
       changeFrequency: 'monthly',
       priority: 0.5,

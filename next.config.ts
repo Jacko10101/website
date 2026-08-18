@@ -70,6 +70,13 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: path.resolve(__dirname),
   },
+  async redirects() {
+    return [
+      // /colophon shipped for months before the page became the playground.
+      { source: '/colophon', destination: '/playground', permanent: true },
+    ]
+  },
+
   async headers() {
     return [
       {

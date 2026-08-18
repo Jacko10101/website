@@ -78,12 +78,13 @@ export function Hero() {
           </div>
 
           {/* The mark, finally somewhere. It draws itself once on load. */}
-          <LogoMark
-            animate
-            shimmer
-            strokeWidth={1.6}
-            className="hidden w-[17rem] text-primary lg:block xl:w-[20rem]"
-          />
+          {/* The mark, given room, with the wordmark set under it. */}
+          <div className="hidden flex-col items-center lg:flex">
+            <LogoMark shimmer className="w-[22rem] text-primary xl:w-[26rem]" />
+            <p className="-mt-2 font-mono text-lg tracking-[0.42em] text-muted-foreground xl:text-xl">
+              <span className="text-primary">devlin</span>ops
+            </p>
+          </div>
         </div>
 
         {/* Proof strip, evidence before claims */}
