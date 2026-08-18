@@ -125,7 +125,7 @@ export function Footer() {
                 href={BUILD.commitUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1.5 px-4 py-2 bg-primary text-primary-foreground font-semibold [clip-path:polygon(0_0,calc(100%-9px)_0,100%_100%,0_100%)] pr-6 hover:bg-primary/90 transition-colors"
+                className="flex items-center gap-1.5 px-4 py-2 bg-primary text-primary-foreground font-semibold [clip-path:polygon(0_0,calc(100%-9px)_0,100%_100%,0_100%)] pr-6 hover:bg-primary/90 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-background"
                 title="The exact commit serving you this page"
               >
                 <svg className="w-3 h-3" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={1.5} aria-hidden>
@@ -161,7 +161,7 @@ export function Footer() {
             </span>
             <Link
               href="/colophon"
-              className="flex items-center px-4 py-2 -ml-2 bg-card text-primary [clip-path:polygon(9px_0,100%_0,100%_100%,0_100%)] pl-6 hover:text-foreground transition-colors"
+              className="flex items-center px-4 py-2 -ml-2 bg-card text-primary [clip-path:polygon(9px_0,100%_0,100%_100%,0_100%)] pl-6 hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary"
             >
               how this site runs →
             </Link>

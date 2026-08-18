@@ -85,7 +85,7 @@ export function ContactForm() {
             autoComplete="name"
             required
             disabled={status === "submitting"}
-            className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
+            className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
             placeholder="Your name"
           />
         </div>
@@ -104,7 +104,7 @@ export function ContactForm() {
             autoComplete="email"
             required
             disabled={status === "submitting"}
-            className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
+            className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
             placeholder="you@company.com"
           />
         </div>
@@ -123,7 +123,7 @@ export function ContactForm() {
           name="subject"
           required
           disabled={status === "submitting"}
-          className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
+          className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
           placeholder="Quick question / role / general"
         />
       </div>
@@ -141,7 +141,7 @@ export function ContactForm() {
           required
           disabled={status === "submitting"}
           rows={8}
-          className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 resize-y disabled:opacity-50"
+          className="w-full rounded-lg border border-border bg-background px-4 py-3 text-sm transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20 resize-y disabled:opacity-50"
           placeholder="What you're working on, what's broken, or just hello."
         />
       </div>

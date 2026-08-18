@@ -61,7 +61,7 @@ export function SqlPlayground() {
             spellCheck={false}
             rows={7}
             aria-label="SQL to validate"
-            className="w-full bg-transparent px-4 py-3 font-mono text-[12px] leading-relaxed text-foreground outline-none resize-y placeholder:text-muted-foreground/40"
+            className="w-full bg-transparent px-4 py-3 font-mono text-[12px] leading-relaxed text-foreground outline-none resize-y focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary/60 placeholder:text-muted-foreground/40"
             placeholder="SELECT …"
           />
 

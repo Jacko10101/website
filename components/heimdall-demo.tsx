@@ -431,7 +431,7 @@ export function HeimdallDemo() {
                             : highlight
                               ? "border-warn/50 bg-warn/5"
                               : "border-border bg-black/40 hover:border-muted-foreground/40"
-                        } ${dimmed ? "opacity-30" : "opacity-100"}`}
+                        } ${dimmed ? "opacity-30" : "opacity-100"} focus-visible:opacity-100`}
                       >
                         <div className="flex items-center gap-1.5">
                           <span
