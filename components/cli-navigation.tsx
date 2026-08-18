@@ -632,7 +632,7 @@ The form does actually send, and I read everything that comes through it.`;
           </div>
 
           {/* Terminal output */}
-          <div ref={outputRef} tabIndex={0} data-lenis-prevent role="log" aria-live="polite" className="mb-4 max-h-96 overflow-y-auto font-mono text-sm">
+          <div ref={outputRef} tabIndex={0} role="log" aria-live="polite" className="mb-4 max-h-96 overflow-y-auto font-mono text-sm">
             {history.length === 0 && (
               <div className="mb-4 text-foreground/90">
                 <p>devlinops.com · interactive shell</p>

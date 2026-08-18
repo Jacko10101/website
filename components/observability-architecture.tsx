@@ -131,7 +131,7 @@ export function ObservabilityArchitecture() {
       </div>
 
       <div className="relative">
-        <div className="overflow-x-auto" data-lenis-prevent tabIndex={0}>
+        <div className="overflow-x-auto" tabIndex={0}>
         <svg
           viewBox="0 0 880 600"
           className="min-w-[880px] w-full"

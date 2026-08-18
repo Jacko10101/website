@@ -97,7 +97,7 @@ export function SchemaDirectory() {
 
       <div className="grid gap-0 lg:grid-cols-[1.35fr_1fr]">
         {/* the document */}
-        <div tabIndex={0} data-lenis-prevent className="p-4 sm:p-5 overflow-x-auto border-b lg:border-b-0 lg:border-r border-border">
+        <div tabIndex={0} className="p-4 sm:p-5 overflow-x-auto border-b lg:border-b-0 lg:border-r border-border">
           <pre className="font-mono text-[11.5px] leading-[1.75] whitespace-pre">
             {DOC.map((l, i) => {
               const clickable = Boolean(l.ann);

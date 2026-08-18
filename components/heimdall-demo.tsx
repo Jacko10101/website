@@ -382,7 +382,7 @@ export function HeimdallDemo() {
         </AnimatePresence>
 
         {/* matrix */}
-        <div className="overflow-x-auto" tabIndex={0} data-lenis-prevent>
+        <div className="overflow-x-auto" tabIndex={0}>
           <div className="min-w-[560px]">
             {/* header */}
             <div className="grid grid-cols-[150px_repeat(4,1fr)] gap-2 px-1 pb-2">

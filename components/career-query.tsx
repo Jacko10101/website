@@ -294,7 +294,6 @@ export function CareerQuery() {
             ) : (
               <div
                 tabIndex={0}
-                data-lenis-prevent
                 className="max-h-[15rem] overflow-auto rounded-md border border-border/40"
               >
                 <table className="w-full font-mono text-[12px]">

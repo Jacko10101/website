@@ -139,7 +139,7 @@ export function SystemMap() {
         />
 
         <div className="xl:grid xl:grid-cols-[1fr_20rem] xl:gap-8 xl:items-start">
-        <div className="overflow-x-auto pb-2" tabIndex={0} data-lenis-prevent>
+        <div className="overflow-x-auto pb-2" tabIndex={0}>
           <motion.svg
             viewBox="0 0 860 490"
             className="min-w-[720px] w-full max-w-5xl"

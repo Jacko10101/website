@@ -134,7 +134,6 @@ export function MetricsShowcase({ metrics }: MetricsShowcaseProps) {
               aria-modal="true"
               aria-label={selectedMetric.title}
               tabIndex={0}
-              data-lenis-prevent
               className="relative max-w-6xl w-full max-h-[90vh] overflow-auto rounded-lg border border-border bg-card shadow-2xl"
             >
               <button

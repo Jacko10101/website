@@ -17,6 +17,13 @@ export function SmoothScroll() {
     const lenis = new Lenis({
       duration: 1.05,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      // Hand the wheel to a nested pane only when that pane can actually
+      // scroll in the direction of the gesture, and take it back at the
+      // boundary. `data-lenis-prevent` cannot do this: it yields
+      // unconditionally, so a pane with nothing to scroll swallows the wheel.
+      // Tailwind's `overflow-x-auto` computes `overflow-y` to `auto` too, so
+      // every horizontal pane on the site was one of those dead zones.
+      allowNestedScroll: true,
     });
 
     let raf = 0;

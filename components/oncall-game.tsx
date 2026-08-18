@@ -1164,12 +1164,11 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
         )}
 
         {(phase === "active" || phase === "resolved") && scenario && (
-          <div data-lenis-prevent className="grid md:grid-cols-[1.2fr_1fr] max-h-[75vh] md:max-h-[60vh] overflow-y-auto md:overflow-visible">
+          <div className="grid md:grid-cols-[1.2fr_1fr] max-h-[75vh] md:max-h-[60vh] overflow-y-auto md:overflow-visible">
             {/* Log feed */}
             <div
               ref={logRef}
               tabIndex={0}
-              data-lenis-prevent
               className="p-5 font-mono text-[11px] leading-5 overflow-y-auto border-b md:border-b-0 md:border-r border-border min-h-[16rem]"
               aria-live="polite"
             >
