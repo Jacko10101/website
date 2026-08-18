@@ -368,8 +368,8 @@ export interface Phosphor {
 }
 
 export const PHOSPHORS: Record<string, Phosphor> = {
-  green: { hue: 150, label: "P1 · green" },
-  amber: { hue: 85, label: "P3 · amber" },
+  green: { hue: 150, chroma: 0.19, label: "P1 · green" },
+  amber: { hue: 85, lightness: 0.66, label: "P3 · amber" },
   white: { hue: 250, chroma: 0.02, lightness: 0.87, label: "P4 · white" },
   blue: { hue: 230, chroma: 0.15, label: "P11 · blue" },
   violet: { hue: 305, chroma: 0.16, label: "P16 · violet" },
