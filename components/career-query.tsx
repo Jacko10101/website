@@ -38,6 +38,11 @@ interface SqlDb {
 }
 
 let dbPromise: Promise<SqlDb> | null = null;
+/** True once the engine is warm. After that `db.exec` is synchronous and
+ *  there is no interval in which "running…" can usefully be shown — flipping
+ *  through it tore the table down and dropped the panel to its floor for one
+ *  frame on every question. */
+let dbReady = false;
 
 function getDb(): Promise<SqlDb> {
   if (dbPromise) return dbPromise;
@@ -56,6 +61,7 @@ function getDb(): Promise<SqlDb> {
         db.exec(`INSERT INTO ${table.name} VALUES (${values})`);
       }
     }
+    dbReady = true;
     return db;
   });
   return dbPromise;
@@ -113,6 +119,9 @@ export function CareerQuery() {
   const [sql, setSql] = useState(QUESTIONS[OPENING].sql);
   const [state, setState] = useState<State>({ kind: "idle" });
   const [showSchema, setShowSchema] = useState(false);
+  // The panel answers its opening question on mount; announcing that would
+  // read a whole table at every homepage visit. It goes live once asked.
+  const [announce, setAnnounce] = useState(false);
   const firstRun = useRef(true);
 
   const run = useCallback(async (query: string) => {
@@ -125,7 +134,7 @@ export function CareerQuery() {
       return;
     }
 
-    setState({ kind: "running" });
+    if (!dbReady) setState({ kind: "running" });
     try {
       const db = await getDb();
       const started = performance.now();
@@ -159,6 +168,7 @@ export function CareerQuery() {
   }, [run]);
 
   const pick = (q: (typeof QUESTIONS)[number]) => {
+    setAnnounce(true);
     setAsked(q.ask);
     setSql(q.sql);
     run(q.sql);
@@ -177,7 +187,7 @@ export function CareerQuery() {
         <button
           type="button"
           onClick={() => setShowSchema((s) => !s)}
-          className="font-mono text-[11px] text-muted-foreground hover:text-primary transition-colors"
+          className="-my-1.5 rounded px-2 py-1.5 font-mono text-[11px] text-muted-foreground transition-colors duration-150 hover:text-primary active:text-primary/70"
           aria-expanded={showSchema}
         >
           {showSchema ? "hide schema" : "schema"}
@@ -202,7 +212,7 @@ export function CareerQuery() {
               type="button"
               onClick={() => pick(q)}
               aria-pressed={asked === q.ask}
-              className={`rounded-md border px-2.5 py-1.5 text-left font-mono text-[11px] transition-colors ${
+              className={`rounded-md border px-2.5 py-2 text-left font-mono text-[11px] transition-colors duration-150 active:bg-primary/15 ${
                 asked === q.ask
                   ? "border-primary/60 bg-primary/10 text-primary"
                   : "border-border text-muted-foreground hover:text-foreground hover:border-primary/40"
@@ -222,8 +232,12 @@ export function CareerQuery() {
           </p>
           <button
             type="button"
-            onClick={() => run(sql)}
-            className="rounded-md bg-primary px-3 py-1 font-mono text-[11px] font-semibold text-primary-foreground hover:bg-primary/90 transition-colors"
+            onClick={() => {
+              setAnnounce(true);
+              run(sql);
+            }}
+            disabled={state.kind === "running"}
+            className="min-h-8 rounded-md bg-primary px-4 py-1.5 font-mono text-[11px] font-semibold text-primary-foreground transition-colors duration-150 hover:bg-primary/90 active:bg-primary/75 disabled:cursor-wait disabled:opacity-70"
           >
             run
           </button>
@@ -234,6 +248,7 @@ export function CareerQuery() {
           onKeyDown={(e) => {
             if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
               e.preventDefault();
+              setAnnounce(true);
               run(sql);
             }
           }}
@@ -245,8 +260,9 @@ export function CareerQuery() {
         />
       </div>
 
-      {/* Result */}
-      <div className="px-4 py-3 min-h-[8rem]">
+      {/* Result. The floor is the height a full result settles at: reserving
+          8rem meant the homepage reflowed ~160px the moment the wasm resolved. */}
+      <div className="px-4 py-3 min-h-[18rem]" role="status" aria-live={announce ? "polite" : "off"}>
         {state.kind === "running" && (
           <p className="font-mono text-[11px] text-muted-foreground">running…</p>
         )}
@@ -255,7 +271,7 @@ export function CareerQuery() {
           <div className="rounded-md border border-error/50 bg-error/5 p-3">
             <p className="font-mono text-[11px] text-error mb-1">refused</p>
             <p className="text-sm text-muted-foreground leading-relaxed">{state.message}</p>
-            <p className="mt-2 text-[11px] text-muted-foreground/70 leading-relaxed">
+            <p className="mt-2 text-[11px] text-muted-foreground/80 leading-relaxed">
               That refusal came from the same validator that guards
               model-generated SQL in Clarity, ported to run here.
             </p>
@@ -276,7 +292,11 @@ export function CareerQuery() {
                 0 rows.
               </p>
             ) : (
-              <div className="max-h-[15rem] overflow-auto rounded-md border border-border/40">
+              <div
+                tabIndex={0}
+                data-lenis-prevent
+                className="max-h-[15rem] overflow-auto rounded-md border border-border/40"
+              >
                 <table className="w-full font-mono text-[12px]">
                   <thead className="sticky top-0 bg-card">
                     <tr className="text-left">
@@ -307,7 +327,7 @@ export function CareerQuery() {
                 </table>
               </div>
             )}
-            <p className="mt-3 font-mono text-[10px] text-muted-foreground/70">
+            <p className="mt-3 font-mono text-[10px] text-muted-foreground/80">
               {state.rows.length} row{state.rows.length === 1 ? "" : "s"} · {state.ms.toFixed(1)}ms ·
               executed in your browser
             </p>
