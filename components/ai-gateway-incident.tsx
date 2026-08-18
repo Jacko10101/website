@@ -238,7 +238,7 @@ export function IncidentAppendices() {
                 <span className="mx-1.5 text-muted-foreground/40" aria-hidden>
                   ·
                 </span>
-              )}
+              )}{" "}
             </span>
           ))}
         </p>
