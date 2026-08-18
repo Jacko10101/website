@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useScroll } from "framer-motion";
+import { motion, useScroll, useReducedMotion } from "framer-motion";
 import { Download } from "lucide-react";
 import { SectionHeading } from "@/components/section-heading";
 import { ContactCTA } from "@/components/contact-cta";
@@ -88,6 +88,7 @@ function AboutHero() {
                   src="/jack-photo.jpg"
                   alt="Jack Devlin"
                   fill
+                  sizes="(min-width: 768px) 288px, 256px"
                   className="object-cover"
                   priority
                 />
@@ -150,6 +151,10 @@ function AboutHero() {
 // Timeline section, styled as `git log`
 function JourneyTimeline() {
   const listRef = useRef<HTMLOListElement>(null);
+  // A motion value bound through `style` is never animated by framer, so
+  // MotionConfig's reducedMotion="user" does not reach it — this scroll-linked
+  // line has to opt out itself.
+  const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({
     target: listRef,
     offset: ["start 0.8", "end 0.55"],
@@ -173,7 +178,7 @@ function JourneyTimeline() {
             />
             {/* Line that draws itself with scroll progress */}
             <motion.div
-              style={{ scaleY: scrollYProgress }}
+              style={{ scaleY: reduce ? 1 : scrollYProgress }}
               className="absolute left-[7px] top-2 bottom-2 w-px bg-primary origin-top"
               aria-hidden
             />
@@ -351,7 +356,7 @@ function TechStackSection() {
               key={tier.id}
               className="rounded-md border border-border bg-card p-6 md:p-8"
             >
-              <h3 className="font-mono font-semibold text-sm text-primary mb-1">
+              <h3 className="font-mono font-semibold tracking-tight text-lg text-primary mb-1">
                 {tier.label}
               </h3>
               <p className="text-sm text-muted-foreground mb-5">{tier.note}</p>
@@ -385,7 +390,7 @@ function CurrentlySection() {
             <p className="font-mono text-sm text-primary mb-4" aria-hidden>
               <span className="text-muted-foreground">$</span> status --now
             </p>
-            <h2 className="font-mono font-semibold tracking-tight text-2xl md:text-3xl text-foreground mb-3">
+            <h2 className="font-mono font-semibold tracking-tight text-3xl sm:text-4xl md:text-5xl text-foreground mb-3">
               Right now
             </h2>
             <p className="font-mono text-sm text-primary mb-6">
