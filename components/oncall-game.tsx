@@ -1002,7 +1002,7 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
             </span>
             <button
               onClick={onClose}
-              className="text-muted-foreground hover:text-foreground"
+              className="-my-2 -mr-2 inline-flex h-9 items-center rounded px-2 text-muted-foreground transition-colors duration-150 hover:text-foreground active:text-primary"
               aria-label="Close game"
             >
               esc ✕
@@ -1129,7 +1129,7 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
         )}
 
         {(phase === "active" || phase === "resolved") && scenario && (
-          <div className="grid md:grid-cols-[1.2fr_1fr] max-h-[60vh]">
+          <div data-lenis-prevent className="grid md:grid-cols-[1.2fr_1fr] max-h-[75vh] md:max-h-[60vh] overflow-y-auto md:overflow-visible">
             {/* Log feed */}
             <div
               ref={logRef}

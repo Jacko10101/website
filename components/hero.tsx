@@ -85,7 +85,7 @@ export function Hero() {
                 download="jack-devlin-cv.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 font-mono text-sm text-muted-foreground hover:text-foreground transition-colors"
+                className="inline-flex items-center gap-2 py-3.5 px-1 -mx-1 font-mono text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
                 Download CV
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>

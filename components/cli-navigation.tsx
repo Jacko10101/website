@@ -623,7 +623,7 @@ The form does actually send, and I read everything that comes through it.`;
               <span className="font-mono text-xs text-muted-foreground">Press ESC to close</span>
               <button
                 onClick={() => setIsOpen(false)}
-                className="text-muted-foreground hover:text-foreground"
+                className="-m-2 flex h-10 w-10 items-center justify-center rounded text-muted-foreground transition-colors duration-150 hover:text-foreground active:text-primary"
                 aria-label="Close"
               >
                 ✕

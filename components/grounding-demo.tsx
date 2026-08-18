@@ -136,7 +136,7 @@ export function GroundingDemo() {
           type="button"
           onClick={() => setGrounding((g) => !g)}
           aria-pressed={grounding}
-          className={`relative inline-flex h-6 w-12 items-center rounded-full transition-colors ${
+          className={`relative inline-flex h-6 w-12 items-center rounded-full transition-colors after:absolute after:inset-x-0 after:-inset-y-2.5 after:content-[''] ${
             grounding ? "bg-primary" : "bg-muted-foreground/30"
           }`}
         >

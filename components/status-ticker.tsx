@@ -62,7 +62,7 @@ export function StatusTicker() {
         onClick={() => setPaused((p) => !p)}
         aria-label={paused ? "Resume ticker" : "Pause ticker"}
         aria-pressed={paused}
-        className="absolute right-2 top-1/2 -translate-y-1/2 rounded border border-border bg-background/90 px-2 py-0.5 font-mono text-xs text-muted-foreground hover:text-foreground transition-colors"
+        className="absolute right-3 top-1/2 -translate-y-1/2 rounded border border-border bg-background/90 px-3 py-1.5 font-mono text-xs text-muted-foreground transition-colors duration-150 hover:text-foreground hover:border-primary/50 active:bg-secondary"
       >
         {paused ? "▶" : "❚❚"}
       </button>
