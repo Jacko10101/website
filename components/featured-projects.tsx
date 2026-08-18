@@ -19,7 +19,7 @@ function ProjectTile({ project }: { project: Project }) {
   return (
       <Link
         href={project.href!}
-        className="group flex flex-col h-full rounded-lg border border-border bg-card/60 hover:border-primary/60 hover:-translate-y-1 hover:shadow-[0_12px_48px_oklch(0.72_0.19_150_/_0.12)] transition-all duration-300 overflow-hidden"
+        className="group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card/60 transition-[translate,border-color] duration-200 ease-out hover:-translate-y-1 hover:border-primary/60"
       >
         {/* Document stamp — each case study is a different genre */}
         {(project.docType || project.startHere) && (
@@ -40,7 +40,7 @@ function ProjectTile({ project }: { project: Project }) {
         {/* Tile header, reads like a dashboard row */}
         <div className="flex items-center justify-between px-6 pt-3">
           <div className="flex items-baseline gap-3">
-            <h3 className="font-mono font-semibold text-xl text-foreground group-hover:text-primary transition-colors duration-300">
+            <h3 className="display text-2xl text-foreground transition-colors duration-300 group-hover:text-primary">
               {project.title}
             </h3>
             <span className="font-mono text-xs text-muted-foreground">{project.year}</span>
@@ -68,7 +68,7 @@ function ProjectTile({ project }: { project: Project }) {
         <div className="px-6 mt-5 grid grid-cols-3 gap-3 border-t border-border/60 pt-4">
           {project.stats.map((stat) => (
             <div key={stat.label}>
-              <div className="font-mono text-lg font-semibold text-primary">{stat.value}</div>
+              <div className="display text-xl text-primary">{stat.value}</div>
               <div className="text-[11px] text-muted-foreground leading-tight">{stat.label}</div>
             </div>
           ))}
@@ -88,15 +88,16 @@ function ProjectTile({ project }: { project: Project }) {
 
 export function FeaturedProjects() {
   return (
-    <section className="relative py-24 md:py-32">
+    <section className="relative py-28 md:py-36">
       <div className="container">
         <SectionHeading
           title="Shipped and running"
           index="01"
+          label="case studies"
           lede="Six things I built and still look after. All but the last were at Loweconex, a UK IoT platform business in Northern Ireland."
         />
 
-        <div className="grid md:grid-cols-2 gap-6 max-w-6xl">
+        <div className="grid gap-6 md:grid-cols-2">
           {featuredProjects.map((project) => (
             <ProjectTile key={project.id} project={project} />
           ))}

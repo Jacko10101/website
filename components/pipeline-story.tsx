@@ -164,10 +164,10 @@ export function PipelineStory() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.35 }}
             >
-              <h3 className="font-mono text-3xl md:text-4xl font-semibold text-foreground mb-3 glow-soft">
+              <h3 className="display mb-4 text-4xl text-foreground md:text-5xl">
                 {stage.headline}
               </h3>
-              <p className="text-muted-foreground text-lg max-w-xl">{stage.copy}</p>
+              <p className="max-w-xl text-lg leading-relaxed text-muted-foreground">{stage.copy}</p>
             </motion.div>
 
             <TerminalWindow title={`promotion · ${sha}`} className="hidden lg:block glow-border">
@@ -229,16 +229,8 @@ export function PipelineStory() {
 function PipelineHeader() {
   return (
     <div className="relative mb-10">
-      <span
-        aria-hidden
-        className="text-outline absolute -top-10 right-0 font-mono font-bold text-[9rem] sm:text-[12rem] leading-none pointer-events-none select-none"
-      >
-        02
-      </span>
-      <p className="font-mono text-sm text-primary mb-3" aria-hidden>
-        <span className="text-muted-foreground">$</span> git push && watch the promotion
-      </p>
-      <h2 className="font-mono font-semibold tracking-tight text-4xl sm:text-5xl md:text-6xl text-foreground">
+      <p className="eyebrow mb-5">02 · delivery</p>
+      <h2 className="display text-4xl text-foreground sm:text-5xl md:text-6xl">
         How my platforms ship
       </h2>
     </div>

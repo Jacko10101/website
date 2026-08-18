@@ -309,7 +309,7 @@ function PhilosophySection() {
     <section className="relative py-24">
       <div className="container px-4">
         <SectionHeading
-          command="cat principles.md"
+          label="principles"
           title="How I work"
           lede="Three things I've come to believe after a few years on platform teams."
           align="center"
@@ -344,7 +344,7 @@ function TechStackSection() {
     <section className="relative py-24">
       <div className="container px-4">
         <SectionHeading
-          command="ls stack/"
+          label="stack"
           title="Tech stack"
           lede="Split three ways, so you know which is which: what I've been on call for, what runs in my flat, and what I've only used."
           align="center"
