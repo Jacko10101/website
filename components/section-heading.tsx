@@ -25,7 +25,7 @@ export function SectionHeading({
       {index && (
         <span
           aria-hidden
-          className="text-outline absolute -top-14 right-0 sm:-right-24 lg:-right-48 font-mono font-bold text-[9rem] sm:text-[12rem] leading-none pointer-events-none select-none"
+          className="text-outline absolute -top-14 right-0 lg:-right-48 font-mono font-bold text-[9rem] sm:text-[12rem] leading-none pointer-events-none select-none"
         >
           {index}
         </span>
