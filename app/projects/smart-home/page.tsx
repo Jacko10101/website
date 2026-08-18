@@ -272,6 +272,7 @@ export default function SmartHomePage() {
     <CaseStudyLayout schema={articleSchema} phosphor={PHOSPHORS.violet}>
       <header className="pt-24 pb-10 md:pt-28 md:pb-12">
         <div className="container px-4">
+          <div className="max-w-6xl mx-auto">
           <Link
             href="/projects"
             className="inline-flex items-center gap-2 text-sm font-mono text-muted-foreground hover:text-primary transition-colors mb-6 group"
@@ -283,11 +284,12 @@ export default function SmartHomePage() {
           <div className="max-w-4xl">
             <SpecPlate />
           </div>
+          </div>
         </div>
       </header>
 
       <div className="container px-4 pb-20">
-        <div className="grid gap-8 lg:grid-cols-[2fr_1fr] max-w-7xl mx-auto">
+        <div className="grid gap-8 lg:grid-cols-[2fr_1fr] max-w-6xl mx-auto">
           <div>
             <SpecSection n="1" title="Why it all runs locally">
               <Annotations>

@@ -174,10 +174,11 @@ const LEDGER: { claim: string; open?: boolean }[] = [
 
 function ClaimsLedgerHeader() {
   return (
-    <header className="relative pt-20 pb-10 md:pt-24 md:pb-12 overflow-hidden">
+    <header className="relative pt-24 pb-10 md:pt-28 md:pb-12 overflow-hidden">
       <div className="absolute inset-0 grid-background pointer-events-none" aria-hidden />
 
       <div className="container px-4 relative z-10">
+        <div className="max-w-6xl mx-auto">
         <Link
           href="/projects"
           className="inline-flex items-center gap-2 text-sm font-mono text-muted-foreground hover:text-primary transition-colors mb-6 group"
@@ -259,6 +260,7 @@ function ClaimsLedgerHeader() {
               ))}
             </ol>
           </div>
+        </div>
         </div>
       </div>
     </header>
@@ -507,7 +509,7 @@ export default function ClarityPage() {
       <ClaimsLedgerHeader />
 
       <div className="container px-4 pt-6">
-        <div className="grid gap-8 lg:grid-cols-[2fr_1fr] max-w-7xl mx-auto">
+        <div className="grid gap-8 lg:grid-cols-[2fr_1fr] max-w-6xl mx-auto">
           <div className="space-y-12">
             <CaseStudySection
               eyebrow="> how hard is text-to-sql, really?"

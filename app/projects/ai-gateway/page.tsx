@@ -177,7 +177,7 @@ export default function AIGatewayPage() {
 
       {/* The instrument — the review's interactive exhibit */}
       <div className="container px-4 pt-8 mb-16">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <figure>
             <div className="mb-4">
               <p className="font-mono text-xs tracking-wider">
@@ -205,7 +205,7 @@ export default function AIGatewayPage() {
       </div>
 
       <div className="container px-4">
-        <div className="grid gap-8 lg:grid-cols-[2fr_1fr] max-w-7xl mx-auto">
+        <div className="grid gap-8 lg:grid-cols-[2fr_1fr] max-w-6xl mx-auto">
           <div className="space-y-12">
             <ReportSection
               finding={1}

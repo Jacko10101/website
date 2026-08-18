@@ -43,6 +43,7 @@ export function IncidentHeader() {
       <div className="absolute inset-0 grid-background pointer-events-none" aria-hidden />
 
       <div className="container px-4 relative z-10">
+        <div className="max-w-6xl mx-auto">
         {/* Back link */}
         <div>
           <Link
@@ -106,6 +107,7 @@ export function IncidentHeader() {
               hold a virtual key with a model allowlist, not a provider key.
             </ReportField>
           </dl>
+        </div>
         </div>
       </div>
     </header>
