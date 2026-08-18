@@ -150,7 +150,7 @@ export function ContactForm() {
         <button
           type="submit"
           disabled={status === "submitting"}
-          className="group inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-primary px-8 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/90 hover:gap-3 disabled:opacity-50 disabled:cursor-not-allowed sm:w-auto"
+          className="group inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-primary px-8 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/90 hover:gap-3 active:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed sm:w-auto"
         >
           {status === "submitting" ? (
             <>

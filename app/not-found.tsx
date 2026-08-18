@@ -111,14 +111,14 @@ export default function NotFound() {
         <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
           <Link
             href="/"
-            className="group inline-flex items-center justify-center gap-3 rounded-lg bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/90"
+            className="group inline-flex items-center justify-center gap-3 rounded-lg bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/90 active:bg-primary/80"
           >
             <span className="font-mono text-xs opacity-70">kubectl apply -f</span>
             <span className="font-semibold">homepage.yaml</span>
           </Link>
           <Link
             href="/projects"
-            className="inline-flex items-center justify-center gap-3 rounded-lg border border-border bg-card px-6 py-3 text-sm font-medium text-foreground/90 transition-all hover:bg-card/70 hover:border-primary/50"
+            className="inline-flex items-center justify-center gap-3 rounded-lg border border-border bg-card px-6 py-3 text-sm font-medium text-foreground/90 transition-all hover:bg-card/70 hover:border-primary/50 active:border-primary"
           >
             <span className="font-mono text-xs opacity-70">kubectl get</span>
             <span>projects</span>
