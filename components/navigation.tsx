@@ -72,7 +72,7 @@ export function Navigation() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "relative px-4 py-2 font-mono text-sm rounded-md transition-colors duration-150",
+                  "relative px-4 py-2 font-mono text-sm rounded-md transition-colors duration-150 active:bg-primary/10 active:text-primary",
                   pathname === item.href || pathname.startsWith(item.href + "/")
                     ? "text-primary bg-primary/10"
                     : "text-muted-foreground hover:text-foreground hover:bg-secondary"
@@ -110,7 +110,7 @@ export function Navigation() {
                 href={item.href}
                 onClick={() => setMobileMenuOpen(false)}
                 className={cn(
-                  "block px-4 py-3 font-mono text-base rounded-md transition-colors duration-150",
+                  "block px-4 py-3 font-mono text-base rounded-md transition-colors duration-150 active:bg-primary/10 active:text-primary",
                   pathname === item.href || pathname.startsWith(item.href + "/")
                     ? "text-primary bg-primary/10"
                     : "text-muted-foreground hover:text-foreground hover:bg-secondary"

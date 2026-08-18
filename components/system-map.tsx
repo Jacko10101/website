@@ -194,7 +194,7 @@ export function SystemMap() {
                   role="button"
                   aria-pressed={isActive}
                   aria-label={`${node.title} · select for details`}
-                  className="cursor-pointer"
+                  className="group cursor-pointer"
                   onClick={() => setSelected(node.id)}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === " ") {
@@ -217,6 +217,9 @@ export function SystemMap() {
                     width={node.w}
                     height={node.h}
                     rx={6}
+                    className={`transition-[fill,stroke,stroke-width] duration-150 ${
+                      isActive ? "" : "group-hover:stroke-primary/50"
+                    }`}
                     fill={
                       isCluster
                         ? "transparent"
@@ -259,9 +262,10 @@ export function SystemMap() {
 
         {/* Detail panel, beside the diagram on wide screens */}
         <motion.div
+          key={active.id}
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
+          transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
           className="mt-6 xl:mt-2 max-w-3xl rounded-lg border border-primary/30 bg-card/70 p-6 glow-border xl:sticky xl:top-28"
           aria-live="polite"
         >

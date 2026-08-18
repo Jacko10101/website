@@ -134,7 +134,7 @@ export function SchemaDirectory() {
                   className={`cursor-pointer rounded-sm -mx-1 px-1 transition-colors ${base} ${
                     isActive
                       ? "bg-primary/15 text-foreground"
-                      : "hover:bg-primary/5"
+                      : "bg-primary/[0.06] hover:bg-primary/12 active:bg-primary/20"
                   }`}
                 >
                   {l.text}

@@ -41,7 +41,7 @@ function ProjectTile({ project }: { project: Project }) {
         {/* Tile header, reads like a dashboard row */}
         <div className="flex items-center justify-between px-6 pt-3">
           <div className="flex items-baseline gap-3">
-            <h3 className="font-mono font-semibold text-xl text-foreground group-hover:text-primary transition-colors">
+            <h3 className="font-mono font-semibold text-xl text-foreground group-hover:text-primary transition-colors duration-300">
               {project.title}
             </h3>
             <span className="font-mono text-xs text-muted-foreground">{project.year}</span>
@@ -79,7 +79,7 @@ function ProjectTile({ project }: { project: Project }) {
             typing at once read as six empty boxes, and duplicating the index
             here left "All projects" with nothing to offer. */}
         <div className="px-6 pt-4 pb-5 flex items-center justify-end">
-          <span className="font-mono text-xs text-primary whitespace-nowrap group-hover:translate-x-1 transition-transform">
+          <span className="font-mono text-xs text-primary whitespace-nowrap group-hover:translate-x-1 transition-transform duration-300">
             {project.docCta ?? "case study"} →
           </span>
         </div>

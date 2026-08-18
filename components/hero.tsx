@@ -70,13 +70,13 @@ export function Hero() {
             <div className="flex flex-wrap gap-4 items-center mb-8">
               <Link
                 href="/projects"
-                className="px-7 py-3.5 rounded-md bg-primary text-primary-foreground font-mono font-semibold hover:bg-primary/90 hover:shadow-[0_0_28px_oklch(0.72_0.19_150_/_0.35)] transition-all"
+                className="px-7 py-3.5 rounded-md bg-primary text-primary-foreground font-mono font-semibold hover:bg-primary/90 hover:shadow-[0_0_28px_oklch(0.72_0.19_150_/_0.35)] active:bg-primary/80 active:scale-[0.98] transition-all"
               >
                 Read the case studies
               </Link>
               <Link
                 href="/contact"
-                className="px-7 py-3.5 rounded-md border border-border text-foreground font-mono hover:border-primary/60 hover:text-primary transition-colors"
+                className="px-7 py-3.5 rounded-md border border-border text-foreground font-mono hover:border-primary/60 hover:text-primary active:border-primary active:bg-primary/10 transition-colors"
               >
                 Say hello
               </Link>

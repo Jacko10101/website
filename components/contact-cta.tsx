@@ -36,13 +36,13 @@ export function ContactCTA({
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link
                 href="/contact"
-                className="px-8 py-4 rounded-md bg-primary text-primary-foreground font-mono font-semibold hover:bg-primary/90 transition-colors"
+                className="px-8 py-4 rounded-md bg-primary text-primary-foreground font-mono font-semibold hover:bg-primary/90 active:bg-primary/80 transition-colors"
               >
                 Say hello
               </Link>
               <a
                 href="mailto:jack@devlinops.com"
-                className="px-8 py-4 rounded-md border border-border text-foreground font-mono hover:border-primary/60 hover:text-primary transition-colors"
+                className="px-8 py-4 rounded-md border border-border text-foreground font-mono hover:border-primary/60 hover:text-primary active:border-primary active:bg-primary/10 transition-colors"
               >
                 jack@devlinops.com
               </a>
