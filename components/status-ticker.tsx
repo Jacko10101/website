@@ -7,14 +7,19 @@ import { useReducedMotion } from "framer-motion";
 // Deliberately none of the three figures in the hero proof strip — the ticker
 // sitting directly beneath it repeating them read as padding.
 const items = [
+  "22 dashboards managed as code · 50+ alerts, a runbook for every one",
+  "twenty services, one .ci/builds.yaml",
+  "four environments, reconciled from git by ArgoCD",
+  "one endpoint in front of every model call, with per-key model allowlists",
+  "spend traced to the tenant and the feature that caused it",
   "every answer ships with the SQL that produced it",
   "an answer naming a site that isn't in the database gets refused, every turn",
+  "five classes of hallucination caught on every turn",
   "0 vector stores · the database schema is compiled nightly instead",
-  "50+ alerts, a runbook for every one",
-  "one endpoint in front of every model call",
+  "rolled a release back at 2am with git revert, and went back to sleep",
   "homelab: 0 ports exposed to the internet",
   "MSc AI · Distinction · September 2026",
-  "available from October 2026 · Dublin · London · Amsterdam · remote EU",
+  "available from October 2026 · permanent or contract",
 ];
 
 /**

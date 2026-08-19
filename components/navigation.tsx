@@ -64,7 +64,7 @@ export function Navigation() {
           href="/"
           className="group inline-flex items-center gap-2.5 font-mono text-lg font-semibold text-foreground"
         >
-          <LogoMark className="h-6 w-6 shrink-0 text-primary transition-colors group-hover:text-foreground" />
+          <LogoMark strokeWidth={3.4} className="h-6 w-6 shrink-0 text-primary transition-colors group-hover:text-foreground" />
           <span>
             <span className="text-muted-foreground">~/</span>devlinops
             <span className="cursor-blink !h-[0.9em] !w-[0.45em]" aria-hidden />
