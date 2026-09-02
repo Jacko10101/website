@@ -108,7 +108,7 @@ export function FeaturedProjects() {
             href="/projects"
             className="inline-flex items-center gap-2 font-mono text-primary hover:text-foreground transition-colors"
           >
-            All seven in full →
+            All six in full →
           </Link>
         </div>
       </div>
