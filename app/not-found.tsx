@@ -9,9 +9,18 @@ import { TerminalWindow } from "@/components/terminal-window";
 const MAX_RESTARTS = 3;
 
 export default function NotFound() {
-  const pathname = usePathname();
+  const currentPath = usePathname();
+  // The server renders this page for every unmatched route, so its idea of
+  // the pathname does not match the browser's. Embedding it in the SSR markup
+  // tripped React #418 on hydration. It is copied into state after mount and
+  // a stable placeholder renders until then.
+  const [pathname, setPathname] = useState<string | null>(null);
   const [restarts, setRestarts] = useState(0);
   const [timeAgo, setTimeAgo] = useState("0s");
+
+  useEffect(() => {
+    setPathname(currentPath);
+  }, [currentPath]);
 
   useEffect(() => {
     // Restarts climb to the backoff threshold and stop. A tab left open all
@@ -40,7 +49,7 @@ export default function NotFound() {
     };
   }, []);
 
-  const podName = `page${pathname.replace(/\//g, "-")}-7f8d9-xk4m2`;
+  const podName = `page${(pathname ?? "").replace(/\//g, "-")}-7f8d9-xk4m2`;
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center p-4">
@@ -95,7 +104,8 @@ export default function NotFound() {
 
             {/* What actually happened, in plain English */}
             <div className="text-xs text-muted-foreground pt-2">
-              There is no page at <span className="text-foreground/90">{pathname}</span>.
+              There is no page at{" "}
+              <span className="text-foreground/90">{pathname ?? "this address"}</span>.
               Either it moved or the link was wrong. The two below both work.
             </div>
 
