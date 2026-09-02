@@ -86,6 +86,12 @@ function ProjectTile({ project }: { project: Project }) {
   );
 }
 
+// The grid is the six things built and still looked after, which is what the
+// lede says. The dissertation is a paper, not a system in service, so it gets
+// a line under the grid rather than a seventh tile orphaned in a two-column grid.
+const built = featuredProjects.filter((p) => p.status !== "study");
+const dissertation = featuredProjects.find((p) => p.status === "study");
+
 export function FeaturedProjects() {
   return (
     <section className="relative py-28 md:py-36">
@@ -98,18 +104,26 @@ export function FeaturedProjects() {
         />
 
         <div className="grid gap-6 md:grid-cols-2">
-          {featuredProjects.map((project) => (
+          {built.map((project) => (
             <ProjectTile key={project.id} project={project} />
           ))}
         </div>
 
-        <div className="mt-12">
+        <div className="mt-12 flex flex-wrap items-baseline gap-x-8 gap-y-3">
           <Link
             href="/projects"
             className="inline-flex items-center gap-2 font-mono text-primary hover:text-foreground transition-colors"
           >
             All six in full →
           </Link>
+          {dissertation?.href && (
+            <Link
+              href={dissertation.href}
+              className="inline-flex items-center gap-2 font-mono text-sm text-muted-foreground hover:text-primary transition-colors"
+            >
+              and the dissertation, as a paper →
+            </Link>
+          )}
         </div>
       </div>
     </section>

@@ -1,7 +1,7 @@
 // Single source of truth for project data. Previously this lived in three
 // places (featured-projects, projects page, CLI) with drifted values.
 
-export type ProjectStatus = "production" | "homelab" | "in-progress";
+export type ProjectStatus = "production" | "homelab" | "in-progress" | "study";
 
 export interface TerminalLine {
   text: string;
@@ -240,26 +240,29 @@ export const projects: Project[] = [
   {
     id: "ml-scheduler",
     context: "MSc dissertation · Queen's University Belfast",
-    title: "Recovery Scheduling under Node Failure",
-    subtitle: "MSc dissertation, submitted September 2026",
+    title: "Evict the Guilty, Not the Innocent",
+    subtitle: "Recovery scheduling under real node failure",
     description:
-      "When a machine dies, nothing decides how the workload comes back: displaced pods rejoin the queue blind to what matters and to how loaded the survivors already are. I built a capacity-aware recovery scheduler and measured it against stock kube-scheduler and PriorityClass preemption, on real EKS clusters where node failure means actually terminating the machine.",
-    docType: "Study · Submitted",
-    status: "in-progress",
+      "When a node dies and the survivors cannot hold every pod, something decides who comes back and what gets thrown out. I built a scheduler that prices each pod by its importance label times the measured probability it will actually serve, and compared it with stock Kubernetes, PriorityClass preemption and a label-trusting knapsack on real EKS clusters, under an analysis plan fixed before the data.",
+    outcome:
+      "Over eighteen real node kills the knapsack kept 5.8 points more important work running than stock, every time. Where services lied about their health, checking labels against measured behaviour added 12.9 points more, five of five, at a quarter of PriorityClass's collateral.",
+    docType: "Paper",
+    docCta: "read the paper",
+    status: "study",
     statusLabel: "Submitted",
     year: "2026",
     stats: [
-      { value: "Submitted", label: "September 2026" },
-      { value: "3 arms", label: "kube-scheduler, PriorityClass, selection" },
-      { value: "Real kills", label: "no simulated results reported" },
+      { value: "199", label: "recorded runs on real EKS" },
+      { value: "+12.9 pp", label: "over label trust, 5 of 5, p = 0.005" },
+      { value: "7 vs 28", label: "healthy pods evicted, AI vs PriorityClass" },
     ],
-    tags: ["Kubernetes", "Scheduling", "EKS", "Python", "Pre-registered analysis"],
-    href: null,
+    tags: ["Kubernetes", "EKS", "Scheduling", "Python", "Terraform", "Pre-registered analysis"],
+    href: "/projects/ml-scheduler",
     terminal: [
-      { text: "$ aws ec2 terminate-instances --instance-ids i-0f3a…", tone: "cmd" },
+      { text: "$ aws ec2 stop-instances --instance-ids i-0f3a…", tone: "cmd" },
       { text: "node/ip-10-0-4-91 NotReady", tone: "warn" },
-      { text: "recovery: importance-aware policy engaged", tone: "info" },
-      { text: "measuring against noise floor…", tone: "ok" },
+      { text: "planner: 12 pending, 2 survivors, exact certificate ok", tone: "info" },
+      { text: "evict svc-critical-app-2205  p̂=0.09  gain 15.8", tone: "ok" },
     ],
   },
 ];
