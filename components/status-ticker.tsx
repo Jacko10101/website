@@ -17,7 +17,6 @@ const items = [
   "an answer naming a site that isn't in the database gets refused, every turn",
   "five classes of hallucination caught on every turn",
   "0 vector stores · the database schema is compiled nightly instead",
-  "rolled a release back at 2am with git revert, and went back to sleep",
   "homelab: 0 ports exposed to the internet",
   [profile.msc.label, profile.msc.result, profile.msc.status]
     .filter(Boolean)

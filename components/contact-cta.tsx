@@ -11,7 +11,7 @@ import Link from "next/link";
  */
 export function ContactCTA({
   title = "Hiring for a platform team?",
-  lede = "I'm most useful to teams putting AI workloads on Kubernetes, or to platforms that need CI/CD and observability sorted properly. I'm available now, permanent or contract, remote-first and open to relocating. I usually reply within a day.",
+  lede = "I'm most useful to teams putting AI workloads on Kubernetes, or to platforms that need CI/CD and observability sorted properly. I usually reply within a day.",
 }: {
   title?: string;
   lede?: string;
