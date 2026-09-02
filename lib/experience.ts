@@ -70,7 +70,7 @@ export const education: Qualification[] = [
     award: "MSc Artificial Intelligence",
     result: "Distinction",
     institution: "Queen's University Belfast",
-    dates: "completing September 2026",
+    dates: "submitted September 2026",
     note: "Dissertation: capacity-aware recovery scheduling for Kubernetes, measured on real EKS clusters under induced node failure.",
   },
   {

@@ -13,15 +13,14 @@ export interface Testimonial {
 export const profile = {
   availability: {
     /** Short badge text — footer photo caption, ticker, OG images. */
-    from: "available from October 2026",
+    from: "available now",
     /** One-liner used in the footer, ticker and CTA. */
-    short: "Available from October 2026 · permanent or contract",
+    short: "Available now · permanent or contract",
     /** Fuller status line used in the hero. */
-    status:
-      "Available from October 2026 · permanent or contract",
+    status: "Available now · permanent or contract",
     /** Sentence form, for prose and meta descriptions. */
     sentence:
-      "Available from October 2026, permanent or contract, in Dublin, London or Amsterdam, or remote-first across the EU and UK.",
+      "Available now, permanent or contract, remote-first and open to relocating.",
   },
 
   // What I'm actually looking for, stated so a recruiter doesn't have to
@@ -30,7 +29,7 @@ export const profile = {
   lookingFor: {
     roles:
       "Platform engineering · developer experience · observability · AI infrastructure",
-    locations: "Dublin · London · Amsterdam · remote-first EU",
+    locations: "Remote-first · open to relocating",
     /** The differentiator: no sponsorship question anywhere I'm applying. */
     workRights:
       "Irish and British citizen — full right to work in Ireland, the UK and the EU, no sponsorship needed",
@@ -38,7 +37,7 @@ export const profile = {
 
   msc: {
     label: "MSc AI",
-    finishes: "September 2026",
+    status: "submitted September 2026",
     result: "Distinction" as string | null,
   },
 

@@ -1,4 +1,5 @@
 import { renderOgImage, OG_SIZE, OG_CONTENT_TYPE } from "@/lib/og";
+import { profile } from "@/lib/profile";
 
 /**
  * The homepage card. This is the first thing anyone sees when the link is
@@ -14,7 +15,6 @@ export default function Image() {
   return renderOgImage({
     eyebrow: "whoami",
     title: "Jack Devlin",
-    subtitle:
-      "Platform engineer. Kubernetes, CI/CD and observability underneath; an LLM gateway and guardrails on top. Available from October 2026 — Dublin, London, Amsterdam or remote EU.",
+    subtitle: `Platform engineer. Kubernetes, CI/CD and observability underneath; an LLM gateway and guardrails on top. ${profile.availability.sentence}`,
   });
 }

@@ -125,7 +125,7 @@ function ProjectRow({ project }: { project: Project }) {
           </span>
         ) : (
           <span className="font-mono text-xs text-muted-foreground">
-            write-up to follow with the dissertation
+            case study to follow
           </span>
         )}
       </div>
@@ -169,7 +169,7 @@ export default function ProjectsPage() {
         </div>
       </section>
 
-      <ContactCTA command="say-hello" />
+      <ContactCTA />
     </div>
   );
 }

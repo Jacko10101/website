@@ -10,11 +10,9 @@ import Link from "next/link";
  * once. No availability line either — the footer states it directly below.
  */
 export function ContactCTA({
-  command = "say-hello",
   title = "Hiring for a platform team?",
-  lede = "I'm most useful to teams putting AI workloads on Kubernetes, or to platforms that need CI/CD and observability sorted properly. I'm available from October 2026, permanent or contract, in Dublin, London, Amsterdam or remote-first EU. I usually reply within a day.",
+  lede = "I'm most useful to teams putting AI workloads on Kubernetes, or to platforms that need CI/CD and observability sorted properly. I'm available now, permanent or contract, remote-first and open to relocating. I usually reply within a day.",
 }: {
-  command?: string;
   title?: string;
   lede?: string;
 }) {
@@ -23,10 +21,8 @@ export function ContactCTA({
       <div className="container relative z-10">
         <div className="max-w-3xl mx-auto text-center">
           <div>
-            <p className="font-mono text-sm text-primary mb-4" aria-hidden>
-              <span className="text-muted-foreground">$</span> {command}
-            </p>
-            <h2 className="font-mono font-semibold tracking-tight text-3xl sm:text-4xl md:text-5xl text-foreground mb-6">
+            <p className="eyebrow mb-5">Contact</p>
+            <h2 className="display text-3xl sm:text-4xl md:text-5xl text-foreground mb-6">
               {title}
             </h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto mb-10">

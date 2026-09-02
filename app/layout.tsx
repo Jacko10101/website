@@ -11,6 +11,11 @@ import { CliNavigation } from "@/components/cli-navigation";
 import { BackToTop } from "@/components/back-to-top";
 import { MotionProvider } from "@/components/motion-provider";
 import { roles, education, knowsAbout } from "@/lib/experience";
+import { profile } from "@/lib/profile";
+
+// One description for the document, OpenGraph and Twitter cards, so the
+// availability line cannot drift between them.
+const description = `Platform engineer for AI systems. Production LLM infrastructure on Kubernetes: gateway, guardrails, GitOps and observability. ${profile.availability.sentence} Irish and British citizen, no sponsorship needed.`;
 
 const inter = Inter({
   subsets: ["latin"],
@@ -30,8 +35,7 @@ export const metadata: Metadata = {
     default: "Jack Devlin · Platform & AI Infrastructure Engineer",
     template: "%s · Jack Devlin",
   },
-  description:
-    "Platform engineer for AI systems. Production LLM infrastructure on Kubernetes: gateway, guardrails, GitOps and observability. Available from October 2026 — Dublin, London, Amsterdam or remote-first EU. Irish and British citizen, no sponsorship needed.",
+  description,
   keywords: [
     "AI Infrastructure",
     "AI Platform Engineer",
@@ -64,8 +68,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "Jack Devlin · Platform & AI Infrastructure Engineer",
-    description:
-      "Platform engineer for AI systems. Production LLM infrastructure on Kubernetes: gateway, guardrails, GitOps and observability. Available from October 2026 — Dublin, London, Amsterdam or remote-first EU. Irish and British citizen, no sponsorship needed.",
+    description,
     url: "https://devlinops.com",
     siteName: "Jack Devlin",
     type: "website",
@@ -73,8 +76,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Jack Devlin · Platform & AI Infrastructure Engineer",
-    description:
-      "Platform engineer for AI systems. Production LLM infrastructure on Kubernetes: gateway, guardrails, GitOps and observability. Available from October 2026 — Dublin, London, Amsterdam or remote-first EU. Irish and British citizen, no sponsorship needed.",
+    description,
   },
 };
 

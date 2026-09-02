@@ -5,23 +5,21 @@ import { profile } from "@/lib/profile";
 export const metadata = {
   title: "Contact",
   description:
-    "Drop Jack Devlin a note. AI platform engineer, available from October 2026 for permanent or contract work in Dublin, London, Amsterdam or remote-first EU.",
+    "Drop Jack Devlin a note. AI platform engineer, available now for permanent or contract work, remote-first and open to relocating.",
 };
 
 export default function ContactPage() {
   return (
     <div className="container pt-28 md:pt-36 pb-16 md:pb-20">
       <div className="mx-auto max-w-4xl">
-        <p className="font-mono text-sm text-primary mb-3" aria-hidden>
-          <span className="text-muted-foreground">$</span> mail jack@devlinops.com
-        </p>
-        <h1 className="mb-6 font-mono font-semibold tracking-tight text-4xl sm:text-5xl md:text-6xl">
+        <p className="eyebrow mb-4">Contact</p>
+        <h1 className="display mb-6 text-4xl text-foreground sm:text-5xl md:text-6xl">
           How to reach me
         </h1>
         <p className="mb-4 text-lg text-muted-foreground leading-relaxed">
-          The form below or an email, whichever suits. I&apos;m available from
-          October 2026, for permanent roles or contracts, and I&apos;m looking
-          at Dublin, London and Amsterdam, or remote-first anywhere in the EU.
+          The form below or an email, whichever suits. I&apos;m available now,
+          for permanent roles or contracts. I work remote-first and I&apos;m open
+          to relocating.
         </p>
         <p className="mb-8 text-lg text-muted-foreground leading-relaxed">
           Best fit: teams putting AI workloads on Kubernetes, or platforms that
@@ -36,11 +34,11 @@ export default function ContactPage() {
         )}
 
         <div className="mb-16 rounded-lg border border-border bg-card p-6 md:p-8">
-          <h2 className="mb-6 font-mono font-semibold tracking-tight text-2xl">Send a message</h2>
+          <h2 className="display mb-6 text-2xl text-foreground">Send a message</h2>
           <ContactForm />
         </div>
 
-        <h2 className="mb-6 font-mono font-semibold tracking-tight text-2xl">Or find me elsewhere</h2>
+        <h2 className="display mb-6 text-2xl text-foreground">Or find me elsewhere</h2>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           <a
             href="mailto:jack@devlinops.com"

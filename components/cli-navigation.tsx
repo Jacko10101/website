@@ -138,7 +138,7 @@ export function CliNavigation() {
     "clarity_tenants: ~30, a database each",
     "deploy_rate: ~400/month across the platform",
     "heimdall_daily_users: 20+",
-    `msc_ai: ${profile.msc.result ?? "in progress"}, finishing ${profile.msc.finishes}`,
+    `msc_ai: ${profile.msc.result ?? "submitted"}, ${profile.msc.status}`,
   ];
 
   useEffect(() => {
@@ -375,10 +375,10 @@ Health Status:      Healthy`;
         output = `jack@devlinops
 ├─ Platform & AI infrastructure engineer
 ├─ Kubernetes, ArgoCD, LiteLLM · by choice
-├─ MSc AI${profile.msc.result ? `, ${profile.msc.result}` : ""}, finishing Sep 2026
+├─ ${profile.msc.label}${profile.msc.result ? `, ${profile.msc.result}` : ""}, ${profile.msc.status}
 └─ ${profile.availability.short}
 
-Location: Northern Ireland · open to Dublin, London, Amsterdam or remote (EU)
+Location: Northern Ireland · ${profile.lookingFor.locations.toLowerCase()}
 Citizenship: Irish + British — no sponsorship needed in the EU or UK
 Shell: bash, with more aliases than is strictly dignified`;
         break;

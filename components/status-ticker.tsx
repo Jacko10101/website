@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useReducedMotion } from "framer-motion";
+import { profile } from "@/lib/profile";
 
 // Every item here is substantiated elsewhere on the site.
 // Deliberately none of the three figures in the hero proof strip — the ticker
@@ -18,8 +19,10 @@ const items = [
   "0 vector stores · the database schema is compiled nightly instead",
   "rolled a release back at 2am with git revert, and went back to sleep",
   "homelab: 0 ports exposed to the internet",
-  "MSc AI · Distinction · September 2026",
-  "available from October 2026 · permanent or contract",
+  [profile.msc.label, profile.msc.result, profile.msc.status]
+    .filter(Boolean)
+    .join(" · "),
+  profile.availability.short.toLowerCase(),
 ];
 
 /**

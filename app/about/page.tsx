@@ -41,7 +41,7 @@ const journey = [
     year: "2026",
     title: "Built the AI platform on top",
     description:
-      "The same infrastructure, now carrying LLM workloads: a gateway in front of every model call, and Clarity, a natural-language database product live across ~30 tenants. I'm finishing an MSc in Artificial Intelligence alongside it.",
+      "The same infrastructure, now carrying LLM workloads: a gateway in front of every model call, and Clarity, a natural-language database product live across ~30 tenants. Alongside it, I submitted my MSc in Artificial Intelligence in September 2026.",
   },
 ];
 
@@ -107,10 +107,8 @@ function AboutHero() {
             {/* Intro text */}
             <div className="text-center lg:text-left flex-1">
               <div>
-                <p className="font-mono text-sm text-primary mb-3" aria-hidden>
-                  <span className="text-muted-foreground">$</span> whoami
-                </p>
-                <h1 className="font-mono font-semibold tracking-tight text-4xl sm:text-5xl md:text-6xl text-foreground mb-6">
+                <p className="eyebrow mb-4">About</p>
+                <h1 className="display text-4xl sm:text-5xl md:text-6xl text-foreground mb-6">
                   Hey, I&apos;m Jack
                 </h1>
                 <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed">
@@ -118,8 +116,8 @@ function AboutHero() {
                   Clarity, a natural-language database product running across
                   about thirty tenants, and the LLM gateway every AI workload at
                   the company goes through. I built the Kubernetes, pipelines and
-                  observability underneath them as well. I&apos;m finishing an MSc
-                  in Artificial Intelligence in September 2026.
+                  observability underneath them as well. I submitted my MSc in
+                  Artificial Intelligence in September 2026.
                 </p>
               </div>
 
@@ -387,21 +385,19 @@ function CurrentlySection() {
           <div
             className="rounded-md border border-border bg-card p-8 md:p-12"
           >
-            <p className="font-mono text-sm text-primary mb-4" aria-hidden>
-              <span className="text-muted-foreground">$</span> status --now
-            </p>
-            <h2 className="font-mono font-semibold tracking-tight text-3xl sm:text-4xl md:text-5xl text-foreground mb-3">
+            <p className="eyebrow mb-4">Status</p>
+            <h2 className="display text-3xl sm:text-4xl md:text-5xl text-foreground mb-3">
               Right now
             </h2>
             <p className="font-mono text-sm text-primary mb-6">
-              Shipping Clarity · Finishing the MSc · Available from October 2026
+              Shipping Clarity · MSc submitted · Available now
             </p>
             <p className="text-lg text-foreground leading-relaxed mb-5">
-              I&apos;m available from October 2026, permanent or contract, for
-              platform engineering, developer experience, observability or AI
-              infrastructure work. I&apos;m looking at Dublin, London and
-              Amsterdam, or remote-first anywhere in the EU — and as an Irish
-              and British citizen I need no sponsorship for any of them.
+              I&apos;m available now, permanent or contract, for platform
+              engineering, developer experience, observability or AI
+              infrastructure work. I work remote-first and I&apos;m open to
+              relocating. As an Irish and British citizen I need no sponsorship
+              in the UK or the EU.
             </p>
             <p className="text-muted-foreground leading-relaxed mb-4">
               I&apos;m wrapping up my current contract on the platform team I
@@ -410,11 +406,11 @@ function CurrentlySection() {
               workload. Heimdall still opens every morning.
             </p>
             <p className="text-muted-foreground leading-relaxed">
-              The MSc finishes in September 2026. The dissertation builds a
-              capacity-aware scheduler for recovering Kubernetes workloads after
-              node failure, measured on real clusters where failure means
-              actually killing the machine. It&apos;s the same problem I keep
-              hitting on the platform side, so the two halves have converged.
+              The dissertation is submitted. It builds a capacity-aware
+              scheduler for recovering Kubernetes workloads after node failure,
+              measured on real EKS clusters where failure means actually
+              terminating the machine. It&apos;s the same problem I keep hitting
+              on the platform side.
             </p>
           </div>
         </div>
@@ -434,7 +430,6 @@ export default function AboutPage() {
       <TechStackSection />
       <CurrentlySection />
       <ContactCTA
-        command="say-hello"
         title="Still reading?"
         lede="Drop me a note. About a role, an AI infrastructure problem, or anything that overlaps with the work above."
       />

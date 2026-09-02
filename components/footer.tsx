@@ -72,8 +72,7 @@ export function Footer() {
               <span className="text-xl font-semibold text-foreground">devlinops</span>
             </Link>
             <p className="text-muted-foreground text-sm leading-relaxed max-w-xs">
-              Jack Devlin. Platform engineering. Available from October 2026 —
-              Dublin, London, Amsterdam or remote-first EU.
+              Jack Devlin. Platform engineering. {profile.availability.sentence}
             </p>
           </div>
 
