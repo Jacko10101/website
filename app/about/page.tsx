@@ -1,68 +1,20 @@
-"use client";
-
-import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useScroll, useReducedMotion } from "framer-motion";
 import { Download } from "lucide-react";
 import { SectionHeading } from "@/components/section-heading";
 import { ContactCTA } from "@/components/contact-cta";
 import { profile } from "@/lib/profile";
 import { roles, education, tradingAs, stackTiers } from "@/lib/experience";
 
-// The narrative version of the CV. The hard facts — employers, titles, dates —
-// live in lib/experience.ts and render above this.
-const journey = [
-  {
-    year: "2021",
-    title: "Placement year at OD3",
-    description:
-      "A year out of my degree writing Tekla Structures API applications, automating drafting work for the in-house architects. First time I'd shipped anything people depended on.",
-  },
-  {
-    year: "2023",
-    title: "Joined as a graduate, inherited a migration",
-    description:
-      "I finished my BSc and landed in the middle of a monolith → microservices migration, writing the test automation that kept it honest. Engineering was five people.",
-  },
-  {
-    year: "2024",
-    title: "Earned the platform",
-    description:
-      "The test work kept exposing infrastructure problems, so I started fixing those instead. Observability from zero, then GitOps with ArgoCD, until 20 services deployed the same way.",
-  },
-  {
-    year: "2025",
-    title: "Standardised it, then instrumented it",
-    description:
-      "I moved CI onto one shared pipeline library across every service, and started the deployment-metrics tool that grew into Heimdall. The team went from asking \"did it deploy?\" to reading the answer off a screen.",
-  },
-  {
-    year: "2026",
-    title: "Built the AI platform on top",
-    description:
-      "The same infrastructure, now carrying LLM workloads: a gateway in front of every model call, and Clarity, a natural-language database product live across ~30 tenants. Alongside it, I submitted my MSc in Artificial Intelligence in September 2026.",
-  },
-];
-
-// Three things I actually believe, each with the work that taught me it.
-const philosophy = [
-  {
-    title: "A correct system nobody opens is not finished",
-    description:
-      "The DORA collector behind Heimdall was right for months and nobody ever looked at it. Same data, no front door. Building the UI is what turned it into something twenty people use every morning, and I've stopped treating the interface as the optional half.",
-  },
-  {
-    title: "Boring is a compliment",
-    description:
-      "The ideal platform fades into the background. Engineers shouldn't have to think about it any more than they think about the office wifi.",
-  },
-  {
-    title: "Operability is a feature",
-    description:
-      "If a teammate can't tell whether your service is healthy in under a minute, you haven't finished it yet. I default to one-curl health checks and a runbook per alert.",
-  },
-];
+// The narrative under each employer card. The hard facts (employers, titles,
+// dates, the one-line summary) live in lib/experience.ts and feed the JSON-LD
+// as well; this is the part that only makes sense on the page. Keyed by
+// company, so a role without a story just renders its summary.
+const roleStory: Record<string, string> = {
+  Loweconex:
+    "I arrived in the middle of a monolith to microservices migration, writing the test automation that kept it honest. The test work kept exposing infrastructure problems, so I started fixing those instead: observability from zero, then GitOps with ArgoCD, until 20 services deployed the same way. In 2025 I moved CI onto one shared pipeline library and started the deployment-metrics tool that grew into Heimdall. The team went from asking \"did it deploy?\" to reading the answer off a screen. Since then the same platform has carried the AI work: a gateway in front of every model call, Clarity, and agents pointed at the platform's own operational load: security findings into tickets, and a first pass on incidents against the runbooks that already exist.",
+  "OD3 Engineering": "First time I'd shipped anything people depended on.",
+};
 
 // Hero section
 function AboutHero() {
@@ -116,7 +68,7 @@ function AboutHero() {
                   Clarity, a natural-language database product running across
                   about thirty tenants, and the LLM gateway every AI workload at
                   the company goes through. I built the Kubernetes, pipelines and
-                  observability underneath them as well. I submitted my MSc in
+                  observability underneath them. I submitted my MSc in
                   Artificial Intelligence in September 2026.
                 </p>
               </div>
@@ -146,70 +98,10 @@ function AboutHero() {
   );
 }
 
-// Timeline section, styled as `git log`
-function JourneyTimeline() {
-  const listRef = useRef<HTMLOListElement>(null);
-  // A motion value bound through `style` is never animated by framer, so
-  // MotionConfig's reducedMotion="user" does not reach it — this scroll-linked
-  // line has to opt out itself.
-  const reduce = useReducedMotion();
-  const { scrollYProgress } = useScroll({
-    target: listRef,
-    offset: ["start 0.8", "end 0.55"],
-  });
-
-  return (
-    <section className="relative py-24">
-      <div className="container px-4">
-        <SectionHeading
-          title="How it went"
-          lede="Three years at Loweconex, and the scope kept growing. Each year built on what the last one shipped."
-          align="center"
-        />
-
-        <div className="max-w-3xl mx-auto">
-          <ol ref={listRef} className="relative">
-            {/* Static track */}
-            <div
-              className="absolute left-[7px] top-2 bottom-2 w-px bg-border"
-              aria-hidden
-            />
-            {/* Line that draws itself with scroll progress */}
-            <motion.div
-              style={{ scaleY: reduce ? 1 : scrollYProgress }}
-              className="absolute left-[7px] top-2 bottom-2 w-px bg-primary origin-top"
-              aria-hidden
-            />
-
-            {journey.map((item) => (
-              <li
-                key={item.year}
-                className="relative pl-10 pb-12 last:pb-0"
-              >
-                {/* Commit dot */}
-                <span
-                  className="absolute left-0 top-1.5 w-[15px] h-[15px] rounded-full border-2 border-primary bg-background"
-                  aria-hidden
-                />
-
-                <p className="font-mono text-sm mb-2 text-primary">{item.year}</p>
-                <h3 className="font-mono font-semibold tracking-tight text-xl text-foreground mb-2">
-                  {item.title}
-                </h3>
-                <p className="text-muted-foreground leading-relaxed">
-                  {item.description}
-                </p>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 // The facts a recruiter would otherwise go to LinkedIn for. Deliberately
-// plain: employers named, real dates, no bullet-point CV register.
+// plain: employers named, real dates, no bullet-point CV register. The story
+// of each role sits under its summary; there used to be a separate timeline
+// telling the same three years again.
 function ExperienceSection() {
   return (
     <section className="relative py-24">
@@ -242,6 +134,11 @@ function ExperienceSection() {
                 {role.title} · {role.location}
               </p>
               <p className="text-muted-foreground leading-relaxed">{role.summary}</p>
+              {roleStory[role.company] ? (
+                <p className="mt-4 text-muted-foreground leading-relaxed">
+                  {roleStory[role.company]}
+                </p>
+              ) : null}
 
               {role.evidence ? (
                 <p className="mt-4 text-sm text-muted-foreground">
@@ -301,35 +198,25 @@ function ExperienceSection() {
   );
 }
 
-// Philosophy section
+// How I work: one paragraph, not three numbered cards. The case studies were
+// rid of the three-card template ending; this page shouldn't keep one.
 function PhilosophySection() {
   return (
     <section className="relative py-24">
       <div className="container px-4">
-        <SectionHeading
-          label="principles"
-          title="How I work"
-          lede="Three things I've come to believe after a few years on platform teams."
-          align="center"
-        />
+        <SectionHeading label="principles" title="How I work" align="center" />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-          {philosophy.map((item, index) => (
-            <div
-              key={item.title}
-              className="rounded-md border border-border bg-card p-8 h-full"
-            >
-              <p className="font-mono text-sm text-primary mb-3" aria-hidden>
-                {String(index + 1).padStart(2, "0")}
-              </p>
-              <h3 className="font-mono font-semibold tracking-tight text-xl text-foreground mb-3">
-                {item.title}
-              </h3>
-              <p className="text-muted-foreground leading-relaxed">
-                {item.description}
-              </p>
-            </div>
-          ))}
+        <div className="max-w-3xl mx-auto">
+          <p className="text-lg text-muted-foreground leading-relaxed">
+            A correct system nobody opens is not finished: the DORA collector
+            behind Heimdall was right for months and nobody looked at it, until
+            it had a UI and twenty people started opening it every morning.
+            Boring is a compliment: the platform should fade into the background
+            the way the office wifi does. Operability is a feature, so I default
+            to one-curl health checks and a runbook per alert. If a teammate
+            can&apos;t tell whether a service is healthy in under a minute, it
+            isn&apos;t done.
+          </p>
         </div>
       </div>
     </section>
@@ -425,7 +312,6 @@ export default function AboutPage() {
     <div className="bg-background">
       <AboutHero />
       <ExperienceSection />
-      <JourneyTimeline />
       <PhilosophySection />
       <TechStackSection />
       <CurrentlySection />
