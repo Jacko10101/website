@@ -189,16 +189,6 @@ function fmtAge(min: number): string {
   return `${Math.floor(h / 24)}d ago`;
 }
 
-function Metric({ label, value, sub }: { label: string; value: string; sub: string }) {
-  return (
-    <div className="rounded-lg border border-dashed border-border bg-black/40 px-4 py-3">
-      <div className="text-[10px] uppercase tracking-wider text-muted-foreground">{label}</div>
-      <div className="mt-1 font-mono text-xl font-bold text-muted-foreground">{value}</div>
-      <div className="text-[11px] text-muted-foreground/80">{sub}</div>
-    </div>
-  );
-}
-
 export function HeimdallDemo() {
   // Opens on a ticket rather than an empty grid: PLAT-2033 reached QA and
   // stopped there, so one glance shows a ticket, the environments it reached,
@@ -251,26 +241,6 @@ export function HeimdallDemo() {
           <span>
             A faithful rebuild with mock data. The real Heimdall reads live from Bitbucket, ArgoCD, Kubernetes and JIRA.
           </span>
-        </div>
-
-        {/* DORA tiles. Shapes of the real thing, made-up figures — labelled on
-            the row itself so nobody quotes them back as measurements. */}
-        <div className="mb-6">
-          <div className="mb-2 flex flex-wrap items-center gap-2">
-            <span className="font-mono text-xs text-muted-foreground">DORA summary</span>
-            <span className="rounded bg-warn/15 px-1.5 py-0.5 font-mono text-[10px] font-semibold text-warn">
-              illustrative figures
-            </span>
-            <span className="font-mono text-[11px] text-muted-foreground/80">
-              made up for this demo, not measurements
-            </span>
-          </div>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-            <Metric label="Deploy frequency" value="5.2/day" sub="last 30 days" />
-            <Metric label="Lead time" value="1d 6h" sub="merge → prod, median" />
-            <Metric label="Change failure" value="11%" sub="rollbacks / deploys" />
-            <Metric label="MTTR" value="34m" sub="median recovery" />
-          </div>
         </div>
 
         {/* "where is my ticket" search */}
