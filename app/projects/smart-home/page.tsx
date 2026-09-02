@@ -55,7 +55,7 @@ function SpecPlate() {
 
       {/* Title block */}
       <div className="px-5 sm:px-7 py-4 border-b border-border">
-        <h1 className="font-mono font-semibold tracking-tight text-3xl sm:text-4xl md:text-5xl text-foreground mb-2">
+        <h1 className="display text-3xl sm:text-4xl text-foreground mb-2">
           Smart home on K3s
         </h1>
         <p className="text-muted-foreground">
@@ -97,7 +97,7 @@ function SpecPlate() {
         <span>Notes</span>
       </div>
 
-      {/* Parameter rows — ruled, value column aligned */}
+      {/* Parameter rows: ruled, value column aligned */}
       <dl className="divide-y divide-border/60">
         {SPEC.map((s) => (
           <div
@@ -125,7 +125,7 @@ function SpecPlate() {
   );
 }
 
-/* Datasheet section: a numbered heading on a rule. No dots, no chips — the
+/* Datasheet section: a numbered heading on a rule. No dots, no chips. The
  * ruled line is the furniture. */
 function SpecSection({
   n,
@@ -139,8 +139,8 @@ function SpecSection({
   return (
     <section className="mb-10">
       <div className="border-b border-border pb-2 mb-4">
-        <h2 className="font-mono font-semibold tracking-tight text-lg sm:text-xl text-foreground">
-          <span className="text-primary tabular-nums mr-3" aria-hidden>
+        <h2 className="display text-lg sm:text-xl text-foreground">
+          <span className="font-mono text-primary tabular-nums mr-3" aria-hidden>
             {n}
           </span>
           {title}
@@ -151,7 +151,7 @@ function SpecSection({
   );
 }
 
-/* Annotation text — the datasheet's register: terse, small, set in two
+/* Annotation text, the datasheet's register: terse, small, set in two
  * columns where the width allows. */
 function Annotations({ children }: { children: React.ReactNode }) {
   return <div className="lg:columns-2 lg:gap-10 space-y-3">{children}</div>;
@@ -397,7 +397,7 @@ export default function SmartHomePage() {
             </SpecSection>
 
             {/* TODO(jack): the page has no failure in it, and the ADR works
-                precisely because it has one. What actually broke — Zigbee mesh
+                precisely because it has one. What actually broke: Zigbee mesh
                 range? The NVMe-over-USB firmware? An ArgoCD sync that took the
                 lights out? Put it in WHAT_I_GOT_WRONG and the section appears.
                 Nothing renders until then, so this is safe to leave. */}
@@ -421,7 +421,7 @@ export default function SmartHomePage() {
               </Annotations>
             </SpecSection>
 
-            {/* Document footer — a spec sheet ends with its revision line,
+            {/* Document footer: a spec sheet ends with its revision line,
                 not a thanks-for-reading card. */}
             <footer className="border-t border-border pt-6">
               <p className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground mb-5">
@@ -434,12 +434,6 @@ export default function SmartHomePage() {
                 >
                   Say hello
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </Link>
-                <Link
-                  href="/projects"
-                  className="text-muted-foreground hover:text-primary transition-colors"
-                >
-                  Other case studies
                 </Link>
               </div>
             </footer>

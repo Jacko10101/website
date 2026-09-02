@@ -63,7 +63,7 @@ export function IncidentHeader() {
           </p>
 
           {/* Title */}
-          <h1 className="font-mono font-semibold tracking-tight text-4xl sm:text-5xl text-foreground mb-3">
+          <h1 className="display text-4xl sm:text-5xl text-foreground mb-3">
             AI Gateway
           </h1>
 
@@ -175,7 +175,7 @@ export function ReportSection({
         </p>
       )}
       {title && (
-        <h2 className="font-mono font-semibold tracking-tight text-2xl sm:text-3xl text-foreground mb-6">
+        <h2 className="display text-2xl sm:text-3xl text-foreground mb-6">
           {title}
         </h2>
       )}
@@ -199,14 +199,6 @@ const SYSTEMS = [
   "Grafana",
   "AWS Secrets Manager",
   "Istio",
-];
-
-const WORK = [
-  "LLM platform design",
-  "Cost attribution for AI workloads",
-  "Credential and access boundaries",
-  "GitOps-managed shared services",
-  "Writing the runbook people actually need",
 ];
 
 const LINKED_REVIEWS = [
@@ -247,21 +239,7 @@ export function IncidentAppendices() {
       </section>
 
       <section className="py-5 border-b border-border/60">
-        <AppendixLabel index="B" label="the work" />
-        <ul className="space-y-2 text-sm text-muted-foreground">
-          {WORK.map((item) => (
-            <li key={item} className="flex gap-2">
-              <span className="text-primary shrink-0" aria-hidden>
-                —
-              </span>
-              {item}
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section className="py-5 border-b border-border/60">
-        <AppendixLabel index="C" label="linked reviews" />
+        <AppendixLabel index="B" label="linked reviews" />
         <div className="space-y-3">
           {LINKED_REVIEWS.map((review) => (
             <Link
@@ -306,13 +284,6 @@ export function IncidentSignoff() {
               className="text-primary hover:underline underline-offset-4"
             >
               say hello
-            </Link>
-            . Or head back to the{" "}
-            <Link
-              href="/projects"
-              className="text-primary hover:underline underline-offset-4"
-            >
-              other case studies
             </Link>
             .
           </p>

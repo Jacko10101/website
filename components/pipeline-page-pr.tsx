@@ -238,14 +238,6 @@ const NUMBERS: { label: string; value: string }[] = [
   { label: "deploys", value: "~400/month across 4 envs" },
 ];
 
-const SKILLS = [
-  "Bitbucket shared pipelines, semver-tagged and imported by tag",
-  "Build that stops at the image, with promotion left to ArgoCD",
-  "Optional scan and Jira gates switched by env var, not by forking",
-  "Tests run from an ArgoCD PostSync hook, after the deploy is healthy",
-  "Test results from 20 services aggregated into one dashboard",
-];
-
 const LINKED: { title: string; href: string }[] = [
   { title: "Heimdall · deployment intelligence", href: "/projects/heimdall" },
   { title: "Observability stack", href: "/projects/observability" },
@@ -289,24 +281,6 @@ export function PrSidebar() {
               </div>
             ))}
           </dl>
-        </section>
-
-        <section className="py-5">
-          <RailLabel>skills</RailLabel>
-          <ul className="space-y-2 text-sm text-muted-foreground">
-            {SKILLS.map((skill) => (
-              <li key={skill} className="flex gap-2">
-                <span
-                  className="font-mono shrink-0"
-                  style={{ color: DIFF.add }}
-                  aria-hidden
-                >
-                  +
-                </span>
-                {skill}
-              </li>
-            ))}
-          </ul>
         </section>
 
         <section className="pt-5">
@@ -365,12 +339,6 @@ export function PrMergeFooter() {
                 >
                   Say hello
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </Link>
-                <Link
-                  href="/projects"
-                  className="text-muted-foreground hover:text-primary transition-colors"
-                >
-                  All case studies
                 </Link>
               </div>
             </div>

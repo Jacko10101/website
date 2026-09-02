@@ -32,7 +32,7 @@ export function ChatSection({ children, title, eyebrow, className = "" }: Sectio
       )}
       <div className="border-l-2 border-primary/25 pl-5">
         {title && (
-          <h2 className="font-mono font-semibold tracking-tight text-2xl sm:text-3xl text-foreground mb-6">
+          <h2 className="display text-2xl sm:text-3xl text-foreground mb-6">
             {title}
           </h2>
         )}
@@ -62,7 +62,7 @@ export function TraceSection({ children, title, eyebrow, className = "" }: Secti
         </span>
       )}
       {title && (
-        <h2 className="font-mono font-semibold tracking-tight text-2xl sm:text-3xl text-foreground mb-6">
+        <h2 className="display text-2xl sm:text-3xl text-foreground mb-6">
           {title}
         </h2>
       )}
@@ -89,7 +89,7 @@ export function DaySection({ children, title, eyebrow, className = "" }: Section
       </div>
       <div className="border-t border-border/60 pt-5 mt-3">
         {title && (
-          <h2 className="font-mono font-semibold tracking-tight text-2xl sm:text-3xl text-foreground mb-6">
+          <h2 className="display text-2xl sm:text-3xl text-foreground mb-6">
             {title}
           </h2>
         )}
@@ -123,7 +123,7 @@ export function StepSection({ children, title, eyebrow, className = "" }: Sectio
         </span>
       )}
       {title && (
-        <h2 className="font-mono font-semibold tracking-tight text-2xl sm:text-3xl text-foreground mt-2 mb-6">
+        <h2 className="display text-2xl sm:text-3xl text-foreground mt-2 mb-6">
           {title}
         </h2>
       )}
@@ -148,7 +148,7 @@ export function PanelSection({ children, title, eyebrow, className = "" }: Secti
       </div>
       <div className="p-5 md:p-6">
         {title && (
-          <h2 className="font-mono font-semibold tracking-tight text-2xl sm:text-3xl text-foreground mb-6">
+          <h2 className="display text-2xl sm:text-3xl text-foreground mb-6">
             {title}
           </h2>
         )}
@@ -175,7 +175,7 @@ export function TopicSection({ children, title, eyebrow, className = "" }: Secti
         </div>
       )}
       {title && (
-        <h2 className="font-mono font-semibold tracking-tight text-2xl sm:text-3xl text-foreground mb-6">
+        <h2 className="display text-2xl sm:text-3xl text-foreground mb-6">
           {title}
         </h2>
       )}

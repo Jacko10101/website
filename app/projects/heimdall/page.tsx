@@ -332,13 +332,6 @@ export default function HeimdallPage() {
                 "ArgoCD",
                 "Kubernetes",
               ]}
-              skills={[
-                "Designing internal tools as products",
-                "Backend + frontend, end to end",
-                "Pragmatic concurrency",
-                "Zero-downtime data migrations",
-                "Operability and documentation",
-              ]}
               related={[
                 { title: "Pipeline Platform · shared CI/CD", href: "/projects/pipeline-platform" },
                 { title: "Observability Stack", href: "/projects/observability" },

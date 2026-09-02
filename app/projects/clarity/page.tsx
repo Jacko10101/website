@@ -13,7 +13,7 @@ import { SchemaDirectory } from "@/components/schema-directory";
 
 /* --------------------------------------------------------------------------
  * Evidence. This page argues that the hard part of text-to-SQL is proving the
- * answer, so every claim on it is followed by the artefact that backs it —
+ * answer, so every claim on it is followed by the artefact that backs it:
  * screenshots sit inline next to the paragraph they prove, not in a gallery
  * at the end. Keyed rather than a list so placement is explicit at the call
  * site. See PERSONAL-TODO.md for what to redact before exporting new ones.
@@ -81,7 +81,7 @@ const SHOTS: Record<string, Shot> = {
     caption: (
       <>
         A dashboard assembled from a conversation. The tenant&apos;s name and
-        their trading figures are blacked out — they&apos;re not mine to
+        their trading figures are blacked out. They&apos;re not mine to
         publish. The note above the widgets is real: widgets built before
         dashboard filters existed can&apos;t be reached by them, so the UI
         says so rather than pretending otherwise.
@@ -127,7 +127,7 @@ function ReceiptStamp({
 
 /**
  * A claim's receipt. Renders nothing if the capture doesn't exist yet, so the
- * page degrades to prose rather than to a broken image — same rule the product
+ * page degrades to prose rather than to a broken image: same rule the product
  * follows when it has no data to stand an answer on. `entry` is the ledger
  * row this receipt reconciles against.
  */
@@ -161,7 +161,7 @@ function Evidence({ of, entry }: { of: keyof typeof SHOTS; entry: string }) {
  * The front page of the ledger. This document's genre is claims-and-receipts,
  * so it opens the way an audit does: state the claims up front and be honest
  * about the one that doesn't carry a receipt. Six claims, one left open on
- * purpose — the closing paragraph explains why.
+ * purpose. The closing paragraph explains why.
  * ----------------------------------------------------------------------- */
 const LEDGER: { claim: string; open?: boolean }[] = [
   { claim: "Answers arrive with the SQL that produced them" },
@@ -195,7 +195,7 @@ function ClaimsLedgerHeader() {
             claims &amp; receipts
           </p>
 
-          <h1 className="font-mono font-semibold tracking-tight text-4xl sm:text-5xl md:text-6xl text-foreground mb-3">
+          <h1 className="display text-4xl sm:text-5xl md:text-6xl text-foreground mb-3">
             Clarity
           </h1>
 
@@ -302,7 +302,7 @@ const GUARANTEES: { claim: string; where: string; detail: string }[] = [
 function GuaranteeLedger() {
   return (
     <div className="font-mono">
-      {/* Same column rule as the claims ledger — this is the same book. */}
+      {/* Same column rule as the claims ledger: this is the same book. */}
       <div
         className="hidden sm:flex items-baseline gap-x-3 pb-1.5 border-b border-border text-[10px] uppercase tracking-[0.15em] text-muted-foreground/80"
         aria-hidden
@@ -404,7 +404,7 @@ function ProjectDetails() {
             {[
               { label: "Tenants", value: "~30, isolated per database" },
               { label: "Grounding checks", value: "5 classes, every turn" },
-              { label: "Vector stores", value: "none — compiled knowledge" },
+              { label: "Vector stores", value: "none, compiled knowledge" },
               { label: "Export ceiling", value: "50k rows, flat memory" },
             ].map((metric) => (
               <li key={metric.label}>
@@ -454,28 +454,17 @@ function ProjectDetails() {
 }
 
 /* Closing the ledger out. The claim without a receipt is the ending; this
-   just says goodbye. */
+   is only the contact line under it. */
 function LedgerSignOff() {
   return (
     <section className="container px-4 py-16">
       <div className="max-w-2xl mx-auto">
-        <p className="text-sm text-muted-foreground leading-relaxed">
-          If you want to talk through any of this,{" "}
-          <Link
-            href="/contact"
-            className="text-primary hover:underline underline-offset-4"
-          >
-            say hello
-          </Link>
-          , or head{" "}
-          <Link
-            href="/projects"
-            className="text-primary hover:underline underline-offset-4"
-          >
-            back to the projects
-          </Link>
-          .
-        </p>
+        <Link
+          href="/contact"
+          className="font-mono text-sm text-primary hover:underline underline-offset-4"
+        >
+          say hello →
+        </Link>
       </div>
     </section>
   );
@@ -541,7 +530,7 @@ export default function ClarityPage() {
               <p className="text-muted-foreground leading-relaxed mb-4">
                 The default move is embeddings: chunk the schema, load it into
                 a vector database, retrieve per question. I didn&apos;t do
-                that. A schema isn&apos;t an unbounded corpus — it&apos;s a few
+                that. A schema isn&apos;t an unbounded corpus. It&apos;s a few
                 hundred tables you can describe directly.
               </p>
               <p className="text-muted-foreground leading-relaxed mb-4">
@@ -631,7 +620,7 @@ export default function ClarityPage() {
               <p className="text-muted-foreground leading-relaxed mb-4">
                 LLM-as-judge is the obvious approach; I didn&apos;t use it. A
                 grader that hallucinates can&apos;t certify a system whose
-                defining failure is hallucination — two models can agree in the
+                defining failure is hallucination. Two models can agree in the
                 same wrong direction.
               </p>
               <p className="text-muted-foreground leading-relaxed">

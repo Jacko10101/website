@@ -88,7 +88,7 @@ export function LogEntry({
 
       <div className="border-t border-border/60 mt-3 pt-5">
         {title && (
-          <h2 className="font-mono font-semibold tracking-tight text-2xl sm:text-3xl text-foreground mb-6">
+          <h2 className="display text-2xl sm:text-3xl text-foreground mb-6">
             {title}
           </h2>
         )}
@@ -139,7 +139,7 @@ export function DayLogHeader() {
             </div>
 
             <div className="border-t border-border/60 mt-3 pt-5 max-w-4xl">
-              <h1 className="font-mono font-semibold tracking-tight text-4xl sm:text-5xl md:text-6xl text-foreground mb-3">
+              <h1 className="display text-4xl sm:text-5xl md:text-6xl text-foreground mb-3">
                 Heimdall
               </h1>
               <p className="font-mono text-sm text-muted-foreground mb-3">
@@ -200,17 +200,14 @@ function DeskList({ label, children }: { label: string; children: ReactNode }) {
 }
 
 // The desk: the dashboard's own vitals on a wall display, then what's
-// running, what the day needs, and the other tabs open — same facts
-// TechSidebar carries elsewhere, worn as day-log furniture.
+// running, and the other tabs open, worn as day-log furniture.
 export function DayLogSidebar({
   vitals,
   technologies,
-  skills,
   related,
 }: {
   vitals: Array<{ label: string; value: string }>;
   technologies: string[];
-  skills: string[];
   related: Array<{ title: string; href: string }>;
 }) {
   return (
@@ -249,19 +246,6 @@ export function DayLogSidebar({
         </div>
       </DeskList>
 
-      <DeskList label="skills">
-        <ul className="space-y-2 text-sm text-muted-foreground">
-          {skills.map((skill) => (
-            <li key={skill} className="flex gap-2.5">
-              <span className="font-mono text-primary shrink-0" aria-hidden>
-                –
-              </span>
-              {skill}
-            </li>
-          ))}
-        </ul>
-      </DeskList>
-
       <DeskList label="related">
         <div className="space-y-3">
           {related.map((project) => (
@@ -290,22 +274,13 @@ export function DayLogClose() {
         sending a message to a colleague. It has to answer the question faster
         than asking a human would, or nobody opens it twice.
       </p>
-      <p className="mt-6 text-sm text-muted-foreground">
-        If you want to dig into the parts I didn&apos;t write up,{" "}
+      <p className="mt-6">
         <Link
           href="/contact"
-          className="text-primary hover:underline underline-offset-4"
+          className="font-mono text-sm text-primary hover:underline underline-offset-4"
         >
-          say hello
+          say hello →
         </Link>
-        . Or head back to{" "}
-        <Link
-          href="/projects"
-          className="text-primary hover:underline underline-offset-4"
-        >
-          all projects
-        </Link>
-        .
       </p>
     </LogEntry>
   );

@@ -189,7 +189,7 @@ export default function AIGatewayPage() {
                 </span>
                 <span className="text-muted-foreground">try it</span>
               </p>
-              <h2 className="mt-2 font-mono font-semibold tracking-tight text-2xl sm:text-3xl text-foreground">
+              <h2 className="mt-2 display text-2xl sm:text-3xl text-foreground">
                 Two different ways to get a 401
               </h2>
             </div>

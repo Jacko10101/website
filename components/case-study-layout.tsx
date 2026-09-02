@@ -64,7 +64,7 @@ export function CaseStudyHero({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="font-mono font-semibold tracking-tight text-4xl sm:text-5xl md:text-6xl text-foreground mb-4"
+            className="display text-4xl sm:text-5xl md:text-6xl text-foreground mb-4"
           >
             {title}
           </motion.h1>
@@ -150,7 +150,7 @@ export function CaseStudySection({
             <span className="text-primary font-mono text-sm tracking-wider">{eyebrow}</span>
           )}
           {title && (
-            <h2 className="font-mono font-semibold tracking-tight text-2xl sm:text-3xl text-foreground mt-2">
+            <h2 className="display text-2xl sm:text-3xl text-foreground mt-2">
               {title}
             </h2>
           )}
@@ -319,7 +319,7 @@ export function CaseStudyCTA({ line }: { line?: string }) {
         className="container px-4 relative z-10"
       >
         <GlassCard className="p-8 md:p-12 text-center max-w-3xl mx-auto">
-          <h2 className="font-mono font-semibold tracking-tight text-3xl text-foreground mb-4">
+          <h2 className="display text-3xl text-foreground mb-4">
             Thanks for reading.
           </h2>
           <p className="text-muted-foreground mb-8">

@@ -55,7 +55,7 @@ function ProjectRow({ project }: { project: Project }) {
       {/* Title row */}
       <div className="flex items-baseline gap-3 px-6 md:px-8 mt-3">
         <h2
-          className={`font-mono font-semibold tracking-tight text-2xl text-foreground ${
+          className={`display text-2xl text-foreground ${
             clickable ? "group-hover:text-primary transition-colors" : ""
           }`}
         >

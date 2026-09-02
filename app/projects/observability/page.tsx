@@ -447,13 +447,6 @@ export default function ObservabilityPage() {
                 Say hello
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
-              <Link
-                href="/projects"
-                className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors group"
-              >
-                All case studies
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </Link>
             </div>
           </footer>
         </div>
