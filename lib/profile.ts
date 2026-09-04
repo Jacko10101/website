@@ -35,6 +35,12 @@ export const profile = {
       "Irish and British citizen — full right to work in Ireland, the UK and the EU, no sponsorship needed",
   },
 
+  /**
+   * The seniority signal in one line, on the first screen. The figures are
+   * the ones in lib/experience.ts: five engineers when I joined, around forty now.
+   */
+  tenure: "Three years on one platform while engineering grew from five to forty",
+
   msc: {
     label: "MSc AI",
     status: "submitted September 2026",

@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { AsciiField } from "@/components/ascii-field";
-import { LogoMark } from "@/components/logo-mark";
+import { RecoveryField } from "@/components/recovery-field";
 import { proofPoints } from "@/lib/projects";
 import { profile } from "@/lib/profile";
 
@@ -14,16 +13,17 @@ import { profile } from "@/lib/profile";
  * block and the proof strip — over a live glyph canvas. A reader gives this
  * about forty seconds and there was nothing in it telling them where to look.
  *
- * Now the name is the display type, one sentence says what the work is, the
- * mark holds the right side, and the biography lives on /about where someone
- * who wants it will go looking. Everything renders instantly; the mark is the
- * only thing that moves, and only once.
+ * Now the name is the display type, one sentence says what the work is, and
+ * the right side holds the one thing on the site that moves: a small cluster
+ * losing a node and recovering it the way the dissertation's scheduler does.
+ * The mark that used to sit there held forty percent of the first screen and
+ * said nothing; it lives on in the nav and the favicon. The biography is on
+ * /about, where someone who wants it will go looking.
  */
 export function Hero() {
   return (
     <section className="relative flex min-h-[92vh] flex-col justify-center overflow-hidden pt-32 pb-20">
       <div className="absolute inset-0 phosphor-ambient pointer-events-none" aria-hidden />
-      <AsciiField className="[mask-image:radial-gradient(ellipse_70%_85%_at_72%_45%,black_0%,transparent_72%)] opacity-70" />
 
       <div className="container relative z-10">
         <div className="grid items-center gap-16 lg:grid-cols-[minmax(0,1fr)_auto]">
@@ -76,17 +76,14 @@ export function Hero() {
                 {profile.availability.status}
               </p>
               <p className="pl-4 text-muted-foreground">{profile.lookingFor.workRights}</p>
+              {/* The seniority signal, which used to be three hundred pixels
+                  down /about: how long, and how much the place grew around it. */}
+              <p className="pl-4 text-muted-foreground">{profile.tenure}</p>
             </div>
           </div>
 
-          {/* The mark, finally somewhere. It draws itself once on load. */}
-          {/* The mark, given room, with the wordmark set under it. */}
-          <div className="hidden flex-col items-center lg:flex">
-            <LogoMark shimmer className="w-[22rem] text-primary xl:w-[26rem]" />
-            <p className="mt-6 font-mono text-lg tracking-[0.42em] text-muted-foreground xl:text-xl">
-              <span className="text-primary">devlin</span>ops
-            </p>
-          </div>
+          {/* Hidden below lg, as the mark was: on a phone the text is the hero. */}
+          <RecoveryField className="hidden lg:block" />
         </div>
 
         {/* Proof strip, evidence before claims */}
