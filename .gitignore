@@ -35,5 +35,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-CLAUDE.md
 photo-original.jpeg
+
+# personal notes, not part of the site
+PERSONAL-TODO.md
