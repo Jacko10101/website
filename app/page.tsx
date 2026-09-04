@@ -1,32 +1,22 @@
 import { Hero } from "@/components/hero";
-import { StatusTicker } from "@/components/status-ticker";
-import { PipelineStory, PipelineStoryMobile } from "@/components/pipeline-story";
-import { FeaturedProjects } from "@/components/featured-projects";
+import { CaseIndex } from "@/components/case-index";
 import { ContactCTA } from "@/components/contact-cta";
 import { TestimonialBlock } from "@/components/testimonial";
 
 /**
- * A reader gives this page about forty seconds. It gets one claim, the work,
- * and how the work ships, in that order, with nothing competing for the first
- * screen.
+ * A reader gives this page about forty seconds. It gets one claim, one
+ * moving object, the proof, and the work as an index, in that order.
  *
- * The career query used to sit between the hero and the case studies: the
- * best artefact on the site, asking for a commitment two hundred pixels below
- * the name. It now lives on /playground, which is where someone who wants to
- * poke at the thing has already decided to go.
- *
- * There was a capability manifest after the pipeline scene. It restated the
- * six tiles above it, and /about's tech stack already splits the same ground
- * into run-in-production, homelab and working-knowledge, so it went.
+ * What used to sit here and doesn't now: a ticker restating the tiles, a
+ * pipeline scroll scene that was a generic GitOps explainer with two
+ * invented specifics in it, and six identical cards. The career query is on
+ * /playground. The capability manifest's content lives in About's stack.
  */
 export default function Home() {
   return (
     <>
       <Hero />
-      <StatusTicker />
-      <FeaturedProjects />
-      <PipelineStory />
-      <PipelineStoryMobile />
+      <CaseIndex />
       <TestimonialBlock />
       <ContactCTA />
     </>

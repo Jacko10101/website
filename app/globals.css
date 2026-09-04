@@ -230,25 +230,6 @@ html.lenis {
 
 /* Chaos mode — glitch for "crashing" sections, flash for healing */
 
-/* Status ticker — slow marquee, duplicated content, pauses on hover */
-@keyframes ticker-scroll {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-.ticker-track {
-  /* Slow enough to read a whole item mid-scroll. */
-  animation: ticker-scroll 70s linear infinite;
-}
-
-.ticker-track:hover {
-  animation-play-state: paused;
-}
-
 /* Blinking block cursor — the one signature animation. */
 @keyframes cursor-blink {
   0%, 49% {

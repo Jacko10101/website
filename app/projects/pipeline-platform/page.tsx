@@ -389,8 +389,10 @@ gitops:
                 when it sees a new tag.
               </p>
               <p className="text-muted-foreground leading-relaxed">
-                Build does one thing. Promote does another. The pipeline
-                doesn&apos;t know which environment its image will land in.
+                The pipeline doesn&apos;t know which environment its image
+                will land in. Rollback is a revert, and the audit log is git
+                log: I&apos;ve rolled a release back at 2am with git revert
+                and gone back to sleep.
               </p>
             </CaseStudySection>
 

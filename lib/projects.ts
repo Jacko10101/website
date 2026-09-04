@@ -71,7 +71,6 @@ export const projects: Project[] = [
       "Customers who wanted a number out of their estate used to raise a ticket and wait for an analyst. Now they ask directly — about twenty people a day, across roughly thirty tenants.",
     indexDescription:
       "Ask the estate a question in English, get an answer backed by SQL that actually ran. There's no vector store anywhere; compiled schema knowledge does the grounding, and five classes of hallucination get caught on every turn.",
-    startHere: true,
     docType: "Claims + receipts",
     docCta: "check the receipts",
     status: "production",
@@ -132,6 +131,9 @@ export const projects: Project[] = [
       "The team stopped pasting kubectl output into Teams to ask whether a deploy had worked. Standup got shorter, and release management reads the same screen as the engineers.",
     docType: "Day log",
     docCta: "read the day log",
+    // The one to open first: a DevEx tool on the platform, adopted by the
+    // whole team. It serves the platform reader and the AI-infra reader both.
+    startHere: true,
     status: "production",
     statusLabel: "Live",
     year: "2025",
