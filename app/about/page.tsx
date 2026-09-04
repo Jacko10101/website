@@ -49,10 +49,6 @@ function AboutHero() {
               {/* Exif-style caption */}
               <div className="mt-3 rounded-md border border-border bg-card px-4 py-3 font-mono text-xs text-muted-foreground space-y-1">
                 <p>Jack Devlin · Northern Ireland · platform engineer</p>
-                <p className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-primary" aria-hidden />
-                  <span className="text-foreground/80">{profile.availability.from}</span>
-                </p>
               </div>
             </div>
 
@@ -275,16 +271,9 @@ function CurrentlySection() {
               Right now
             </h2>
             <p className="font-mono text-sm text-primary mb-6">
-              Shipping Clarity · MSc submitted · Available now
+              Shipping Clarity · MSc submitted
             </p>
             <p className="text-lg text-foreground leading-relaxed mb-5">
-              I&apos;m available now, permanent or contract, for platform
-              engineering, developer experience, observability or AI
-              infrastructure work. I work remote-first and I&apos;m open to
-              relocating. As an Irish and British citizen I need no sponsorship
-              in the UK or the EU.
-            </p>
-            <p className="text-muted-foreground leading-relaxed mb-4">
               I&apos;m wrapping up my current contract on the platform team I
               helped build. Most of this year went to the AI side: Clarity live
               across ~30 tenant databases, and the gateway that fronts every AI
