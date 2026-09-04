@@ -269,12 +269,7 @@ export function DayLogSidebar({
 export function DayLogClose() {
   return (
     <LogEntry time="18:05" label="clocking off" pos="last">
-      <p className="text-muted-foreground leading-relaxed">
-        The lesson I took from Heimdall: an internal tool competes with
-        sending a message to a colleague. It has to answer the question faster
-        than asking a human would, or nobody opens it twice.
-      </p>
-      <p className="mt-6">
+      <p>
         <Link
           href="/contact"
           className="font-mono text-sm text-primary hover:underline underline-offset-4"

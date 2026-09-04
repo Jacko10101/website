@@ -240,8 +240,8 @@ export default function CicdGitopsPage() {
               </p>
               <p className="text-muted-foreground leading-relaxed mb-4">
                 A 1,071-line bash pipeline reporter lived in the base image and
-                posted to Teams at every stage. It worked. Nobody wanted to
-                touch it.
+                posted to Teams at every stage. It worked, and nobody wanted
+                to touch it.
               </p>
               <p className="text-muted-foreground leading-relaxed mb-4">
                 Tests ran inside the pipeline, before pods were healthy. They

@@ -34,7 +34,7 @@ const ANNOTATIONS: Record<string, Ann> = {
   glossary: {
     id: "glossary",
     label: "the words users actually use",
-    body: "Nobody asks about work_order.status_code. They ask which jobs are overdue. The glossary maps their language onto the schema so the model doesn't have to guess.",
+    body: "Users don't ask about work_order.status_code; they ask which jobs are overdue. The glossary maps their language onto the schema so the model doesn't have to guess.",
   },
   recipe: {
     id: "recipe",

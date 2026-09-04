@@ -122,7 +122,7 @@ export const stackTiers = [
   {
     id: "homelab",
     label: "homelab/",
-    note: "Running in my flat, reconciled the same way as work. Nobody pages me, but it does break.",
+    note: "Running in my flat, reconciled the same way as work. No pager.",
     items: ["K3s", "Home Assistant", "Zigbee2MQTT", "Tailscale", "Raspberry Pi"],
   },
   {

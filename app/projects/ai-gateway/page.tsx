@@ -213,10 +213,10 @@ export default function AIGatewayPage() {
               title="The third API key is the one that hurts"
             >
               <p className="text-muted-foreground leading-relaxed mb-4">
-                Our first AI feature shipped with a provider key in a secret
-                and nobody minded. By the third I could see where it was
-                heading: keys scattering across repos, and nobody able to say
-                what any of it cost.
+                Our first AI feature shipped with a provider key in a secret,
+                and that was fine. By the third I could see where it was
+                heading: keys scattering across repos, and no way to say what
+                any of it cost.
               </p>
               <p className="text-muted-foreground leading-relaxed mb-4">
                 None of that is an AI problem. It&apos;s the same problem as

@@ -564,8 +564,8 @@ export default function ClarityPage() {
               </p>
               <p className="text-muted-foreground leading-relaxed mb-4">
                 A wrong &quot;no data&quot; is the worst failure mode, because
-                nobody escalates it. People just stop using the tool, and no
-                metric tells you why.
+                it never gets escalated. People just stop using the tool, and
+                no metric tells you why.
               </p>
               <p className="text-muted-foreground leading-relaxed">
                 Now the compile probes each table for its newest timestamp and

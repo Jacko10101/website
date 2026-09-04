@@ -41,7 +41,7 @@ const DECISION: { field: string; tone?: "good" | "bad"; body: string }[] = [
   {
     field: "Consequence",
     tone: "bad",
-    body: "It's mine to fix at 3am. There is nobody on the other end of a support contract, and the stack that tells you what's broken is itself a thing that can break.",
+    body: "It's mine to fix, whatever the hour. There's no support contract behind it, and the stack that reports failures can fail too.",
   },
   {
     field: "Revisit when",
@@ -273,7 +273,7 @@ export default function ObservabilityPage() {
             <P>
               Prometheus scrapes everything and hands the long tail off to
               Thanos in S3, so we aren&apos;t paying hot-storage prices for data
-              nobody queries.
+              that is rarely queried.
             </P>
             <P>
               Loki runs in microservices mode for the same reason. Logs are
@@ -309,7 +309,7 @@ export default function ObservabilityPage() {
                   {
                     title: "Node infrastructure",
                     description:
-                      "CPU, memory, disk, network. Nobody looks at it until something is wrong, and then everybody does.",
+                      "CPU, memory, disk, network. The dashboard everyone opens once something is wrong.",
                     imagePath: "/dashboards/node-exporter.png",
                     category: "Infrastructure",
                   },
@@ -374,8 +374,7 @@ export default function ObservabilityPage() {
           <Clause n="6" title="Review — two years on">
             <P>
               The saving is what got it approved. Two years on, an incident
-              starts with someone pasting a Grafana link. Nobody has thanked me
-              for the dashboards. They&apos;d notice immediately if they went.
+              starts with someone pasting a Grafana link.
             </P>
             <Exhibit caption="Exhibit C — this page's own web vitals.">
               <SessionVitals />
