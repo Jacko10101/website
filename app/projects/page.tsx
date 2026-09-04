@@ -174,6 +174,7 @@ export default function ProjectsPage() {
 }
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/projects" },
   title: "Projects",
   description:
     "Platform & MLOps case studies: Heimdall deployment intelligence, a shared CI/CD pipeline platform, self-hosted observability, and a smart home on K3s.",
@@ -181,6 +182,6 @@ export const metadata: Metadata = {
     title: "Projects · Jack Devlin",
     description:
       "Platform & MLOps case studies: Heimdall, a shared CI/CD pipeline platform, self-hosted observability, and a smart home on K3s.",
-    url: "https://devlinops.com/projects",
+    url: "https://www.devlinops.com/projects",
   },
 };

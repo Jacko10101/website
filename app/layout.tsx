@@ -29,7 +29,9 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://devlinops.com"),
+  metadataBase: new URL("https://www.devlinops.com"),
+  alternates: { canonical: "/" },
+  manifest: "/manifest.webmanifest",
   title: {
     default: "Jack Devlin · Platform & AI Infrastructure Engineer",
     template: "%s · Jack Devlin",
@@ -60,23 +62,17 @@ export const metadata: Metadata = {
     apple: [
       { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
     ],
-    other: [
-      { rel: "android-chrome-192x192", url: "/android-chrome-192x192.png" },
-      { rel: "android-chrome-512x512", url: "/android-chrome-512x512.png" },
-    ],
   },
   openGraph: {
     title: "Jack Devlin · Platform & AI Infrastructure Engineer",
     description,
-    url: "https://devlinops.com",
+    url: "https://www.devlinops.com",
     siteName: "Jack Devlin",
     type: "website",
   },
-  twitter: {
-    card: "summary_large_image",
-    title: "Jack Devlin · Platform & AI Infrastructure Engineer",
-    description,
-  },
+  // No title or description here: set at the root they froze every page's
+  // card to the homepage's. Next derives them from openGraph per route.
+  twitter: { card: "summary_large_image" },
 };
 
 export default function RootLayout({
@@ -89,19 +85,19 @@ export default function RootLayout({
     "@graph": [
       {
         "@type": "ProfilePage",
-        "@id": "https://devlinops.com/#profilepage",
-        "url": "https://devlinops.com",
+        "@id": "https://www.devlinops.com/#profilepage",
+        "url": "https://www.devlinops.com",
         "name": "Jack Devlin · Platform & AI Infrastructure Engineer",
-        "mainEntity": { "@id": "https://devlinops.com/#person" },
+        "mainEntity": { "@id": "https://www.devlinops.com/#person" },
       },
       {
         "@type": "Person",
-        "@id": "https://devlinops.com/#person",
+        "@id": "https://www.devlinops.com/#person",
         "name": "Jack Devlin",
         "jobTitle": "Platform & Site Reliability Engineer",
-        "url": "https://devlinops.com",
+        "url": "https://www.devlinops.com",
         "email": "jack@devlinops.com",
-        "image": "https://devlinops.com/jack-photo.jpg",
+        "image": "https://www.devlinops.com/jack-photo.jpg",
         "nationality": ["Irish", "British"],
         "address": {
           "@type": "PostalAddress",
@@ -138,22 +134,22 @@ export default function RootLayout({
       },
       {
         "@type": "WebSite",
-        "@id": "https://devlinops.com/#website",
-        "url": "https://devlinops.com",
+        "@id": "https://www.devlinops.com/#website",
+        "url": "https://www.devlinops.com",
         "name": "Jack Devlin",
         "publisher": {
-          "@id": "https://devlinops.com/#person",
+          "@id": "https://www.devlinops.com/#person",
         },
       },
       {
         "@type": "ProfessionalService",
-        "@id": "https://devlinops.com/#service",
+        "@id": "https://www.devlinops.com/#service",
         "name": "Devlinops Ltd",
-        "url": "https://devlinops.com",
+        "url": "https://www.devlinops.com",
         "description":
           "Devlinops Ltd is the limited company Jack Devlin contracts through. Platform and AI infrastructure engineering: Kubernetes, GitOps, CI/CD, observability and LLM gateways.",
         "provider": {
-          "@id": "https://devlinops.com/#person",
+          "@id": "https://www.devlinops.com/#person",
         },
         "areaServed": {
           "@type": "Place",

@@ -87,12 +87,12 @@ const articleSchema = {
   author: {
     "@type": "Person",
     name: "Jack Devlin",
-    url: "https://devlinops.com",
+    url: "https://www.devlinops.com",
   },
   publisher: {
     "@type": "Organization",
     name: "DevlinOps",
-    url: "https://devlinops.com",
+    url: "https://www.devlinops.com",
   },
   datePublished: "2025-06-01",
   dateModified: "2026-04-25",
@@ -345,6 +345,7 @@ export default function HeimdallPage() {
 }
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/projects/heimdall" },
   title: "Heimdall · Where Every Ticket and Service Actually Is",
   description:
     "An internal dashboard answering 'where is my ticket right now?' across 20 services and four environments. Built and run by Jack Devlin at Loweconex, opened daily by more than 20 engineers.",
@@ -352,6 +353,6 @@ export const metadata: Metadata = {
     title: "Heimdall · Where Every Ticket and Service Actually Is",
     description:
       "An internal dashboard answering 'where is my ticket right now?' across 20 services, opened every day by more than 20 engineers.",
-    url: "https://devlinops.com/projects/heimdall",
+    url: "https://www.devlinops.com/projects/heimdall",
   },
 };

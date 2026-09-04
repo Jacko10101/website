@@ -5,9 +5,16 @@ import { OncallInvite } from "@/components/oncall-invite";
 import { CareerQuery } from "@/components/career-query";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/playground" },
   title: "Playground · things on this site that actually run",
   description:
     "A real SQLite database of my work you can query, your session's live web vitals, and an incident simulator drawn from pages I've actually been woken up for.",
+  openGraph: {
+    title: "Playground · Jack Devlin",
+    description:
+      "A real SQLite database of my work you can query, your session's live web vitals, and an incident simulator.",
+    url: "/playground",
+  },
 };
 
 /**

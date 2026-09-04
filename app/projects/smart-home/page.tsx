@@ -240,12 +240,12 @@ const articleSchema = {
   author: {
     "@type": "Person",
     name: "Jack Devlin",
-    url: "https://devlinops.com",
+    url: "https://www.devlinops.com",
   },
   publisher: {
     "@type": "Organization",
     name: "DevlinOps",
-    url: "https://devlinops.com",
+    url: "https://www.devlinops.com",
   },
   datePublished: "2024-06-01",
   dateModified: "2026-04-30",
@@ -445,6 +445,7 @@ export default function SmartHomePage() {
 }
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/projects/smart-home" },
   title: "Smart Home on K3s · Self-Hosted Home Automation",
   description:
     "A single-node K3s cluster on a Raspberry Pi 5 running Home Assistant, ArgoCD, Prometheus and Grafana. Same GitOps discipline as the platform at work, sized to a flat, zero ports exposed.",
@@ -452,6 +453,6 @@ export const metadata: Metadata = {
     title: "Smart Home on K3s · Self-Hosted Home Automation",
     description:
       "A single-node K3s cluster on a Raspberry Pi 5 running Home Assistant, ArgoCD and Prometheus. Every config change goes through git; zero ports exposed to the internet.",
-    url: "https://devlinops.com/projects/smart-home",
+    url: "https://www.devlinops.com/projects/smart-home",
   },
 };

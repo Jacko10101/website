@@ -1,11 +1,19 @@
+import type { Metadata } from "next";
 import { Mail, Github, Download } from "lucide-react";
 import { ContactForm } from "@/components/contact-form";
 import { profile } from "@/lib/profile";
 
-export const metadata = {
+export const metadata: Metadata = {
+  alternates: { canonical: "/contact" },
   title: "Contact",
   description:
-    "Drop Jack Devlin a note. AI platform engineer, available now for permanent or contract work, remote-first and open to relocating.",
+    "Drop Jack Devlin a note. Platform engineer, available now for permanent or contract work, remote-first and open to relocating.",
+  openGraph: {
+    title: "Contact · Jack Devlin",
+    description:
+      "Drop Jack Devlin a note. Platform engineer, available now for permanent or contract work, remote-first and open to relocating.",
+    url: "/contact",
+  },
 };
 
 export default function ContactPage() {

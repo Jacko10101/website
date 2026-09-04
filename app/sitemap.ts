@@ -1,12 +1,15 @@
 import { MetadataRoute } from 'next'
 import { featuredProjects } from '@/lib/projects'
+import { BUILD } from '@/lib/build-info'
 
 // Case-study entries are derived from lib/projects.ts rather than listed here.
 // They used to be hand-maintained, which meant a new case study shipped
 // invisible to search until someone remembered this file.
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://devlinops.com'
-  const currentDate = new Date()
+  const baseUrl = 'https://www.devlinops.com'
+  // The last commit's time, which is when anything here last changed.
+  // `new Date()` stamped every entry with the build clock, which is noise.
+  const currentDate = BUILD.time ? new Date(BUILD.time) : new Date()
 
   return [
     {

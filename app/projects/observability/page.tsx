@@ -160,12 +160,12 @@ const articleSchema = {
   author: {
     "@type": "Person",
     name: "Jack Devlin",
-    url: "https://devlinops.com",
+    url: "https://www.devlinops.com",
   },
   publisher: {
     "@type": "Organization",
     name: "DevlinOps",
-    url: "https://devlinops.com",
+    url: "https://www.devlinops.com",
   },
   datePublished: "2024-09-01",
   dateModified: "2026-04-25",
@@ -453,6 +453,7 @@ export default function ObservabilityPage() {
 }
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/projects/observability" },
   title: "Observability Stack · Self-Hosted Monitoring",
   description:
     "Prometheus, Grafana and Loki for 20 services across four environments. 22 dashboards and 50+ alerts, each with a runbook, ~£5k/yr versus ~£100k commercial quotes.",
@@ -460,6 +461,6 @@ export const metadata: Metadata = {
     title: "Observability Stack · Self-Hosted Monitoring",
     description:
       "Self-hosted metrics, logs and alerts for 20 services across four environments, ~£5k/yr versus ~£100k commercial quotes.",
-    url: "https://devlinops.com/projects/observability",
+    url: "https://www.devlinops.com/projects/observability",
   },
 };

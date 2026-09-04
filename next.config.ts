@@ -45,19 +45,32 @@ const securityHeaders = [
     value: [
       "default-src 'self'",
       // 'wasm-unsafe-eval' is the narrow grant that lets SQLite-in-WebAssembly
-      // run the career query on the homepage. Deliberately NOT 'unsafe-eval':
+      // run the career query on /playground. Deliberately NOT 'unsafe-eval':
       // a JS-compiling SQL engine would have needed that, and it isn't worth it.
+      // 'unsafe-inline' stays because Next inlines the RSC payload and the
+      // JSON-LD; a nonce-based policy needs middleware and gives up the
+      // all-static prerender, which is the wrong trade for this site.
       "script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://plausible.io",
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: blob:",
       "font-src 'self' data:",
       "connect-src 'self' https://api.web3forms.com https://plausible.io",
       "frame-ancestors 'self'",
+      "object-src 'none'",
+      "base-uri 'self'",
+      "form-action 'self' https://api.web3forms.com",
     ].join('; ')
+  },
+  {
+    // Vercel adds this on the host; setting it here means a move of host
+    // does not silently lose it.
+    key: 'Strict-Transport-Security',
+    value: 'max-age=63072000; includeSubDomains'
   }
 ]
 
 const nextConfig: NextConfig = {
+  poweredByHeader: false,
   env: {
     NEXT_PUBLIC_BUILD_SHA: commitSha ?? '',
     NEXT_PUBLIC_BUILD_BRANCH: commitBranch ?? '',

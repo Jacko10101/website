@@ -369,7 +369,7 @@ const articleSchema = {
     "Evict the Guilty, Not the Innocent: Importance- and Evidence-Aware Pod Recovery Under Real Node Failure in Kubernetes",
   description:
     "MSc dissertation. Four schedulers compared on real Amazon EKS clusters under two failure conditions, under an analysis plan registered before the data.",
-  author: { "@type": "Person", name: "Jack Devlin", url: "https://devlinops.com" },
+  author: { "@type": "Person", name: "Jack Devlin", url: "https://www.devlinops.com" },
   datePublished: "2026-09-04",
   keywords: ["Kubernetes", "scheduling", "failure recovery", "preemption", "eviction"],
 };
@@ -819,6 +819,7 @@ export default function MlSchedulerPage() {
 }
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/projects/ml-scheduler" },
   title: "Evict the Guilty, Not the Innocent · MSc dissertation",
   description:
     "Recovery scheduling under real node failure in Kubernetes. Four schedulers, two failure modes, 199 recorded runs on Amazon EKS, under an analysis plan fixed before the data. Jack Devlin's MSc AI dissertation, Queen's University Belfast.",
@@ -826,6 +827,6 @@ export const metadata: Metadata = {
     title: "Evict the Guilty, Not the Innocent · MSc dissertation",
     description:
       "Recovery scheduling under real node failure in Kubernetes: four schedulers, two failure modes, 199 recorded runs on Amazon EKS.",
-    url: "https://devlinops.com/projects/ml-scheduler",
+    url: "https://www.devlinops.com/projects/ml-scheduler",
   },
 };

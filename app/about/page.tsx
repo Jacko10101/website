@@ -312,11 +312,12 @@ export default function AboutPage() {
 }
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/about" },
   title: "About",
   description: `Jack Devlin · Platform & AI infrastructure engineer. How I work, the systems I've built, and what I'm looking for. ${profile.availability.sentence}`,
   openGraph: {
     title: "About · Jack Devlin",
     description: `Platform & AI infrastructure engineer. How I work, the systems I've built, and what I'm looking for. ${profile.availability.sentence}`,
-    url: "https://devlinops.com/about",
+    url: "https://www.devlinops.com/about",
   },
 };

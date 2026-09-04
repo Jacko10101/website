@@ -149,12 +149,12 @@ const articleSchema = {
   author: {
     "@type": "Person",
     name: "Jack Devlin",
-    url: "https://devlinops.com",
+    url: "https://www.devlinops.com",
   },
   publisher: {
     "@type": "Organization",
     name: "DevlinOps",
-    url: "https://devlinops.com",
+    url: "https://www.devlinops.com",
   },
   datePublished: "2026-02-01",
   dateModified: "2026-07-28",
@@ -377,6 +377,7 @@ curl -H "Authorization: Bearer $VIRTUAL_KEY" "$GATEWAY/v1/models"`}
 }
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/projects/ai-gateway" },
   title: "AI Gateway · One Endpoint for Every Model",
   description:
     "A self-hosted LiteLLM gateway fronting every AI workload in the estate. Virtual keys with per-key model allowlists, fail-closed on unpermitted models, and spend attributable to the tenant and feature that caused it.",
@@ -384,6 +385,6 @@ export const metadata: Metadata = {
     title: "AI Gateway · One Endpoint for Every Model",
     description:
       "Virtual keys with per-key model allowlists, fail-closed on unpermitted models, and LLM spend attributable per tenant and per feature.",
-    url: "https://devlinops.com/projects/ai-gateway",
+    url: "https://www.devlinops.com/projects/ai-gateway",
   },
 };

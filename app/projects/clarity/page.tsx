@@ -476,8 +476,8 @@ const articleSchema = {
   headline: "Clarity · a natural-language interface to a multi-tenant database estate",
   description:
     "Text-to-SQL across ~30 tenant databases. Generating the SQL was the easy bit. Proving the answer was real took the other eight months.",
-  author: { "@type": "Person", name: "Jack Devlin", url: "https://devlinops.com" },
-  publisher: { "@type": "Organization", name: "DevlinOps", url: "https://devlinops.com" },
+  author: { "@type": "Person", name: "Jack Devlin", url: "https://www.devlinops.com" },
+  publisher: { "@type": "Organization", name: "DevlinOps", url: "https://www.devlinops.com" },
   datePublished: "2025-11-01",
   dateModified: "2026-07-28",
   proficiencyLevel: "Expert",
@@ -694,6 +694,7 @@ export default function ClarityPage() {
 }
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/projects/clarity" },
   title: "Clarity · Natural-Language Database Interface",
   description:
     "Text-to-SQL across about thirty tenant databases, built on Spring AI and Gemini. Compiled schema knowledge instead of a vector store, five classes of hallucination detected per turn, and evaluation that never asks a model to grade a model.",
@@ -701,6 +702,6 @@ export const metadata: Metadata = {
     title: "Clarity · Natural-Language Database Interface",
     description:
       "Text-to-SQL across about thirty tenant databases. Compiled schema knowledge instead of a vector store, and five classes of hallucination detected on every turn.",
-    url: "https://devlinops.com/projects/clarity",
+    url: "https://www.devlinops.com/projects/clarity",
   },
 };

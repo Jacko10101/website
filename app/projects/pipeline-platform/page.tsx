@@ -161,12 +161,12 @@ const articleSchema = {
   author: {
     "@type": "Person",
     name: "Jack Devlin",
-    url: "https://devlinops.com",
+    url: "https://www.devlinops.com",
   },
   publisher: {
     "@type": "Organization",
     name: "DevlinOps",
-    url: "https://devlinops.com",
+    url: "https://www.devlinops.com",
   },
   datePublished: "2024-01-01",
   dateModified: "2026-04-25",
@@ -444,6 +444,7 @@ gitops:
 }
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/projects/pipeline-platform" },
   title: "Pipeline Platform · Shared CI/CD Library",
   description:
     "One Bitbucket pipeline library imported by every Java and Node service. Twenty drifted pipelines became one semver-tagged library, ~400 deploys/month, one file to onboard.",
@@ -451,6 +452,6 @@ export const metadata: Metadata = {
     title: "Pipeline Platform · Shared CI/CD Library",
     description:
       "Twenty drifted pipelines became one semver-tagged library, with ArgoCD Image Updater handling promotion. ~400 deploys/month across 20 services.",
-    url: "https://devlinops.com/projects/pipeline-platform",
+    url: "https://www.devlinops.com/projects/pipeline-platform",
   },
 };
