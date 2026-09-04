@@ -208,14 +208,12 @@ function PhilosophySection() {
 
         <div className="max-w-3xl mx-auto">
           <p className="text-lg text-muted-foreground leading-relaxed">
-            A correct system nobody opens is not finished: the DORA collector
-            behind Heimdall was right for months and nobody looked at it, until
-            it had a UI and twenty people started opening it every morning.
-            Boring is a compliment: the platform should fade into the background
-            the way the office wifi does. Operability is a feature, so I default
-            to one-curl health checks and a runbook per alert. If a teammate
-            can&apos;t tell whether a service is healthy in under a minute, it
-            isn&apos;t done.
+            The DORA collector behind Heimdall was correct for months and
+            nobody opened it. It became useful when it got a UI and twenty
+            people started reading it before standup. That is the standard I
+            hold platform work to now: a teammate should be able to tell
+            whether a service is healthy from one curl and one runbook, or it
+            isn&apos;t finished.
           </p>
         </div>
       </div>
