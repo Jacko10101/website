@@ -1,10 +1,10 @@
-"use client";
-
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { ArrowLeft } from "lucide-react";
-import { PHOSPHORS, CaseStudyLayout } from "@/components/case-study-layout";
+import { CaseStudyLayout } from "@/components/case-study-layout";
+import { PHOSPHORS } from "@/lib/phosphors";
 import { ChatSection as CaseStudySection } from "@/components/case-section-variants";
 import { TerminalWindow } from "@/components/terminal-window";
 import { GroundingDemo } from "@/components/grounding-demo";
@@ -692,3 +692,15 @@ export default function ClarityPage() {
     </CaseStudyLayout>
   );
 }
+
+export const metadata: Metadata = {
+  title: "Clarity · Natural-Language Database Interface",
+  description:
+    "Text-to-SQL across about thirty tenant databases, built on Spring AI and Gemini. Compiled schema knowledge instead of a vector store, five classes of hallucination detected per turn, and evaluation that never asks a model to grade a model.",
+  openGraph: {
+    title: "Clarity · Natural-Language Database Interface",
+    description:
+      "Text-to-SQL across about thirty tenant databases. Compiled schema knowledge instead of a vector store, and five classes of hallucination detected on every turn.",
+    url: "https://devlinops.com/projects/clarity",
+  },
+};

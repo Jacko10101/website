@@ -1,9 +1,11 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { MetricsShowcase } from "@/components/metrics-showcase";
 import { ObservabilityArchitecture } from "@/components/observability-architecture";
 import { SessionVitals } from "@/components/session-vitals";
-import { PHOSPHORS, CaseStudyLayout } from "@/components/case-study-layout";
+import { CaseStudyLayout } from "@/components/case-study-layout";
+import { PHOSPHORS } from "@/lib/phosphors";
 
 /* --------------------------------------------------------------------------
  * This project was a build-or-buy decision, so the page is the artefact that
@@ -449,3 +451,15 @@ export default function ObservabilityPage() {
     </CaseStudyLayout>
   );
 }
+
+export const metadata: Metadata = {
+  title: "Observability Stack · Self-Hosted Monitoring",
+  description:
+    "Prometheus, Grafana and Loki for 20 services across four environments. 22 dashboards and 50+ alerts, each with a runbook, ~£5k/yr versus ~£100k commercial quotes.",
+  openGraph: {
+    title: "Observability Stack · Self-Hosted Monitoring",
+    description:
+      "Self-hosted metrics, logs and alerts for 20 services across four environments, ~£5k/yr versus ~£100k commercial quotes.",
+    url: "https://devlinops.com/projects/observability",
+  },
+};

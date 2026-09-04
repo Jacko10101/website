@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import { RecoveryField } from "@/components/recovery-field";
 import { proofPoints } from "@/lib/projects";

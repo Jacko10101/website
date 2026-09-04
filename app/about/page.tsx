@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Download } from "lucide-react";
@@ -309,3 +310,13 @@ export default function AboutPage() {
     </div>
   );
 }
+
+export const metadata: Metadata = {
+  title: "About",
+  description: `Jack Devlin · Platform & AI infrastructure engineer. How I work, the systems I've built, and what I'm looking for. ${profile.availability.sentence}`,
+  openGraph: {
+    title: "About · Jack Devlin",
+    description: `Platform & AI infrastructure engineer. How I work, the systems I've built, and what I'm looking for. ${profile.availability.sentence}`,
+    url: "https://devlinops.com/about",
+  },
+};

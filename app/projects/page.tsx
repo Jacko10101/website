@@ -1,5 +1,4 @@
-"use client";
-
+import type { Metadata } from "next";
 import Link from "next/link";
 import { projects, type Project } from "@/lib/projects";
 import { TypedLines } from "@/components/terminal-window";
@@ -173,3 +172,15 @@ export default function ProjectsPage() {
     </div>
   );
 }
+
+export const metadata: Metadata = {
+  title: "Projects",
+  description:
+    "Platform & MLOps case studies: Heimdall deployment intelligence, a shared CI/CD pipeline platform, self-hosted observability, and a smart home on K3s.",
+  openGraph: {
+    title: "Projects · Jack Devlin",
+    description:
+      "Platform & MLOps case studies: Heimdall, a shared CI/CD pipeline platform, self-hosted observability, and a smart home on K3s.",
+    url: "https://devlinops.com/projects",
+  },
+};

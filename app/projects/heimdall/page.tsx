@@ -1,10 +1,10 @@
-"use client";
-
+import type { Metadata } from "next";
 import Image from "next/image";
 import { ReactNode } from "react";
 import { HeimdallArchitecture } from "@/components/heimdall-architecture";
 import { HeimdallDemo } from "@/components/heimdall-demo";
-import { PHOSPHORS, CaseStudyLayout } from "@/components/case-study-layout";
+import { CaseStudyLayout } from "@/components/case-study-layout";
+import { PHOSPHORS } from "@/lib/phosphors";
 import {
   DayLogHeader,
   DayLogSidebar,
@@ -343,3 +343,15 @@ export default function HeimdallPage() {
     </CaseStudyLayout>
   );
 }
+
+export const metadata: Metadata = {
+  title: "Heimdall · Where Every Ticket and Service Actually Is",
+  description:
+    "An internal dashboard answering 'where is my ticket right now?' across 20 services and four environments. Built and run by Jack Devlin at Loweconex, opened daily by more than 20 engineers.",
+  openGraph: {
+    title: "Heimdall · Where Every Ticket and Service Actually Is",
+    description:
+      "An internal dashboard answering 'where is my ticket right now?' across 20 services, opened every day by more than 20 engineers.",
+    url: "https://devlinops.com/projects/heimdall",
+  },
+};

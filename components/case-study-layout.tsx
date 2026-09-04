@@ -1,5 +1,6 @@
 "use client";
 
+import { type Phosphor } from "@/lib/phosphors";
 import { useRef, ReactNode } from "react";
 import Link from "next/link";
 import { motion, useInView } from "framer-motion";
@@ -356,25 +357,6 @@ export function CaseStudyCTA({ line }: { line?: string }) {
  * page (glows, stats, diagrams, the interactives) without touching the
  * rest of the site, which stays on the house P1 green.
  */
-export interface Phosphor {
-  /** oklch hue angle for --color-primary */
-  hue: number;
-  /** oklch chroma; blues want less to avoid vibrating on black */
-  chroma?: number;
-  /** oklch lightness; P4 white sits higher */
-  lightness?: number;
-  /** e.g. "P3 · amber" — rendered as a chip in the hero */
-  label: string;
-}
-
-export const PHOSPHORS: Record<string, Phosphor> = {
-  green: { hue: 150, chroma: 0.19, label: "P1 · green" },
-  amber: { hue: 85, lightness: 0.66, label: "P3 · amber" },
-  white: { hue: 250, chroma: 0.02, lightness: 0.87, label: "P4 · white" },
-  blue: { hue: 230, chroma: 0.15, label: "P11 · blue" },
-  violet: { hue: 305, chroma: 0.16, label: "P16 · violet" },
-  orange: { hue: 55, label: "P26 · orange" },
-};
 
 // Main layout wrapper
 export function CaseStudyLayout({

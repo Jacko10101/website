@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { CaseStudyLayout } from "@/components/case-study-layout";
@@ -816,3 +817,15 @@ export default function MlSchedulerPage() {
     </CaseStudyLayout>
   );
 }
+
+export const metadata: Metadata = {
+  title: "Evict the Guilty, Not the Innocent · MSc dissertation",
+  description:
+    "Recovery scheduling under real node failure in Kubernetes. Four schedulers, two failure modes, 199 recorded runs on Amazon EKS, under an analysis plan fixed before the data. Jack Devlin's MSc AI dissertation, Queen's University Belfast.",
+  openGraph: {
+    title: "Evict the Guilty, Not the Innocent · MSc dissertation",
+    description:
+      "Recovery scheduling under real node failure in Kubernetes: four schedulers, two failure modes, 199 recorded runs on Amazon EKS.",
+    url: "https://devlinops.com/projects/ml-scheduler",
+  },
+};

@@ -1,6 +1,8 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { PHOSPHORS, CaseStudyLayout } from "@/components/case-study-layout";
+import { CaseStudyLayout } from "@/components/case-study-layout";
+import { PHOSPHORS } from "@/lib/phosphors";
 import { LocalPath } from "@/components/local-path";
 
 /* --------------------------------------------------------------------------
@@ -441,3 +443,15 @@ export default function SmartHomePage() {
     </CaseStudyLayout>
   );
 }
+
+export const metadata: Metadata = {
+  title: "Smart Home on K3s · Self-Hosted Home Automation",
+  description:
+    "A single-node K3s cluster on a Raspberry Pi 5 running Home Assistant, ArgoCD, Prometheus and Grafana. Same GitOps discipline as the platform at work, sized to a flat, zero ports exposed.",
+  openGraph: {
+    title: "Smart Home on K3s · Self-Hosted Home Automation",
+    description:
+      "A single-node K3s cluster on a Raspberry Pi 5 running Home Assistant, ArgoCD and Prometheus. Every config change goes through git; zero ports exposed to the internet.",
+    url: "https://devlinops.com/projects/smart-home",
+  },
+};
