@@ -8,7 +8,6 @@ import { KonamiCode } from "@/components/konami-code";
 import { ChaosMode } from "@/components/chaos-mode";
 import { SmoothScroll } from "@/components/smooth-scroll";
 import { CliNavigation } from "@/components/cli-navigation";
-import { BackToTop } from "@/components/back-to-top";
 import { MotionProvider } from "@/components/motion-provider";
 import { roles, education, knowsAbout } from "@/lib/experience";
 import { profile } from "@/lib/profile";
@@ -204,7 +203,6 @@ export default function RootLayout({
           <KonamiCode />
           <ChaosMode />
           <CliNavigation />
-          <BackToTop />
         </MotionProvider>
       </body>
     </html>
