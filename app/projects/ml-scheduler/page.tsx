@@ -110,7 +110,7 @@ const ARTEFACTS = [
   ["Analysis plan", "Registered before the confirmatory data, with every amendment dated. It froze when the primary noise floor was measured."],
   ["Receipts index", "Claim → script → artifact, for every quantitative claim. Every number on this page has a row."],
   ["Run records", "199 recorded runs on EKS. Each carries its seed, workload hash, victim, pinned start fingerprint and health-model hash."],
-  ["Code", "Python 3.14. Scheduler, experiment driver, workload generator, stats, and the test suite. Private until the viva; ask me for a walkthrough."],
+  ["Code", "Python 3.14. Scheduler, experiment driver, workload generator, stats, and the test suite. Private until the viva."],
 ];
 
 /* ---- typography ------------------------------------------------------- */

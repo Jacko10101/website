@@ -23,8 +23,7 @@ export default function ContactPage() {
         </p>
         <p className="mb-8 text-lg text-muted-foreground leading-relaxed">
           Best fit: teams putting AI workloads on Kubernetes, or platforms that
-          need observability and GitOps brought up to a real standard. Always
-          happy to talk shop.
+          need observability and GitOps brought up to a real standard.
         </p>
 
         {profile.visaNote && (

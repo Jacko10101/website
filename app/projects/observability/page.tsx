@@ -434,10 +434,6 @@ export default function ObservabilityPage() {
             >
               — end of record —
             </p>
-            <P>
-              If you want to know what it&apos;s actually like owning this stack
-              on-call, ask me.
-            </P>
             <div className="flex flex-wrap gap-x-8 gap-y-3 font-serif text-[1.0625rem] mt-6">
               <Link
                 href="/contact"

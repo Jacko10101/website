@@ -277,8 +277,8 @@ export function IncidentSignoff() {
           </div>
 
           <p className="text-sm text-muted-foreground leading-relaxed pt-5">
-            The pricing bug has a longer version than fits here, and so does
-            the runbook. Happy to talk through either,{" "}
+            The pricing bug and the runbook both have longer versions than fit
+            here; this page has the parts that changed the design.{" "}
             <Link
               href="/contact"
               className="text-primary hover:underline underline-offset-4"

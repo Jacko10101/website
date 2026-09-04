@@ -329,8 +329,7 @@ export function PrMergeFooter() {
                 </span>
               </p>
               <p className="mt-3 text-muted-foreground leading-relaxed max-w-2xl">
-                I&apos;d do it the same way again. If you want the awkward
-                parts of the migration, ask me.
+                I&apos;d do it the same way again.
               </p>
               <div className="mt-6 flex flex-wrap items-center gap-x-8 gap-y-3 font-mono text-sm">
                 <Link

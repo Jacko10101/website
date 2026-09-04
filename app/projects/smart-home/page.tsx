@@ -69,10 +69,6 @@ function SpecPlate() {
           If the internet goes down, the lights still work. Everything below
           follows from that.
         </p>
-        <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
-          It&apos;s a flat, not an estate. Ask me about the parts that were
-          genuinely fiddly.
-        </p>
       </div>
 
       {/* Headline figures */}
