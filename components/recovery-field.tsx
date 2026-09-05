@@ -43,7 +43,7 @@ const NODE_GAP = 22;
 const CLUSTER_W = 3 * NODE_W + 2 * NODE_GAP;
 const X0 = Math.round((W - CLUSTER_W) / 2);
 const Y0 = 22;
-const QUEUE_Y = Y0 + NODE_H + 48;
+const QUEUE_Y = Y0 + NODE_H + 44;
 
 /** How long each phase holds, so the loop is slow enough to read. */
 const PAUSE = { idle: 2600, dead: 900, seated: 3600, revived: 3200 } as const;
@@ -281,17 +281,8 @@ export function RecoveryField({ className = "" }: { className?: string }) {
         ctx.fillStyle = n.tone > 0.5 ? error(0.9) : label(0.9);
         ctx.fillText(n.tone > 0.5 ? `node-${n.i + 1}  NotReady` : `node-${n.i + 1}`, n.x, n.y + NODE_H + 8);
       }
-      // The pending slot is drawn even when empty, so the band under the
-      // nodes reads as a place rather than as space left over.
-      const pending = pods.filter((p) => p.pending).length;
-      ctx.setLineDash([3, 5]);
-      ctx.strokeStyle = frame(0.35);
-      ctx.lineWidth = 1;
-      rr(X0 + 0.5, QUEUE_Y - 6.5, CLUSTER_W - 1, 2 * (2 * CELL + GAP) + 13, 6);
-      ctx.stroke();
-      ctx.setLineDash([]);
       ctx.fillStyle = label(0.9);
-      ctx.fillText(pending ? `pending  ${pending}` : "pending", X0, QUEUE_Y - 20);
+      ctx.fillText(`pending  ${pods.filter((p) => p.pending).length}`, X0, QUEUE_Y - 16);
       for (const p of pods) {
         step(p, now);
         const w = p.w * CELL + (p.w - 1) * GAP;
@@ -408,12 +399,12 @@ export function RecoveryField({ className = "" }: { className?: string }) {
         aria-label="A three-node cluster. One node fails, its pods queue, and the survivors seat the most important ones first."
       />
       <p className="mt-3.5 flex items-baseline justify-between gap-3 font-mono text-xs text-muted-foreground/80">
-        <span>Click a node to fail it. Its pods queue and come back most important first.</span>
+        <span>a node dies · the brighter the pod, the sooner it comes back</span>
         <Link
           href="/projects/ml-scheduler"
           className="whitespace-nowrap border-b border-border text-muted-foreground transition-colors hover:border-primary hover:text-primary"
         >
-          the scheduler, from the paper →
+          the paper →
         </Link>
       </p>
     </div>
