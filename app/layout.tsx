@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
   manifest: "/manifest.webmanifest",
   title: {
-    default: "Jack Devlin · Platform & AI Infrastructure Engineer",
+    default: "Jack Devlin · Platform Engineer",
     template: "%s · Jack Devlin",
   },
   description,
@@ -61,7 +61,7 @@ export const metadata: Metadata = {
     ],
   },
   openGraph: {
-    title: "Jack Devlin · Platform & AI Infrastructure Engineer",
+    title: "Jack Devlin · Platform Engineer",
     description,
     url: "https://www.devlinops.com",
     siteName: "Jack Devlin",
@@ -84,14 +84,14 @@ export default function RootLayout({
         "@type": "ProfilePage",
         "@id": "https://www.devlinops.com/#profilepage",
         "url": "https://www.devlinops.com",
-        "name": "Jack Devlin · Platform & AI Infrastructure Engineer",
+        "name": "Jack Devlin · Platform Engineer",
         "mainEntity": { "@id": "https://www.devlinops.com/#person" },
       },
       {
         "@type": "Person",
         "@id": "https://www.devlinops.com/#person",
         "name": "Jack Devlin",
-        "jobTitle": "Platform & Site Reliability Engineer",
+        "jobTitle": "Platform engineer",
         "url": "https://www.devlinops.com",
         "email": "jack@devlinops.com",
         "image": "https://www.devlinops.com/jack-photo.jpg",
@@ -125,7 +125,7 @@ export default function RootLayout({
         "knowsAbout": knowsAbout,
         "hasOccupation": {
           "@type": "Occupation",
-          "name": "Platform & Site Reliability Engineer",
+          "name": "Platform engineer",
           "skills": knowsAbout.join(", "),
         },
       },

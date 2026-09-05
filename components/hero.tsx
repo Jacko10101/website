@@ -26,7 +26,7 @@ export function Hero() {
       <div className="container relative z-10">
         <div className="grid items-center gap-16 lg:grid-cols-[minmax(0,1fr)_auto]">
           <div>
-            <p className="eyebrow mb-7">Platform · AI infrastructure</p>
+            <p className="eyebrow mb-7">Platform engineer</p>
 
             <h1 className="display mb-8 text-[clamp(3.5rem,9vw,7.5rem)] text-foreground">
               Jack Devlin

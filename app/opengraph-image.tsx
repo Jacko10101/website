@@ -9,7 +9,7 @@ import { profile } from "@/lib/profile";
  */
 export const size = OG_SIZE;
 export const contentType = OG_CONTENT_TYPE;
-export const alt = "Jack Devlin · Platform & AI Infrastructure Engineer";
+export const alt = "Jack Devlin · Platform Engineer";
 
 export default function Image() {
   return renderOgImage({
