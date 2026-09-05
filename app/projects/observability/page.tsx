@@ -199,7 +199,7 @@ export default function ObservabilityPage() {
             <p className="font-serif text-sm tracking-[0.18em] uppercase text-primary mb-4">
               ADR-001 · Architecture decision record
             </p>
-            <h1 className="font-serif text-4xl sm:text-5xl text-foreground leading-tight mb-10">
+            <h1 className="font-serif text-4xl sm:text-5xl text-foreground leading-tight mb-10" style={{ viewTransitionName: "title-observability" }}>
               Observability stack — build over buy
             </h1>
 

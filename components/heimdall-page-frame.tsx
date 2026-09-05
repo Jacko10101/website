@@ -137,7 +137,7 @@ export function DayLogHeader() {
             </div>
 
             <div className="border-t border-border/60 mt-3 pt-5 max-w-4xl">
-              <h1 className="display text-4xl sm:text-5xl md:text-6xl text-foreground mb-3">
+              <h1 className="display text-4xl sm:text-5xl md:text-6xl text-foreground mb-3" style={{ viewTransitionName: "title-heimdall" }}>
                 Heimdall
               </h1>
               <p className="font-mono text-sm text-muted-foreground mb-3">

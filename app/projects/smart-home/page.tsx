@@ -57,7 +57,7 @@ function SpecPlate() {
 
       {/* Title block */}
       <div className="px-5 sm:px-7 py-4 border-b border-border">
-        <h1 className="display text-3xl sm:text-4xl text-foreground mb-2">
+        <h1 className="display text-3xl sm:text-4xl text-foreground mb-2" style={{ viewTransitionName: "title-smart-home" }}>
           Smart home on K3s
         </h1>
         <p className="text-muted-foreground">

@@ -5,6 +5,7 @@ import "./globals.css";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { Extras } from "@/components/extras";
+import { ViewTransitions } from "@/components/view-transition";
 import { roles, education, knowsAbout } from "@/lib/experience";
 import { profile } from "@/lib/profile";
 
@@ -185,13 +186,15 @@ export default function RootLayout({
         >
           Skip to content
         </a>
-        <div className="relative flex min-h-screen flex-col">
-          <Navigation />
-          <main id="main-content" className="flex-1">{children}</main>
-          <Footer />
-        </div>
-        {/* The terminal, the simulator and chaos mode, loaded once the page is idle. */}
-        <Extras />
+        <ViewTransitions>
+          <div className="relative flex min-h-screen flex-col">
+            <Navigation />
+            <main id="main-content" className="flex-1">{children}</main>
+            <Footer />
+          </div>
+          {/* The terminal, the simulator and chaos mode, loaded once the page is idle. */}
+          <Extras />
+        </ViewTransitions>
       </body>
     </html>
   );

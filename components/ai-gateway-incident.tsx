@@ -61,7 +61,7 @@ export function IncidentHeader() {
           </p>
 
           {/* Title */}
-          <h1 className="display text-4xl sm:text-5xl text-foreground mb-3">
+          <h1 className="display text-4xl sm:text-5xl text-foreground mb-3" style={{ viewTransitionName: "title-ai-gateway" }}>
             AI Gateway
           </h1>
 

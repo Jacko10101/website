@@ -1,6 +1,7 @@
 "use client";
 
 import { ReactNode, useEffect, useState } from "react";
+import "@/components/view-transition";
 
 /**
  * The rise between routes, in CSS. It must never gate the *first* paint:
@@ -17,7 +18,9 @@ let hasNavigated = false;
 export default function Template({ children }: { children: ReactNode }) {
   // Read once per mount, as state rather than a ref so it is never read
   // during render.
-  const [isNavigation] = useState(() => hasNavigated);
+  // A view transition (components/view-transition.tsx) animates the crossing
+  // itself; the rise would run on top of it, so it stands aside.
+  const [isNavigation] = useState(() => hasNavigated && !window.__viewTransition);
 
   useEffect(() => {
     hasNavigated = true;

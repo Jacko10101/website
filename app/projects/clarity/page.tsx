@@ -195,7 +195,7 @@ function ClaimsLedgerHeader() {
             claims &amp; receipts
           </p>
 
-          <h1 className="display text-4xl sm:text-5xl md:text-6xl text-foreground mb-3">
+          <h1 className="display text-4xl sm:text-5xl md:text-6xl text-foreground mb-3" style={{ viewTransitionName: "title-clarity" }}>
             Clarity
           </h1>
 

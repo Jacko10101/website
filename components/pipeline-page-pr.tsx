@@ -80,7 +80,7 @@ export function PrHeader() {
           {/* PR titles are set in the app's sans, not a heading face — the
               mono lives in the branch lozenges and the diffstat. */}
           <div className="flex flex-wrap items-center gap-x-4 gap-y-3 mb-3">
-            <h1 className="font-semibold tracking-tight text-3xl sm:text-4xl md:text-[2.5rem] text-foreground">
+            <h1 className="font-semibold tracking-tight text-3xl sm:text-4xl md:text-[2.5rem] text-foreground" style={{ viewTransitionName: "title-pipeline-platform" }}>
               Pipeline platform
             </h1>
             <MergedBadge />

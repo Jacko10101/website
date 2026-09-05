@@ -42,7 +42,10 @@ export function CaseIndex() {
               className="group grid gap-x-6 gap-y-1.5 border-t border-border py-5 last:border-b md:grid-cols-[170px_220px_minmax(0,1fr)_auto] md:items-baseline"
             >
               <span className="eyebrow">{p.docType}</span>
-              <span className="display text-xl text-foreground transition-colors group-hover:text-primary">
+              <span
+                className="display text-xl text-foreground transition-colors group-hover:text-primary"
+                style={{ viewTransitionName: `title-${p.id}` }}
+              >
                 {p.title}
                 {p.startHere && (
                   <span className="ml-2 align-middle font-mono text-[9.5px] uppercase tracking-[0.14em] text-warn">

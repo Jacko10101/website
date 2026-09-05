@@ -298,6 +298,14 @@ table {
   }
 }
 
+/* Shared-element crossings (components/view-transition.tsx). The default
+   is a quarter-second crossfade; this is slower and eased, so a title
+   travelling from an index row into its page reads as one thing moving. */
+::view-transition-group(*) {
+  animation-duration: 420ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 /* Focus visible styles */
 :focus-visible {
   outline: 2px solid var(--color-primary);

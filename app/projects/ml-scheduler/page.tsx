@@ -390,7 +390,7 @@ export default function MlSchedulerPage() {
             </Link>
 
             <p className="eyebrow mb-5">MSc dissertation · submitted September 2026</p>
-            <h1 className="display text-4xl sm:text-5xl text-foreground mb-4">
+            <h1 className="display text-4xl sm:text-5xl text-foreground mb-4" style={{ viewTransitionName: "title-ml-scheduler" }}>
               Evict the guilty, not the innocent
             </h1>
             <p className="text-xl sm:text-2xl text-foreground/80 leading-snug mb-8">
