@@ -262,6 +262,42 @@ html {
   }
 }
 
+/* Figures line up: every mono surface, every display numeral, every table. */
+.display,
+.font-mono,
+code,
+kbd,
+pre,
+table {
+  font-variant-numeric: tabular-nums;
+}
+
+/* A row lit where the pointer is (components/lit-row.tsx sets --mx/--my). */
+.lit-row {
+  position: relative;
+}
+
+.lit-row::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 220ms ease;
+  background: radial-gradient(
+    340px circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in oklab, var(--color-primary) 9%, transparent),
+    transparent 65%
+  );
+}
+
+@media (hover: hover) {
+  .lit-row:hover::before,
+  .lit-row:focus-visible::before {
+    opacity: 1;
+  }
+}
+
 /* Focus visible styles */
 :focus-visible {
   outline: 2px solid var(--color-primary);

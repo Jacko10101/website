@@ -73,7 +73,7 @@ export function Navigation() {
 
         <div className="flex items-center gap-2">
           {/* Desktop Navigation */}
-          <div className="hidden md:flex md:gap-1">
+          <div className="hidden md:flex md:items-center md:gap-1">
             {navItems.map((item) => (
               <Link
                 key={item.href}
@@ -88,6 +88,20 @@ export function Navigation() {
                 {item.name}
               </Link>
             ))}
+            {/* The terminal used to be findable only from the footer's status
+                line. Pointer devices only: it is a keyboard thing. */}
+            <button
+              type="button"
+              onClick={() => {
+                (window as Window & { __cliRequested?: boolean }).__cliRequested = true;
+                window.dispatchEvent(new Event("devlinops:cli"));
+              }}
+              className="ml-2 hidden items-center gap-2 rounded-md border border-border px-2.5 py-1.5 font-mono text-xs text-muted-foreground transition-colors hover:border-primary/60 hover:text-foreground [@media(hover:hover)]:inline-flex"
+              title="Open the terminal"
+            >
+              terminal
+              <kbd className="rounded border border-border/80 bg-secondary px-1.5 py-px font-mono text-[11px] text-foreground/80">/</kbd>
+            </button>
           </div>
 
           {/* Mobile Menu Button */}

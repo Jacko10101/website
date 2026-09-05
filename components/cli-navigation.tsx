@@ -27,6 +27,7 @@ const COMMAND_TABLE: CommandSpec[] = [
   { name: "cd", usage: "cd <path>", blurb: "Go to a route", group: "Navigation" },
   { name: "cat", usage: "cat <path>", blurb: "Same as cd. Try 'cat .secrets'", group: "Navigation" },
   { name: "pwd", usage: "pwd", blurb: "Print the page you're on", group: "Navigation" },
+  { name: "projects", aliases: ["about", "home"], usage: "projects · about · home", blurb: "Go straight there. The first thing everyone types", group: "Navigation" },
 
   { name: "kubectl", usage: "kubectl <args>", blurb: "get pods, get nodes, get deployments", group: "Cluster theatre" },
   { name: "argocd", usage: "argocd <args>", blurb: "app list, app get devlinops-site", group: "Cluster theatre" },
@@ -102,7 +103,14 @@ const NEOFETCH_ART = [
 ];
 
 export function CliNavigation() {
-  const [isOpen, setIsOpen] = useState(false);
+  // Opens on mount if the header's terminal button was pressed before this
+  // component had loaded (it arrives after the page is idle).
+  const [isOpen, setIsOpen] = useState(() => {
+    const w = window as Window & { __cliRequested?: boolean };
+    const asked = w.__cliRequested === true;
+    w.__cliRequested = false;
+    return asked;
+  });
   const [input, setInput] = useState("");
   const [history, setHistory] = useState<{ command: string; output: string }[]>([]);
   /**
@@ -167,8 +175,13 @@ export function CliNavigation() {
       }
     };
 
+    const handleOpen = () => setIsOpen(true);
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener("devlinops:cli", handleOpen);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("devlinops:cli", handleOpen);
+    };
   }, [isOpen]);
 
   useEffect(() => {
@@ -511,6 +524,16 @@ website, so the privileges are decorative.`;
           output = `rm: missing operand\nTry 'rm --help' for more information.`;
         }
         break;
+
+      case "home":
+      case "projects":
+      case "about": {
+        const path = command === "home" ? "/" : `/${command}`;
+        router.push(path);
+        output = `Navigating to ${path}...`;
+        setTimeout(() => setIsOpen(false), 500);
+        break;
+      }
 
       case "hire":
       case "contact":

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { LitRow } from "@/components/lit-row";
 import { projects } from "@/lib/projects";
 import { SectionHeading } from "@/components/section-heading";
 
@@ -35,7 +36,7 @@ export function CaseIndex() {
 
         <div>
           {rows.map((p) => (
-            <Link
+            <LitRow
               key={p.id}
               href={p.href!}
               className="group grid gap-x-6 gap-y-1.5 border-t border-border py-5 last:border-b md:grid-cols-[170px_220px_minmax(0,1fr)_auto] md:items-baseline"
@@ -55,7 +56,7 @@ export function CaseIndex() {
               <span className="whitespace-nowrap font-mono text-xs text-muted-foreground/80 transition-colors group-hover:text-primary">
                 {p.docCta ?? "case study"} →
               </span>
-            </Link>
+            </LitRow>
           ))}
         </div>
 
