@@ -158,7 +158,7 @@ export function GroundingDemo() {
         </span>
         <span className="ml-auto font-mono text-xs text-muted-foreground">
           {grounding
-            ? "what users actually get"
+            ? "what users get"
             : "what they'd have got without it"}
         </span>
       </div>

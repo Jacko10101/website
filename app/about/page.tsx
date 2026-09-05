@@ -65,8 +65,7 @@ function AboutHero() {
                   Clarity, a natural-language database product running across
                   about thirty tenants, and the LLM gateway every AI workload at
                   the company goes through. I built the Kubernetes, pipelines and
-                  observability underneath them. I submitted my MSc in
-                  Artificial Intelligence in September 2026.
+                  observability underneath them.
                 </p>
               </div>
 
@@ -105,7 +104,7 @@ function ExperienceSection() {
       <div className="container px-4">
         <SectionHeading
           title="Where I've worked"
-          lede="Named, dated and checkable. There's a PDF of the same thing if you'd rather have one."
+          lede="Employers, titles and dates, with a PDF of the same if you'd rather have one."
           align="center"
         />
 
@@ -278,13 +277,13 @@ function CurrentlySection() {
               I&apos;m wrapping up my current contract on the platform team I
               helped build. Most of this year went to the AI side: Clarity live
               across ~30 tenant databases, and the gateway that fronts every AI
-              workload. Heimdall still opens every morning.
+              workload.
             </p>
             <p className="text-muted-foreground leading-relaxed">
               The dissertation is submitted. It builds a capacity-aware
               scheduler for recovering Kubernetes workloads after node failure,
-              measured on real EKS clusters where failure means actually
-              terminating the machine. It&apos;s the same problem I keep hitting
+              measured on real EKS clusters where failure means the machine is
+              terminated. It&apos;s the same problem I keep hitting
               on the platform side.
             </p>
           </div>
@@ -314,10 +313,10 @@ export default function AboutPage() {
 export const metadata: Metadata = {
   alternates: { canonical: "/about" },
   title: "About",
-  description: `Jack Devlin · Platform & AI infrastructure engineer. How I work, the systems I've built, and what I'm looking for. ${profile.availability.sentence}`,
+  description: `Jack Devlin · Platform engineer. How I work, the systems I've built, and what I'm looking for. ${profile.availability.sentence}`,
   openGraph: {
     title: "About · Jack Devlin",
-    description: `Platform & AI infrastructure engineer. How I work, the systems I've built, and what I'm looking for. ${profile.availability.sentence}`,
+    description: `Platform engineer. How I work, the systems I've built, and what I'm looking for. ${profile.availability.sentence}`,
     url: "https://www.devlinops.com/about",
   },
 };

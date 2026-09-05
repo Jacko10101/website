@@ -53,7 +53,7 @@ export function ObservabilityArchitecture() {
     grafana: {
       title: "Grafana",
       description:
-        "The one place people actually look — 22 dashboards reading metrics, logs and traces side by side.",
+        "The one place people look: 22 dashboards reading metrics, logs and traces side by side.",
     },
     alertmanager: {
       title: "Alertmanager",

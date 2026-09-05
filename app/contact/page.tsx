@@ -6,12 +6,10 @@ import { profile } from "@/lib/profile";
 export const metadata: Metadata = {
   alternates: { canonical: "/contact" },
   title: "Contact",
-  description:
-    "Drop Jack Devlin a note. Platform engineer, available now for permanent or contract work, remote-first and open to relocating.",
+  description: `Drop Jack Devlin a note. Platform engineer. ${profile.availability.sentence}`,
   openGraph: {
     title: "Contact · Jack Devlin",
-    description:
-      "Drop Jack Devlin a note. Platform engineer, available now for permanent or contract work, remote-first and open to relocating.",
+    description: `Drop Jack Devlin a note. Platform engineer. ${profile.availability.sentence}`,
     url: "/contact",
   },
 };
@@ -25,13 +23,12 @@ export default function ContactPage() {
           How to reach me
         </h1>
         <p className="mb-4 text-lg text-muted-foreground leading-relaxed">
-          The form below or an email, whichever suits. I&apos;m available now,
-          for permanent roles or contracts. I work remote-first and I&apos;m open
-          to relocating.
+          The form below or an email, whichever suits.{" "}
+          {profile.availability.sentence}
         </p>
         <p className="mb-8 text-lg text-muted-foreground leading-relaxed">
           Best fit: teams putting AI workloads on Kubernetes, or platforms that
-          need observability and GitOps brought up to a real standard.
+          need observability and GitOps sorted out.
         </p>
 
         {profile.visaNote && (

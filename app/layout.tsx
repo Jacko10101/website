@@ -144,7 +144,7 @@ export default function RootLayout({
         "name": "Devlinops Ltd",
         "url": "https://www.devlinops.com",
         "description":
-          "Devlinops Ltd is the limited company Jack Devlin contracts through. Platform and AI infrastructure engineering: Kubernetes, GitOps, CI/CD, observability and LLM gateways.",
+          "Devlinops Ltd is the limited company Jack Devlin contracts through. Platform engineering: Kubernetes, GitOps, CI/CD, observability and LLM gateways.",
         "provider": {
           "@id": "https://www.devlinops.com/#person",
         },

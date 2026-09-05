@@ -232,9 +232,7 @@ export default function ObservabilityPage() {
               <div className="grid sm:grid-cols-[9rem_1fr] gap-x-6 gap-y-1 py-4 border-b border-border/60">
                 <dt className={label}>Outcome</dt>
                 <dd className="font-serif text-[1.0625rem] text-foreground/80 leading-[1.75]">
-                  Two years on, an incident starts with someone pasting a
-                  Grafana link, and the bill stayed flat while the data grew.
-                  Section 6 reviews the decision.
+                  Still in force. The bill stayed flat while the data grew.
                 </dd>
               </div>
             </dl>
@@ -256,7 +254,7 @@ export default function ObservabilityPage() {
             <P>
               So I built it in-house. The stack is unsurprising: Prometheus and
               Thanos for metrics, Loki for logs, Alertmanager for paging,
-              Grafana for everyone to actually look at.
+              Grafana on top.
             </P>
             <P>
               The pieces are standard; the work was wiring them so people can
@@ -285,7 +283,7 @@ export default function ObservabilityPage() {
             </P>
           </Clause>
 
-          <Clause n="4" title="What people actually look at">
+          <Clause n="4" title="What gets looked at">
             <P>
               I ended up with 22 dashboards, but most of the traffic goes to
               maybe five. The rest exist for the once-a-quarter question they

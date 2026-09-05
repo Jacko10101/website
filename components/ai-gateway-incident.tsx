@@ -93,16 +93,15 @@ export function IncidentHeader() {
               every AI workload, one endpoint
             </ReportField>
             <ReportField label="impact">
-              none — built while there were two consumers, not twelve
+              none. Built while there were two consumers.
             </ReportField>
             <ReportField label="outcome">
-              adding an AI feature is a config change now, not a new secret
-              and a billing conversation — and spend lands against the tenant
-              and feature that caused it
+              adding an AI feature is a config change, and spend lands against
+              the tenant and feature that caused it
             </ReportField>
             <ReportField label="summary">
               A self-hosted LLM gateway in front of every AI workload. Services
-              hold a virtual key with a model allowlist, not a provider key.
+              hold a virtual key with a model allowlist.
             </ReportField>
           </dl>
         </div>

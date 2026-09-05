@@ -11,7 +11,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
  * before you act, keep the error budget alive, and you get a handover report
  * with a real MTTR per incident at the end.
  *
- * Every failure in here is one that actually happens.
+ * The failures are real ones; the services are not.
  */
 
 type Difficulty = "easy" | "medium" | "hard";
@@ -49,17 +49,17 @@ const SCENARIOS: Scenario[] = [
       {
         cmd: "kubectl logs payments-api-7d4f --previous | tail",
         output: [
-          "java.lang.OutOfMemoryError: Java heap space",
-          "  at com.acme.payments.BatchProcessor.load(...)",
+          "INFO  BatchProcessor: loading 41,200 work orders into memory",
+          "(log ends there: the kernel killed it before the JVM could complain)",
         ],
       },
       {
         cmd: "kubectl describe pod payments-api-7d4f",
-        output: ["Last State:  Terminated", "  Reason:    OOMKilled", "  Limits:    memory: 512Mi"],
+        output: ["Last State:  Terminated", "  Reason:    OOMKilled", "  Exit Code: 137", "  Limits:    memory: 512Mi"],
       },
       {
         cmd: "kubectl top pod payments-api-7d4f",
-        output: ["NAME                MEMORY", "payments-api-7d4f   511Mi / 512Mi"],
+        output: ["NAME                CPU    MEMORY", "payments-api-7d4f   210m   509Mi"],
       },
     ],
     fixes: [
@@ -77,11 +77,11 @@ const SCENARIOS: Scenario[] = [
       {
         label: "Silence the alert",
         correct: false,
-        reaction: "The alert is quiet. Payments are still down. Bold strategy.",
+        reaction: "The alert is quiet. Payments are still down.",
       },
     ],
     resolution: "Limit raised to 1Gi, rollout complete. The batch job fits in heap. Runbook updated.",
-    lesson: "OOMKilled is the kubelet, not the JVM. The exit reason tells you which one gave up first.",
+    lesson: "Exit 137 is the kernel, not the JVM. A Java OutOfMemoryError is the heap giving up; OOMKilled is the container limit going first, and the app never gets to log it.",
   },
   {
     id: "baddeploy",
@@ -233,11 +233,11 @@ const SCENARIOS: Scenario[] = [
       },
     ],
     fixes: [
-      { label: "Issue from the backup ACME account and rotate", correct: true, reaction: "" },
+      { label: "Switch the Certificate to the secondary ClusterIssuer and rotate", correct: true, reaction: "" },
       {
         label: "Restart the ingress controller",
         correct: false,
-        reaction: "It reloads the same expired cert with great efficiency.",
+        reaction: "It reloads the same expired cert.",
       },
       {
         label: "Scale the ingress up",
@@ -250,7 +250,7 @@ const SCENARIOS: Scenario[] = [
         reaction: "cert-manager recreates it and hits the same rate limit. The clock keeps ticking.",
       },
     ],
-    resolution: "Cert rotated from the secondary account. Handshakes green. Renewal alerting moved to 21 days out.",
+    resolution: "Cert issued from the secondary CA. Handshakes green. Renewal alerting moved to 21 days out.",
     lesson: "Certificate expiry is the only outage you can put in the calendar a year early and still miss.",
   },
   {
@@ -304,12 +304,12 @@ const SCENARIOS: Scenario[] = [
         output: ["getaddrinfo EAI_AGAIN inventory-svc.internal", "upstream timeout after 5000ms"],
       },
       {
-        cmd: "kubectl logs -n kube-system coredns | tail",
-        output: ["[WARNING] overloaded, dropping queries", "throttling: CPU limit reached"],
+        cmd: "promql: rate(container_cpu_cfs_throttled_seconds_total{pod=~\"coredns.*\"}[5m])",
+        output: ["coredns-1   0.92   # throttled 92% of periods", "coredns-2   0.95"],
       },
       {
         cmd: "kubectl top pod -n kube-system | grep coredns",
-        output: ["coredns-1   199m / 200m CPU", "coredns-2   200m / 200m CPU"],
+        output: ["coredns-1   199m   68Mi   # limit 200m", "coredns-2   200m   71Mi"],
       },
     ],
     fixes: [
@@ -420,7 +420,7 @@ const SCENARIOS: Scenario[] = [
     id: "hpa",
     difficulty: "medium",
     service: "search-api",
-    alert: "PodChurn — search-api scaled 4→22→4 twice in ten minutes",
+    alert: "HPAStuck — search-api pinned at 4 replicas through the morning peak, p95 climbing",
     clues: [
       {
         cmd: "kubectl describe hpa search-api",
@@ -436,7 +436,7 @@ const SCENARIOS: Scenario[] = [
       },
       {
         cmd: "promql: rate(http_requests[5m])",
-        output: ["steady ~1.2k rps all morning, no traffic spike"],
+        output: ["climbing since 08:30, now 3× the overnight baseline"],
       },
     ],
     fixes: [
@@ -444,12 +444,12 @@ const SCENARIOS: Scenario[] = [
       {
         label: "Raise the HPA max replicas",
         correct: false,
-        reaction: "It now thrashes between 4 and 40. The scheduler is having a worse morning than you.",
+        reaction: "The ceiling moved. It still can't compute a ratio, so it still doesn't scale.",
       },
       {
         label: "Delete the HPA",
         correct: false,
-        reaction: "The churn stops and so does any ability to handle this evening's peak. Deferred, not fixed.",
+        reaction: "Now nothing will ever scale it. Deferred, not fixed.",
       },
       {
         label: "Roll back search-api",
@@ -457,8 +457,8 @@ const SCENARIOS: Scenario[] = [
         reaction: "The manifest without requests was rolled back to a manifest without requests.",
       },
     ],
-    resolution: "CPU requests set to a measured baseline, HPA settled at 6 replicas. Autoscaling behaves.",
-    lesson: "The HPA scales on a percentage of requests. With no request set, there's no denominator and no sanity.",
+    resolution: "CPU requests set to a measured baseline. The HPA scaled to 9 for the peak and back down after it.",
+    lesson: "The HPA scales on a percentage of the request. With no request set there is no denominator, so it does nothing.",
   },
   {
     id: "kafka",
@@ -1073,9 +1073,8 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
             </h2>
             <p className="text-muted-foreground max-w-md mx-auto mb-6 text-sm leading-relaxed">
               Five pages before handover, each one meaner than the last.
-              Investigate before you act: commands cost a little budget, wrong
-              fixes cost a lot. Every incident in here is one that actually
-              happens.
+              Investigate before you act. The failures are real ones; the
+              services aren&apos;t.
             </p>
             <p className="font-mono text-[11px] text-muted-foreground mb-8">
               1 2 3 investigate · a s d f remediate · enter for the next page

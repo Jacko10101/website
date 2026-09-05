@@ -353,7 +353,7 @@ export default function SmartHomePage() {
                 </Annot>
                 <Annot>
                   That sounds like overkill for a home lab, and it would be if
-                  it were any other tool. ArgoCD on K3s is genuinely 80MB of
+                  it were any other tool. ArgoCD on K3s is about 80MB of
                   memory and a few CRDs. The payoff is a setup that survives
                   me. If I blat the SD card tomorrow, a fresh install plus{" "}
                   <code className="text-foreground">argocd app sync</code>{" "}

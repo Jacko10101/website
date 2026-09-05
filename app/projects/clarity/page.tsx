@@ -537,7 +537,7 @@ export default function ClarityPage() {
                 A nightly job compiles a knowledge document per tenant. Business
                 summary per table, a glossary, SQL recipes known to work. It goes
                 into every conversation as cached context, byte-identical so the
-                provider can actually cache it.
+                provider can cache it.
               </p>
               <p className="text-muted-foreground leading-relaxed mb-6">
                 The model turns up already knowing the estate. Live discovery
@@ -639,7 +639,7 @@ export default function ClarityPage() {
                   These are the five classes the grounding layer checks on every
                   turn, all of them simplified from cases the detectors caught
                   in production. The toggle switches the grounding layer off and
-                  on. Off is what the model produced. On is what a user actually
+                  on. Off is what the model produced. On is what a user
                   sees.
                 </p>
                 <GroundingDemo />
@@ -648,7 +648,7 @@ export default function ClarityPage() {
 
             <CaseStudySection
               eyebrow="> what stops it, though?"
-              title="Where each guarantee is actually enforced"
+              title="Where each guarantee is enforced"
             >
               <p className="text-muted-foreground leading-relaxed mb-6">
                 A system prompt is a request. Everything below is a property of
@@ -661,7 +661,7 @@ export default function ClarityPage() {
             </CaseStudySection>
 
             <CaseStudySection
-              eyebrow="> is it actually working?"
+              eyebrow="> is it working?"
               title="An honest answer"
             >
               <p className="text-muted-foreground leading-relaxed mb-4">

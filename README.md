@@ -2,7 +2,7 @@
 
 [![checks](https://github.com/Jacko10101/website/actions/workflows/checks.yml/badge.svg)](https://github.com/Jacko10101/website/actions/workflows/checks.yml)
 
-My site: [devlinops.com](https://www.devlinops.com). Case studies of platform work, each written as the document the work produced, with every number traced to what measured it.
+My site: [devlinops.com](https://www.devlinops.com). Case studies of platform work, each written in the form the work took.
 
 ## What's on it
 
@@ -18,9 +18,9 @@ Seven case studies, each in its own register, because a dashboard, a pipeline an
 | `/projects/smart-home` | The same GitOps discipline, sized to a flat | A hardware spec sheet |
 | `/projects/ml-scheduler` | Capacity-aware pod recovery under real node failure, my MSc | A paper |
 
-The homepage opens on a small cluster losing a node and recovering it the way the dissertation's scheduler does. `/oncall` has the things on the site that actually run: a SQLite database of the work compiled to WebAssembly and queried in the browser, your own session's web vitals, and an on-call simulator with fourteen incidents.
+The homepage opens on a small cluster losing a node and recovering it the way the dissertation's scheduler does. `/oncall` has the things on the site that run: a SQLite database of the work compiled to WebAssembly and queried in the browser, your own session's web vitals, and an on-call simulator with fourteen incidents.
 
-Two rules the copy follows. Every number is measured or absent; if a figure can't be traced to a source, it isn't on the page. And a claim that can't be checked isn't made.
+The rule for numbers is measured or absent. Two figures on the pipeline page are still marked TODO until I pull them from the real repos.
 
 ## How it's built
 
@@ -50,11 +50,11 @@ CI runs all of it, plus `npm audit` and the build, on every push and pull reques
 ```
 npm ci
 npm run dev        # http://localhost:3000
-npm run build && npm start
+npm run build && npm start -- -p 3111   # the port check:viewports expects
 ```
 
 The contact form posts to Web3Forms and needs `NEXT_PUBLIC_WEB3FORMS_KEY`; without it the form explains that it isn't configured. Everything else runs with no configuration.
 
 ## The extras
 
-For whoever reads everything. Press `/` for a terminal that knows the site's routes. `oncall` in it, or the Konami code, opens the incident simulator. `chaos` does what it says, and git puts it back. The 404 is a pod in CrashLoopBackOff.
+If you read everything: press `/` for a terminal that knows the site's routes. `oncall` in it, or the Konami code, opens the incident simulator. `chaos` does what it says, and git puts it back. The 404 is a pod in CrashLoopBackOff.

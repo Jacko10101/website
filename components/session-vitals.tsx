@@ -180,10 +180,9 @@ export function SessionVitals() {
         ))}
       </div>
       <p className="mt-3 text-xs text-muted-foreground">
-        Measured in your browser, on this visit — not a screenshot of a good
-        day. Thresholds are the Core Web Vitals definitions. This site ships as
-        static files, so a slow first byte is the journey to you, not a server
-        thinking.
+        Measured in your browser on this visit. Thresholds are the Core Web
+        Vitals definitions. The site is static files, so a slow first byte
+        means a long route to you.
       </p>
     </div>
   );

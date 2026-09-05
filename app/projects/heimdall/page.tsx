@@ -47,7 +47,7 @@ const SOURCES: {
   },
   {
     system: "Kubernetes",
-    reads: "Pod state, read directly. This is what health actually means here, and it's why Heimdall can disagree with ArgoCD.",
+    reads: "Pod state, read directly. This is what health means here, and it's why Heimdall can disagree with ArgoCD.",
   },
   {
     system: "Test runs",
@@ -178,7 +178,7 @@ export default function HeimdallPage() {
                   Across 20 services and a dev → QA → preprod → prod pipeline, the
                   state of any given ticket is spread across five systems. Bitbucket
                   holds the commit and the PR, JIRA holds the ticket, and Kubernetes
-                  holds the pods that are actually running. In between sits the GitOps
+                  holds the pods that are running. In between sits the GitOps
                   repo, which holds the desired state: the commit each environment is
                   supposed to be on, which isn&apos;t always the one it&apos;s on.
                 </p>
@@ -244,9 +244,9 @@ export default function HeimdallPage() {
                         lists the services where the next env can safely take the new
                         commit. Below that, per-service health, error rate, p95, and
                         pod resource pressure. The nan% at the top is in the real
-                        capture, not a mock-up: every service in the table is at
-                        0.00% for the hour, so the environment-level rate had
-                        nothing to divide. It stays in, bug included.
+                        capture: every service in the table was at 0.00% for the
+                        hour, so the environment-level rate was dividing zero by
+                        zero. I left it in.
                       </>
                     }
                   />
@@ -303,7 +303,7 @@ export default function HeimdallPage() {
               <LogEntry
                 time="17:40"
                 label="end of the day"
-                title="What actually changed"
+                title="What changed"
               >
                 <p className="text-muted-foreground leading-relaxed">
                   The team stopped pasting kubectl output into Teams to ask

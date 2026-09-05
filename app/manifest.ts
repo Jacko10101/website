@@ -4,7 +4,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "Jack Devlin · devlinops",
     short_name: "devlinops",
-    description: "Platform and AI infrastructure engineering, with the receipts.",
+    description: "Platform engineering, with the receipts.",
     start_url: "/",
     display: "browser",
     background_color: "#0e1210",

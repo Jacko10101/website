@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/oncall" },
   title: "On call · take the pager",
   description:
-    "An incident simulator drawn from pages I have actually been woken up for, a real SQLite database of my work you can query, and your session's live web vitals. All of it runs in your browser.",
+    "An incident simulator, a SQLite database of my work you can query, and your own session's web vitals. All of it runs in your browser.",
   openGraph: {
     title: "On call · Jack Devlin",
     description:
@@ -51,13 +51,19 @@ export default function OncallPage() {
               One shift, five pages
             </h2>
             <p className="mb-8 max-w-2xl leading-relaxed text-muted-foreground">
-              Drawn from failures I have actually been woken up for: an
+              The failure modes are ones I&apos;ve been paged for: an
               OOMKilled JVM, a poison message stuck on a Kafka partition, an
               ArgoCD reconciler quietly undoing someone&apos;s manual scale.
-              Reading the evidence costs a little error budget and guessing
-              costs a lot. It takes about five minutes.
+              The service names are made up. Reading the evidence costs a
+              little error budget and guessing costs a lot. It takes about
+              five minutes.
             </p>
             <OncallInvite />
+            {/* Two of the fourteen lessons, for the reader who won't play. */}
+            <ul className="mt-8 max-w-2xl space-y-2 border-l border-border pl-4 font-mono text-xs leading-relaxed text-muted-foreground">
+              <li>When the spike starts at a deploy boundary, stop reading logs and start reading the deploy history.</li>
+              <li>Latency that hits every service at once is rarely in any of them. Check the shared dependencies.</li>
+            </ul>
           </section>
 
           {/* 02 — the artefact. */}
@@ -67,7 +73,7 @@ export default function OncallPage() {
               Ask the database
             </h2>
             <p className="mb-8 max-w-2xl leading-relaxed text-muted-foreground">
-              A real SQLite database of my work, compiled to WebAssembly and
+              A SQLite database of my work, compiled to WebAssembly and
               running in your tab. Pick a question, read the SQL that answers
               it, then edit it and run your own. The box is guarded by the same
               validator that refuses model-generated SQL in Clarity.

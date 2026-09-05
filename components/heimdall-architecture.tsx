@@ -23,7 +23,7 @@ const nodeInfo: Record<NodeKey, { title: string; description: string }> = {
   },
   cluster: {
     title: "Kubernetes (via ArgoCD & Thanos)",
-    description: "What's actually running. Pod health, sync status, p95, error rate.",
+    description: "What's running. Pod health, sync status, p95, error rate.",
   },
   jira: {
     title: "JIRA",

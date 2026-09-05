@@ -9,6 +9,6 @@ export default function Image() {
     eyebrow: "natural-language database interface",
     title: "Clarity",
     subtitle:
-      "Text-to-SQL across 13 tenant databases. Compiled schema knowledge instead of a vector store, five classes of hallucination caught per turn.",
+      "Text-to-SQL across about thirty tenant databases. Compiled schema knowledge instead of a vector store, five classes of hallucination caught per turn.",
   });
 }
