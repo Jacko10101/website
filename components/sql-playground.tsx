@@ -82,7 +82,7 @@ export function SqlPlayground() {
         {/* verdict */}
         <div className="p-4 sm:p-5">
           <div role="status" aria-live="polite">
-          <AnimatePresence mode="wait">
+          <AnimatePresence mode="wait" initial={false}>
             <motion.div
               key={`${verdict.allowed}-${verdict.reason}-${verdict.token}`}
               initial={{ opacity: 0, y: 6 }}

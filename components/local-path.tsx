@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 /* -------------------------------------------------------------------------- */
 /*  "No cloud round-trip" is the claim the whole build rests on, so it gets to */
@@ -62,6 +62,10 @@ export function LocalPath() {
 
       <div className="p-4 sm:p-6">
         <div className="flex flex-col sm:flex-row sm:items-stretch gap-2">
+          {/* initial={false}: the first render is visible as served; only a
+              toggle animates. Shipping these at opacity 0 meant the cards were
+              invisible until hydration. */}
+          <AnimatePresence initial={false}>
           {hops.map((h, i) => (
             <motion.div
               key={`${cloud}-${h.label}-${i}`}
@@ -90,8 +94,10 @@ export function LocalPath() {
               </div>
             </motion.div>
           ))}
+          </AnimatePresence>
         </div>
 
+        <AnimatePresence initial={false}>
         <motion.p
           key={cloud ? "c" : "l"}
           initial={{ opacity: 0 }}
@@ -115,6 +121,7 @@ export function LocalPath() {
             </>
           )}
         </motion.p>
+        </AnimatePresence>
       </div>
     </div>
   );

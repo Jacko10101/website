@@ -146,7 +146,7 @@ export function SchemaDirectory() {
 
         {/* the annotation */}
         <div role="status" aria-live="polite" className="p-4 sm:p-5">
-          <AnimatePresence mode="wait">
+          <AnimatePresence mode="wait" initial={false}>
             {active && (
               <motion.div
                 key={active}

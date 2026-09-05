@@ -217,7 +217,7 @@ export function GroundingDemo() {
             answer shown to the user
           </div>
           <div aria-live="polite">
-          <AnimatePresence mode="wait">
+          <AnimatePresence mode="wait" initial={false}>
             <motion.div
               key={`${scenario.id}-${grounding}`}
               initial={{ opacity: 0, y: 6 }}
@@ -238,7 +238,7 @@ export function GroundingDemo() {
 
         {/* what fired */}
         <div aria-live="polite">
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="wait" initial={false}>
           {grounding ? (
             <motion.div
               key={`det-${scenario.id}`}
