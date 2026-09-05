@@ -1,5 +1,6 @@
 import type { ReactNode, CSSProperties } from "react";
 import { ScrollProgress } from "@/components/scroll-progress";
+import { ReadingRail } from "@/components/reading-rail";
 import { TerminalWindow } from "@/components/terminal-window";
 import type { Phosphor } from "@/lib/phosphors";
 
@@ -65,6 +66,7 @@ export function CaseStudyLayout({
       )}
       <article className="bg-background min-h-screen" style={accentStyle}>
         <ScrollProgress />
+        <ReadingRail />
         {children}
       </article>
     </>
