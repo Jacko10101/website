@@ -4,11 +4,7 @@ import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
-import { KonamiCode } from "@/components/konami-code";
-import { ChaosMode } from "@/components/chaos-mode";
-import { SmoothScroll } from "@/components/smooth-scroll";
-import { CliNavigation } from "@/components/cli-navigation";
-import { MotionProvider } from "@/components/motion-provider";
+import { Extras } from "@/components/extras";
 import { roles, education, knowsAbout } from "@/lib/experience";
 import { profile } from "@/lib/profile";
 
@@ -169,7 +165,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en" className="dark view-transition">
+    <html lang="en" className="dark">
       <head>
         <script
           type="application/ld+json"
@@ -189,17 +185,13 @@ export default function RootLayout({
         >
           Skip to content
         </a>
-        <MotionProvider>
-          <div className="relative flex min-h-screen flex-col">
-            <Navigation />
-            <main id="main-content" className="flex-1">{children}</main>
-            <Footer />
-          </div>
-          <SmoothScroll />
-          <KonamiCode />
-          <ChaosMode />
-          <CliNavigation />
-        </MotionProvider>
+        <div className="relative flex min-h-screen flex-col">
+          <Navigation />
+          <main id="main-content" className="flex-1">{children}</main>
+          <Footer />
+        </div>
+        {/* The terminal, the simulator and chaos mode, loaded once the page is idle. */}
+        <Extras />
       </body>
     </html>
   );

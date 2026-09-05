@@ -22,7 +22,14 @@ const KONAMI = [
  * (a `devlinops:oncall` custom event).
  */
 export function KonamiCode() {
-  const [open, setOpen] = useState(false);
+  // Opens on mount if the page asked for it before this component loaded
+  // (see oncall-invite.tsx); otherwise waits for the code or the event.
+  const [open, setOpen] = useState(() => {
+    const w = window as Window & { __oncallRequested?: boolean };
+    const asked = w.__oncallRequested === true;
+    w.__oncallRequested = false;
+    return asked;
+  });
 
   useEffect(() => {
     let progress = 0;

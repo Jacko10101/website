@@ -1,38 +1,27 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { ReactNode, useEffect, useState } from "react";
 
 /**
- * The rise between routes. It must never gate the *first* paint: framer
- * serialises `initial` into the server-rendered HTML, so a bare
- * `initial={{ opacity: 0 }}` shipped every page invisible until hydration
- * finished. The flag is false on the server and on first mount, so the landing
- * page paints immediately; every template remount after that is a client-side
- * navigation and animates.
+ * The rise between routes, in CSS. It must never gate the *first* paint:
+ * the landing page renders as served, and only a client-side navigation
+ * animates. The flag is false on the server and on first mount, true on
+ * every template remount after that. Reduced motion is handled by the
+ * global rule in globals.css, which zeroes the animation.
+ *
+ * This used to be a framer-motion `motion.div`, which put the whole
+ * animation library on every route for a 350ms fade.
  */
 let hasNavigated = false;
 
 export default function Template({ children }: { children: ReactNode }) {
   // Read once per mount, as state rather than a ref so it is never read
-  // during render: false on the server and on first mount, true on every
-  // client-side navigation after.
+  // during render.
   const [isNavigation] = useState(() => hasNavigated);
 
   useEffect(() => {
     hasNavigated = true;
   }, []);
 
-  return (
-    <motion.div
-      initial={isNavigation ? { opacity: 0, y: 12 } : false}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{
-        duration: 0.35,
-        ease: [0.22, 1, 0.36, 1],
-      }}
-    >
-      {children}
-    </motion.div>
-  );
+  return <div className={isNavigation ? "route-enter" : undefined}>{children}</div>;
 }
