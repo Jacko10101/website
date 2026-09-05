@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { TerminalWindow } from "@/components/terminal-window";
+import { BUILD } from "@/lib/build-info";
 
 /** Where the backoff settles. Past this the counter would just be noise. */
 const MAX_RESTARTS = 3;
@@ -137,8 +138,10 @@ export function NotFoundClient() {
         </div>
 
         {/* Footer hint */}
+        {/* The joke keeps its shape, but the facts in it are real: the host,
+            and the commit serving this page. There is no cluster. */}
         <p className="text-center text-xs text-muted-foreground mt-6 font-mono">
-          Pod scheduled on node: devlinops-worker-1 • Cluster: production-eu-west-1
+          Pod scheduled on node: vercel • image: devlinops:{BUILD.shortSha ?? "unknown"}
         </p>
       </div>
     </div>

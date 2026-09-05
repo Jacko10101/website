@@ -210,15 +210,9 @@ export function DayLogSidebar({
 }) {
   return (
     <aside className="space-y-8 lg:sticky lg:top-24 self-start">
-      <WallDisplay
-        label="vitals"
-        note={
-          <span className="inline-flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" aria-hidden />
-            live
-          </span>
-        }
-      >
+      {/* These are facts about the dashboard, not a feed from it, so the
+          badge no longer says live. */}
+      <WallDisplay label="vitals">
         <dl className="divide-y divide-border/60">
           {vitals.map((v) => (
             <div

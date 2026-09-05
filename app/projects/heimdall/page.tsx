@@ -243,7 +243,10 @@ export default function HeimdallPage() {
                         Drilldown for one environment. &quot;Ready to promote&quot;
                         lists the services where the next env can safely take the new
                         commit. Below that, per-service health, error rate, p95, and
-                        pod resource pressure.
+                        pod resource pressure. The nan% at the top is in the real
+                        capture, not a mock-up: every service in the table is at
+                        0.00% for the hour, so the environment-level rate had
+                        nothing to divide. It stays in, bug included.
                       </>
                     }
                   />
