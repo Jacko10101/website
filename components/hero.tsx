@@ -96,7 +96,9 @@ export function Hero() {
                 {point.value}
               </span>
               <span className="text-sm text-muted-foreground transition-colors group-hover:text-foreground">
-                {point.label}\u00a0→
+                {/* A non-breaking space, so the arrow never wraps onto a line
+                    of its own under the label on a phone. */}
+                {point.label}&nbsp;→
               </span>
             </Link>
           ))}
