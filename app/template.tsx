@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ReactNode, useEffect, useRef } from "react";
+import { ReactNode, useEffect, useState } from "react";
 
 /**
  * The rise between routes. It must never gate the *first* paint: framer
@@ -14,7 +14,10 @@ import { ReactNode, useEffect, useRef } from "react";
 let hasNavigated = false;
 
 export default function Template({ children }: { children: ReactNode }) {
-  const isNavigation = useRef(hasNavigated);
+  // Read once per mount, as state rather than a ref so it is never read
+  // during render: false on the server and on first mount, true on every
+  // client-side navigation after.
+  const [isNavigation] = useState(() => hasNavigated);
 
   useEffect(() => {
     hasNavigated = true;
@@ -22,7 +25,7 @@ export default function Template({ children }: { children: ReactNode }) {
 
   return (
     <motion.div
-      initial={isNavigation.current ? { opacity: 0, y: 12 } : false}
+      initial={isNavigation ? { opacity: 0, y: 12 } : false}
       animate={{ opacity: 1, y: 0 }}
       transition={{
         duration: 0.35,

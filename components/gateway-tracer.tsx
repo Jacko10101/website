@@ -151,8 +151,11 @@ export function GatewayTracer() {
   }, [lastStep, reduceMotion]);
 
   useEffect(() => clearTimers, []);
-  // re-run whenever the request changes, so it always reflects the current pick
+  // Re-run whenever the request changes, so it always reflects the current
+  // pick. The reveal is a timed sequence, so restarting it is an effect by
+  // nature; the synchronous reset to step -1 is what makes it restart.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- restarting a timed reveal
     run();
   }, [consumer, model, run]);
 

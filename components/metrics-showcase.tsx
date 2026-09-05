@@ -65,7 +65,6 @@ export function MetricsShowcase({ metrics }: MetricsShowcaseProps) {
       window.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = previousOverflow;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedMetric]);
 
   return (

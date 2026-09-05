@@ -722,9 +722,13 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
   const wrongThisIncidentRef = useRef(0);
 
   useEffect(() => {
+    // localStorage is client-only, so this is the earliest it can be read
+    // without a hydration mismatch.
+    /* eslint-disable react-hooks/set-state-in-effect */
     const stored = Number(localStorage.getItem("oncall-best-budget"));
     if (stored > 0) setBestShift(stored);
     setShiftsWorked(Number(localStorage.getItem("oncall-shifts") || 0));
+    /* eslint-enable react-hooks/set-state-in-effect */
 
     // The deck survives closing the modal, so coming back tomorrow doesn't
     // deal the same five incidents again.
@@ -866,9 +870,11 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
     };
   }, [phase, round]);
 
-  // Budget exhausted: the shift ends badly.
+  // Budget exhausted: the shift ends badly. Several handlers spend budget,
+  // so ending the shift in one place here beats repeating it in each.
   useEffect(() => {
     if (budget <= 0 && (phase === "active" || phase === "resolved")) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- one exit for every path to zero
       setPhase("gameover");
     }
   }, [budget, phase]);

@@ -638,7 +638,7 @@ The form does actually send, and I read everything that comes through it.`;
               <div className="mb-4 text-foreground/90">
                 <p>devlinops.com · interactive shell</p>
                 <p className="mt-1 text-xs text-muted-foreground">
-                  Type 'help' for available commands or 'ls' to see routes
+                  Type &apos;help&apos; for available commands or &apos;ls&apos; to see routes
                 </p>
               </div>
             )}

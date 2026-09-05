@@ -31,6 +31,9 @@ export function SessionVitals() {
   const [cls, setCls] = useState<number | null>(null);
 
   useEffect(() => {
+    // The timing API is client-only, so mount is the earliest these can be
+    // read without a hydration mismatch.
+    /* eslint-disable react-hooks/set-state-in-effect */
     const nav = performance.getEntriesByType("navigation")[0] as
       | PerformanceNavigationTiming
       | undefined;
@@ -43,8 +46,23 @@ export function SessionVitals() {
       .getEntriesByType("paint")
       .find((e) => e.name === "first-contentful-paint");
     if (paint) setFcp(Math.round(paint.startTime));
+    /* eslint-enable react-hooks/set-state-in-effect */
 
     const observers: PerformanceObserver[] = [];
+
+    // The synchronous read above misses a first paint that lands after this
+    // effect runs, which showed as "not measurable" on a page that had
+    // measured it. A buffered observer catches it either way.
+    try {
+      const paintObserver = new PerformanceObserver((list) => {
+        const entry = list.getEntries().find((e) => e.name === "first-contentful-paint");
+        if (entry) setFcp(Math.round(entry.startTime));
+      });
+      paintObserver.observe({ type: "paint", buffered: true });
+      observers.push(paintObserver);
+    } catch {
+      // not supported in this browser — the tile shows "—"
+    }
 
     try {
       const lcpObserver = new PerformanceObserver((list) => {

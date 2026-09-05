@@ -19,6 +19,7 @@ export function NotFoundClient() {
   const [timeAgo, setTimeAgo] = useState("0s");
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- the pathname must not enter the SSR markup (see above)
     setPathname(currentPath);
   }, [currentPath]);
 
