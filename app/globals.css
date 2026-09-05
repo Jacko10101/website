@@ -306,6 +306,112 @@ table {
   animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* The estate map on /projects (components/estate-map.tsx): one monoline
+   drawing of the platform, its regions the case studies. Hover a region and
+   it takes the accent while the rest recedes. */
+.estate text {
+  font-family: var(--font-mono);
+  fill: var(--color-muted-foreground);
+  font-size: 11.5px;
+}
+
+.estate text.sub {
+  fill: color-mix(in oklab, var(--color-muted-foreground) 72%, transparent);
+  font-size: 10.5px;
+}
+
+.estate text.big {
+  fill: var(--color-foreground);
+  font-size: 12.5px;
+  font-weight: 500;
+}
+
+.estate rect.node {
+  fill: var(--color-card);
+  stroke: oklch(0.34 0.014 150);
+  stroke-width: 1;
+  rx: 5;
+  transition: stroke 200ms ease;
+}
+
+.estate rect.node.ext {
+  stroke-dasharray: 3 3;
+  fill: transparent;
+}
+
+.estate rect.env {
+  fill: color-mix(in oklab, var(--color-card) 60%, transparent);
+  stroke: oklch(0.34 0.014 150);
+  rx: 6;
+}
+
+.estate .edge {
+  fill: none;
+  stroke: color-mix(in oklab, var(--color-muted-foreground) 34%, transparent);
+  stroke-width: 1.3;
+  transition: stroke 200ms ease, opacity 200ms ease;
+}
+
+.estate .edge.flow {
+  stroke-dasharray: 3 9;
+  animation: estate-flow 2.4s linear infinite;
+}
+
+.estate .edge.thin {
+  stroke-width: 1;
+  opacity: 0.55;
+}
+
+.estate circle.svc {
+  fill: var(--color-primary);
+  opacity: 0.32;
+}
+
+.estate circle.svc.prod {
+  opacity: 0.62;
+}
+
+.estate .region {
+  cursor: pointer;
+  outline: none;
+  transition: opacity 220ms ease;
+}
+
+.estate .region.hot rect.node,
+.estate .region:focus-visible rect.node {
+  stroke: var(--color-primary);
+}
+
+.estate .region.hot text,
+.estate .region:focus-visible text {
+  fill: var(--color-primary);
+}
+
+.estate .region.hot .edge,
+.estate .region:focus-visible .edge {
+  stroke: var(--color-primary);
+  opacity: 1;
+  animation-duration: 0.9s;
+}
+
+.estate[data-hot] .region:not(.hot) {
+  opacity: 0.28;
+}
+
+.estate .neutral {
+  transition: opacity 220ms ease;
+}
+
+.estate[data-hot] .neutral {
+  opacity: 0.45;
+}
+
+@keyframes estate-flow {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+
 /* Focus visible styles */
 :focus-visible {
   outline: 2px solid var(--color-primary);

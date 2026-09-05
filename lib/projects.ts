@@ -3,11 +3,6 @@
 
 export type ProjectStatus = "production" | "homelab" | "in-progress" | "study";
 
-export interface TerminalLine {
-  text: string;
-  tone: "cmd" | "ok" | "info" | "warn";
-}
-
 export interface Project {
   id: string;
   title: string;
@@ -56,7 +51,6 @@ export interface Project {
   stats: { value: string; label: string }[];
   tags: string[];
   href: string | null;
-  terminal: TerminalLine[];
 }
 
 export const projects: Project[] = [
@@ -83,12 +77,6 @@ export const projects: Project[] = [
     ],
     tags: ["Java 21", "Spring AI", "Gemini", "PostgreSQL", "TimescaleDB", "Kubernetes"],
     href: "/projects/clarity",
-    terminal: [
-      { text: "$ curl clarity/chat -d '{\"question\":\"hottest sites?\"}'", tone: "cmd" },
-      { text: "sql_statements: 1 executed", tone: "ok" },
-      { text: "fabricated_names: []", tone: "ok" },
-      { text: "grounding.regenerate: not required", tone: "info" },
-    ],
   },
   {
     id: "ai-gateway",
@@ -113,12 +101,6 @@ export const projects: Project[] = [
     ],
     tags: ["LiteLLM", "Kubernetes", "ArgoCD", "Gemini", "Prometheus", "FinOps"],
     href: "/projects/ai-gateway",
-    terminal: [
-      { text: "$ curl -H \"Authorization: Bearer $KEY\" $GATEWAY/v1/models", tone: "cmd" },
-      { text: "gemini-2.5-flash    permitted", tone: "ok" },
-      { text: "gemini-3.6-flash    permitted", tone: "ok" },
-      { text: "everything else     401", tone: "warn" },
-    ],
   },
   {
     id: "heimdall",
@@ -144,12 +126,6 @@ export const projects: Project[] = [
     ],
     tags: ["Python", "Flask", "TimescaleDB", "Prometheus", "ArgoCD", "Kubernetes"],
     href: "/projects/heimdall",
-    terminal: [
-      { text: "$ curl heimdall/api/v1/debug | jq .", tone: "cmd" },
-      { text: "collection.age_seconds: 142", tone: "ok" },
-      { text: "db_pool.checked_out: 2 / 10", tone: "info" },
-      { text: "circuit_breakers: all closed", tone: "ok" },
-    ],
   },
   {
     id: "pipeline-platform",
@@ -172,12 +148,6 @@ export const projects: Project[] = [
     ],
     tags: ["Bitbucket Shared Pipelines", "ArgoCD", "Image Updater", "Kubernetes", "Kustomize"],
     href: "/projects/pipeline-platform",
-    terminal: [
-      { text: "$ cat .ci/builds.yaml", tone: "cmd" },
-      { text: "service: payments-api", tone: "ok" },
-      { text: "import: java-shared-pipeline:1.4.0", tone: "info" },
-      { text: "→ Image Updater handles the rest", tone: "warn" },
-    ],
   },
   {
     id: "observability",
@@ -202,12 +172,6 @@ export const projects: Project[] = [
     ],
     tags: ["Prometheus", "Grafana", "Loki", "Thanos", "Alertmanager"],
     href: "/projects/observability",
-    terminal: [
-      { text: "$ promtool check targets", tone: "cmd" },
-      { text: "20/20 targets healthy", tone: "ok" },
-      { text: "22 dashboards active", tone: "info" },
-      { text: "50+ alert rules, runbook each", tone: "ok" },
-    ],
   },
   {
     id: "smart-home",
@@ -232,12 +196,6 @@ export const projects: Project[] = [
     ],
     tags: ["K3s", "ArgoCD", "Home Assistant", "Zigbee2MQTT", "Prometheus", "Grafana", "Tailscale"],
     href: "/projects/smart-home",
-    terminal: [
-      { text: "$ kubectl get apps -n argocd", tone: "cmd" },
-      { text: "home-assistant      Synced  Healthy", tone: "ok" },
-      { text: "zigbee2mqtt         Synced  Healthy", tone: "ok" },
-      { text: "prometheus, grafana Synced  Healthy", tone: "info" },
-    ],
   },
   {
     id: "ml-scheduler",
@@ -260,12 +218,6 @@ export const projects: Project[] = [
     ],
     tags: ["Kubernetes", "EKS", "Scheduling", "Python", "Terraform", "Pre-registered analysis"],
     href: "/projects/ml-scheduler",
-    terminal: [
-      { text: "$ aws ec2 stop-instances --instance-ids i-0f3a…", tone: "cmd" },
-      { text: "node/ip-10-0-4-91 NotReady", tone: "warn" },
-      { text: "planner: 12 pending, 2 survivors, exact certificate ok", tone: "info" },
-      { text: "evict svc-critical-app-2205  p̂=0.09  gain 15.8", tone: "ok" },
-    ],
   },
 ];
 
