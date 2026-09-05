@@ -1,0 +1,52 @@
+# The gate. Vercel deploys main on push; this is what has to pass first.
+name: checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: checks-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Tests
+        run: npm test
+
+      - name: Dependency advisories
+        run: npm audit --omit=dev --audit-level=high
+
+      - name: Build
+        run: npm run build
+
+      - name: Every route at 390px and 1440px, no horizontal overflow
+        run: |
+          npx next start -p 3111 &
+          for i in $(seq 1 30); do
+            curl -sf -o /dev/null http://localhost:3111/ && break
+            sleep 1
+          done
+          npm run check:viewports
