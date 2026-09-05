@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { projects, type Project } from "@/lib/projects";
+import { inReadingOrder, type Project } from "@/lib/projects";
 import { SectionHeading } from "@/components/section-heading";
 import { ContactCTA } from "@/components/contact-cta";
 import { EstateMap } from "@/components/estate-map";
@@ -8,29 +8,18 @@ import { LitRow } from "@/components/lit-row";
 /**
  * The index. The map at the top is the platform drawn once, with the five
  * Loweconex case studies as places on it; the rows beneath are every
- * document, in the order a platform team would read them. There used to be
+ * document, in reading order (READING_ORDER in lib/projects.ts). There used to be
  * seven cards here, each with a terminal pane of invented output beside
  * it; the panes were the one thing on the page a careful reader could
  * catch out.
  */
-const ORDER = [
-  "heimdall",
-  "pipeline-platform",
-  "observability",
-  "ai-gateway",
-  "clarity",
-  "smart-home",
-  "ml-scheduler",
-];
+const rows = inReadingOrder();
 
-const rows = ORDER.map((id) => projects.find((p) => p.id === id)).filter(
-  (p): p is Project => Boolean(p?.href),
-);
-
-function Row({ project: p }: { project: Project }) {
+function Row({ project: p }: { project: Project & { href: string } }) {
   return (
     <LitRow
-      href={p.href!}
+      href={p.href}
+      aria-labelledby={`row-${p.id}`}
       className="group grid gap-x-8 gap-y-3 border-t border-border py-7 last:border-b md:grid-cols-[170px_minmax(0,1fr)_auto]"
     >
       <div className="flex flex-col gap-1.5">
@@ -45,6 +34,7 @@ function Row({ project: p }: { project: Project }) {
 
       <div className="min-w-0">
         <h2
+          id={`row-${p.id}`}
           className="display text-2xl text-foreground transition-colors group-hover:text-primary"
           style={{ viewTransitionName: `title-${p.id}` }}
         >
@@ -83,7 +73,7 @@ export default function ProjectsPage() {
           <SectionHeading
             as="h1"
             title="Case studies"
-            lede="Seven documents. Five are systems I built and run at Loweconex, a UK IoT platform business in Northern Ireland; the sixth is my flat, the seventh my dissertation. Each is written as the document it produced."
+            lede="Five systems I built and run at Loweconex, my dissertation, and my flat. Each is written in the form the work took."
           />
 
           <EstateMap />

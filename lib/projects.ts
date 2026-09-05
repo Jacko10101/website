@@ -56,15 +56,15 @@ export interface Project {
 export const projects: Project[] = [
   {
     id: "clarity",
-    context: "Built the infrastructure and trust layer · Loweconex",
+    context: "Built the infrastructure and trust layer",
     title: "Clarity",
     subtitle: "Natural-language database interface",
     description:
-      "Ask the estate a question in English, get an answer backed by SQL that actually ran. Around thirty tenant databases, about twenty people using it daily. There's no vector store anywhere; compiled schema knowledge does the grounding, and five classes of hallucination get caught on every turn.",
+      "Ask the estate a question in English, get an answer backed by SQL that actually ran. Around thirty tenant databases, about twenty people using it daily. There's no vector store; compiled schema knowledge does the grounding, and five classes of hallucination get caught on every turn.",
     outcome:
       "Customers who wanted a number out of their estate used to raise a ticket and wait for an analyst. Now they ask directly — about twenty people a day, across roughly thirty tenants.",
     indexDescription:
-      "Ask the estate a question in English, get an answer backed by SQL that actually ran. There's no vector store anywhere; compiled schema knowledge does the grounding, and five classes of hallucination get caught on every turn.",
+      "Ask the estate a question in English, get an answer backed by SQL that actually ran. There's no vector store; compiled schema knowledge does the grounding, and five classes of hallucination get caught on every turn.",
     docType: "Claims + receipts",
     docCta: "check the receipts",
     status: "production",
@@ -80,7 +80,7 @@ export const projects: Project[] = [
   },
   {
     id: "ai-gateway",
-    context: "Built it and still own it · Loweconex",
+    context: "Built it and still own it",
     title: "AI Gateway",
     subtitle: "One endpoint for every model",
     description:
@@ -104,7 +104,7 @@ export const projects: Project[] = [
   },
   {
     id: "heimdall",
-    context: "Built and run it · Loweconex",
+    context: "Built and run it",
     title: "Heimdall",
     subtitle: "Where every ticket and service actually is",
     description:
@@ -129,7 +129,7 @@ export const projects: Project[] = [
   },
   {
     id: "pipeline-platform",
-    context: "Built the shared pipeline library · Loweconex · still in use",
+    context: "Built the shared pipeline library · still in use",
     title: "Pipeline Platform",
     subtitle: "Shared CI/CD library",
     description:
@@ -151,7 +151,7 @@ export const projects: Project[] = [
   },
   {
     id: "observability",
-    context: "Built and run the stack · Loweconex",
+    context: "Built and run the stack",
     title: "Observability Stack",
     subtitle: "Self-hosted monitoring",
     description:
@@ -224,8 +224,36 @@ export const projects: Project[] = [
 export const featuredProjects = projects.filter((p) => p.href !== null);
 
 // Aggregate proof points, surfaced in the hero. Each traces to a case study.
+/**
+ * The order a platform team would read the case studies in: the dashboard
+ * they'd open, the pipeline underneath, the monitoring, the AI layer, the
+ * study, then the flat. The homepage index and /projects both read this,
+ * so a new case study cannot appear in one and not the other.
+ */
+export const READING_ORDER = [
+  "heimdall",
+  "pipeline-platform",
+  "observability",
+  "ai-gateway",
+  "clarity",
+  "ml-scheduler",
+  "smart-home",
+] as const;
+
+/** Projects in reading order, only those with a page. */
+export const inReadingOrder = (): (Project & { href: string })[] =>
+  READING_ORDER.map((id) => projects.find((p) => p.id === id)).filter(
+    (p): p is Project & { href: string } => typeof p?.href === "string",
+  );
+
+/**
+ * The first sentence of a passage: one hook per row. No lookbehind, which
+ * Safari before 16.4 cannot parse and would fail the whole client chunk on.
+ */
+export const firstSentence = (text: string) => text.match(/^.*?\.(?=\s|$)/)?.[0] ?? text;
+
 export const proofPoints = [
   { value: "20+", label: "engineers open my deployment dashboard daily", href: "/projects/heimdall" },
   { value: "~400", label: "deploys a month through my shared pipeline library", href: "/projects/pipeline-platform" },
-  { value: "~30", label: "tenants on the AI query product I built", href: "/projects/clarity" },
+  { value: "~£5k", label: "a year for monitoring that was quoted near £100k", href: "/projects/observability" },
 ];

@@ -44,7 +44,7 @@ export const profile = {
   msc: {
     label: "MSc AI",
     status: "submitted September 2026",
-    result: "Distinction" as string | null,
+    result: "on track for Distinction" as string | null,
   },
 
   // TODO(jack): one quoted line from an EM or teammate transforms the site.

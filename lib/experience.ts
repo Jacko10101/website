@@ -68,7 +68,7 @@ export interface Qualification {
 export const education: Qualification[] = [
   {
     award: "MSc Artificial Intelligence",
-    result: "Distinction",
+    result: "on track for Distinction",
     institution: "Queen's University Belfast",
     dates: "submitted September 2026",
     note: "Dissertation: capacity-aware recovery scheduling for Kubernetes, measured on real EKS clusters under induced node failure.",
@@ -113,9 +113,6 @@ export const stackTiers = [
       "TimescaleDB",
       "PostgreSQL",
       "OpenTelemetry",
-      "Veracode",
-      "SourceClear",
-      "Jira",
       "AWS",
     ],
   },
@@ -130,6 +127,9 @@ export const stackTiers = [
     label: "working-knowledge/",
     note: "Used on real projects or in coursework. I haven't been on call for any of these.",
     items: [
+      "Veracode",
+      "SourceClear",
+      "Jira",
       "Helm",
       "Terraform",
       "AWS CDK",
