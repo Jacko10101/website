@@ -7,6 +7,13 @@ updates:
     groups:
       minor-and-patch:
         update-types: [minor, patch]
+    # Majors by hand. The first hour of this file produced three: ESLint 10,
+    # which Next's lint config cannot run yet, TypeScript 7, which is a
+    # different compiler, and a lucide-react rewrite. Each failed the checks,
+    # which is the gate doing its job, but they are decisions, not updates.
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: github-actions
     directory: /
     schedule:
