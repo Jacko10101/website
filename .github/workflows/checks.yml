@@ -42,11 +42,21 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Every route at 390px and 1440px, no horizontal overflow
+      - name: Every route at four widths, clean console, no horizontal overflow
         run: |
           npx next start -p 3111 &
           for i in $(seq 1 30); do
             curl -sf -o /dev/null http://localhost:3111/ && break
             sleep 1
           done
+          curl -sf -o /dev/null http://localhost:3111/ || { echo "server did not start"; exit 1; }
           npm run check:viewports
+
+      - name: The old URLs still redirect
+        run: |
+          for path in /playground /colophon; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' "http://localhost:3111$path")
+            dest=$(curl -s -o /dev/null -w '%{redirect_url}' "http://localhost:3111$path")
+            echo "$path -> $code $dest"
+            [ "$code" = "308" ] && [ "${dest##*/}" = "oncall" ] || exit 1
+          done
