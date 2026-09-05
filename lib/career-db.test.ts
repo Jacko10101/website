@@ -4,7 +4,7 @@ import { QUESTIONS, TABLES } from "./career-db";
 import { validate } from "./sql-guard";
 
 /**
- * The career query on /playground builds a real SQLite database in the
+ * The career query on /oncall builds a real SQLite database in the
  * browser from lib/projects.ts and runs curated questions against it. This
  * builds the same database under Node and checks that every question runs,
  * returns rows, and passes the guard that gates the query box.

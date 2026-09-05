@@ -18,7 +18,7 @@ Seven case studies, each in its own register, because a dashboard, a pipeline an
 | `/projects/smart-home` | The same GitOps discipline, sized to a flat | A hardware spec sheet |
 | `/projects/ml-scheduler` | Capacity-aware pod recovery under real node failure, my MSc | A paper |
 
-The homepage opens on a small cluster losing a node and recovering it the way the dissertation's scheduler does. `/playground` has the things on the site that actually run: a SQLite database of the work compiled to WebAssembly and queried in the browser, your own session's web vitals, and an on-call simulator with fourteen incidents.
+The homepage opens on a small cluster losing a node and recovering it the way the dissertation's scheduler does. `/oncall` has the things on the site that actually run: a SQLite database of the work compiled to WebAssembly and queried in the browser, your own session's web vitals, and an on-call simulator with fourteen incidents.
 
 Two rules the copy follows. Every number is measured or absent; if a figure can't be traced to a source, it isn't on the page. And a claim that can't be checked isn't made.
 
@@ -27,7 +27,7 @@ Two rules the copy follows. Every number is measured or absent; if a figure can'
 Next.js 16 on the App Router, React 19, Tailwind 4. Every route is prerendered as static HTML; there is no server-side work at request time.
 
 - **Provenance.** `next.config.ts` reads the commit, branch and commit time from git (or Vercel's build environment) and bakes them in. The footer shows the commit and links to it on GitHub. Nothing there is invented; each value degrades to absent.
-- **Content security.** A CSP with no `unsafe-eval`. The SQLite engine on `/playground` runs under `wasm-unsafe-eval`, which is the narrow grant it needs. HSTS, frame-ancestors, and the rest are set by the app, not inherited from the host.
+- **Content security.** A CSP with no `unsafe-eval`. The SQLite engine on `/oncall` runs under `wasm-unsafe-eval`, which is the narrow grant it needs. HSTS, frame-ancestors, and the rest are set by the app, not inherited from the host.
 - **Sources of truth.** `lib/projects.ts` holds every project's data; the homepage, the index, the sitemap, the career database and the terminal all read from it. `lib/profile.ts` holds availability and the other facts only I can supply. `lib/experience.ts` feeds the About page and the JSON-LD, so the two cannot drift.
 - **Type and colour.** Inter for display, JetBrains Mono for labels, data and the terminal, both self-hosted at build. Dark only, one accent, and each case study re-tints the accent to its own CRT phosphor (`lib/phosphors.ts`).
 - **Hosting.** Vercel. A push to `main` deploys, which is why the checks below exist.
@@ -41,7 +41,7 @@ npm test                 # Vitest: the SQL guard and the career database
 npm run check:viewports  # every route at 390px and 1440px, fails on horizontal overflow
 ```
 
-The tests cover the two pieces of engineering the site leans on: the browser port of the SQL validator that refuses model-generated queries in Clarity, and the career database that `/playground` builds in the visitor's tab. The viewport check drives Chrome over the DevTools Protocol with real device metrics, because a single unbreakable string dragging a page into horizontal scroll on a phone is a bug that has shipped before.
+The tests cover the two pieces of engineering the site leans on: the browser port of the SQL validator that refuses model-generated queries in Clarity, and the career database that `/oncall` builds in the visitor's tab. The viewport check drives Chrome over the DevTools Protocol with real device metrics, because a single unbreakable string dragging a page into horizontal scroll on a phone is a bug that has shipped before.
 
 CI runs all of it, plus `npm audit` and the build, on every push and pull request.
 

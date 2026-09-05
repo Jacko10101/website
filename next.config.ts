@@ -45,7 +45,7 @@ const securityHeaders = [
     value: [
       "default-src 'self'",
       // 'wasm-unsafe-eval' is the narrow grant that lets SQLite-in-WebAssembly
-      // run the career query on /playground. Deliberately NOT 'unsafe-eval':
+      // run the career query on /oncall. Deliberately NOT 'unsafe-eval':
       // a JS-compiling SQL engine would have needed that, and it isn't worth it.
       // 'unsafe-inline' stays because Next inlines the RSC payload and the
       // JSON-LD; a nonce-based policy needs middleware and gives up the
@@ -85,8 +85,10 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
-      // /colophon shipped for months before the page became the playground.
-      { source: '/colophon', destination: '/playground', permanent: true },
+      // /colophon shipped for months, then the page was /playground, and
+      // now it is named for the thing on it worth finding.
+      { source: '/colophon', destination: '/oncall', permanent: true },
+      { source: '/playground', destination: '/oncall', permanent: true },
     ]
   },
 
