@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
  * of the JavaScript on every route, including ones with nothing to do.
  *
  * They load after the page is idle, off the critical path, except on
- * /oncall, where the simulator is the point and loads straight away.
+ * /lab, where the simulator is the point and loads straight away.
  */
 const KonamiCode = dynamic(() => import("@/components/konami-code").then((m) => m.KonamiCode), { ssr: false });
 const ChaosMode = dynamic(() => import("@/components/chaos-mode").then((m) => m.ChaosMode), { ssr: false });
@@ -19,7 +19,7 @@ const CliNavigation = dynamic(() => import("@/components/cli-navigation").then((
 
 export function Extras() {
   const pathname = usePathname();
-  const [ready, setReady] = useState(() => pathname === "/oncall");
+  const [ready, setReady] = useState(() => pathname === "/lab");
 
   useEffect(() => {
     if (ready) return;

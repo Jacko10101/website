@@ -37,7 +37,7 @@ export function Footer() {
   const links = [
     { name: "Projects", href: "/projects" },
     { name: "About", href: "/about" },
-    { name: "On call", href: "/oncall" },
+    { name: "Lab", href: "/lab" },
     { name: "Contact", href: "/contact" },
   ];
 
@@ -160,10 +160,10 @@ export function Footer() {
               no cookies · page counts only
             </span>
             <Link
-              href="/oncall"
+              href="/lab"
               className="flex items-center px-4 py-2 -ml-2 bg-card text-primary [clip-path:polygon(9px_0,100%_0,100%_100%,0_100%)] pl-6 hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary"
             >
-              on call →
+              lab →
             </Link>
           </div>
           <TerminalHint />

@@ -22,13 +22,14 @@ describe("the sitemap", () => {
 
   it("lists every case study, the on-call page and the CV", () => {
     for (const p of featuredProjects) if (p.href) expect(urls).toContain(HOST + p.href);
-    expect(urls).toContain(`${HOST}/oncall`);
+    expect(urls).toContain(`${HOST}/lab`);
     expect(urls).toContain(`${HOST}/cv.pdf`);
   });
 
   it("does not list the routes that only redirect", () => {
     expect(urls).not.toContain(`${HOST}/playground`);
     expect(urls).not.toContain(`${HOST}/colophon`);
+    expect(urls).not.toContain(`${HOST}/oncall`);
   });
 
   it("dates every entry", () => {
@@ -37,11 +38,12 @@ describe("the sitemap", () => {
 });
 
 describe("the redirects", () => {
-  it("send the old page names to /oncall, permanently", async () => {
+  it("send the old page names to /lab, permanently", async () => {
     const redirects = await nextConfig.redirects!();
     const to = Object.fromEntries(redirects.map((r) => [r.source, r]));
-    expect(to["/playground"]).toMatchObject({ destination: "/oncall", permanent: true });
-    expect(to["/colophon"]).toMatchObject({ destination: "/oncall", permanent: true });
-    expect(redirects).toHaveLength(2);
+    expect(to["/playground"]).toMatchObject({ destination: "/lab", permanent: true });
+    expect(to["/colophon"]).toMatchObject({ destination: "/lab", permanent: true });
+    expect(to["/oncall"]).toMatchObject({ destination: "/lab", permanent: true });
+    expect(redirects).toHaveLength(3);
   });
 });

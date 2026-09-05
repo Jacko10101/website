@@ -10,7 +10,7 @@ import { LogoMark } from "@/components/logo-mark";
 const navItems = [
   { name: "projects", href: "/projects" },
   { name: "about", href: "/about" },
-  { name: "on call", href: "/oncall" },
+  { name: "lab", href: "/lab" },
   { name: "contact", href: "/contact" },
 ];
 

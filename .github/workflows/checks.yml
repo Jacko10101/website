@@ -54,9 +54,9 @@ jobs:
 
       - name: The old URLs still redirect
         run: |
-          for path in /playground /colophon; do
+          for path in /playground /colophon /oncall; do
             code=$(curl -s -o /dev/null -w '%{http_code}' "http://localhost:3111$path")
             dest=$(curl -s -o /dev/null -w '%{redirect_url}' "http://localhost:3111$path")
             echo "$path -> $code $dest"
-            [ "$code" = "308" ] && [ "${dest##*/}" = "oncall" ] || exit 1
+            [ "$code" = "308" ] && [ "${dest##*/}" = "lab" ] || exit 1
           done

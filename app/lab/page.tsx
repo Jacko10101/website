@@ -5,27 +5,27 @@ import { OncallInvite } from "@/components/oncall-invite";
 import { CareerQuery } from "@/components/career-query";
 
 export const metadata: Metadata = {
-  alternates: { canonical: "/oncall" },
-  title: "On call · take the pager",
+  alternates: { canonical: "/lab" },
+  title: "Lab · take the pager",
   description:
     "An incident simulator, a SQLite database of my work you can query, and your own session's web vitals. All of it runs in your browser.",
   openGraph: {
-    title: "On call · Jack Devlin",
+    title: "Lab · Jack Devlin",
     description:
       "Take the pager: an incident simulator drawn from real pages, plus a database of the work you can query in your browser.",
-    url: "/oncall",
+    url: "/lab",
   },
 };
 
 /**
  * The page for anyone still here, led by the best thing on the site.
  *
- * This was /playground, and before that a colophon. The on-call simulator
- * sat third on it, under a name no hiring manager clicks, so almost nobody
- * found it. Now the page is named for it and opens on it. The career query
- * and the vitals follow; the build provenance stays a footnote.
+ * This was /playground, then briefly /oncall, and before both a colophon.
+ * The on-call simulator sat third on it, under a name no hiring manager
+ * clicks, so almost nobody found it. Now the page opens on it. The career
+ * query and the vitals follow; the build provenance stays a footnote.
  */
-export default function OncallPage() {
+export default function LabPage() {
   const buildDate = formatBuildDate(BUILD.time);
 
   return (
@@ -34,7 +34,7 @@ export default function OncallPage() {
           element never wins — the cap has to live on a child. */}
       <div className="container">
         <div className="mx-auto max-w-4xl">
-          <p className="eyebrow mb-5">on call</p>
+          <p className="eyebrow mb-5">lab</p>
           <h1 className="display text-4xl text-foreground sm:text-5xl md:text-6xl">
             Take the pager
           </h1>

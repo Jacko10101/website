@@ -4,7 +4,7 @@ import { ATTACKS, parse, validate, type Reason } from "./sql-guard";
 /**
  * The guard is the site's most-cited piece of engineering: it is what
  * refuses model-generated SQL in Clarity, and the same code gates the
- * career query on /oncall. These cases pin the behaviour the case
+ * career query on /lab. These cases pin the behaviour the case
  * study describes, reason code by reason code.
  */
 

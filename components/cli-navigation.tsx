@@ -135,7 +135,7 @@ export function CliNavigation() {
     "/projects/pipeline-platform": { path: "/projects/pipeline-platform", description: "Pipeline platform · shared CI/CD" },
     "/projects/observability": { path: "/projects/observability", description: "Self-hosted observability stack" },
     "/projects/smart-home": { path: "/projects/smart-home", description: "Smart home on K3s" },
-    "/oncall": { path: "/oncall", description: "Take the pager, query the database" },
+    "/lab": { path: "/lab", description: "Take the pager, query the database" },
     "/contact": { path: "/contact", description: "Email, or the form" },
   };
 
