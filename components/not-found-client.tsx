@@ -25,30 +25,16 @@ export function NotFoundClient() {
   }, [currentPath]);
 
   useEffect(() => {
-    // Restarts climb to the backoff threshold and stop. A tab left open all
-    // afternoon shouldn't be reporting four hundred of them.
-    const interval = setInterval(() => {
-      setRestarts((r) => {
-        if (r >= MAX_RESTARTS - 1) clearInterval(interval);
-        return Math.min(MAX_RESTARTS, r + 1);
-      });
-    }, 3000);
-
-    // Update time ago
+    // One clock. Restarts climb one every three seconds to the backoff
+    // threshold and stop, so a tab left open all afternoon isn't reporting
+    // four hundred of them.
     const startTime = Date.now();
-    const timeInterval = setInterval(() => {
+    const timer = setInterval(() => {
       const elapsed = Math.floor((Date.now() - startTime) / 1000);
-      if (elapsed < 60) {
-        setTimeAgo(`${elapsed}s`);
-      } else {
-        setTimeAgo(`${Math.floor(elapsed / 60)}m${elapsed % 60}s`);
-      }
+      setRestarts(Math.min(MAX_RESTARTS, Math.floor(elapsed / 3)));
+      setTimeAgo(elapsed < 60 ? `${elapsed}s` : `${Math.floor(elapsed / 60)}m${elapsed % 60}s`);
     }, 1000);
-
-    return () => {
-      clearInterval(interval);
-      clearInterval(timeInterval);
-    };
+    return () => clearInterval(timer);
   }, []);
 
   const podName = `page${(pathname ?? "").replace(/\//g, "-")}-7f8d9-xk4m2`;
@@ -141,7 +127,7 @@ export function NotFoundClient() {
         {/* The joke keeps its shape, but the facts in it are real: the host,
             and the commit serving this page. There is no cluster. */}
         <p className="text-center text-xs text-muted-foreground mt-6 font-mono">
-          Pod scheduled on node: vercel • image: devlinops:{BUILD.shortSha ?? "unknown"}
+          Pod scheduled on node: vercel · image: devlinops:{BUILD.shortSha ?? "unknown"}
         </p>
       </div>
     </div>

@@ -5,9 +5,9 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 /**
- * The things for people who go deep: the terminal on `/`, the incident
- * simulator behind the Konami code and the `oncall` command, and chaos
- * mode. None of them has any server output, and together they were a fifth
+ * The things for people who go deep: the terminal behind the "/" key, the
+ * incident simulator behind the Konami code and the `oncall` command, and
+ * chaos mode. None of them has any server output, and together they were a fifth
  * of the JavaScript on every route, including ones with nothing to do.
  *
  * They load after the page is idle, off the critical path, except on
@@ -23,13 +23,26 @@ export function Extras() {
 
   useEffect(() => {
     if (ready) return;
-    const w = window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number; cancelIdleCallback?: (id: number) => void };
-    if (w.requestIdleCallback) {
-      const id = w.requestIdleCallback(() => setReady(true), { timeout: 2500 });
-      return () => w.cancelIdleCallback?.(id);
-    }
-    const id = window.setTimeout(() => setReady(true), 1200);
-    return () => window.clearTimeout(id);
+    // "/" is advertised in the footer; if it is pressed before the terminal
+    // has loaded, remember the request and load now.
+    const onKey = (e: KeyboardEvent) => {
+      const t = e.target as HTMLElement | null;
+      if (e.key !== "/" || t?.tagName === "INPUT" || t?.tagName === "TEXTAREA" || t?.isContentEditable) return;
+      e.preventDefault();
+      window.__cliRequested = true;
+      setReady(true);
+    };
+    window.addEventListener("keydown", onKey);
+    // Safari has no requestIdleCallback; a short timer stands in for it.
+    const idle = typeof window.requestIdleCallback === "function";
+    const id = idle
+      ? window.requestIdleCallback(() => setReady(true), { timeout: 2500 })
+      : window.setTimeout(() => setReady(true), 1200);
+    const cancel = () => (idle ? window.cancelIdleCallback(id) : window.clearTimeout(id));
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      cancel();
+    };
   }, [ready]);
 
   if (!ready) return null;

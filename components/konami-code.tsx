@@ -25,9 +25,8 @@ export function KonamiCode() {
   // Opens on mount if the page asked for it before this component loaded
   // (see oncall-invite.tsx); otherwise waits for the code or the event.
   const [open, setOpen] = useState(() => {
-    const w = window as Window & { __oncallRequested?: boolean };
-    const asked = w.__oncallRequested === true;
-    w.__oncallRequested = false;
+    const asked = window.__oncallRequested === true;
+    window.__oncallRequested = false;
     return asked;
   });
 

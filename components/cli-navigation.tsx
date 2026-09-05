@@ -106,9 +106,8 @@ export function CliNavigation() {
   // Opens on mount if the header's terminal button was pressed before this
   // component had loaded (it arrives after the page is idle).
   const [isOpen, setIsOpen] = useState(() => {
-    const w = window as Window & { __cliRequested?: boolean };
-    const asked = w.__cliRequested === true;
-    w.__cliRequested = false;
+    const asked = window.__cliRequested === true;
+    window.__cliRequested = false;
     return asked;
   });
   const [input, setInput] = useState("");
@@ -386,7 +385,7 @@ Health Status:      Healthy`;
 
       case "whoami":
         output = `jack@devlinops
-├─ Platform & AI infrastructure engineer
+├─ Platform engineer
 ├─ Kubernetes, ArgoCD, LiteLLM · by choice
 ├─ ${profile.msc.label}${profile.msc.result ? `, ${profile.msc.result}` : ""}, ${profile.msc.status}
 └─ ${profile.availability.short}
@@ -633,8 +632,17 @@ The form does actually send, and I read everything that comes through it.`;
       role="dialog"
       aria-modal="true"
       aria-label="Command line navigation"
+      onClick={(e) => {
+        // A click on the backdrop closes it; a click inside the terminal does not.
+        if (e.target === e.currentTarget) setIsOpen(false);
+      }}
     >
-      <div className="container mx-auto flex h-full items-center justify-center px-4">
+      <div
+        className="container mx-auto flex h-full items-center justify-center px-4"
+        onClick={(e) => {
+          if (e.target === e.currentTarget) setIsOpen(false);
+        }}
+      >
         <div className="w-full max-w-4xl rounded-lg border border-border bg-black p-6 shadow-2xl">
           {/* Header */}
           <div className="mb-4 flex items-center justify-between border-b border-border pb-2">

@@ -1,7 +1,6 @@
 "use client";
 
 import { ReactNode, useEffect, useState } from "react";
-import "@/components/view-transition";
 
 /**
  * The rise between routes, in CSS. It must never gate the *first* paint:

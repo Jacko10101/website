@@ -6,8 +6,8 @@ export function ScrollProgress() {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    // Lenis drives scroll at rAF frequency, so reading scrollHeight inside the
-    // handler forced a layout on every frame. Measure on resize instead.
+    // Reading scrollHeight inside the scroll handler forces a layout on
+    // every frame. Measure on resize instead.
     let scrollable = 0;
 
     const measure = () => {

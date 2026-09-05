@@ -1,6 +1,7 @@
 import type { ReactNode, CSSProperties } from "react";
 import { ScrollProgress } from "@/components/scroll-progress";
 import { ReadingRail } from "@/components/reading-rail";
+import { MotionProvider } from "@/components/motion-provider";
 import { TerminalWindow } from "@/components/terminal-window";
 import type { Phosphor } from "@/lib/phosphors";
 
@@ -64,11 +65,16 @@ export function CaseStudyLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
         />
       )}
-      <article className="bg-background min-h-screen" style={accentStyle}>
-        <ScrollProgress />
-        <ReadingRail />
-        {children}
-      </article>
+      {/* The reduced-motion config wraps only the case studies, which is
+          where every framer exhibit lives; the /projects index stays free
+          of the library, and so do the prefetches the homepage makes. */}
+      <MotionProvider>
+        <article className="bg-background min-h-screen" style={accentStyle}>
+          <ScrollProgress />
+          <ReadingRail />
+          {children}
+        </article>
+      </MotionProvider>
     </>
   );
 }

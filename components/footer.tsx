@@ -1,5 +1,6 @@
 "use client";
 
+import { TerminalHint } from "@/components/terminal-hint";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { BUILD, formatBuildDate } from "@/lib/build-info";
@@ -165,9 +166,7 @@ export function Footer() {
               on call →
             </Link>
           </div>
-          <div className="px-4 py-2 border-t border-border/60 text-center text-muted-foreground">
-            press <kbd className="px-1.5 py-0.5 mx-1 rounded bg-secondary border border-border text-foreground/70 text-[10px]">/</kbd> for the terminal
-          </div>
+          <TerminalHint />
         </div>
 
         {/* Bottom bar */}
@@ -175,10 +174,6 @@ export function Footer() {
           <p className="text-muted-foreground text-sm font-mono">
             © {new Date().getFullYear()} Jack Devlin
           </p>
-          <div className="flex items-center gap-2 text-muted-foreground text-sm">
-            <span className="w-2 h-2 rounded-full bg-primary" aria-hidden />
-            <span>{profile.availability.short}</span>
-          </div>
         </div>
       </div>
     </footer>

@@ -128,9 +128,12 @@ body {
   );
 }
 
-/* Smooth scroll with offset for fixed header */
+/* Offset for the fixed header. Scrolling is NOT smooth at the document
+   level: a route change scrolls to the top, and smoothing that made every
+   view transition snapshot the new page mid-scroll, so the title flew
+   through the header. In-page jumps (the reading rail) smooth themselves. */
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
   scroll-padding-top: 5rem;
 }
 
@@ -248,7 +251,10 @@ html {
    client-side navigations, never on the first paint. The reduced-motion
    block below zeroes it. */
 .route-enter {
-  animation: route-enter 350ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  /* `backwards`, not `both`: a retained transform makes this wrapper the
+     containing block for every position: fixed element inside it (the
+     reading rail, the progress bar, the lightbox), which then scroll away. */
+  animation: route-enter 350ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
 }
 
 @keyframes route-enter {
@@ -347,19 +353,23 @@ table {
 
 .estate .edge {
   fill: none;
-  stroke: color-mix(in oklab, var(--color-muted-foreground) 34%, transparent);
+  stroke: color-mix(in oklab, var(--color-muted-foreground) 52%, transparent);
   stroke-width: 1.3;
   transition: stroke 200ms ease, opacity 200ms ease;
 }
 
 .estate .edge.flow {
-  stroke-dasharray: 3 9;
+  stroke-dasharray: 4 8;
   animation: estate-flow 2.4s linear infinite;
+}
+
+.estate[data-paused] .edge.flow {
+  animation-play-state: paused;
 }
 
 .estate .edge.thin {
   stroke-width: 1;
-  opacity: 0.55;
+  opacity: 0.7;
 }
 
 .estate circle.svc {
@@ -391,7 +401,6 @@ table {
 .estate .region:focus-visible .edge {
   stroke: var(--color-primary);
   opacity: 1;
-  animation-duration: 0.9s;
 }
 
 .estate[data-hot] .region:not(.hot) {
@@ -430,16 +439,72 @@ table {
   }
 }
 
-/* Print styles */
+/* Print. A recruiter hitting Cmd+P on /about or a case study should get a
+   readable page, not a dark theme in toner. Everything on the site takes its
+   colour from the tokens, so the tokens are what change. */
 @media print {
+  :root {
+    --color-background: #ffffff;
+    --color-foreground: #111511;
+    --color-primary: #146b3a;
+    --color-primary-foreground: #ffffff;
+    --color-secondary: #f2f4f1;
+    --color-secondary-foreground: #111511;
+    --color-muted: #f2f4f1;
+    --color-muted-foreground: #3f4741;
+    --color-accent: #f2f4f1;
+    --color-accent-foreground: #111511;
+    --color-border: #cfd5cf;
+    --color-card: #ffffff;
+    --color-warn: #7a5d00;
+    --color-error: #a3261a;
+    --color-destructive: #a3261a;
+  }
+
+  html,
   body {
-    background: white;
-    color: black;
+    background: #ffffff;
+    color: #111511;
   }
 
   nav,
   footer,
-  button {
+  button,
+  canvas,
+  [role="dialog"],
+  .phosphor-ambient,
+  .grid-background,
+  nav[aria-label="Sections"] {
     display: none !important;
+  }
+
+  /* Exhibits that paint their own black ground. */
+  [class*="bg-black"] {
+    background-color: #f2f4f1 !important;
+  }
+
+  a {
+    color: #146b3a;
+    text-decoration: underline;
+  }
+
+  /* External links show where they go; internal ones are on the same site. */
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+    color: #3f4741;
+  }
+
+  h1,
+  h2,
+  h3 {
+    break-after: avoid;
+  }
+
+  img,
+  svg,
+  pre,
+  table {
+    break-inside: avoid;
   }
 }

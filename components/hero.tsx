@@ -96,7 +96,7 @@ export function Hero() {
                 {point.value}
               </span>
               <span className="text-sm text-muted-foreground transition-colors group-hover:text-foreground">
-                {point.label} →
+                {point.label}\u00a0→
               </span>
             </Link>
           ))}

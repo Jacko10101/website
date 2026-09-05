@@ -33,13 +33,6 @@ import {
 type Push = (href: string) => void;
 const Ctx = createContext<Push>(() => {});
 
-declare global {
-  interface Window {
-    /** Set while a view transition is driving a navigation. */
-    __viewTransition?: boolean;
-  }
-}
-
 export function ViewTransitions({ children }: { children: ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -53,7 +46,10 @@ export function ViewTransitions({ children }: { children: ReactNode }) {
   const push = useCallback<Push>(
     (href) => {
       const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (!document.startViewTransition || reduced) {
+      // A push to the current route never changes the pathname, so the
+      // transition would only end on its timeout; go plain instead.
+      const samePath = href.split(/[?#]/)[0] === window.location.pathname;
+      if (!document.startViewTransition || reduced || samePath) {
         router.push(href);
         return;
       }
@@ -66,9 +62,12 @@ export function ViewTransitions({ children }: { children: ReactNode }) {
             window.setTimeout(resolve, 1500);
           }),
       );
-      transition.finished.finally(() => {
+      // `finished` rejects when a second transition interrupts this one;
+      // that is not an error worth surfacing, so both branches just clear.
+      const clear = () => {
         window.__viewTransition = false;
-      });
+      };
+      transition.finished.then(clear, clear);
     },
     [router],
   );
@@ -80,7 +79,8 @@ export function useTransitionRouter() {
   return useContext(Ctx);
 }
 
-function plainLeftClick(e: MouseEvent) {
+/** A click that should navigate in place: left button, no modifier, not already handled. */
+export function plainLeftClick(e: MouseEvent) {
   return e.button === 0 && !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey && !e.defaultPrevented;
 }
 

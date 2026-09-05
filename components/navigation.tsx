@@ -93,7 +93,7 @@ export function Navigation() {
             <button
               type="button"
               onClick={() => {
-                (window as Window & { __cliRequested?: boolean }).__cliRequested = true;
+                window.__cliRequested = true;
                 window.dispatchEvent(new Event("devlinops:cli"));
               }}
               className="ml-2 hidden items-center gap-2 rounded-md border border-border px-2.5 py-1.5 font-mono text-xs text-muted-foreground transition-colors hover:border-primary/60 hover:text-foreground [@media(hover:hover)]:inline-flex"
@@ -140,6 +140,19 @@ export function Navigation() {
                 {item.name}
               </Link>
             ))}
+            {/* There is no "/" key on a phone. This is the terminal's door there. */}
+            <button
+              type="button"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                window.__cliRequested = true;
+                window.dispatchEvent(new Event("devlinops:cli"));
+              }}
+              className="mt-1 flex items-center justify-between rounded-md border border-border px-4 py-3 text-left font-mono text-base text-muted-foreground transition-colors hover:text-foreground active:bg-primary/10 active:text-primary"
+            >
+              terminal
+              <span className="font-mono text-xs text-muted-foreground/80">type here instead of pressing /</span>
+            </button>
           </div>
         </div>
       )}
