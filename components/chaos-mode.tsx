@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 
 /**
  * Chaos mode — triggered from the CLI (`chaos`, or trying `rm -rf /`).
@@ -116,6 +117,7 @@ function corruptibleOrder(text: string): number[] {
 }
 
 export function ChaosMode() {
+  const pathname = usePathname();
   const [stage, setStage] = useState<Stage>("idle");
   const [pods, setPods] = useState<Pod[]>([]);
   const [boxes, setBoxes] = useState<Box[]>([]);
@@ -156,6 +158,12 @@ export function ChaosMode() {
     setMttr(null);
     setLog([]);
   }, [restore]);
+
+  useEffect(() => {
+    // Route changes are an external interruption: restore the outgoing page.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    dismiss();
+  }, [pathname, dismiss]);
 
   /* Overlay cards track their section's real rect, through scroll and resize. */
   useEffect(() => {
@@ -237,6 +245,7 @@ export function ChaosMode() {
 
       const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+      setStage("idle");
       const sections = Array.from(
         document.querySelectorAll<HTMLElement>("main section")
       ).filter((s) => s.getBoundingClientRect().height > 80);
@@ -320,6 +329,7 @@ export function ChaosMode() {
       const ramp = (i: number, from: number, to: number, ms: number) => {
         const t0 = performance.now();
         const tick = () => {
+          if (!running.current) return;
           const p = clamp01((performance.now() - t0) / ms);
           corrupt[i] = from + (to - from) * p;
           if (p < 1) requestAnimationFrame(tick);
@@ -492,7 +502,7 @@ export function ChaosMode() {
         })}
       </div>
 
-      <div className="fixed bottom-6 right-6 z-[96] w-[25rem] max-w-[calc(100vw-3rem)] rounded-lg border border-border bg-black/95 backdrop-blur-sm glow-border font-mono text-xs leading-5 overflow-hidden">
+      <div className="chaos-console fixed bottom-6 right-6 z-[96] w-[25rem] max-w-[calc(100vw-3rem)] rounded-lg border border-border bg-black/95 backdrop-blur-sm glow-border font-mono text-xs leading-5 overflow-hidden">
         <div className="flex items-center justify-between gap-3 px-3 py-2 border-b border-border bg-card/60">
           <span className="text-muted-foreground truncate">$ kubectl get pods -w</span>
           <span className={`shrink-0 px-1.5 py-0.5 rounded border text-[11px] tracking-wider ${chipTone}`}>
@@ -546,7 +556,7 @@ export function ChaosMode() {
             <p className="text-primary">
               recovered in {(mttr / 1000).toFixed(1)}s, measured just now
             </p>
-            <p className="mt-1">the snapshot was git. you can&apos;t break this site.</p>
+            <p className="mt-1">Restored from the page snapshot.</p>
           </div>
         )}
 

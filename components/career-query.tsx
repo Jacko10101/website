@@ -62,7 +62,7 @@ function getDb(): Promise<SqlDb> {
     }
     dbReady = true;
     return db;
-  });
+  }).catch(error => { dbPromise = null; throw error; });
   return dbPromise;
 }
 
@@ -80,6 +80,8 @@ export function CareerQuery() {
   // The panel answers its opening question on mount; announcing that would
   // read a whole table at every homepage visit. It goes live once asked.
   const [announce, setAnnounce] = useState(false);
+  const [copyStatus, setCopyStatus] = useState("");
+  const lines = useRef<HTMLPreElement>(null);
   const firstRun = useRef(true);
 
   const run = useCallback(async (query: string) => {
@@ -136,11 +138,11 @@ export function CareerQuery() {
     state.kind === "rows" && state.rows.length > 0 ? Object.keys(state.rows[0]) : [];
 
   return (
-    <div className="rounded-xl border border-border bg-card/40 overflow-hidden glow-border">
+    <div className="query-workstation instrument-surface">
       {/* Chrome */}
       <div className="flex items-center justify-between gap-3 px-4 py-2.5 border-b border-border bg-card/60">
         <span className="font-mono text-xs text-muted-foreground">
-          ask · devlinops.com
+          QUERY / portfolio.db
         </span>
         <button
           type="button"
@@ -183,10 +185,10 @@ export function CareerQuery() {
       </div>
 
       {/* The query, editable */}
-      <div className="px-4 py-3 border-b border-border">
+      <div className="query-source px-4 py-3 border-b border-border">
         <div className="flex items-center justify-between mb-2">
           <p className="font-mono text-[10px] uppercase tracking-wider text-primary">
-            the query that answers it
+            {asked === "Custom query" ? "custom query" : "the query that answers it"}
           </p>
           <button
             type="button"
@@ -200,9 +202,10 @@ export function CareerQuery() {
             run
           </button>
         </div>
-        <textarea
+        <div className="query-editor"><pre ref={lines} className="query-lines" aria-hidden>{sql.split("\n").map((_,index) => index+1).join("\n")}</pre><textarea
           value={sql}
-          onChange={(e) => setSql(e.target.value)}
+          onChange={(e) => {setSql(e.target.value);setAsked("Custom query");setCopyStatus("");}}
+          onScroll={event => {if(lines.current) lines.current.style.transform = `translateY(-${event.currentTarget.scrollTop}px)`;}}
           onKeyDown={(e) => {
             if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
               e.preventDefault();
@@ -215,7 +218,8 @@ export function CareerQuery() {
           aria-label="SQL query, editable"
           title="Edit the query, then press Cmd/Ctrl + Enter to run it"
           className="w-full resize-y rounded-md border border-border bg-black/50 p-3 font-mono text-[12px] leading-6 text-foreground/90 outline-none focus:border-primary/50"
-        />
+        /></div>
+        <div className="query-toolbar"><span>⌘ / Ctrl + Enter to run</span><button type="button" onClick={async () => {try {await navigator.clipboard.writeText(sql);setCopyStatus("Copied");} catch {setCopyStatus("Select the query to copy");}}}>Copy SQL ↗</button><span role="status">{copyStatus}</span></div>
       </div>
 
       {/* Result. The floor is the height a full result settles at: reserving

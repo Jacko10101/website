@@ -33,7 +33,7 @@ export function KonamiCode() {
   useEffect(() => {
     let progress = 0;
     const onKey = (e: KeyboardEvent) => {
-      if (open) return;
+      if (open || document.querySelector('[role="dialog"]')) return;
       const target = e.target as HTMLElement | null;
       if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable)) return;
       const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
@@ -47,7 +47,7 @@ export function KonamiCode() {
         progress = key === KONAMI[0] ? 1 : 0;
       }
     };
-    const onEvent = () => setOpen(true);
+    const onEvent = () => { window.__oncallRequested = false; if (!document.querySelector('[role="dialog"]')) setOpen(true); };
     window.addEventListener("keydown", onKey);
     window.addEventListener("devlinops:oncall", onEvent);
     return () => {

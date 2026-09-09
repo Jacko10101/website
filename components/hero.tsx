@@ -1,109 +1,91 @@
+"use client";
+
+import Image from "next/image";
 import Link from "next/link";
-import { RecoveryField } from "@/components/recovery-field";
-import { proofPoints } from "@/lib/projects";
+import { useRef, useState } from "react";
 import { profile } from "@/lib/profile";
 
-/**
- * One screen, one claim, one object.
- *
- * This used to stack seven blocks: a terminal eyebrow, the name, a role
- * paragraph, a five-line biography, three actions, a four-line availability
- * block and the proof strip — over a live glyph canvas. A reader gives this
- * about forty seconds and there was nothing in it telling them where to look.
- *
- * Now the name is the display type, one sentence says what the work is, and
- * the right side holds the one thing on the site that moves: a small cluster
- * losing a node and recovering it the way the dissertation's scheduler does.
- * The mark that used to sit there held forty percent of the first screen and
- * said nothing; it lives on in the nav and the favicon. The biography is on
- * /about, where someone who wants it will go looking.
- */
+const layers = [
+  { name: "The product", tag: "01 / Heimdall", title: "One screen. Twenty services.", detail: "The dashboard 20+ engineers open every day. Tickets, releases and the state of the pods, brought into the same view.", decision: "Built and operated at Loweconex.", href: "/projects/heimdall", cta: "Open Heimdall" },
+  { name: "Delivery", tag: "02 / Pipeline platform", title: "Build once. Let Git take it from here.", detail: "A shared library builds the image. Image Updater changes the GitOps revision. ArgoCD handles the rollout, then PostSync tests what is actually running.", decision: "The build pipeline doesn’t own deployment credentials.", href: "/projects/pipeline-platform", cta: "Read the decision" },
+  { name: "Runtime", tag: "03 / Kubernetes", title: "Healthy according to what?", detail: "A green ArgoCD status can hide new pods in a crashloop. Heimdall reads pod state directly, alongside the revision each environment should be running.", decision: "A deployment verdict is only as good as its source.", href: "/projects/heimdall", cta: "See what Heimdall reads" },
+  { name: "Signals", tag: "04 / Observability", title: "An incident starts with a Grafana link.", detail: "Prometheus, Grafana and Loki across four environments. Monitoring quoted near £100k a year runs in-house for roughly £5k.", decision: "We already had the cluster capacity. I used it.", href: "/projects/observability", cta: "Read the architecture decision" },
+];
+
+function DeliveryDrawing() {
+  return <svg viewBox="0 0 720 380" fill="none">
+    <path d="M145 172H215M325 172H395M505 172H575" stroke="currentColor" strokeOpacity=".3" />
+    {[[35,"Shared CI","build + image"],[215,"Image Updater","GitOps commit"],[395,"ArgoCD","reconcile"],[575,"PostSync","verify"]].map(([x,label,sub]) => <g key={x} transform={`translate(${x},125)`}>
+      <rect width="110" height="94" rx="3" fill="#17241f" stroke="currentColor" />
+      <path d="M12 16H30M12 23H23" stroke="currentColor" />
+      <text x="12" y="51" fill="#e9eee8" fontSize="12">{label}</text>
+      <text x="12" y="72" fill="currentColor" fontSize="9">{sub}</text>
+    </g>)}
+    <text x="35" y="55" fill="currentColor" fontSize="12">DELIVERY / ONE SHARED LIBRARY</text>
+    <text x="35" y="328" fill="currentColor" fontSize="11">20 services</text><text x="510" y="328" fill="currentColor" fontSize="11">~400 deploys / month</text>
+  </svg>;
+}
+function RuntimeDrawing() {
+  return <svg viewBox="0 0 720 380" fill="none">
+    <text x="35" y="45" fill="currentColor" fontSize="12">RUNTIME / FOUR ENVIRONMENTS</text>
+    {["DEV","QA","PREPROD","PROD"].map((label,col) => <g key={label} transform={`translate(${35 + col * 172},80)`}>
+      <rect width="145" height="230" rx="3" fill="#15211c" stroke="currentColor" strokeOpacity=".7" />
+      <text x="15" y="29" fill="currentColor" fontSize="12">{label}</text>
+      {Array.from({length:9},(_,i) => <rect key={i} x={15 + i % 3 * 39} y={56 + Math.floor(i / 3) * 44} width="30" height="30" rx="2" fill="currentColor" fillOpacity={.08 + (i % 3) * .07} stroke="currentColor" strokeOpacity=".45" />)}
+      <text x="15" y="210" fill="currentColor" fontSize="9">pod state ↗</text>
+    </g>)}
+    <text x="35" y="349" fill="currentColor" fontSize="10">Schematic / environment layout, not live workload counts</text>
+  </svg>;
+}
+function SignalsDrawing() {
+  return <svg viewBox="0 0 720 380" fill="none">
+    <text x="35" y="45" fill="currentColor" fontSize="12">OBSERVABILITY / FOLLOW THE EVIDENCE</text>
+    {["Metrics","Logs","Dashboards"].map((name,i) => <g key={name} transform={`translate(35,${85 + i * 83})`}>
+      <text x="0" y="24" fill="currentColor" fontSize="12">{name}</text>
+      <path d="M110 20H200M430 20H580" stroke="currentColor" strokeOpacity=".5" />
+      <rect x="200" width="230" height="45" rx="3" fill="#17241f" stroke="currentColor" />
+      <text x="219" y="28" fill="#e9eee8" fontSize="14">{["Prometheus + Thanos","Loki","Grafana"][i]}</text>
+      <circle cx="594" cy="20" r="9" stroke="currentColor" />
+    </g>)}
+    <text x="35" y="352" fill="currentColor" fontSize="11">22 dashboards as code / 50+ alerts, a runbook each</text>
+  </svg>;
+}
+
 export function Hero() {
-  return (
-    <section className="relative flex min-h-[92vh] flex-col justify-center overflow-hidden pt-32 pb-20">
-      <div className="absolute inset-0 phosphor-ambient pointer-events-none" aria-hidden />
-
-      <div className="container relative z-10">
-        <div className="grid items-center gap-16 lg:grid-cols-[minmax(0,1fr)_auto]">
-          <div>
-            <p className="eyebrow mb-7">Platform engineer</p>
-
-            <h1 className="display mb-8 text-[clamp(3.5rem,9vw,7.5rem)] text-foreground">
-              Jack Devlin
-            </h1>
-
-            <p className="mb-12 max-w-2xl text-xl leading-snug text-muted-foreground sm:text-2xl">
-              I build the infrastructure AI products run on: Kubernetes and
-              CI/CD underneath, an LLM gateway and its guardrails on top.
-            </p>
-
-            <div className="mb-12 flex flex-wrap items-center gap-4">
-              <Link
-                href="/projects"
-                className="rounded-md bg-primary px-7 py-3.5 font-mono font-semibold text-primary-foreground transition-colors duration-150 hover:bg-primary/90 active:bg-primary/80"
-              >
-                Read the case studies
-              </Link>
-              <Link
-                href="/contact"
-                className="rounded-md border border-border px-7 py-3.5 font-mono text-foreground transition-colors duration-150 hover:border-primary/60 hover:text-primary active:border-primary active:bg-primary/10"
-              >
-                Say hello
-              </Link>
-              <a
-                href="/cv.pdf"
-                download="jack-devlin-cv.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="-mx-1 inline-flex items-center gap-2 px-1 py-3.5 font-mono text-sm text-muted-foreground transition-colors hover:text-foreground"
-              >
-                Download CV
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V3" />
-                </svg>
-              </a>
-            </div>
-
-            {/* The two facts a recruiter needs before anything else: when,
-                and whether anyone has to sponsor him. Deliberately no city
-                list — naming three excludes everywhere else, and the
-                preference isn't a restriction. */}
-            <div className="max-w-xl space-y-1.5 font-mono text-sm">
-              <p className="flex items-start gap-2 text-foreground/90">
-                <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-primary" aria-hidden />
-                {profile.availability.status}
-              </p>
-              <p className="pl-4 text-muted-foreground">{profile.lookingFor.workRights}</p>
-              {/* The seniority signal, which used to be three hundred pixels
-                  down /about: how long, and how much the place grew around it. */}
-              <p className="pl-4 text-muted-foreground">{profile.tenure}</p>
-            </div>
-          </div>
-
-          {/* Hidden below lg, as the mark was: on a phone the text is the hero. */}
-          <RecoveryField className="hidden lg:block" />
-        </div>
-
-        {/* Proof strip, evidence before claims */}
-        <div className="mt-24 grid divide-y divide-border border-y border-border sm:grid-cols-3 sm:divide-x sm:divide-y-0">
-          {proofPoints.map((point) => (
-            <Link
-              key={point.label}
-              href={point.href}
-              className="group flex flex-col gap-1 py-6 transition-colors first:pl-0 hover:bg-card/60 sm:px-6"
-            >
-              <span className="display text-3xl text-primary sm:text-4xl">
-                {point.value}
-              </span>
-              <span className="text-sm text-muted-foreground transition-colors group-hover:text-foreground">
-                {/* A non-breaking space, so the arrow never wraps onto a line
-                    of its own under the label on a phone. */}
-                {point.label}&nbsp;→
-              </span>
-            </Link>
-          ))}
-        </div>
+  const [active,setActive] = useState(0);
+  const layer = layers[active];
+  const cutaway = useRef<HTMLDivElement>(null);
+  function lookUnderneath() {
+    setActive(active === 0 ? 1 : 0);
+    if (window.matchMedia("(max-width: 767px)").matches) {
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      cutaway.current?.scrollIntoView({ block: "center", behavior: reduced ? "instant" : "smooth" });
+    }
+  }
+  return <section className="machine-hero" aria-labelledby="machine-title"><div className="container">
+    <div className="machine-byline"><h1><Link href="/about" aria-label="About Jack Devlin"><Image src="/jack-photo.jpg" alt="" width={32} height={38} /></Link>Jack Devlin<span> / Platform engineer</span></h1><span>Northern Ireland · {profile.availability.short}</span></div>
+    <div className="machine-opening">
+      <div className="machine-introduction">
+        <p className="machine-kicker">Built. Shipped. Still running.</p>
+        <h2 id="machine-title">The work.<br />And everything<br /><span>underneath.</span></h2>
+        <p className="machine-lede">I build the platforms behind the product.<br />Here’s one you can look inside.</p>
+        <button type="button" className="machine-invitation" onClick={lookUnderneath} aria-controls="machine-detail"><span className="cutaway-icon" aria-hidden><i /><i /><i /></span>{active === 0 ? "Look underneath" : "Back to the surface"}<span aria-hidden>↗</span></button>
       </div>
-    </section>
-  );
+      <div ref={cutaway} className="machine-cutaway" data-layer={active} aria-hidden="true">
+        <div className="cutaway-registration"><span>FIG. 01 / THE PLATFORM</span><span>{active === 0 ? "ASSEMBLED" : "SECTION VIEW"}</span></div>
+        <div className="cutaway-datum datum-top" /><div className="cutaway-datum datum-bottom" />
+        <div className="cutaway-plane plane-signals"><SignalsDrawing /></div>
+        <div className="cutaway-plane plane-runtime"><RuntimeDrawing /></div>
+        <div className="cutaway-plane plane-delivery"><DeliveryDrawing /></div>
+        <div className="cutaway-plane plane-product"><div className="product-chrome"><span>HEIMDALL</span><span>THE VIEW FROM ABOVE ↗</span></div><Image src="/heimdall/dashboard.png" alt="" width={2192} height={1810} sizes="(min-width: 1024px) 60vw, 100vw" priority /></div>
+        <span className="cutaway-coordinate">{String(active + 1).padStart(2,"0")} / 04</span>
+        <span className="cutaway-caption">Select a layer. Follow the decision into the case study.</span>
+      </div>
+    </div>
+    <div className="machine-inspector">
+      <div className="machine-depths" role="group" aria-label="Explore the platform layers">{layers.map((item,index) => <button key={item.name} type="button" aria-pressed={active === index} aria-controls="machine-detail" onClick={() => setActive(index)}><span>0{index + 1}</span>{item.name}<span aria-hidden>↗</span></button>)}</div>
+      <div className="machine-detail" id="machine-detail" aria-live="polite" aria-atomic="true"><div><p className="folio-label">{layer.tag}</p><h3>{layer.title}</h3></div><div><p>{layer.detail}</p><p className="machine-decision">↳ {layer.decision}</p><Link href={layer.href} className="quiet-link">{layer.cta}<span aria-hidden>↗</span></Link></div></div>
+    </div>
+    <div className="machine-next"><a href="#selected-work">Continue into the work <span aria-hidden>↓</span></a><a href="/cv.pdf" download="jack-devlin-cv.pdf">Download CV ↗</a></div>
+  </div></section>;
 }

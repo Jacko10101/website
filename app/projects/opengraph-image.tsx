@@ -6,9 +6,10 @@ export const alt = "Projects · Jack Devlin";
 
 export default function Image() {
   return renderOgImage({
-    eyebrow: "<case-studies />",
-    title: "Featured Work",
+    theme: "folio",
+    eyebrow: "SELECTED WORK",
+    title: "Built. And operated.",
     subtitle:
-      "Platform & MLOps case studies: Heimdall, a shared CI/CD pipeline platform, self-hosted observability, and a smart home on K3s.",
+      "Seven projects. What I built, why it exists, and what I learned running it.",
   });
 }

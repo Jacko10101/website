@@ -62,7 +62,7 @@ export const projects: Project[] = [
     description:
       "Ask the estate a question in English, get an answer backed by SQL that actually ran. Around thirty tenant databases, about twenty people using it daily. There's no vector store; compiled schema knowledge does the grounding, and five classes of hallucination get caught on every turn.",
     outcome:
-      "Customers who wanted a number out of their estate used to raise a ticket and wait for an analyst. Now they ask directly — about twenty people a day, across roughly thirty tenants.",
+      "About twenty people a day query their data directly across roughly thirty tenants, instead of raising a ticket for an analyst.",
     indexDescription:
       "Ask the estate a question in English, get an answer backed by SQL that actually ran. There's no vector store; compiled schema knowledge does the grounding, and five classes of hallucination get caught on every turn.",
     docType: "Claims + receipts",
@@ -86,7 +86,7 @@ export const projects: Project[] = [
     description:
       "A self-hosted LLM gateway in front of every AI workload. Services hold virtual keys with allowlists that fail closed, so I can tell you what any tenant or feature spent, and nothing reaches a model I didn't approve.",
     outcome:
-      "Adding an AI feature stopped meaning a new provider key and a billing conversation. It's a config change now, and spend traces to the tenant and feature that caused it.",
+      "New AI features use one gateway with approved models and spend traced to each tenant and feature. Adding a feature is a config change, without another provider key.",
     indexDescription:
       "A self-hosted LLM gateway in front of every AI workload. Services hold virtual keys with model allowlists that fail closed, so nothing reaches a model I didn't approve.",
     docType: "Postmortem",
@@ -135,7 +135,7 @@ export const projects: Project[] = [
     description:
       "One Bitbucket pipeline library, imported by every Java and Node service. Tests live in their own repo, promotion belongs to ArgoCD. ~400 deploys/month across 20 services on a single .ci/builds.yaml.",
     outcome:
-      "A change to the build pattern used to mean a PR to twenty repos, so it didn't get made. It now ships once, and every service adopts it by bumping a tag.",
+      "Build changes ship once in a shared library used by twenty services, instead of needing twenty separate PRs. Each service adopts the change by bumping a tag.",
     docType: "PR · Merged",
     docCta: "review the PR",
     status: "production",

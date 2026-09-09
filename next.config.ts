@@ -45,12 +45,12 @@ const securityHeaders = [
     value: [
       "default-src 'self'",
       // 'wasm-unsafe-eval' is the narrow grant that lets SQLite-in-WebAssembly
-      // run the career query on /lab. Deliberately NOT 'unsafe-eval':
-      // a JS-compiling SQL engine would have needed that, and it isn't worth it.
+      // run the career query on /lab. Production does not grant 'unsafe-eval':
+      // development adds it only for React debugging and webpack source maps.
       // 'unsafe-inline' stays because Next inlines the RSC payload and the
       // JSON-LD; a nonce-based policy needs middleware and gives up the
       // all-static prerender, which is the wrong trade for this site.
-      "script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://plausible.io",
+      `script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'${process.env.NODE_ENV === 'development' ? " 'unsafe-eval'" : ''} https://plausible.io`,
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: blob:",
       "font-src 'self' data:",

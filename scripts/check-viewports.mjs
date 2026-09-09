@@ -1,4 +1,4 @@
-// Renders every route in the sitemap, plus the 404, at four widths, and fails
+// Renders every route in the sitemap, plus the 404, at five widths, and fails
 // on any of: horizontal overflow, a non-200 status (404 for the 404 route),
 // or a console error or uncaught exception. That covers the bug class that
 // has shipped before (one unbreakable string dragging a phone-width page
@@ -18,6 +18,7 @@ import { join } from "node:path";
 const base = process.argv[2] ?? "http://localhost:3111";
 const NOT_FOUND = "/this-route-does-not-exist";
 const WIDTHS = [
+  { width: 320, height: 740 },
   { width: 390, height: 844 },
   { width: 768, height: 1024 },
   { width: 1024, height: 768 },
@@ -156,6 +157,52 @@ async function main() {
           problems.push(`overflow ${v.sw} > ${v.cw}` + culprits.map((c) => `\n              ${c}`).join(""));
         }
         if (status !== wantStatus) problems.push(`status ${status} (wanted ${wantStatus})`);
+
+        // These controls need to work without a pointer, including when
+        // motion is reduced. Exercise the actual DOM and keyboard events.
+        if (route === "/" && width === 390) {
+          const evaluate = async (expression) => {
+            const result = await send("Runtime.evaluate", { expression, returnByValue: true, awaitPromise: true }, sessionId);
+            if (result.exceptionDetails) throw new Error(result.exceptionDetails.text);
+            return result.result.value;
+          };
+          const press = async (key, code, virtualKey) => {
+            for (const type of ["keyDown", "keyUp"]) {
+              await send("Input.dispatchKeyEvent", { type, key, code, windowsVirtualKeyCode: virtualKey }, sessionId);
+            }
+            await sleep(100);
+          };
+          const assert = async (expression, message) => {
+            if (!await evaluate(expression)) throw new Error(message);
+          };
+          try {
+            await evaluate("document.querySelector('.mobile-menu-toggle').focus()");
+            await press(" ", "Space", 32);
+            await assert("!document.querySelector('#mobile-menu').hidden", "keyboard could not open mobile navigation");
+            await press("Escape", "Escape", 27);
+            await assert("document.querySelector('#mobile-menu').hidden && document.activeElement.matches('.mobile-menu-toggle')", "Escape did not close the menu and restore focus");
+
+            for (let layer = 0; layer < 4; layer++) {
+              await evaluate(`document.querySelectorAll('.machine-depths button')[${layer}].scrollIntoView({block:'center'}); document.querySelectorAll('.machine-depths button')[${layer}].focus()`);
+              await press(" ", "Space", 32);
+              await assert(`document.querySelector('.machine-cutaway').dataset.layer === '${layer}' && document.querySelectorAll('.machine-depths button')[${layer}].getAttribute('aria-pressed') === 'true'`, "layer selection failed");
+              await assert(`(() => { const b = document.querySelectorAll('.machine-depths button')[${layer}]; const r = b.getBoundingClientRect(); return b.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2)); })()`, "cutaway obstructs layer controls");
+            }
+            await evaluate("document.querySelectorAll('.evidence-controls button')[1].focus()");
+            await press(" ", "Space", 32);
+            await assert("document.querySelector('.evidence-numbers').textContent.includes('80.5') && document.querySelector('.evidence-numbers').textContent.includes('95.9')", "recorded run selection failed");
+            await evaluate("document.querySelectorAll('.evidence-controls button')[0].focus()");
+            await press(" ", "Space", 32);
+            await assert("document.querySelector('.evidence-numbers').textContent.includes('81.1') && document.querySelector('.evidence-numbers').textContent.includes('94.0')", "recorded mean failed");
+            await send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-motion", value: "reduce" }] }, sessionId);
+            await evaluate("document.querySelectorAll('.machine-depths button')[2].focus()");
+            await press(" ", "Space", 32);
+            await assert("document.querySelector('.machine-cutaway').dataset.layer === '2' && parseFloat(getComputedStyle(document.querySelector('.plane-runtime')).transitionDuration) < 0.001", "reduced-motion layer control failed");
+            console.log("ok    keyboard navigation, cutaway layers, recorded evidence, and reduced motion");
+          } catch (error) {
+            problems.push(`interaction: ${error.message}`);
+          }
+        }
         for (const e of errors) problems.push(`console: ${e}`);
 
         checks++;

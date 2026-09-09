@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 /**
  * The hero's one moving object: a three-node cluster, drawn in the accent.
@@ -80,6 +80,9 @@ type Phase = "idle" | "dead" | "seated" | "revived";
 
 export function RecoveryField({ className = "" }: { className?: string }) {
   const ref = useRef<HTMLCanvasElement>(null);
+  const controls = useRef<{ fail: (index: number) => void; pause: () => boolean } | null>(null);
+  const [paused, setPaused] = useState(false);
+  const [announcement, setAnnouncement] = useState("");
 
   useEffect(() => {
     const canvas = ref.current;
@@ -87,6 +90,7 @@ export function RecoveryField({ className = "" }: { className?: string }) {
     if (!canvas || !ctx) return;
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let manuallyPaused = false;
 
     // A seeded generator, so the cluster looks the same on every load.
     let seed = 20260904;
@@ -169,7 +173,7 @@ export function RecoveryField({ className = "" }: { className?: string }) {
     const moveTo = (p: Pod, x: number, y: number, delay: number, dur: number, now: number) => {
       p.sx = p.x; p.sy = p.y; p.tx = x; p.ty = y;
       p.t0 = now + delay;
-      p.dur = reduced ? 0 : dur;
+      p.dur = reduced || manuallyPaused ? 0 : dur;
     };
     const step = (p: Pod, now: number) => {
       if (p.dur === 0) { p.x = p.tx; p.y = p.ty; return; }
@@ -317,21 +321,26 @@ export function RecoveryField({ className = "" }: { className?: string }) {
       canvas.style.cursor = n && n.alive ? "pointer" : "default";
     };
     const onLeave = () => { hovered = -1; };
-    const onClick = (ev: MouseEvent) => {
-      const n = nodeAt(ev);
-      if (!n || !n.alive) return;
+    const failNode = (index: number) => {
+      const n = nodes[index];
+      if (!n.alive) return;
       const now = performance.now();
       // Bring any node still down back first, so the picture stays readable.
       for (const o of nodes) if (!o.alive) o.alive = true;
       lastKilled = n.i;
       kill(n, now);
       setPhase("dead", now);
-      if (reduced) {
+      if (reduced || manuallyPaused) {
         // No tick() runs to ease the frame colours, so set them outright.
         for (const o of nodes) o.tone = o.alive ? 0 : 1;
         seat(now, 0);
         draw(now);
       }
+      setAnnouncement(`Node ${index + 1} failed. Workloads recover in importance order as capacity allows.`);
+    };
+    const onClick = (ev: MouseEvent) => {
+      const n = nodeAt(ev);
+      if (n) failNode(n.i);
     };
     canvas.addEventListener("pointermove", onMove);
     canvas.addEventListener("pointerleave", onLeave);
@@ -357,7 +366,15 @@ export function RecoveryField({ className = "" }: { className?: string }) {
     // Animate only while on screen AND the tab is visible; each signal alone
     // would restart the loop for a canvas nobody can see.
     let onScreen = false;
-    const settle = () => { onScreen && !document.hidden ? start() : stop(); };
+    const settle = () => { onScreen && !document.hidden && !manuallyPaused ? start() : stop(); };
+    controls.current = {
+      fail: failNode,
+      pause: () => {
+        manuallyPaused = !manuallyPaused;
+        settle();
+        return manuallyPaused;
+      },
+    };
     const io = new IntersectionObserver((entries) => {
       for (const e of entries) onScreen = e.isIntersecting;
       settle();
@@ -379,6 +396,7 @@ export function RecoveryField({ className = "" }: { className?: string }) {
     }
 
     return () => {
+      controls.current = null;
       stop();
       io.disconnect();
       document.removeEventListener("visibilitychange", onVisibility);
@@ -390,21 +408,49 @@ export function RecoveryField({ className = "" }: { className?: string }) {
 
   return (
     <div className={className}>
+      <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+        <p className="eyebrow">Break a node. Watch it recover.</p>
+        <button
+          type="button"
+          onClick={() => setPaused(controls.current?.pause() ?? false)}
+          aria-pressed={paused}
+          aria-label="Pause automatic cluster simulation"
+          className="min-h-11 rounded border border-border px-3 font-mono text-xs text-muted-foreground transition-colors hover:border-primary/60 hover:text-foreground motion-reduce:hidden"
+        >
+          {paused ? "Resume" : "Pause"}
+        </button>
+      </div>
       <canvas
         ref={ref}
         width={W}
         height={H}
-        className="block h-[324px] w-[480px]"
+        className="block h-auto w-full"
         role="img"
         aria-label="A three-node cluster. One node fails, its pods queue, and the survivors seat the most important ones first."
       />
-      <p className="mt-3.5 flex items-baseline justify-between gap-3 font-mono text-xs text-muted-foreground/80">
-        <span>a node dies · the brighter the pod, the sooner it comes back</span>
+      <div className="grid grid-cols-3 gap-2" aria-label="Simulate a node failure">
+        {[0, 1, 2].map((index) => (
+          <button
+            key={index}
+            type="button"
+            onClick={() => controls.current?.fail(index)}
+            className="min-h-11 rounded border border-border px-2 font-mono text-xs text-muted-foreground transition-colors hover:border-primary/60 hover:text-primary active:bg-primary/10"
+          >
+            Fail node {index + 1}
+          </button>
+        ))}
+      </div>
+      <p className="sr-only" role="status">{announcement}</p>
+      <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+        A node fails. The brightest pods recover first; work that won’t fit waits.
+      </p>
+      <p className="mt-4 flex flex-wrap items-baseline justify-between gap-3 border-t border-border pt-4 font-mono text-xs text-muted-foreground">
+        <span>Scheduler illustration · not live data</span>
         <Link
           href="/projects/ml-scheduler"
           className="whitespace-nowrap border-b border-border text-muted-foreground transition-colors hover:border-primary hover:text-primary"
         >
-          the paper →
+          Read the research →
         </Link>
       </p>
     </div>

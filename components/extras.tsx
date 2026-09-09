@@ -32,7 +32,10 @@ export function Extras() {
       window.__cliRequested = true;
       setReady(true);
     };
+    const onRequest = () => setReady(true);
     window.addEventListener("keydown", onKey);
+    window.addEventListener("devlinops:cli", onRequest);
+    window.addEventListener("devlinops:oncall", onRequest);
     // Safari has no requestIdleCallback; a short timer stands in for it.
     const idle = typeof window.requestIdleCallback === "function";
     const id = idle
@@ -41,6 +44,8 @@ export function Extras() {
     const cancel = () => (idle ? window.cancelIdleCallback(id) : window.clearTimeout(id));
     return () => {
       window.removeEventListener("keydown", onKey);
+      window.removeEventListener("devlinops:cli", onRequest);
+      window.removeEventListener("devlinops:oncall", onRequest);
       cancel();
     };
   }, [ready]);

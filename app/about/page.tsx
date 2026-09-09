@@ -1,311 +1,73 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { Download } from "lucide-react";
-import { SectionHeading } from "@/components/section-heading";
 import { ContactCTA } from "@/components/contact-cta";
 import { profile } from "@/lib/profile";
 import { roles, education, tradingAs, stackTiers } from "@/lib/experience";
 
-// The narrative under each employer card. The hard facts (employers, titles,
-// dates, the one-line summary) live in lib/experience.ts and feed the JSON-LD
-// as well; this is the part that only makes sense on the page. Keyed by
-// company, so a role without a story just renders its summary.
-const roleStory: Record<string, string> = {
-  Loweconex:
-    "I arrived in the middle of a monolith to microservices migration, writing the test automation that kept it honest. The test work kept exposing infrastructure problems, so I started fixing those instead: observability from zero, then GitOps with ArgoCD, until 20 services deployed the same way. In 2025 I moved CI onto one shared pipeline library and started the deployment-metrics tool that grew into Heimdall. The team went from asking \"did it deploy?\" to reading the answer off a screen. Since then the same platform has carried the AI work: a gateway in front of every model call, Clarity, and agents pointed at the platform's own operational load: security findings into tickets, and a first pass on incidents against the runbooks that already exist.",
-  "OD3 Engineering": "First time I'd shipped anything people depended on.",
-};
-
-// Hero section
-function AboutHero() {
-  return (
-    <section className="relative pt-28 md:pt-36 pb-20 overflow-hidden">
-      <div className="absolute inset-0 grid-background pointer-events-none" aria-hidden />
-
-      <div className="container px-4 relative z-10">
-        <div className="max-w-5xl mx-auto">
-          <div className="flex flex-col lg:flex-row items-center lg:items-start gap-12 lg:gap-20">
-            {/* Photo */}
-            <div
-              className="flex-shrink-0 w-64 md:w-72"
-            >
-              {/* The photo stays natural — the CRT duotone suited the old
-                  placeholder avatar but read as a green filter on a real
-                  face (Jack's call, 16 Aug 2026). The frame does the tying-in. */}
-              {/* 4:5 rather than square — the source portrait's face fills
-                  ~83% of the widest square crop, so a square frame is always
-                  tight at the chin or the hair. */}
-              <div className="relative w-64 aspect-[4/5] md:w-72 rounded-md border border-border overflow-hidden glow-border">
-                <Image
-                  src="/jack-photo.jpg"
-                  alt="Jack Devlin"
-                  fill
-                  sizes="(min-width: 768px) 288px, 256px"
-                  className="object-cover"
-                  priority
-                />
-              </div>
-
-              {/* Exif-style caption */}
-              <div className="mt-3 rounded-md border border-border bg-card px-4 py-3 font-mono text-xs text-muted-foreground space-y-1">
-                <p>Jack Devlin · Northern Ireland · platform engineer</p>
-              </div>
-            </div>
-
-            {/* Intro text */}
-            <div className="text-center lg:text-left flex-1">
-              <div>
-                <p className="eyebrow mb-4">About</p>
-                <h1 className="display text-4xl sm:text-5xl md:text-6xl text-foreground mb-6">
-                  Hey, I&apos;m Jack
-                </h1>
-                <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed">
-                  Platform engineer, based in Northern Ireland. Day job is
-                  Clarity, a natural-language database product running across
-                  about thirty tenants, and the LLM gateway every AI workload at
-                  the company goes through. I built the Kubernetes, pipelines and
-                  observability underneath them.
-                </p>
-              </div>
-
-              <div
-                className="flex flex-wrap gap-4 justify-center lg:justify-start items-center"
-              >
-                <a
-                  href="/cv.pdf"
-                  download="jack-devlin-cv.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-md border border-border text-foreground font-mono font-semibold hover:border-primary/60 hover:text-primary transition-colors"
-                >
-                  Download CV
-                  <Download className="w-4 h-4" aria-hidden />
-                </a>
-                <span className="font-mono text-xs text-muted-foreground">
-                  PDF · updated August 2026
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// The facts a recruiter would otherwise go to LinkedIn for. Deliberately
-// plain: employers named, real dates, no bullet-point CV register. The story
-// of each role sits under its summary; there used to be a separate timeline
-// telling the same three years again.
-function ExperienceSection() {
-  return (
-    <section className="relative py-24">
-      <div className="container px-4">
-        <SectionHeading
-          title="Where I've worked"
-          lede="Employers, titles and dates, with a PDF of the same if you'd rather have one."
-          align="center"
-        />
-
-        <div className="max-w-3xl mx-auto space-y-5">
-          {roles.map((role) => (
-            <div
-              key={role.company}
-              className="rounded-md border border-border bg-card p-6 md:p-8"
-            >
-              <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 mb-1">
-                <h3 className="font-mono font-semibold tracking-tight text-xl text-foreground">
-                  {role.company}
-                  {role.companyNote ? (
-                    <span className="font-normal text-base text-muted-foreground">
-                      {" "}
-                      — {role.companyNote}
-                    </span>
-                  ) : null}
-                </h3>
-                <p className="font-mono text-sm text-primary shrink-0">{role.dates}</p>
-              </div>
-              <p className="font-mono text-sm text-muted-foreground mb-4">
-                {role.title} · {role.location}
-              </p>
-              <p className="text-muted-foreground leading-relaxed">{role.summary}</p>
-              {roleStory[role.company] ? (
-                <p className="mt-4 text-muted-foreground leading-relaxed">
-                  {roleStory[role.company]}
-                </p>
-              ) : null}
-
-              {role.evidence ? (
-                <p className="mt-4 text-sm text-muted-foreground">
-                  What came out of it:{" "}
-                  {role.evidence.map((item, i) => (
-                    <span key={item.href}>
-                      {i > 0 ? ", " : ""}
-                      <Link href={item.href} className="text-primary hover:underline">
-                        {item.label}
-                      </Link>
-                    </span>
-                  ))}
-                  .
-                </p>
-              ) : null}
-            </div>
-          ))}
-
-          <div className="rounded-md border border-border bg-card p-6 md:p-8">
-            <h3 className="font-mono font-semibold tracking-tight text-xl text-foreground mb-5">
-              Education
-            </h3>
-            <div className="space-y-5">
-              {education.map((item) => (
-                <div key={item.award}>
-                  <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-                    <p className="font-mono text-base text-foreground">
-                      {item.award}
-                      {item.result ? (
-                        <span className="text-primary">, {item.result}</span>
-                      ) : null}
-                    </p>
-                    <p className="font-mono text-sm text-muted-foreground shrink-0">
-                      {item.dates}
-                    </p>
-                  </div>
-                  <p className="font-mono text-sm text-muted-foreground">
-                    {item.institution}
-                  </p>
-                  {item.note ? (
-                    <p className="mt-1.5 text-sm text-muted-foreground leading-relaxed">
-                      {item.note}
-                    </p>
-                  ) : null}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            Since {tradingAs.since} I&apos;ve worked through {tradingAs.name},{" "}
-            {tradingAs.note}. {profile.visaNote}
-          </p>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// How I work: one paragraph, not three numbered cards. The case studies were
-// rid of the three-card template ending; this page shouldn't keep one.
-function PhilosophySection() {
-  return (
-    <section className="relative py-24">
-      <div className="container px-4">
-        <SectionHeading label="principles" title="How I work" align="center" />
-
-        <div className="max-w-3xl mx-auto">
-          <p className="text-lg text-muted-foreground leading-relaxed">
-            The DORA collector behind Heimdall was correct for months and
-            nobody opened it. It became useful when it got a UI and twenty
-            people started reading it before standup. That is the standard I
-            hold platform work to now: a teammate should be able to tell
-            whether a service is healthy from one curl and one runbook, or it
-            isn&apos;t finished.
-          </p>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// Tech stack section, tiered by what's actually been run in production
-function TechStackSection() {
-  return (
-    <section className="relative py-24">
-      <div className="container px-4">
-        <SectionHeading
-          label="stack"
-          title="Tech stack"
-          lede="Split three ways, so you know which is which: what I've been on call for, what runs in my flat, and what I've only used."
-          align="center"
-        />
-
-        <div className="max-w-4xl mx-auto space-y-6">
-          {stackTiers.map((tier) => (
-            <div
-              key={tier.id}
-              className="rounded-md border border-border bg-card p-6 md:p-8"
-            >
-              <h3 className="font-mono font-semibold tracking-tight text-lg text-primary mb-1">
-                {tier.label}
-              </h3>
-              <p className="text-sm text-muted-foreground mb-5">{tier.note}</p>
-              <div className="flex flex-wrap gap-2">
-                {tier.items.map((tech) => (
-                  <span
-                    key={tech}
-                    className="px-3 py-1.5 text-sm font-mono rounded-md bg-secondary text-secondary-foreground border border-border"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// Currently section
-function CurrentlySection() {
-  return (
-    <section className="relative py-24">
-      <div className="container px-4">
-        <div className="max-w-3xl mx-auto">
-          <div
-            className="rounded-md border border-border bg-card p-8 md:p-12"
-          >
-            <p className="eyebrow mb-4">Status</p>
-            <h2 className="display text-3xl sm:text-4xl md:text-5xl text-foreground mb-3">
-              Right now
-            </h2>
-            <p className="font-mono text-sm text-primary mb-6">
-              Shipping Clarity · MSc submitted
-            </p>
-            <p className="text-lg text-foreground leading-relaxed mb-5">
-              I&apos;m wrapping up my current contract on the platform team I
-              helped build. Most of this year went to the AI side: Clarity live
-              across ~30 tenant databases, and the gateway that fronts every AI
-              workload.
-            </p>
-            <p className="text-muted-foreground leading-relaxed">
-              The dissertation is submitted. It builds a capacity-aware
-              scheduler for recovering Kubernetes workloads after node failure,
-              measured on real EKS clusters where failure means the machine is
-              terminated. It&apos;s the same problem I keep hitting
-              on the platform side.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// Main page component
 export default function AboutPage() {
   return (
-    <div className="bg-background">
-      <AboutHero />
-      <ExperienceSection />
-      <PhilosophySection />
-      <TechStackSection />
-      <CurrentlySection />
-      <ContactCTA
-        title="Still reading?"
-        lede="Drop me a note. About a role, an AI infrastructure problem, or anything that overlaps with the work above."
-      />
+    <div className="folio-surface">
+      <div className="container interior-page">
+        <div className="folio-line"><span>About / Jack Devlin</span><span>Northern Ireland</span></div>
+        <div className="about-opening">
+          <div>
+            <h1 className="interior-title">A little<br /><em>context.</em></h1>
+            <p className="about-lead">I started in QA. The failures kept<br className="hidden lg:block" /> leading me further down the stack.</p>
+            <div className="about-prose">
+              <p>At Loweconex, I joined a team of five engineers in the middle of a monolith-to-microservices migration.
+                Writing the tests kept exposing infrastructure problems, so I started fixing those too.</p>
+              <p>That became observability, Kubernetes, GitOps, a shared pipeline library, and a deployment dashboard.
+                Engineering grew to around forty people. More recently, I built the infrastructure and trust layer
+                for Clarity and the gateway behind the company’s AI workloads.</p>
+              <p>I’m based in Northern Ireland and work through {tradingAs.name}, my own limited company.
+                Outside the day job, I’ve been testing Kubernetes recovery schedulers for my MSc and running
+                rather more infrastructure in my flat than the lights strictly need.</p>
+            </div>
+            <a href="/cv.pdf" download="jack-devlin-cv.pdf" className="editorial-link mt-6">The one-page version <span aria-hidden>↓</span></a>
+          </div>
+          <figure className="about-photo">
+            <Image src="/jack-photo.jpg" alt="Jack Devlin" width={800} height={1000} sizes="(min-width: 1024px) 35vw, (min-width: 768px) 40vw, 75vw" className="w-full h-auto aspect-[4/5] object-cover" priority />
+            <figcaption><span>Jack Devlin</span><span>Usually behind a keyboard.</span></figcaption>
+          </figure>
+        </div>
+
+        <section className="about-section">
+          <div><p className="folio-label">01 / Experience</p><h2 className="ledger-heading mt-5">How I<br /><em>got here.</em></h2></div>
+          <div>
+            {roles.map((role) => (
+              <article key={role.company} className="experience-entry">
+                <p className="folio-label">{role.dates} / {role.location}</p>
+                <h3>{role.company}</h3><p className="experience-role">{role.title}</p>
+                <p className="story-summary mt-4">{role.summary}</p>
+                {role.evidence && <div className="experience-links">{role.evidence.map((item) => <Link key={item.href} href={item.href}>{item.label} ↗</Link>)}</div>}
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="about-section">
+          <div><p className="folio-label">02 / A lesson learned</p><h2 className="ledger-heading mt-5">The dashboard<br /><em>nobody opened.</em></h2></div>
+          <div>
+            <p className="about-pullquote">The collector was correct for months.<br /><em>That didn’t make it useful.</em></p>
+            <p className="story-summary mt-6">The DORA collector behind Heimdall had the right data, but nobody opened it.
+              Once it had a UI, twenty people started reading it before standup. That changed how I think about
+              platform work: getting the data right is only part of the job. Someone has to be able to use it.</p>
+            <Link href="/projects/heimdall" className="editorial-link mt-6">What became of it <span aria-hidden>↗</span></Link>
+          </div>
+        </section>
+
+        <section className="about-section">
+          <div><p className="folio-label">03 / Education</p><h2 className="ledger-heading mt-5">Still<br /><em>learning.</em></h2></div>
+          <div>{education.map((item) => <article key={item.award} className="experience-entry"><p className="folio-label">{item.dates}</p><h3>{item.award}</h3><p className="experience-role">{item.institution}{item.result ? ` / ${item.result}` : ""}</p><p className="story-summary mt-4">{item.note}</p></article>)}</div>
+        </section>
+
+        <section className="about-section">
+          <div><p className="folio-label">04 / Tools</p><h2 className="ledger-heading mt-5">What I<br /><em>work with.</em></h2></div>
+          <div>{stackTiers.map((tier, index) => <details key={tier.id} className="stack-detail" open={index === 0}><summary>{["In production", "At home", "Working knowledge"][index]}<span aria-hidden>+</span></summary><p className="story-summary mt-3">{tier.note}</p><p className="stack-text">{tier.items.join(" · ")}</p></details>)}</div>
+        </section>
+      </div>
+      <ContactCTA />
     </div>
   );
 }
@@ -313,10 +75,6 @@ export default function AboutPage() {
 export const metadata: Metadata = {
   alternates: { canonical: "/about" },
   title: "About",
-  description: `Jack Devlin · Platform engineer. How I work, the systems I've built, and what I'm looking for. ${profile.availability.sentence}`,
-  openGraph: {
-    title: "About · Jack Devlin",
-    description: `Platform engineer. How I work, the systems I've built, and what I'm looking for. ${profile.availability.sentence}`,
-    url: "https://www.devlinops.com/about",
-  },
+  description: `Jack Devlin, platform engineer in Northern Ireland. From QA to Kubernetes, developer tools, and AI infrastructure. ${profile.availability.sentence}`,
+  openGraph: { title: "About · Jack Devlin", description: "The person behind the platform: work, education, and a few lessons learned.", url: "/about" },
 };

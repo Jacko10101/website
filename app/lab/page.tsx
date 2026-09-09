@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { BUILD, formatBuildDate } from "@/lib/build-info";
 import { SessionVitals } from "@/components/session-vitals";
 import { OncallInvite } from "@/components/oncall-invite";
-import { CareerQuery } from "@/components/career-query";
+import { WorkConnections, QueryDrawer } from "@/components/work-connections";
+import { RequestWaterfall } from "@/components/request-waterfall";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/lab" },
-  title: "Lab · take the pager",
+  title: "Experiments · follow the work",
   description:
-    "An incident simulator, a SQLite database of my work you can query, and your own session's web vitals. All of it runs in your browser.",
+    "Take an on-call shift, trace connections between projects, and inspect a live request waterfall from your own browser.",
   openGraph: {
     title: "Lab · Jack Devlin",
     description:
@@ -29,23 +30,24 @@ export default function LabPage() {
   const buildDate = formatBuildDate(BUILD.time);
 
   return (
-    <div className="pb-28 pt-28 md:pt-36">
+    <div className="lab-surface folio-surface pb-28 pt-28 md:pt-36">
       {/* `.container` is unlayered CSS, so a `max-w-*` utility on the same
           element never wins — the cap has to live on a child. */}
       <div className="container">
-        <div className="mx-auto max-w-4xl">
+        <div className="lab-content mx-auto max-w-6xl">
           <p className="eyebrow mb-5">lab</p>
-          <h1 className="display text-4xl text-foreground sm:text-5xl md:text-6xl">
-            Take the pager
+          <h1 className="lab-heading">
+            Open the tools.
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-            An incident simulator, a database of my work you can query, and
-            your own session measured as you read. All of it runs in your
-            browser and nothing leaves it.
+            Take a shift. Follow a tool through the work. Watch this page arrive.
+            Three ways to get your hands on what’s underneath.
           </p>
 
+          <nav className="lab-directory" aria-label="Lab instruments"><a href="#shift"><span>01 / Decide</span>Take the pager ↘</a><a href="#query"><span>02 / Inspect</span>Follow the connections ↘</a><a href="#measure"><span>03 / Observe</span>Watch the requests ↘</a></nav>
+
           {/* 01 — the shift. */}
-          <section className="mt-20">
+          <section id="shift" className="lab-station mt-20">
             <p className="eyebrow mb-4">01 · the shift</p>
             <h2 className="display mb-4 text-2xl text-foreground sm:text-3xl">
               One shift, five pages
@@ -67,31 +69,33 @@ export default function LabPage() {
           </section>
 
           {/* 02 — the artefact. */}
-          <section className="mt-20">
+          <section id="query" className="lab-station mt-20">
             <p className="eyebrow mb-4">02 · query</p>
             <h2 className="display mb-4 text-2xl text-foreground sm:text-3xl">
-              Ask the database
+              Follow the connections
             </h2>
             <p className="mb-8 max-w-2xl leading-relaxed text-muted-foreground">
-              A SQLite database of my work, compiled to WebAssembly and
-              running in your tab. Pick a question, read the SQL that answers
-              it, then edit it and run your own. The box is guarded by the same
-              validator that refuses model-generated SQL in Clarity.
+              The same tools turn up in different places. Follow Prometheus from
+              the platform into my flat, or Kubernetes from production into the
+              research. Pick a thread and see the work it connects.
             </p>
-            <CareerQuery />
+            <WorkConnections />
+            <QueryDrawer />
           </section>
 
           {/* 03 — the instrument. */}
-          <section className="mt-20">
+          <section id="measure" className="lab-station mt-20">
             <p className="eyebrow mb-4">03 · measure</p>
             <h2 className="display mb-4 text-2xl text-foreground sm:text-3xl">
-              Your session, measured live
+              Watch this page arrive
             </h2>
             <p className="mb-8 max-w-2xl leading-relaxed text-muted-foreground">
-              The same numbers I&apos;d put on a dashboard, taken from this page
-              as you read it. Each one says what it means and what would count
-              as bad.
+              A flight recorder for this visit. Freeze it, filter the requests,
+              and inspect the timings. Open the SQL workbench above and its
+              database engine will leave a trace here too.
             </p>
+            <RequestWaterfall />
+            <p className="eyebrow mb-4 mt-10">The document at a glance</p>
             <SessionVitals />
           </section>
 
@@ -102,14 +106,14 @@ export default function LabPage() {
               the build serving you this page
             </p>
             <div className="flex flex-wrap gap-x-10 gap-y-2 font-mono text-sm">
-              <span className="flex gap-3">
+              <span className="flex min-w-0 flex-wrap gap-x-3 gap-y-1">
                 <span className="text-muted-foreground">commit</span>
                 {BUILD.commitUrl ? (
                   <a
                     href={BUILD.commitUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-primary hover:underline"
+                    className="break-all text-primary hover:underline"
                   >
                     {BUILD.shortSha}
                   </a>
@@ -117,22 +121,22 @@ export default function LabPage() {
                   <span className="text-primary">{BUILD.shortSha ?? "unknown"}</span>
                 )}
               </span>
-              <span className="flex gap-3">
+              <span className="flex min-w-0 flex-wrap gap-x-3 gap-y-1">
                 <span className="text-muted-foreground">branch</span>
                 <span className="text-foreground/80">{BUILD.branch ?? "unknown"}</span>
               </span>
-              <span className="flex gap-3">
+              <span className="flex min-w-0 flex-wrap gap-x-3 gap-y-1">
                 <span className="text-muted-foreground">shipped</span>
                 <span className="text-foreground/80">{buildDate ?? "unknown"}</span>
               </span>
               {BUILD.repoUrl && (
-                <span className="flex gap-3">
+                <span className="flex min-w-0 flex-wrap gap-x-3 gap-y-1">
                   <span className="text-muted-foreground">source</span>
                   <a
                     href={BUILD.repoUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-primary hover:underline"
+                    className="break-all text-primary hover:underline"
                   >
                     {BUILD.repoUrl.replace("https://", "")}
                   </a>

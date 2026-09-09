@@ -48,6 +48,23 @@ export function ContactForm() {
     }
   };
 
+  if (!WEB3FORMS_KEY) {
+    return (
+      <div>
+        <p className="mb-6 leading-relaxed text-muted-foreground">
+          Tell me about the role, the problem you’re working on, or what caught
+          your eye. I usually reply within a day.
+        </p>
+        <a
+          href="mailto:jack@devlinops.com"
+          className="inline-flex min-h-12 items-center gap-3 font-mono text-sm text-primary hover:underline"
+        >
+          jack@devlinops.com <Send className="h-4 w-4" aria-hidden />
+        </a>
+      </div>
+    );
+  }
+
   return (
     <form
       onSubmit={handleSubmit}

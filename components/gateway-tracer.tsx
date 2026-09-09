@@ -169,7 +169,7 @@ export function GatewayTracer() {
   const done = step >= lastStep;
 
   return (
-    <div className="rounded-xl border border-border bg-card/40 overflow-hidden">
+    <div className="instrument-surface gateway-tracer-surface">
       <div className="border-b border-border bg-card/60 px-4 py-3">
         <div className="font-mono text-xs text-muted-foreground mb-2">
           consumer key

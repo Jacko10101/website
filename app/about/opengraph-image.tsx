@@ -7,8 +7,9 @@ export const alt = "About · Jack Devlin";
 
 export default function Image() {
   return renderOgImage({
-    eyebrow: "<about />",
-    title: "About Jack Devlin",
+    theme: "folio",
+    eyebrow: "ABOUT",
+    title: "A little context.",
     subtitle:
       `Platform engineer. How I work, the systems I've built, and what I'm looking for. ${profile.availability.short}.`,
   });

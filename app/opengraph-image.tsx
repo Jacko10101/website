@@ -13,8 +13,9 @@ export const alt = "Jack Devlin · Platform Engineer";
 
 export default function Image() {
   return renderOgImage({
-    eyebrow: "whoami",
-    title: "Jack Devlin",
-    subtitle: `Platform engineer. Kubernetes, CI/CD and observability underneath; an LLM gateway and guardrails on top. ${profile.availability.sentence}`,
+    theme: "folio",
+    eyebrow: "INDEPENDENT PLATFORM ENGINEER",
+    title: "Jack Devlin.",
+    subtitle: `I build the systems behind the product. Kubernetes, delivery pipelines, and AI infrastructure. ${profile.availability.sentence}`,
   });
 }

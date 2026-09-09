@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pairedRecovery as PAIRED } from "@/lib/recovery-evidence";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { CaseStudyLayout } from "@/components/case-study-layout";
@@ -25,10 +26,7 @@ const ROUNDS = {
 };
 
 // Always-down liars, five paired node kills. Source: runs/evidence-dead/descriptive.json.
-const PAIRED = {
-  knapsack: [80.5, 89.9, 78.3, 83.0, 73.9],
-  ai: [95.9, 97.3, 87.0, 95.8, 94.2],
-};
+
 
 // Every eviction the AI arm made in the two lying-services cells: the measured
 // serving probability it priced the victim at, the victim's declared grade, and

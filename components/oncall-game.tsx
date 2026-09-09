@@ -1,6 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
+import { useModalFocus } from "@/components/use-modal-focus";
 
 /**
  * ONCALL — the easter egg. Not snake: an incident-response simulator.
@@ -647,6 +649,9 @@ const SCENARIOS: Scenario[] = [
   },
 ];
 
+function readSaved(key: string) { try { return localStorage.getItem(key); } catch { return null; } }
+function writeSaved(key: string, value: string) { try { localStorage.setItem(key,value); } catch { /* The shift still works when browser storage is unavailable. */ } }
+
 const SHIFT_LENGTH = 5;
 /** Which difficulty each page of the shift draws from. */
 const RAMP: Difficulty[] = ["easy", "easy", "medium", "medium", "hard"];
@@ -701,6 +706,9 @@ function grade(budget: number, wrongMoves: number): { mark: string; note: string
 
 export function OncallGame({ onClose }: { onClose: () => void }) {
   const [phase, setPhase] = useState<Phase>("briefing");
+  const [reportStatus, setReportStatus] = useState("");
+  const [paused, setPaused] = useState(false);
+  const pauseClock = useRef<{since: number | null; total: number}>({since:null,total:0});
   const [budget, setBudget] = useState(100);
   const [round, setRound] = useState(0);
   const [scenario, setScenario] = useState<Scenario | null>(null);
@@ -725,15 +733,16 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
     // localStorage is client-only, so this is the earliest it can be read
     // without a hydration mismatch.
     /* eslint-disable react-hooks/set-state-in-effect */
-    const stored = Number(localStorage.getItem("oncall-best-budget"));
-    if (stored > 0) setBestShift(stored);
-    setShiftsWorked(Number(localStorage.getItem("oncall-shifts") || 0));
+    const stored = Number(readSaved("oncall-best-budget"));
+    if (Number.isFinite(stored) && stored > 0) setBestShift(Math.min(100,stored));
+    const worked = Number(readSaved("oncall-shifts") || 0);
+    setShiftsWorked(Number.isFinite(worked) ? Math.max(0,Math.floor(worked)) : 0);
     /* eslint-enable react-hooks/set-state-in-effect */
 
     // The deck survives closing the modal, so coming back tomorrow doesn't
     // deal the same five incidents again.
     try {
-      const saved: unknown = JSON.parse(localStorage.getItem("oncall-deck") || "null");
+      const saved: unknown = JSON.parse(readSaved("oncall-deck") || "null");
       if (Array.isArray(saved)) {
         const valid = saved.filter((id) => SCENARIOS.some((s) => s.id === id));
         if (valid.length > 0) deckRef.current = valid as string[];
@@ -743,47 +752,10 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
     }
   }, []);
 
-  useEffect(() => {
-    dialogRef.current?.focus();
-  }, []);
-
-  // The shift is a real modal, so lock the body behind it. Mirrors
-  // cli-navigation's overlay; this component only mounts while open.
-  useEffect(() => {
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = previousOverflow;
-    };
-  }, []);
-
-  /**
-   * Take the page behind the shift out of the tab order, and hand focus back
-   * to whatever opened it. `aria-modal` promises this; nothing enforced it, so
-   * one Tab past the last control dropped into the nav and the hero behind the
-   * backdrop, and Escape left focus on <body>.
-   */
-  useEffect(() => {
-    const overlay = dialogRef.current;
-    const returnFocusTo = document.activeElement as HTMLElement | null;
-    const madeInert: HTMLElement[] = [];
-
-    Array.from(document.body.children).forEach((child) => {
-      if (!(child instanceof HTMLElement)) return;
-      if (overlay && (child === overlay || child.contains(overlay))) return;
-      if (child.hasAttribute("inert")) return;
-      child.setAttribute("inert", "");
-      madeInert.push(child);
-    });
-
-    return () => {
-      madeInert.forEach((el) => el.removeAttribute("inert"));
-      returnFocusTo?.focus?.();
-    };
-  }, []);
+  useModalFocus(true, dialogRef);
 
   useEffect(() => {
-    logRef.current?.scrollTo({ top: logRef.current.scrollHeight, behavior: "smooth" });
+    logRef.current?.scrollTo({ top: logRef.current.scrollHeight, behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
   }, [log]);
 
   /**
@@ -808,7 +780,7 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
     const picked = shuffle(pool)[0];
     deckRef.current = deckRef.current.filter((id) => id !== picked.id);
     usedThisShiftRef.current.add(picked.id);
-    localStorage.setItem("oncall-deck", JSON.stringify(deckRef.current));
+    writeSaved("oncall-deck", JSON.stringify(deckRef.current));
     return picked;
   }, []);
 
@@ -821,6 +793,8 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
       setTried(new Set());
       wrongThisIncidentRef.current = 0;
       incidentStartRef.current = performance.now();
+      pauseClock.current = {since:null,total:0};
+      setPaused(false);
       setLog([
         { kind: "note", text: `${pagerClock(forRound)} · page ${forRound + 1} of ${SHIFT_LENGTH}` },
         { kind: "alert", text: `PAGE  ${next.alert}` },
@@ -832,6 +806,7 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
 
   const startShift = useCallback(() => {
     setBudget(100);
+    setReportStatus("");
     setRound(0);
     setShift([]);
     usedThisShiftRef.current = new Set();
@@ -860,15 +835,23 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
       interval = null;
     };
 
-    const onVisibility = () => (document.hidden ? stop() : start());
-
-    if (!document.hidden) start();
+    const onVisibility = () => {
+      const clock = pauseClock.current;
+      if (document.hidden || paused) {
+        stop();
+        if (clock.since === null) clock.since = performance.now();
+      } else {
+        if (clock.since !== null) { clock.total += performance.now() - clock.since; clock.since = null; }
+        start();
+      }
+    };
+    onVisibility();
     document.addEventListener("visibilitychange", onVisibility);
     return () => {
       stop();
       document.removeEventListener("visibilitychange", onVisibility);
     };
-  }, [phase, round]);
+  }, [phase, round, paused]);
 
   // Budget exhausted: the shift ends badly. Several handlers spend budget,
   // so ending the shift in one place here beats repeating it in each.
@@ -881,7 +864,7 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
 
   const investigate = useCallback(
     (i: number) => {
-      if (!scenario || phase !== "active" || revealed.has(i)) return;
+      if (!scenario || phase !== "active" || paused || revealed.has(i)) return;
       setRevealed((r) => new Set(r).add(i));
       setBudget((b) => b - 3);
       const clue = scenario.clues[i];
@@ -891,12 +874,12 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
         ...clue.output.map((o) => ({ kind: "output" as const, text: o })),
       ]);
     },
-    [scenario, phase, revealed]
+    [scenario, phase, paused, revealed]
   );
 
   const attemptFix = useCallback(
     (fix: Fix) => {
-      if (!scenario || phase !== "active" || tried.has(fix.label)) return;
+      if (!scenario || phase !== "active" || paused || tried.has(fix.label)) return;
 
       if (!fix.correct) {
         wrongThisIncidentRef.current += 1;
@@ -910,7 +893,7 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
         return;
       }
 
-      const mttrMs = performance.now() - incidentStartRef.current;
+      const mttrMs = performance.now() - incidentStartRef.current - pauseClock.current.total;
       setPhase("resolved");
       setBudget((b) => Math.min(100, b + 8));
       setShift((s) => [
@@ -930,7 +913,7 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
         { kind: "note", text: `MTTR ${formatDuration(mttrMs)} · ${scenario.lesson}` },
       ]);
     },
-    [scenario, phase, tried, revealed]
+    [scenario, phase, paused, tried, revealed]
   );
 
   const advance = useCallback(() => {
@@ -940,8 +923,8 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
       // Side effects stay out of the state updaters — they run twice in dev.
       const total = shiftsWorked + 1;
       const best = Math.max(bestShift ?? 0, Math.round(budget));
-      localStorage.setItem("oncall-shifts", String(total));
-      localStorage.setItem("oncall-best-budget", String(best));
+      writeSaved("oncall-shifts", String(total));
+      writeSaved("oncall-best-budget", String(best));
       setShiftsWorked(total);
       setBestShift(best);
       setPhase("handover");
@@ -974,7 +957,7 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
         advance();
         return;
       }
-      if (phase !== "active" || !scenario) return;
+      if (phase !== "active" || !scenario || paused) return;
 
       const digit = Number(e.key);
       if (digit >= 1 && digit <= scenario.clues.length) {
@@ -988,7 +971,7 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [onClose, phase, scenario, fixes, investigate, attemptFix, advance]);
+  }, [onClose, phase, paused, scenario, fixes, investigate, attemptFix, advance]);
 
   const budgetPct = Math.max(0, Math.round(budget));
   const budgetTone = budgetPct > 50 ? "bg-primary" : budgetPct > 25 ? "bg-warn" : "bg-error";
@@ -1010,20 +993,22 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
     return { wrongMoves, mttr };
   }, [shift]);
 
-  return (
+  return createPortal(
     <div
       ref={dialogRef}
       tabIndex={-1}
-      className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm flex items-center justify-center p-4"
+      className="surface-overlay pager-overlay"
+      data-phase={phase}
+      data-paused={paused}
       role="dialog"
       aria-modal="true"
       aria-label="ONCALL · incident response game"
     >
-      <div className="w-full max-w-4xl rounded-lg border border-border bg-background glow-border overflow-hidden">
+      <div className="pager-shell">
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-3 border-b border-border bg-card/60 font-mono text-xs">
+        <div className="surface-titlebar pager-titlebar">
           <span className="text-primary font-semibold">
-            ONCALL{" "}
+            <span className="surface-index">02</span> ONCALL{" "}
             <span className="text-muted-foreground font-normal">you have the pager</span>
           </span>
           <div className="flex items-center gap-5">
@@ -1052,7 +1037,7 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
         </div>
 
         {/* Error budget */}
-        <div className="px-5 py-3 border-b border-border font-mono text-[11px]">
+        <div className="pager-budget px-5 py-3 border-b border-border font-mono text-[11px]">
           <div className="flex justify-between text-muted-foreground mb-1.5">
             <span>error budget</span>
             <span className={budgetPct <= 25 ? "text-error" : ""}>{budgetPct}%</span>
@@ -1065,9 +1050,15 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
           </div>
         </div>
 
+        {(phase === "active" || phase === "resolved") && scenario && <div className="pager-incident">
+          <div><p className="folio-label">{pagerClock(round)} / INCIDENT {String(round+1).padStart(2,"0")}</p><h2>{scenario.service}</h2><p>{scenario.alert}</p></div>
+          <div className="pager-incident-control"><span>{phase === "resolved" ? "RESOLVED" : paused ? "PAUSED" : "INVESTIGATING"}</span>{phase === "active" && <button type="button" aria-pressed={paused} onClick={() => setPaused(value => !value)}>{paused ? "Resume shift" : "Pause shift"}</button>}</div>
+        </div>}
+        <ol className="pager-shift-track" aria-label="Shift progress">{Array.from({length:SHIFT_LENGTH},(_,i) => <li key={i} data-state={i < shift.length ? "closed" : i === round && phase !== "briefing" ? "current" : "waiting"}><span>0{i+1}</span>{i < shift.length ? "Closed" : RAMP[i]}</li>)}</ol>
+
         {phase === "briefing" && (
-          <div className="p-10 text-center">
-            <p className="font-mono text-sm text-muted-foreground mb-2">03:12, a Tuesday.</p>
+          <div className="pager-briefing">
+            <p className="pager-clock" aria-label="03:12, a Tuesday">03<span>:</span>12<small>A TUESDAY. OF COURSE.</small></p>
             <h2 className="font-mono font-semibold text-2xl text-foreground mb-4 glow-soft">
               The pager goes off.
             </h2>
@@ -1151,6 +1142,11 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
               </p>
             )}
 
+            <div className="pager-report"><p className="folio-label">Handover record / this practice shift</p><button type="button" onClick={async () => {
+              const report = ["ONCALL / PRACTICE SHIFT", `${shift.length}/${SHIFT_LENGTH} incidents resolved · ${budgetPct}% error budget remaining`, ...shift.map((item,index) => `\n${index+1}. ${item.service}\n${item.alert}\nMTTR: ${formatDuration(item.mttrMs)} · wrong moves: ${item.wrongMoves} · evidence read: ${item.cluesRead}`)].join("\n");
+              try { await navigator.clipboard.writeText(report); setReportStatus("Handover copied."); } catch { setReportStatus("Clipboard unavailable. The handover is shown above."); }
+            }}>Copy handover ↗</button><span role="status">{reportStatus}</span></div>
+
             <div className="flex flex-wrap gap-3">
               <button
                 onClick={startShift}
@@ -1169,12 +1165,12 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
         )}
 
         {(phase === "active" || phase === "resolved") && scenario && (
-          <div className="grid md:grid-cols-[1.2fr_1fr] max-h-[75vh] md:max-h-[60vh] overflow-y-auto md:overflow-visible">
+          <div className="pager-active-grid grid md:grid-cols-[1.2fr_1fr]">
             {/* Log feed */}
             <div
               ref={logRef}
               tabIndex={0}
-              className="p-5 font-mono text-[11px] leading-5 overflow-y-auto border-b md:border-b-0 md:border-r border-border min-h-[16rem]"
+              className="pager-feed p-5 font-mono text-[11px] leading-5 overflow-y-auto border-b md:border-b-0 md:border-r border-border min-h-[16rem]"
               aria-live="polite"
             >
               {log.map((entry, i) => (
@@ -1185,7 +1181,7 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
             </div>
 
             {/* Actions */}
-            <div className="p-5">
+            <div className="pager-actions p-5">
               {phase === "resolved" ? (
                 <div className="h-full flex flex-col justify-center items-start gap-4">
                   <p className="font-mono text-[11px] text-primary">
@@ -1214,7 +1210,7 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
                       <button
                         key={clue.cmd}
                         onClick={() => investigate(i)}
-                        disabled={revealed.has(i)}
+                        disabled={paused || revealed.has(i)}
                         className={`w-full text-left px-3 py-2 rounded border font-mono text-[11px] transition-colors flex gap-2 ${
                           revealed.has(i)
                             ? "border-border/50 text-muted-foreground/50 cursor-default"
@@ -1222,7 +1218,7 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
                         }`}
                       >
                         <span className="opacity-50 shrink-0">{i + 1}</span>
-                        <span className="truncate">$ {clue.cmd}</span>
+                        <span className="pager-command">$ {clue.cmd}</span>
                       </button>
                     ))}
                   </div>
@@ -1235,7 +1231,7 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
                       <button
                         key={fix.label}
                         onClick={() => attemptFix(fix)}
-                        disabled={tried.has(fix.label)}
+                        disabled={paused || tried.has(fix.label)}
                         className={`w-full text-left px-3 py-2 rounded border font-mono text-[11px] transition-colors flex gap-2 ${
                           tried.has(fix.label)
                             ? "border-error/30 text-error/50 line-through cursor-default"
@@ -1253,6 +1249,6 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
           </div>
         )}
       </div>
-    </div>
+    </div>, document.body
   );
 }

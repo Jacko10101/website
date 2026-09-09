@@ -31,6 +31,7 @@ export const profile = {
       "Platform engineering · developer experience · observability · AI infrastructure",
     locations: "Remote-first · open to relocating",
     /** The differentiator: no sponsorship question anywhere I'm applying. */
+    workRightsShort: "UK · Ireland · EU — no sponsorship needed",
     workRights:
       "Irish and British citizen — full right to work in Ireland, the UK and the EU, no sponsorship needed",
   },

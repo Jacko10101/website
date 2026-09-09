@@ -3,133 +3,19 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
-import { TerminalWindow } from "@/components/terminal-window";
-import { BUILD } from "@/lib/build-info";
-
-/** Where the backoff settles. Past this the counter would just be noise. */
-const MAX_RESTARTS = 3;
 
 export function NotFoundClient() {
-  const currentPath = usePathname();
-  // The server renders this page for every unmatched route, so its idea of
-  // the pathname does not match the browser's. Embedding it in the SSR markup
-  // tripped React #418 on hydration. It is copied into state after mount and
-  // a stable placeholder renders until then.
-  const [pathname, setPathname] = useState<string | null>(null);
-  const [restarts, setRestarts] = useState(0);
-  const [timeAgo, setTimeAgo] = useState("0s");
-
+  const current = usePathname();
+  const [pathname,setPathname] = useState<string | null>(null);
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- the pathname must not enter the SSR markup (see above)
-    setPathname(currentPath);
-  }, [currentPath]);
-
-  useEffect(() => {
-    // One clock. Restarts climb one every three seconds to the backoff
-    // threshold and stop, so a tab left open all afternoon isn't reporting
-    // four hundred of them.
-    const startTime = Date.now();
-    const timer = setInterval(() => {
-      const elapsed = Math.floor((Date.now() - startTime) / 1000);
-      setRestarts(Math.min(MAX_RESTARTS, Math.floor(elapsed / 3)));
-      setTimeAgo(elapsed < 60 ? `${elapsed}s` : `${Math.floor(elapsed / 60)}m${elapsed % 60}s`);
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  const podName = `page${(pathname ?? "").replace(/\//g, "-")}-7f8d9-xk4m2`;
-
-  return (
-    <div className="min-h-screen bg-black flex items-center justify-center p-4">
-      <div className="w-full max-w-3xl">
-        <h1 className="sr-only">404 · page not found</h1>
-
-        {/* Alert Banner */}
-        <div className="mb-6 flex items-center gap-3 rounded-lg border border-error/30 bg-error/10 px-4 py-3">
-          <div className="flex-shrink-0">
-            <div className="w-3 h-3 rounded-full bg-error animate-pulse" />
-          </div>
-          <div className="font-mono text-sm">
-            <span className="text-error">ALERT:</span>
-            <span className="text-error ml-2">PodCrashLoopBackOff</span>
-          </div>
-        </div>
-
-        {/* Main Terminal */}
-        <TerminalWindow title="kubectl · namespace: production" className="shadow-2xl">
-          <div className="p-6 font-mono text-sm space-y-4">
-            {/* Command */}
-            <div className="flex items-center gap-2">
-              <span className="text-primary">❯</span>
-              <span className="text-foreground/90">kubectl get pod {podName.substring(0, 30)}...</span>
-            </div>
-
-            {/* Pod Status Table */}
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
-                <thead>
-                  <tr className="text-muted-foreground border-b border-border">
-                    <th className="pb-2 pr-4">NAME</th>
-                    <th className="pb-2 pr-4">READY</th>
-                    <th className="pb-2 pr-4">STATUS</th>
-                    <th className="pb-2 pr-4">RESTARTS</th>
-                    <th className="pb-2">AGE</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="text-foreground/90">
-                    <td className="py-2 pr-4 text-primary">{podName.substring(0, 25)}...</td>
-                    <td className="py-2 pr-4 text-error">0/1</td>
-                    <td className="py-2 pr-4">
-                      <span className="text-error">CrashLoopBackOff</span>
-                    </td>
-                    <td className="py-2 pr-4 text-warn">{restarts}</td>
-                    <td className="py-2 text-muted-foreground">{timeAgo}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            {/* What actually happened, in plain English */}
-            <div className="text-xs text-muted-foreground pt-2">
-              There is no page at{" "}
-              <span className="text-foreground/90">{pathname ?? "this address"}</span>.
-              Either it moved or the link was wrong. The two below both work.
-            </div>
-
-            {/* Blinking cursor */}
-            <div className="flex items-center gap-2 mt-4">
-              <span className="text-primary">❯</span>
-              <span className="cursor-blink !w-2 !h-4" aria-hidden />
-            </div>
-          </div>
-        </TerminalWindow>
-
-        {/* Action Buttons */}
-        <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-          <Link
-            href="/"
-            className="group inline-flex items-center justify-center gap-3 rounded-lg bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/90 active:bg-primary/80"
-          >
-            <span className="font-mono text-xs opacity-70">kubectl apply -f</span>
-            <span className="font-semibold">homepage.yaml</span>
-          </Link>
-          <Link
-            href="/projects"
-            className="inline-flex items-center justify-center gap-3 rounded-lg border border-border bg-card px-6 py-3 text-sm font-medium text-foreground/90 transition-all hover:bg-card/70 hover:border-primary/50 active:border-primary"
-          >
-            <span className="font-mono text-xs opacity-70">kubectl get</span>
-            <span>projects</span>
-          </Link>
-        </div>
-
-        {/* Footer hint */}
-        {/* The joke keeps its shape, but the facts in it are real: the host,
-            and the commit serving this page. There is no cluster. */}
-        <p className="text-center text-xs text-muted-foreground mt-6 font-mono">
-          Pod scheduled on node: vercel · image: devlinops:{BUILD.shortSha ?? "unknown"}
-        </p>
-      </div>
-    </div>
-  );
+    // The prerendered 404 cannot know the requested pathname.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setPathname(current);
+  },[current]);
+  return <div className="missing-surface min-h-screen flex items-center justify-center px-4 py-32"><div className="w-full max-w-3xl">
+    <p className="folio-label">404 / Route lookup</p><h1 className="missing-heading">Nothing deployed<br /><span>at this address.</span></h1>
+    <div className="missing-route"><span aria-hidden>↳</span><code>{pathname ?? "Looking up the requested route…"}</code><span>NO MATCH</span></div>
+    <p className="missing-copy">This address doesn’t point to a page. The work is still here.</p>
+    <div className="missing-links"><Link href="/">Back to the surface ↗</Link><Link href="/projects">Explore the projects ↗</Link><Link href="/lab">Open the tools ↗</Link></div>
+  </div></div>;
 }

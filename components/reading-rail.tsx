@@ -66,9 +66,9 @@ export function ReadingRail() {
       const seen = new Set<string>();
       const list = headings.map((h, i) => {
         let id = h.id || slug(h.textContent ?? "") || `section-${i}`;
-        while (seen.has(id)) id = `${id}-${i}`;
+        while (seen.has(id) || (document.getElementById(id) && document.getElementById(id) !== h)) id = `${id}-${i}`;
         seen.add(id);
-        if (!h.id) h.id = id;
+        if (h.id !== id) h.id = id;
         return { id, text: (h.textContent ?? "").trim() };
       });
       setItems(list);
@@ -116,9 +116,10 @@ export function ReadingRail() {
           <a
             key={item.id}
             href={`#${item.id}`}
+            aria-label={item.text}
             onClick={(e) => go(e, item.id)}
             aria-current={on ? "location" : undefined}
-            className="group/tick flex h-4 items-center pr-2 outline-none"
+            className="group/tick flex h-6 items-center pr-2 outline-none"
           >
             <span
               aria-hidden

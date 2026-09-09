@@ -498,8 +498,8 @@ export default function ClarityPage() {
       <ClaimsLedgerHeader />
 
       <div className="container px-4 pt-6">
-        <div className="grid gap-8 lg:grid-cols-[2fr_1fr] max-w-6xl mx-auto">
-          <div className="space-y-12">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] max-w-6xl mx-auto">
+          <div className="min-w-0 space-y-12">
             <CaseStudySection
               eyebrow="> how hard is text-to-sql, really?"
               title="Text-to-SQL demos in an afternoon"

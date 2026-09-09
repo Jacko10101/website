@@ -85,7 +85,7 @@ export function SchemaDirectory() {
   const [active, setActive] = useState<string | null>("fresh");
 
   return (
-    <div className="rounded-xl border border-border bg-card/40 overflow-hidden">
+    <div className="instrument-surface schema-directory-surface">
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-border bg-card/60 px-4 py-2.5">
         <span className="font-mono text-xs text-primary">
           compiled nightly, injected as cached context

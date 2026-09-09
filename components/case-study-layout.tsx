@@ -69,7 +69,7 @@ export function CaseStudyLayout({
           where every framer exhibit lives; the /projects index stays free
           of the library, and so do the prefetches the homepage makes. */}
       <MotionProvider>
-        <article className="bg-background min-h-screen" style={accentStyle}>
+        <article className="case-surface bg-background min-h-screen" style={accentStyle}>
           <ScrollProgress />
           <ReadingRail />
           {children}

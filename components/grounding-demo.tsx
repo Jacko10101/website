@@ -126,7 +126,7 @@ export function GroundingDemo() {
   const scenario = SCENARIOS.find((s) => s.id === active) ?? SCENARIOS[0];
 
   return (
-    <div className="rounded-xl border border-border bg-card/40 overflow-hidden">
+    <div className="instrument-surface grounding-demo-surface">
       {/* control bar */}
       <div className="flex flex-wrap items-center gap-3 border-b border-border bg-card/60 px-4 py-3">
         <span className="font-mono text-xs text-muted-foreground">
@@ -136,7 +136,7 @@ export function GroundingDemo() {
           type="button"
           onClick={() => setGrounding((g) => !g)}
           aria-pressed={grounding}
-          className={`relative inline-flex h-6 w-12 items-center rounded-full transition-colors after:absolute after:inset-x-0 after:-inset-y-2.5 after:content-[''] ${
+          className={`grounding-toggle relative inline-flex h-6 w-12 items-center rounded-full transition-colors after:absolute after:inset-x-0 after:-inset-y-2.5 after:content-[''] ${
             grounding ? "bg-primary" : "bg-muted-foreground/30"
           }`}
         >

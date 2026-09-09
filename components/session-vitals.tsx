@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createLayoutShiftAccumulator } from "@/lib/layout-shift";
 
 interface Vital {
   id: string;
@@ -77,7 +78,7 @@ export function SessionVitals() {
     }
 
     try {
-      let clsTotal = 0;
+      const accumulate = createLayoutShiftAccumulator();
       const clsObserver = new PerformanceObserver((list) => {
         for (const entry of list.getEntries()) {
           const shift = entry as PerformanceEntry & {
@@ -85,8 +86,7 @@ export function SessionVitals() {
             hadRecentInput: boolean;
           };
           if (!shift.hadRecentInput) {
-            clsTotal += shift.value;
-            setCls(clsTotal);
+            setCls(accumulate(shift));
           }
         }
       });
@@ -148,7 +148,7 @@ export function SessionVitals() {
   const ratingWord = { good: "good", ok: "fair", poor: "slow" };
 
   return (
-    <div>
+    <div className="vitals-instrument">
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {vitals.map((vital) => (
           <div
@@ -180,9 +180,8 @@ export function SessionVitals() {
         ))}
       </div>
       <p className="mt-3 text-xs text-muted-foreground">
-        Measured in your browser on this visit. Thresholds are the Core Web
-        Vitals definitions. The site is static files, so a slow first byte
-        means a long route to you.
+        Measured for this browser document. These are local performance indicators;
+        navigation timing can include redirects, connection setup and server work.
       </p>
     </div>
   );

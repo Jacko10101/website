@@ -15,7 +15,7 @@ export function ScrollProgress() {
     };
 
     const updateProgress = () => {
-      setProgress(scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0);
+      setProgress(scrollable > 0 ? Math.min(100, Math.max(0, (window.scrollY / scrollable) * 100)) : 0);
     };
 
     measure();
@@ -42,12 +42,12 @@ export function ScrollProgress() {
   }, []);
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 h-1 bg-secondary/30">
+    <div aria-hidden="true" className="fixed top-0 left-0 right-0 z-50 h-0.5 bg-secondary/30">
       <div
         className="h-full bg-gradient-to-r from-primary/60 to-primary relative"
         style={{ width: `${progress}%` }}
       >
-        <div className="absolute right-0 top-0 h-full w-2 bg-foreground/50 animate-pulse" />
+        <div className="absolute right-0 top-0 h-full w-2 bg-foreground/50" />
       </div>
     </div>
   );

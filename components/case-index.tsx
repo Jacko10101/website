@@ -1,68 +1,37 @@
-import Link from "next/link";
-import { LitRow } from "@/components/lit-row";
-import { inReadingOrder, firstSentence } from "@/lib/projects";
-import { SectionHeading } from "@/components/section-heading";
-
-/**
- * The case studies as an index, not a grid.
- *
- * Six identical cards with three stat tiles each was the one place the
- * homepage read as a template. A row per document, in reading order (see
- * READING_ORDER in lib/projects.ts); the flat stays a footnote.
- */
-const rows = inReadingOrder().filter((p) => p.id !== "smart-home");
-const flat = inReadingOrder().find((p) => p.id === "smart-home");
+import { TransitionLink as Link } from "@/components/view-transition";
+import Image from "next/image";
+import { WorkPreview } from "@/components/work-preview";
 
 export function CaseIndex() {
   return (
-    <section className="py-24 md:py-28">
-      <div className="container">
-        <SectionHeading
-          label="case studies"
-          title="Shipped and running"
-          lede="Five systems I built and run at Loweconex, an IoT platform business in Northern Ireland, and the dissertation."
-        />
-
-        <div>
-          {rows.map((p) => (
-            <LitRow
-              key={p.id}
-              href={p.href}
-              aria-labelledby={`index-${p.id}`}
-              className="group grid gap-x-6 gap-y-1.5 border-t border-border py-5 last:border-b md:grid-cols-[170px_220px_minmax(0,1fr)_auto] md:items-baseline"
-            >
-              <span className="eyebrow">{p.docType}</span>
-              <span
-                id={`index-${p.id}`}
-                className="display text-xl text-foreground transition-colors group-hover:text-primary"
-                style={{ viewTransitionName: `title-${p.id}` }}
-              >
-                {p.title}
-                {p.startHere && (
-                  <span className="ml-2 align-middle font-mono text-[9.5px] uppercase tracking-[0.14em] text-warn">
-                    start here
-                  </span>
-                )}
-              </span>
-              <span className="text-[15px] leading-relaxed text-muted-foreground">
-                {firstSentence(p.outcome ?? p.description)}
-              </span>
-              <span className="whitespace-nowrap font-mono text-xs text-muted-foreground/80 transition-colors group-hover:text-primary">
-                {p.docCta ?? "case study"} →
-              </span>
-            </LitRow>
-          ))}
-        </div>
-
-        <p className="mt-5 font-mono text-xs text-muted-foreground/80">
-          Also:{" "}
-          {flat?.href && (
-            <Link href={flat.href} className="border-b border-border text-muted-foreground transition-colors hover:border-primary hover:text-primary">
-              the flat, as a spec sheet →
-            </Link>
-          )}
-        </p>
+    <section id="selected-work" className="selected-work container">
+      <div className="section-masthead">
+        <h2 className="editorial-heading">An answer needs<br /><span>evidence.</span></h2>
+        <p className="folio-label">02 / AI infrastructure</p>
       </div>
+
+      <article className="feature-story clarity-story">
+        <div className="story-margin"><span className="folio-label">Clarity / Loweconex</span></div>
+        <div className="story-body clarity-layout">
+          <div className="clarity-copy">
+            <Link href="/projects/clarity" className="story-title-link"><h3 className="story-title" style={{ viewTransitionName: "title-clarity" }}>Clarity<span aria-hidden>↗</span></h3></Link>
+            <p className="story-deck">An answer you can<br className="hidden lg:block" /> check the working for.</p>
+            <p className="story-summary">Ask a question in English. Get an answer with the SQL that actually ran.
+              I built the infrastructure and trust layer across roughly thirty tenant databases.</p>
+            <p className="margin-note">The interesting part is what<br />it refuses to answer.</p>
+            <Link href="/projects/clarity" className="editorial-link">Inside Clarity <span aria-hidden>↗</span></Link>
+          </div>
+          <figure>
+            <WorkPreview><Link href="/projects/clarity" className="project-image-link clarity-stage" aria-label="Read how Clarity checks its answers">
+              <Image src="/clarity/answer-with-sql.png" alt="Clarity answering a question about sites, with the executed SQL expanded underneath." width={2000} height={1025} sizes="(min-width: 1024px) 55vw, 100vw" className="project-screenshot" />
+              <span className="image-open" aria-hidden>Explore Clarity ↗</span>
+            </Link></WorkPreview>
+            <figcaption className="image-caption">An answer, with its working. Screenshot from the product.</figcaption>
+          </figure>
+        </div>
+      </article>
+
+      <div className="machine-next"><Link href="/projects/ai-gateway">The gateway behind Clarity ↗</Link><Link href="/projects">All seven projects ↗</Link></div>
     </section>
   );
 }

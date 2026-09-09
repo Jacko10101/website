@@ -9,7 +9,8 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "test": "vitest run",
-    "check:viewports": "node scripts/check-viewports.mjs"
+    "check:viewports": "node scripts/check-viewports.mjs",
+    "check:surfaces": "node scripts/check-surfaces.mjs"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.3.3",

@@ -24,7 +24,7 @@ export function ChatSection({ children, title, eyebrow, className = "" }: Sectio
           <span className="text-muted-foreground" aria-hidden>
             clarity&gt;
           </span>
-          <span className="text-primary">{eyebrow.replace(/^>\s*/, "")}</span>
+          <span className="min-w-0 break-words text-primary">{eyebrow.replace(/^>\s*/, "")}</span>
           <span className="cursor-blink !w-[0.5em] !h-[1em] shrink-0" aria-hidden />
         </div>
       )}

@@ -1,122 +1,36 @@
 import type { Metadata } from "next";
-import { Mail, Github, Download } from "lucide-react";
 import { ContactForm } from "@/components/contact-form";
 import { profile } from "@/lib/profile";
 
 export const metadata: Metadata = {
-  alternates: { canonical: "/contact" },
-  title: "Contact",
-  description: `Drop Jack Devlin a note. Platform engineer. ${profile.availability.sentence}`,
-  openGraph: {
-    title: "Contact · Jack Devlin",
-    description: `Drop Jack Devlin a note. Platform engineer. ${profile.availability.sentence}`,
-    url: "/contact",
-  },
+  alternates: { canonical: "/contact" }, title: "Contact",
+  description: `Get in touch with Jack Devlin. ${profile.availability.sentence}`,
+  openGraph: { title: "Contact · Jack Devlin", description: `Get in touch. ${profile.availability.sentence}`, url: "/contact" },
 };
 
 export default function ContactPage() {
   return (
-    <div className="container pt-28 md:pt-36 pb-16 md:pb-20">
-      <div className="mx-auto max-w-4xl">
-        <p className="eyebrow mb-4">Contact</p>
-        <h1 className="display mb-6 text-4xl text-foreground sm:text-5xl md:text-6xl">
-          How to reach me
-        </h1>
-        <p className="mb-4 text-lg text-muted-foreground leading-relaxed">
-          The form below or an email, whichever suits.{" "}
-          {profile.availability.sentence}
-        </p>
-        <p className="mb-8 text-lg text-muted-foreground leading-relaxed">
-          Best fit: teams putting AI workloads on Kubernetes, or platforms that
-          need observability and GitOps sorted out.
-        </p>
-
-        {profile.visaNote && (
-          <p className="mb-12 font-mono text-sm text-muted-foreground border-l-2 border-primary/50 pl-4">
-            {profile.visaNote}
-          </p>
-        )}
-
-        <div className="mb-16 rounded-lg border border-border bg-card p-6 md:p-8">
-          <h2 className="display mb-6 text-2xl text-foreground">Send a message</h2>
-          <ContactForm />
+    <div className="folio-surface">
+      <div className="container interior-page contact-page">
+        <div className="folio-line"><span>Contact</span><span>Jack Devlin / Northern Ireland</span></div>
+        <h1 className="interior-title">What are you<br /><em>working on?</em></h1>
+        <div className="contact-opening">
+          <div>
+            <p className="interior-lede">A role, a platform problem, or something that caught your eye. Send me a note.</p>
+            <a className="contact-address" href="mailto:jack@devlinops.com">jack@devlinops.com <span aria-hidden>↗</span></a>
+            <p className="folio-label mt-5">I usually reply within a day.</p>
+          </div>
+          <dl className="contact-facts">
+            <div><dt>Availability</dt><dd>{profile.availability.status}</dd></div>
+            <div><dt>Location</dt><dd>{profile.lookingFor.locations}</dd></div>
+            <div><dt>Work rights</dt><dd>{profile.lookingFor.workRights}</dd></div>
+          </dl>
         </div>
-
-        <h2 className="display mb-6 text-2xl text-foreground">Or find me elsewhere</h2>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          <a
-            href="mailto:jack@devlinops.com"
-            className="group block rounded-lg border border-border bg-card p-6 transition-[border-color,box-shadow] duration-300 hover:border-primary hover:shadow-[0_12px_48px_oklch(0.72_0.19_150_/_0.12)] active:border-primary/70"
-          >
-            <div className="flex flex-col gap-4">
-              <div className="rounded-lg bg-primary/10 p-3 w-fit">
-                <Mail className="h-6 w-6 text-primary" />
-              </div>
-              <div>
-                <h3 className="mb-1 font-mono font-semibold tracking-tight text-xl group-hover:text-primary transition-colors">
-                  Email
-                </h3>
-                <p className="text-sm text-muted-foreground mb-2">
-                  Best for anything substantial.
-                </p>
-                <p className="text-sm font-mono text-primary">
-                  jack@devlinops.com
-                </p>
-              </div>
-            </div>
-          </a>
-
-          <a
-            href="https://github.com/Jacko10101"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group block rounded-lg border border-border bg-card p-6 transition-[border-color,box-shadow] duration-300 hover:border-primary hover:shadow-[0_12px_48px_oklch(0.72_0.19_150_/_0.12)] active:border-primary/70"
-          >
-            <div className="flex flex-col gap-4">
-              <div className="rounded-lg bg-primary/10 p-3 w-fit">
-                <Github className="h-6 w-6 text-primary" />
-              </div>
-              <div>
-                <h3 className="mb-1 font-mono font-semibold tracking-tight text-xl group-hover:text-primary transition-colors">
-                  GitHub
-                </h3>
-                <p className="text-sm text-muted-foreground mb-2">
-                  Config for the homelab, and the scripts that run it.
-                </p>
-                <p className="text-sm font-mono text-primary">@Jacko10101</p>
-              </div>
-            </div>
-          </a>
-
-          <a
-            href="/cv.pdf"
-            download="jack-devlin-cv.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group block rounded-lg border border-border bg-card p-6 transition-[border-color,box-shadow] duration-300 hover:border-primary hover:shadow-[0_12px_48px_oklch(0.72_0.19_150_/_0.12)] active:border-primary/70"
-          >
-            <div className="flex flex-col gap-4">
-              <div className="rounded-lg bg-primary/10 p-3 w-fit">
-                <Download className="h-6 w-6 text-primary" />
-              </div>
-              <div>
-                <h3 className="mb-1 font-mono font-semibold tracking-tight text-xl group-hover:text-primary transition-colors">
-                  CV
-                </h3>
-                <p className="text-sm text-muted-foreground mb-2">
-                  Employers, dates and titles, on one page.
-                </p>
-                <p className="text-sm font-mono text-primary">
-                  PDF · updated August 2026
-                </p>
-              </div>
-            </div>
-          </a>
+        {process.env.NEXT_PUBLIC_WEB3FORMS_KEY && <section className="contact-form-section"><div><p className="folio-label">Or write here</p><h2 className="ledger-heading mt-5">Leave<br /><em>a note.</em></h2></div><ContactForm /></section>}
+        <div className="contact-other-links">
+          <a href="/cv.pdf" download="jack-devlin-cv.pdf"><span className="folio-label">Background</span><span>Download my CV <span aria-hidden>↓</span></span><p>Employers, dates, and the work.</p></a>
+          <a href="https://github.com/Jacko10101" target="_blank" rel="noopener noreferrer"><span className="folio-label">Source</span><span>Find me on GitHub <span aria-hidden>↗</span></span><p>The homelab, the scripts, and this site.</p></a>
         </div>
-
-        <p className="mt-12 text-center text-sm text-muted-foreground">
-          I usually reply within a day.
-        </p>
       </div>
     </div>
   );

@@ -22,7 +22,7 @@ export function SqlPlayground() {
   };
 
   return (
-    <div className="rounded-xl border border-border bg-card/40 overflow-hidden">
+    <div className="instrument-surface sql-playground-surface">
       <div className="border-b border-border bg-card/60 px-4 py-3">
         <div className="font-mono text-xs text-muted-foreground mb-2">
           try one, or write your own

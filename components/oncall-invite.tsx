@@ -15,9 +15,10 @@ export function OncallInvite() {
         window.__oncallRequested = true;
         window.dispatchEvent(new Event("devlinops:oncall"));
       }}
-      className="rounded-md bg-primary px-6 py-3 font-mono text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+      className="pager-invite"
     >
-      Start the shift
+      <span className="pager-invite-screen"><span>INCOMING / INCIDENT SIMULATOR</span><strong>03:12</strong><span>FIVE PAGES BEFORE HANDOVER</span></span>
+      <span className="pager-invite-copy"><strong>Start the shift <span aria-hidden>↗</span></strong><span>Read the evidence. Make the call.</span><small>14 scenarios · keyboard or touch</small></span>
     </button>
   );
 }

@@ -2,160 +2,57 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
-import { useEffect, useState } from "react";
-import { cn } from "@/lib/utils";
-import { LogoMark } from "@/components/logo-mark";
+import { useEffect, useRef, useState } from "react";
 
 const navItems = [
-  { name: "projects", href: "/projects" },
-  { name: "about", href: "/about" },
-  { name: "lab", href: "/lab" },
-  { name: "contact", href: "/contact" },
+  { name: "Work", href: "/projects" },
+  { name: "About", href: "/about" },
+  { name: "Experiments", href: "/lab" },
+  { name: "Contact", href: "/contact" },
 ];
 
 export function Navigation() {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const toggle = useRef<HTMLButtonElement>(null);
+  const folio = ["/", "/about", "/projects", "/contact", "/lab"].includes(pathname);
+  const active = (href: string) => pathname === href || pathname.startsWith(href + "/");
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  // Prevent body scroll when mobile menu is open
   useEffect(() => {
     if (!mobileMenuOpen) return;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-
-    return () => {
-      document.body.style.overflow = previousOverflow;
+    const close = (event: KeyboardEvent) => {
+      if (event.key === "Escape") { setMobileMenuOpen(false); toggle.current?.focus(); }
     };
+    const breakpoint = window.matchMedia("(min-width: 768px)");
+    const resize = () => { if (breakpoint.matches) setMobileMenuOpen(false); };
+    window.addEventListener("keydown", close);
+    breakpoint.addEventListener("change", resize);
+    return () => { window.removeEventListener("keydown", close); breakpoint.removeEventListener("change", resize); };
   }, [mobileMenuOpen]);
 
-  // Close mobile menu with Escape
-  useEffect(() => {
-    if (!mobileMenuOpen) return;
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setMobileMenuOpen(false);
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [mobileMenuOpen]);
+  const openTerminal = () => {
+    setMobileMenuOpen(false);
+    window.__cliRequested = true;
+    window.dispatchEvent(new Event("devlinops:cli"));
+  };
 
   return (
-    <nav
-      className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-colors duration-200",
-        scrolled
-          ? "bg-background/80 backdrop-blur-xl border-b border-border/60"
-          : "bg-transparent"
-      )}
-    >
-      <div className="container flex h-20 items-center justify-between">
-        <Link
-          href="/"
-          className="group inline-flex items-center gap-2.5 font-mono text-lg font-semibold text-foreground"
-        >
-          <LogoMark strokeWidth={3.4} className="h-6 w-6 shrink-0 text-primary transition-colors group-hover:text-foreground" />
-          <span>
-            <span className="text-muted-foreground">~/</span>devlinops
-            <span className="cursor-blink !h-[0.9em] !w-[0.45em]" aria-hidden />
-          </span>
-        </Link>
-
-        <div className="flex items-center gap-2">
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex md:items-center md:gap-1">
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  "relative px-4 py-2 font-mono text-sm rounded-md transition-colors duration-150 active:bg-primary/10 active:text-primary",
-                  pathname === item.href || pathname.startsWith(item.href + "/")
-                    ? "text-primary bg-primary/10"
-                    : "text-muted-foreground hover:text-foreground hover:bg-secondary"
-                )}
-              >
-                {item.name}
-              </Link>
-            ))}
-            {/* The terminal used to be findable only from the footer's status
-                line. Pointer devices only: it is a keyboard thing. */}
-            <button
-              type="button"
-              onClick={() => {
-                window.__cliRequested = true;
-                window.dispatchEvent(new Event("devlinops:cli"));
-              }}
-              className="ml-2 hidden items-center gap-2 rounded-md border border-border px-2.5 py-1.5 font-mono text-xs text-muted-foreground transition-colors hover:border-primary/60 hover:text-foreground [@media(hover:hover)]:inline-flex"
-              title="Open the terminal"
-            >
-              terminal
-              <kbd className="rounded border border-border/80 bg-secondary px-1.5 py-px font-mono text-[11px] text-foreground/80">/</kbd>
-            </button>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden w-11 h-11 rounded-md bg-secondary border border-border flex items-center justify-center text-muted-foreground transition-colors duration-150 hover:text-foreground hover:border-primary/40 active:bg-muted active:text-primary"
-            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={mobileMenuOpen}
-            aria-controls={mobileMenuOpen ? "mobile-menu" : undefined}
-          >
-            {mobileMenuOpen ? (
-              <X className="h-5 w-5" />
-            ) : (
-              <Menu className="h-5 w-5" />
-            )}
-          </button>
+    <nav className={`site-navigation ${folio ? "folio-surface" : ""}`} aria-label="Main navigation">
+      <div className="container nav-inner">
+        <Link href="/" className="nav-monogram" aria-label="Jack Devlin home" onClick={() => setMobileMenuOpen(false)}>jd<span>.</span></Link>
+        <span className="nav-wordmark">Jack Devlin / devlinops</span>
+        <div className="desktop-navigation">
+          {navItems.map((item) => <Link key={item.href} href={item.href} aria-current={active(item.href) ? "page" : undefined}>{item.name}</Link>)}
+          <button type="button" onClick={openTerminal} className="terminal-key" aria-label="Open the terminal" title="Open terminal (/) ">/</button>
+        </div>
+        <button ref={toggle} type="button" onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="mobile-menu-toggle" aria-expanded={mobileMenuOpen} aria-controls="mobile-menu">{mobileMenuOpen ? "Close −" : "Menu +"}</button>
+      </div>
+      <div id="mobile-menu" className="mobile-navigation" hidden={!mobileMenuOpen}>
+        <div className="container">
+          {navItems.map((item, index) => <Link key={item.href} href={item.href} aria-current={active(item.href) ? "page" : undefined} onClick={() => setMobileMenuOpen(false)}><span className="folio-label">0{index + 1}</span>{item.name}<span aria-hidden>↗</span></Link>)}
+          <button type="button" onClick={openTerminal}>Open the terminal <span aria-hidden>↗</span></button>
         </div>
       </div>
-
-      {/* Mobile Menu */}
-      {mobileMenuOpen && (
-        <div id="mobile-menu" className="md:hidden bg-background/95 backdrop-blur-xl border-b border-border">
-          <div className="container py-4 flex flex-col gap-1">
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className={cn(
-                  "block px-4 py-3 font-mono text-base rounded-md transition-colors duration-150 active:bg-primary/10 active:text-primary",
-                  pathname === item.href || pathname.startsWith(item.href + "/")
-                    ? "text-primary bg-primary/10"
-                    : "text-muted-foreground hover:text-foreground hover:bg-secondary"
-                )}
-              >
-                {item.name}
-              </Link>
-            ))}
-            {/* There is no "/" key on a phone. This is the terminal's door there. */}
-            <button
-              type="button"
-              onClick={() => {
-                setMobileMenuOpen(false);
-                window.__cliRequested = true;
-                window.dispatchEvent(new Event("devlinops:cli"));
-              }}
-              className="mt-1 flex items-center justify-between rounded-md border border-border px-4 py-3 text-left font-mono text-base text-muted-foreground transition-colors hover:text-foreground active:bg-primary/10 active:text-primary"
-            >
-              terminal
-              <span className="font-mono text-xs text-muted-foreground/80">type here instead of pressing /</span>
-            </button>
-          </div>
-        </div>
-      )}
     </nav>
   );
 }

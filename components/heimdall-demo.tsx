@@ -217,14 +217,10 @@ export function HeimdallDemo() {
     : null;
 
   return (
-    <div className="rounded-xl border border-border bg-card/60 backdrop-blur-sm overflow-hidden">
+    <div className="instrument-surface heimdall-instrument">
       {/* window chrome */}
-      <div className="flex items-center gap-3 border-b border-border bg-secondary/40 px-4 py-2.5">
-        <div className="flex items-center gap-1.5">
-          <div className="h-2.5 w-2.5 rounded-full bg-red-500/60" />
-          <div className="h-2.5 w-2.5 rounded-full bg-yellow-500/60" />
-          <div className="h-2.5 w-2.5 rounded-full bg-green-500/60" />
-        </div>
+      <div className="flex flex-wrap items-center gap-3 border-b border-border bg-secondary/40 px-4 py-2.5">
+        <span className="instrument-glyph" aria-hidden>⌁</span>
         <span className="font-mono text-xs text-muted-foreground">heimdall · environments</span>
         <div className="ml-auto flex items-center gap-2 font-mono text-[11px] text-muted-foreground">
           <span className="h-2 w-2 rounded-full bg-muted-foreground/50" aria-hidden />
