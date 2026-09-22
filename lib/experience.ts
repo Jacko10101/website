@@ -30,14 +30,15 @@ export const roles: Role[] = [
   {
     company: "Loweconex",
     companyNote: "a UK IoT platform business",
-    title: "Platform & Site Reliability Engineer",
+    title: "Platform Engineer",
     location: "Lisburn, Northern Ireland",
     startDate: "2023-08",
     endDate: null,
     dates: "Aug 2023 – present",
     summary:
-      "Core platform engineering, on-call and AI infrastructure for a high-volume microservices estate. Engineering was five people when I joined and is around forty now, so most of what I built was built to keep up with that. I started as a graduate in QA, moved into platform work, and have been contracting through my own company since September 2025.",
+      "Platform infrastructure, developer tooling and production support for an IoT software business. My work spans shared delivery pipelines, observability, a deployment dashboard, and AI services for customers and engineers.",
     evidence: [
+      { label: "Nightshift", href: "/projects/nightshift" },
       { label: "Clarity", href: "/projects/clarity" },
       { label: "AI Gateway", href: "/projects/ai-gateway" },
       { label: "Heimdall", href: "/projects/heimdall" },
@@ -53,7 +54,7 @@ export const roles: Role[] = [
     endDate: "2022-08",
     dates: "Aug 2021 – Aug 2022",
     summary:
-      "A placement year building Tekla Structures API applications and design-platform integrations, automating drafting work for the in-house architects.",
+      "A placement year building C#/.NET applications with the Tekla Structures API and design-platform integrations, automating drafting work for the in-house architects.",
   },
 ];
 
@@ -68,9 +69,9 @@ export interface Qualification {
 export const education: Qualification[] = [
   {
     award: "MSc Artificial Intelligence",
-    result: "on track for Distinction",
+    result: "Distinction",
     institution: "Queen's University Belfast",
-    dates: "submitted September 2026",
+    dates: "2026 · alongside work",
     note: "Dissertation: capacity-aware recovery scheduling for Kubernetes, measured on real EKS clusters under induced node failure.",
   },
   {
@@ -91,7 +92,7 @@ export const stackTiers = [
   {
     id: "production",
     label: "run-in-production/",
-    note: "Evidenced by the case studies. I have carried a pager for these.",
+    note: "Tools I use to build and operate services at Loweconex.",
     items: [
       "Kubernetes",
       "EKS",
@@ -125,8 +126,10 @@ export const stackTiers = [
   {
     id: "working",
     label: "working-knowledge/",
-    note: "Used on real projects or in coursework. I haven't been on call for any of these.",
+    note: "Used in personal projects, university work or earlier roles.",
     items: [
+      "GitHub Actions",
+      "C# / .NET",
       "Veracode",
       "SourceClear",
       "Jira",

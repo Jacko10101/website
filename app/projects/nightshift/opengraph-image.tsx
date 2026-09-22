@@ -1,7 +1,7 @@
 import { renderOgImage, OG_SIZE, OG_CONTENT_TYPE } from "@/lib/og";
 import { caseStories } from "@/lib/case-studies";
 
-const story = caseStories["ai-gateway"];
+const story = caseStories["nightshift"];
 export const size = OG_SIZE;
 export const contentType = OG_CONTENT_TYPE;
 export const alt = `${story.title} · Jack Devlin`;

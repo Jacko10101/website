@@ -3,17 +3,17 @@ import { WorkCaseStudy } from "@/components/work-case-study";
 import { caseStories } from "@/lib/case-studies";
 import { PlatformPlayground } from "@/components/platform-playground";
 
-const story = caseStories["pipeline-platform"];
+const story = caseStories["nightshift"];
 export const metadata: Metadata = {
   title: story.title, description: story.intro,
-  alternates: { canonical: "/projects/pipeline-platform" },
-  openGraph: { title: `${story.title} · Jack Devlin`, description: story.headline, url: "/projects/pipeline-platform" },
+  alternates: { canonical: "/projects/nightshift" },
+  openGraph: { title: `${story.title} · Jack Devlin`, description: story.headline, url: "/projects/nightshift" },
 };
 
 export default function Page() {
   return (
-    <WorkCaseStudy id="pipeline-platform" titleStyle={{ viewTransitionName: "title-pipeline-platform" }}>
-      <PlatformPlayground compact />
+    <WorkCaseStudy id="nightshift" titleStyle={{ viewTransitionName: "title-nightshift" }}>
+      <PlatformPlayground initialMode="nightshift" compact />
     </WorkCaseStudy>
   );
 }

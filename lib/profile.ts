@@ -13,14 +13,14 @@ export interface Testimonial {
 export const profile = {
   availability: {
     /** Short badge text — footer photo caption, ticker, OG images. */
-    from: "available now",
+    from: "Open to a conversation",
     /** One-liner used in the footer, ticker and CTA. */
-    short: "Available now · permanent or contract",
+    short: "Currently at Loweconex · start dates by agreement",
     /** Fuller status line used in the hero. */
-    status: "Available now · permanent or contract",
+    status: "Currently at Loweconex · start dates by agreement",
     /** Sentence form, for prose and meta descriptions. */
     sentence:
-      "Available now, permanent or contract, remote-first and open to relocating.",
+      "Open to conversations about platform engineering. Remote-first and open to relocating.",
   },
 
   // What I'm actually looking for, stated so a recruiter doesn't have to
@@ -40,12 +40,12 @@ export const profile = {
    * The seniority signal in one line, on the first screen. The figures are
    * the ones in lib/experience.ts: five engineers when I joined, around forty now.
    */
-  tenure: "Three years on one platform while engineering grew from five to forty",
+  tenure: "Building platforms, developer tools and AI services",
 
   msc: {
     label: "MSc AI",
-    status: "submitted September 2026",
-    result: "on track for Distinction" as string | null,
+    status: "completed 2026",
+    result: "Distinction" as string | null,
   },
 
   // TODO(jack): one quoted line from an EM or teammate transforms the site.

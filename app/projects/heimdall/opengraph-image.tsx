@@ -1,14 +1,10 @@
 import { renderOgImage, OG_SIZE, OG_CONTENT_TYPE } from "@/lib/og";
+import { caseStories } from "@/lib/case-studies";
 
+const story = caseStories["heimdall"];
 export const size = OG_SIZE;
 export const contentType = OG_CONTENT_TYPE;
-export const alt = "Heimdall · Deployment Intelligence Platform";
-
+export const alt = `${story.title} · Jack Devlin`;
 export default function Image() {
-  return renderOgImage({
-    eyebrow: "deployment intelligence",
-    title: "Heimdall",
-    subtitle:
-      "Where is my ticket right now? Answered across 20 services and four environments. Used daily by 20+ engineers.",
-      });
+  return renderOgImage({ title: story.title, subtitle: story.headline, eyebrow: story.category });
 }

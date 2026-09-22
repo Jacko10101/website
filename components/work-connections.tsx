@@ -26,7 +26,7 @@ export function WorkConnections() {
     }
   }
 
-  return <div className="connections">
+  return <div className="connections ink-surface">
     <header className="connections-header"><span>CONNECTION STUDY / 01</span><span>{work.length} projects · {tools.length} tools</span></header>
     <div className="connections-tools">
       <p className="folio-label">Pick a thread</p>
@@ -35,8 +35,8 @@ export function WorkConnections() {
     </div>
     <div className="connections-board">
       <div className="connections-origin"><span className="folio-label">Following</span><strong>{tool}</strong><span>{connected.length} project{connected.length === 1 ? "" : "s"}</span><span className="connections-origin-note">Select a connected project to inspect the work.</span></div>
-      <div className="connections-wires" aria-hidden="true"><svg viewBox="0 0 240 420" preserveAspectRatio="none">{work.map((item,index) => <path key={item.id} data-lit={item.tags.includes(tool)} data-selected={selected === item.id} d={`M 0 210 C 120 210, 110 ${index*60+30}, 240 ${index*60+30}`} />)}</svg></div>
-      <div className="connections-projects" aria-label="Projects using the selected tool">{work.map((item,index) => <button key={item.id} type="button" disabled={!item.tags.includes(tool)} aria-pressed={selected === item.id} onClick={() => setSelected(item.id)}><span>0{index+1}</span><span>{item.id === "ml-scheduler" ? "Recovery research" : item.title}</span><span aria-hidden="true">{selected === item.id ? "↙" : "↗"}</span></button>)}</div>
+      <div className="connections-wires" aria-hidden="true"><svg viewBox={`0 0 240 ${work.length * 60}`} style={{ height: work.length * 60 }} preserveAspectRatio="none">{work.map((item,index) => <path key={item.id} data-lit={item.tags.includes(tool)} data-selected={selected === item.id} d={`M 0 ${work.length * 30} C 120 ${work.length * 30}, 110 ${index*60+30}, 240 ${index*60+30}`} />)}</svg></div>
+      <div className="connections-projects" style={{ gridTemplateRows: `repeat(${work.length}, 60px)` }} aria-label="Projects using the selected tool">{work.map((item,index) => <button key={item.id} type="button" disabled={!item.tags.includes(tool)} aria-pressed={selected === item.id} onClick={() => setSelected(item.id)}><span>0{index+1}</span><span>{item.id === "ml-scheduler" ? "Recovery research" : item.title}</span><span aria-hidden="true">{selected === item.id ? "↙" : "↗"}</span></button>)}</div>
     </div>
     <div className="connections-evidence" aria-live="polite">
       <div><p className="folio-label">{tool} / {project.year} / {project.status}</p><h3>{project.title}</h3><p>{project.context}</p><Link href={project.href}>Read the case study ↗</Link></div>

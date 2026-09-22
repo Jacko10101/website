@@ -1,22 +1,9 @@
 import Link from "next/link";
-import { RecoveryEvidence } from "@/components/recovery-evidence";
+import { OncallInvite } from "@/components/oncall-invite";
 
 export function HomeLab() {
-  return <section className="home-lab research-scene"><div className="container">
-    <div className="section-masthead"><span className="folio-label">03 / Below the platform</span><span className="folio-label">MSc · Queen’s University Belfast · 2026</span></div>
-    <div className="research-layout">
-      <div className="research-copy"><h2>A node failed.<br />The labels<br /><span>lied.</span></h2>
-        <p>When there isn’t room for every service, Kubernetes has to choose. But what if the services claiming to be important aren’t doing useful work?</p>
-        <p>I tested that on real EKS clusters. The same workload, the same node failure, two ways to decide what comes back: trust the labels, or check them against measured behaviour.</p>
-        <p className="research-note">Here are the five recorded pairs from the always-down services experiment. You can inspect every one.</p>
-        <Link href="/projects/ml-scheduler" className="editorial-link">Read the research <span aria-hidden>↗</span></Link>
-      </div>
-      <RecoveryEvidence />
-    </div>
-    <div className="side-notes">
-      <Link href="/projects/smart-home" className="side-note"><span className="folio-label">After work</span><h3>The flat runs K3s.<span aria-hidden>↗</span></h3><p>A Raspberry Pi, a Zigbee mesh, and lights that keep working when the internet doesn’t.</p></Link>
-      <Link href="/lab" className="side-note"><span className="folio-label">Take over</span><h3>Your turn on call.<span aria-hidden>↗</span></h3><p>Five incidents. An error budget. Make the call and see what happens.</p></Link>
-      <Link href="/lab#query" className="side-note"><span className="folio-label">Another way in</span><h3>Query the portfolio.<span aria-hidden>↗</span></h3><p>The projects on this site, in a working SQLite database. Bring your own SELECT.</p></Link>
-    </div>
-  </div></section>;
+  return <section className="play-section"><div className="container play-section-inner">
+    <div><p className="overline">A five-minute detour</p><h2>You have<br /><em>the pager.</em></h2><p>Something’s broken. Read the clues, choose your next move and get the service back. Coffee is optional.</p><Link href="/lab" className="text-link">Explore the lab <span aria-hidden>↗</span></Link></div>
+    <div className="play-invitation"><OncallInvite /><p className="play-note">Realistic incidents. Fictional services. No actual sleep lost.</p></div>
+  </div><div className="container after-hours"><Link href="/projects/ml-scheduler"><span className="overline">MSc AI · Distinction</span><h3>What recovers first?</h3><p>A Kubernetes node fails. There isn’t room for everything.</p><span aria-hidden>↗</span></Link><Link href="/projects/smart-home"><span className="overline">At home</span><h3>The lights run on K3s.</h3><p>A place to try ideas, break things and put them back together.</p><span aria-hidden>↗</span></Link></div></section>;
 }

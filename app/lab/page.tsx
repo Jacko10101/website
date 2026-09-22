@@ -56,9 +56,9 @@ export default function LabPage() {
               The failure modes are ones I&apos;ve been paged for: an
               OOMKilled JVM, a poison message stuck on a Kafka partition, an
               ArgoCD reconciler quietly undoing someone&apos;s manual scale.
-              The service names are made up. Reading the evidence costs a
-              little error budget and guessing costs a lot. It takes about
-              five minutes.
+              The service names are made up. Reading the evidence is free. Wrong moves cost budget.
+              Take your time in practice mode, or choose a timed shift.
+              A full shift takes about five minutes.
             </p>
             <OncallInvite />
             {/* Two of the fourteen lessons, for the reader who won't play. */}

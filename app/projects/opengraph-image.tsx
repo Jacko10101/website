@@ -10,6 +10,6 @@ export default function Image() {
     eyebrow: "SELECTED WORK",
     title: "Built. And operated.",
     subtitle:
-      "Seven projects. What I built, why it exists, and what I learned running it.",
+      "Platforms, developer tools, AI services—and the decisions behind them.",
   });
 }

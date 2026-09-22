@@ -20,7 +20,7 @@ export function useModalFocus(open: boolean, root: RefObject<HTMLElement | null>
     (initial?.current ?? overlay).focus({ preventScroll: true });
     const trap = (event: KeyboardEvent) => {
       if (event.key !== "Tab" || event.defaultPrevented) return;
-      const items = Array.from(overlay.querySelectorAll<HTMLElement>('button:not(:disabled), a[href], input:not(:disabled), textarea:not(:disabled), select:not(:disabled), [tabindex="0"]')).filter(el => el.getClientRects().length > 0 && !el.closest('[hidden], [inert]'));
+      const items = Array.from(overlay.querySelectorAll<HTMLElement>('button:not(:disabled), summary, a[href], input:not(:disabled), textarea:not(:disabled), select:not(:disabled), [tabindex="0"]')).filter(el => el.getClientRects().length > 0 && !el.closest('[hidden], [inert]'));
       const first = items[0];
       const last = items[items.length - 1];
       if (!first) { event.preventDefault(); overlay.focus(); return; }

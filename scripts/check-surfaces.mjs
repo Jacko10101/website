@@ -113,7 +113,7 @@ async function main() {
       await shot('terminal');
       await assert("document.activeElement.id==='workbench-input' && document.querySelector('main').closest('[inert]')!==null",'terminal focus and inert');
       await command('inspect heimdall');
-      await assert("document.querySelector('.workbench-output').textContent.includes('20+')",'real project evidence');
+      await assert("document.querySelector('.workbench-output').textContent.includes('22')",'real project evidence');
       await command('inspect ml-scheduler');
       await assert("document.querySelector('.workbench-output').textContent.includes('199')",'research in terminal');
       await evaluate("document.querySelector('[aria-label=\"Close terminal\"]').focus()");await press('Tab','Tab',9,8);
@@ -125,9 +125,12 @@ async function main() {
       await assert("document.querySelectorAll('[role=dialog]').length===1",'single modal after handoff');
       await shot('pager-briefing');
       if(width===320)await evaluate("Storage.prototype.setItem=function(){throw Error('storage blocked')};Storage.prototype.getItem=function(){throw Error('storage blocked')}");
+      await assert("document.querySelector('.pager-mode-picker button').getAttribute('aria-pressed')==='true'", 'practice mode by default');
       await clickText('.pager-shell button','Take the pager');
       await wait("document.querySelector('.pager-overlay').dataset.phase==='active'");
       await shot('pager-active');
+      const practiceBudget=await evaluate("document.querySelector('.pager-budget').textContent");await sleep(2200);
+      if(practiceBudget!==await evaluate("document.querySelector('.pager-budget').textContent"))throw Error('practice mode drains budget');
       await clickText('.pager-shell button','Pause shift');
       const budget=await evaluate("document.querySelector('.pager-budget').textContent");await sleep(2400);
       if(budget!==await evaluate("document.querySelector('.pager-budget').textContent"))throw Error('pause still drains budget');
@@ -137,14 +140,14 @@ async function main() {
         const service=await evaluate("document.querySelector('.pager-incident > div:first-child > p:last-child').textContent");
         const answer=answers[service];if(!answer)throw Error('no answer for '+service);
         await evaluate("document.querySelector('.pager-overlay').focus()");await press('1','Digit1',49);
-        if(round===0)await assert("document.querySelector('.pager-feed').textContent.includes('$')",'evidence feed updates');
+        if(round===0){await assert("document.querySelector('.pager-feed').textContent.includes('$')",'evidence feed updates');await assert("document.querySelector('.pager-budget').textContent.includes('100%')", 'reading evidence is free');}
         await evaluate(`(() => {const b=Array.from(document.querySelectorAll('.pager-actions button')).find(b=>b.textContent.endsWith(${JSON.stringify(answer)}));if(!b)throw Error('missing fix');b.click()})()`);
         await wait("document.querySelector('.pager-overlay').dataset.phase==='resolved'");
         await evaluate("document.querySelector('.pager-overlay').focus()");await press('Enter','Enter',13);
       }
       await wait("document.querySelector('.pager-overlay').dataset.phase==='handover'");
       await evaluate("document.querySelector('.pager-shell').scrollTop=0");await shot('handover');
-      await assert("document.querySelector('.pager-shell').textContent.includes('Copy handover')",'handover output');
+      await assert("document.querySelector('.pager-shell').textContent.includes('Copy handover') && document.querySelectorAll('.pager-debrief details').length===5",'handover and incident lessons');
       // Exhaust the budget through actual wrong decisions, then verify restart.
       await clickText('.pager-shell button','Next shift');
       for(let round=0;round<5;round++) {
@@ -167,7 +170,7 @@ async function main() {
       await wait("document.querySelector('.pager-overlay').dataset.phase==='active'");
       await assert("document.querySelector('.pager-budget').textContent.includes('100%')",'restart resets budget');
       await press('Escape','Escape',27);await assert("!document.querySelector('[inert]')",'pager releases focus');
-      await evaluate("document.querySelector('.connections-tools button').click()");
+      await evaluate("Array.from(document.querySelectorAll('.connections-tools button')).find(b=>b.textContent.startsWith('Kubernetes')).click()");
       await assert("document.querySelector('.connections-origin strong').textContent==='Kubernetes'",'connection tool selection');
       await evaluate("Array.from(document.querySelectorAll('.connections-projects button')).find(b=>!b.disabled).click()");
       await assert("!!document.querySelector('.connections-evidence a[href^=\"/projects/\"]')",'connection evidence link');
@@ -175,7 +178,7 @@ async function main() {
       await evaluate("document.querySelector('.lab-query-drawer summary').click()");
       await wait("document.querySelector('.query-workstation table')!==null");
       await setInput('.query-workstation textarea','SELECT count(*) AS projects FROM project;');await press('Enter','Enter',13,2);
-      await wait("document.querySelector('.query-workstation table tbody').textContent.trim()==='7'");
+      await wait("document.querySelector('.query-workstation table tbody').textContent.trim()==='8'");
       await setInput('.query-workstation textarea','DELETE FROM project;');await press('Enter','Enter',13,2);
       await wait("document.querySelector('.query-workstation [role=status]').textContent.includes('refused') || document.querySelector('.query-workstation').textContent.includes('refused')");
       await clickText('.query-workstation button','schema');await assert("document.querySelector('.query-workstation').textContent.includes('CREATE') || document.querySelector('.query-workstation').textContent.includes('project')",'schema visible');
@@ -192,10 +195,12 @@ async function main() {
       await go('/projects/clarity');
       await evaluate("document.querySelector('.grounding-toggle').click()");await sleep(350);
       await assert("document.querySelector('.grounding-toggle').getAttribute('aria-pressed')==='false'",'grounding toggle');
+      await evaluate("document.querySelector('[data-example=sql]').click()");
       const sqlButtons=await evaluate("document.querySelectorAll('.sql-playground-surface button').length");
       for(let i=0;i<sqlButtons;i++){await evaluate(`document.querySelectorAll('.sql-playground-surface button')[${i}].click()`);await sleep(180);await assert(`document.querySelectorAll('.sql-playground-surface button')[${i}].getAttribute('aria-pressed')==='true'`,'SQL example selection');}
-      await evaluate("document.querySelectorAll('.schema-directory-surface [role=button]')[1].focus()");await press(' ','Space',32);await assert("document.querySelectorAll('.schema-directory-surface [role=button]')[1].getAttribute('aria-pressed')==='true'",'schema annotation keyboard');
       await evaluate("document.querySelector('.sql-playground-surface').scrollIntoView({block:'center'})");await shot('sql-guard');
+      await evaluate("document.querySelector('[data-example=schema]').click()");
+      await evaluate("document.querySelectorAll('.schema-directory-surface [role=button]')[1].focus()");await press(' ','Space',32);await assert("document.querySelectorAll('.schema-directory-surface [role=button]')[1].getAttribute('aria-pressed')==='true'",'schema annotation keyboard');
       await go('/projects/ai-gateway');await clickText('.gateway-tracer-surface button','clarity-chat');await sleep(1500);
       await assert("document.querySelector('.gateway-tracer-surface').textContent.includes('200')",'allowed gateway request');
       await clickText('.gateway-tracer-surface button','new-service');await sleep(1100);
@@ -206,7 +211,44 @@ async function main() {
       await evaluate("document.querySelector('.heimdall-instrument button[aria-label]').click()");
       await assert("document.querySelector('.heimdall-instrument').textContent.includes('commit') || document.querySelector('.heimdall-instrument').textContent.includes('revision')",'Heimdall cell details');
       await evaluate("document.querySelector('.heimdall-instrument').scrollIntoView({block:'center'})");await shot('heimdall');
+      await go('/projects/ml-scheduler');
+      await evaluate("document.querySelectorAll('.evidence-controls button')[1].focus()");await press(' ','Space',32);
+      await assert("document.querySelector('.evidence-numbers').textContent.includes('80.5') && document.querySelector('.evidence-numbers').textContent.includes('95.9')", 'recorded run selection');
+      await evaluate("document.querySelectorAll('.evidence-controls button')[0].click()");
+      await assert("document.querySelector('.evidence-numbers').textContent.includes('81.1') && document.querySelector('.evidence-numbers').textContent.includes('94.0')", 'recorded mean');
       await go('/');
+      await shot('home');
+      for (let mode=0; mode<3; mode++) {
+        await evaluate(`document.querySelectorAll('.playground-tabs button')[${mode}].click()`);
+        await evaluate("document.querySelector('.playground-run').click()");
+        await wait("document.querySelector('.platform-playground').dataset.outcome==='complete'");
+        await assert("document.querySelectorAll('.playground-flow li[data-state=complete]').length===4", 'all workflow stages completed');
+        await evaluate("document.querySelector('.playground-failure input').click()");
+        await evaluate("document.querySelector('.playground-run').click()");
+        await wait("document.querySelector('.platform-playground').dataset.outcome==='stopped'");
+        await assert("document.querySelectorAll('.playground-flow li[data-state=stopped]').length===1 && document.querySelectorAll('.playground-flow li[data-state=waiting]').length>0", 'unsafe workflow stops before handover');
+      }
+      // Switching examples cancels a run instead of completing in the new mode.
+      await evaluate("document.querySelectorAll('.playground-tabs button')[0].click();document.querySelector('.playground-run').click()");
+      await sleep(200);
+      await evaluate("document.querySelectorAll('.playground-tabs button')[1].click()");
+      await sleep(900);
+      await assert("document.querySelector('.platform-playground').dataset.outcome==='ready'", 'switch cancels previous run');
+      await evaluate("document.querySelector('.pager-invite').click()");
+      await wait("!!document.querySelector('.pager-mode-picker')");
+      await evaluate("document.querySelectorAll('.pager-mode-picker button')[1].click()");
+      await clickText('.pager-shell button','Take the pager');
+      await sleep(2300);
+      await assert("!document.querySelector('.pager-budget').textContent.includes('100%')", 'timed mode drains budget');
+      const timedAlert=await evaluate("document.querySelector('.pager-incident > div:first-child > p:last-child').textContent");
+      await evaluate(`Array.from(document.querySelectorAll('.pager-actions button')).find(b=>b.textContent.endsWith(${JSON.stringify(answers[timedAlert])})).click()`);
+      await wait("document.querySelector('.pager-overlay').dataset.phase==='resolved'");
+      await evaluate("document.querySelector('[aria-label=\"Close game\"]').focus()");await press(' ','Space',32);
+      await assert("!document.querySelector('.pager-overlay') && !document.querySelector('[inert]')", 'native close button works after resolution');
+      await evaluate("document.querySelector('.motion-toggle').click()");
+      await assert("getComputedStyle(document.querySelector('.ambient-light')).animationPlayState==='paused'", 'background motion can pause');
+      await evaluate("document.querySelector('.motion-toggle').click()");
+      await assert("getComputedStyle(document.querySelector('.ambient-light')).animationPlayState==='running'", 'background motion resumes');
       const original=await evaluate("document.querySelector('main').textContent");
       await evaluate("window.dispatchEvent(new Event('devlinops:chaos'))");await sleep(1800);await press('Escape','Escape',27);
       if(original!==await evaluate("document.querySelector('main').textContent"))throw Error('chaos did not restore text');
@@ -215,9 +257,13 @@ async function main() {
       await evaluate("window.dispatchEvent(new Event('devlinops:chaos'))");await sleep(150);
       if(original!==await evaluate("document.querySelector('main').textContent"))throw Error('reduced-motion chaos mutates page');
       await press('Escape','Escape',27);
+      await assert("getComputedStyle(document.querySelector('.ambient-light')).animationName==='none'", 'reduced motion background is static');
+      await evaluate("document.querySelector('.playground-run').click()");
+      await sleep(150);
+      await assert("document.querySelector('.platform-playground').dataset.outcome==='complete'", 'reduced motion finishes without animation');
       await assert("document.documentElement.scrollWidth<=document.documentElement.clientWidth",'no page overflow');
       if(errors.length)throw Error(errors.join('\n'));
-      listeners.delete(listener);await send('Target.closeTarget',{targetId});console.log(`PASS ${width}px: terminal, handoff, five incidents, pause, handover, breach/restart, connections, deferred SQL, request recorder, guard, grounding, schema, gateway, Heimdall, chaos, reduced motion`);
+      listeners.delete(listener);await send('Target.closeTarget',{targetId});console.log(`PASS ${width}px: terminal, handoff, five incidents, pause, handover, breach/restart, connections, deferred SQL, request recorder, guard, grounding, schema, gateway, Heimdall, three workflow success/failure paths, cancellation, chaos, reduced motion`);
     }
   } finally {
     ws?.close();

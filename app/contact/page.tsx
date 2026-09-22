@@ -18,7 +18,6 @@ export default function ContactPage() {
           <div>
             <p className="interior-lede">A role, a platform problem, or something that caught your eye. Send me a note.</p>
             <a className="contact-address" href="mailto:jack@devlinops.com">jack@devlinops.com <span aria-hidden>↗</span></a>
-            <p className="folio-label mt-5">I usually reply within a day.</p>
           </div>
           <dl className="contact-facts">
             <div><dt>Availability</dt><dd>{profile.availability.status}</dd></div>

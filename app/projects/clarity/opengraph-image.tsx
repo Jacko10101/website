@@ -1,14 +1,10 @@
 import { renderOgImage, OG_SIZE, OG_CONTENT_TYPE } from "@/lib/og";
+import { caseStories } from "@/lib/case-studies";
 
+const story = caseStories["clarity"];
 export const size = OG_SIZE;
 export const contentType = OG_CONTENT_TYPE;
-export const alt = "Clarity · Natural-Language Database Interface";
-
+export const alt = `${story.title} · Jack Devlin`;
 export default function Image() {
-  return renderOgImage({
-    eyebrow: "natural-language database interface",
-    title: "Clarity",
-    subtitle:
-      "Text-to-SQL across about thirty tenant databases. Compiled schema knowledge instead of a vector store, five classes of hallucination caught per turn.",
-  });
+  return renderOgImage({ title: story.title, subtitle: story.headline, eyebrow: story.category });
 }

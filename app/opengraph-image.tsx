@@ -1,5 +1,4 @@
 import { renderOgImage, OG_SIZE, OG_CONTENT_TYPE } from "@/lib/og";
-import { profile } from "@/lib/profile";
 
 /**
  * The homepage card. This is the first thing anyone sees when the link is
@@ -14,8 +13,8 @@ export const alt = "Jack Devlin · Platform Engineer";
 export default function Image() {
   return renderOgImage({
     theme: "folio",
-    eyebrow: "INDEPENDENT PLATFORM ENGINEER",
+    eyebrow: "PLATFORM ENGINEER",
     title: "Jack Devlin.",
-    subtitle: `I build the systems behind the product. Kubernetes, delivery pipelines, and AI infrastructure. ${profile.availability.sentence}`,
+    subtitle: "I make the moving parts work together. Platforms, developer tools and AI services.",
   });
 }

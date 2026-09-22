@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import "./folio.css";
+import "./atmosphere.css";
+import { AmbientField } from "@/components/ambient-field";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { Extras } from "@/components/extras";
@@ -37,7 +40,6 @@ export const metadata: Metadata = {
   keywords: [
     "AI Infrastructure",
     "AI Platform Engineer",
-    "MLOps Engineer",
     "Platform Engineer",
     "LLM Gateway",
     "SRE",
@@ -146,7 +148,6 @@ export default function RootLayout({
         "availableLanguage": "en",
         "serviceType": [
           "Platform Engineering",
-          "MLOps",
           "AI Infrastructure",
           "Site Reliability Engineering",
           "GitOps & CI/CD",
@@ -157,7 +158,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en" className="dark">
+    <html lang="en">
       <head>
         <script
           type="application/ld+json"
@@ -177,6 +178,7 @@ export default function RootLayout({
         >
           Skip to content
         </a>
+        <AmbientField />
         <ViewTransitions>
           <div className="relative flex min-h-screen flex-col">
             <Navigation />

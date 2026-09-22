@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { MotionToggle } from "@/components/ambient-field";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
@@ -15,7 +16,6 @@ export function Navigation() {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const toggle = useRef<HTMLButtonElement>(null);
-  const folio = ["/", "/about", "/projects", "/contact", "/lab"].includes(pathname);
   const active = (href: string) => pathname === href || pathname.startsWith(href + "/");
 
   useEffect(() => {
@@ -37,14 +37,15 @@ export function Navigation() {
   };
 
   return (
-    <nav className={`site-navigation ${folio ? "folio-surface" : ""}`} aria-label="Main navigation">
+    <nav className="site-navigation folio-surface" aria-label="Main navigation">
       <div className="container nav-inner">
         <Link href="/" className="nav-monogram" aria-label="Jack Devlin home" onClick={() => setMobileMenuOpen(false)}>jd<span>.</span></Link>
-        <span className="nav-wordmark">Jack Devlin / devlinops</span>
+        <span className="nav-wordmark">Jack Devlin</span>
         <div className="desktop-navigation">
           {navItems.map((item) => <Link key={item.href} href={item.href} aria-current={active(item.href) ? "page" : undefined}>{item.name}</Link>)}
           <button type="button" onClick={openTerminal} className="terminal-key" aria-label="Open the terminal" title="Open terminal (/) ">/</button>
         </div>
+        <MotionToggle />
         <button ref={toggle} type="button" onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="mobile-menu-toggle" aria-expanded={mobileMenuOpen} aria-controls="mobile-menu">{mobileMenuOpen ? "Close −" : "Menu +"}</button>
       </div>
       <div id="mobile-menu" className="mobile-navigation" hidden={!mobileMenuOpen}>

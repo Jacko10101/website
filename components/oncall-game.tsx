@@ -669,6 +669,8 @@ interface IncidentRecord {
   mttrMs: number;
   wrongMoves: number;
   cluesRead: number;
+  lesson: string;
+  resolution: string;
 }
 
 function shuffle<T>(arr: T[]): T[] {
@@ -705,6 +707,7 @@ function grade(budget: number, wrongMoves: number): { mark: string; note: string
 }
 
 export function OncallGame({ onClose }: { onClose: () => void }) {
+  const [mode, setMode] = useState<"practice" | "pressure">("practice");
   const [phase, setPhase] = useState<Phase>("briefing");
   const [reportStatus, setReportStatus] = useState("");
   const [paused, setPaused] = useState(false);
@@ -824,7 +827,7 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
     let interval: ReturnType<typeof setInterval> | null = null;
 
     const start = () => {
-      if (interval !== null) return;
+      if (interval !== null || mode === "practice") return;
       interval = setInterval(() => {
         setBudget((b) => b - (1 + round * 0.5));
       }, 2000);
@@ -851,7 +854,7 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
       stop();
       document.removeEventListener("visibilitychange", onVisibility);
     };
-  }, [phase, round, paused]);
+  }, [phase, round, paused, mode]);
 
   // Budget exhausted: the shift ends badly. Several handlers spend budget,
   // so ending the shift in one place here beats repeating it in each.
@@ -866,7 +869,6 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
     (i: number) => {
       if (!scenario || phase !== "active" || paused || revealed.has(i)) return;
       setRevealed((r) => new Set(r).add(i));
-      setBudget((b) => b - 3);
       const clue = scenario.clues[i];
       setLog((l) => [
         ...l,
@@ -904,6 +906,8 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
           mttrMs,
           wrongMoves: wrongThisIncidentRef.current,
           cluesRead: revealed.size,
+          lesson: scenario.lesson,
+          resolution: scenario.resolution,
         },
       ]);
       setLog((l) => [
@@ -952,6 +956,8 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
         onClose();
         return;
       }
+      // Native activation belongs to the focused control, including the close button.
+      if ((e.key === "Enter" || e.key === " ") && target?.closest("button, summary, a, select")) return;
       if (phase === "resolved" && (e.key === "Enter" || e.key === " ")) {
         e.preventDefault();
         advance();
@@ -1039,7 +1045,7 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
         {/* Error budget */}
         <div className="pager-budget px-5 py-3 border-b border-border font-mono text-[11px]">
           <div className="flex justify-between text-muted-foreground mb-1.5">
-            <span>error budget</span>
+            <span>{mode === "practice" ? "PRACTICE / mistakes cost budget; reading is free" : "TIMED SHIFT / keep the error budget alive"}</span>
             <span className={budgetPct <= 25 ? "text-error" : ""}>{budgetPct}%</span>
           </div>
           <div className="h-1.5 rounded bg-secondary overflow-hidden">
@@ -1063,11 +1069,15 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
               The pager goes off.
             </h2>
             <p className="text-muted-foreground max-w-md mx-auto mb-6 text-sm leading-relaxed">
-              Five pages before handover, each one meaner than the last.
-              Investigate before you act. The failures are real ones; the
-              services aren&apos;t.
+              Five incidents between you and a quiet morning.
+              Open the evidence, make a call, see what happens.
+              These services are fictional. The failure modes will feel familiar.
             </p>
-            <p className="font-mono text-[11px] text-muted-foreground mb-8">
+            <div className="pager-mode-picker" role="group" aria-label="Choose shift mode">
+              <button type="button" aria-pressed={mode === "practice"} onClick={() => setMode("practice")}><strong>Coffee in hand</strong><span>No timer. Think it through.</span></button>
+              <button type="button" aria-pressed={mode === "pressure"} onClick={() => setMode("pressure")}><strong>Against the clock</strong><span>The budget is ticking.</span></button>
+            </div>
+            <p className="pager-keyboard-hint font-mono text-[11px] text-muted-foreground mb-8">
               1 2 3 investigate · a s d f remediate · enter for the next page
             </p>
             <button
@@ -1127,6 +1137,8 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
               </p>
             )}
 
+            {phase === "handover" && <div className="pager-grade"><span>{grade(budgetPct, totals.wrongMoves).mark}</span><div><p>SHIFT COMPLETE</p><strong>{totals.wrongMoves === 0 ? "Cool head. Clear decisions." : "Every incident teaches you something."}</strong></div></div>}
+            {shift.length > 0 && <div className="pager-debrief">{shift.map((incident, i) => <details key={incident.service}><summary><span>0{i + 1} / {incident.service}</span><span>What fixed it +</span></summary><p>{incident.resolution}</p><blockquote>{incident.lesson}</blockquote></details>)}</div>}
             {phase === "handover" && (
               <p className="text-muted-foreground text-sm mb-8 leading-relaxed">
                 <span className="font-mono text-primary">
@@ -1187,6 +1199,7 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
                   <p className="font-mono text-[11px] text-primary">
                     {scenario.service} · resolved
                   </p>
+                  <div className="pager-lesson"><span className="folio-label">What mattered</span><p>{scenario.lesson}</p></div>
                   <p className="text-sm text-muted-foreground leading-relaxed">
                     {round + 1 >= SHIFT_LENGTH
                       ? "That's the shift. Time to write it up."
@@ -1203,7 +1216,7 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
               ) : (
                 <>
                   <p className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground mb-2">
-                    investigate <span className="normal-case">(−3% each)</span>
+                    Open the evidence <span className="normal-case">— free to read</span>
                   </p>
                   <div className="space-y-1.5 mb-5">
                     {scenario.clues.map((clue, i) => (
@@ -1218,13 +1231,13 @@ export function OncallGame({ onClose }: { onClose: () => void }) {
                         }`}
                       >
                         <span className="opacity-50 shrink-0">{i + 1}</span>
-                        <span className="pager-command">$ {clue.cmd}</span>
+                        <span className="pager-command"><strong>{clue.cmd.includes("logs") ? "Read the logs" : clue.cmd.includes("describe") ? "Inspect the configuration" : clue.cmd.includes("top") ? "Check resource use" : clue.cmd.includes("promql") ? "Look at the metrics" : clue.cmd.includes("psql") ? "Check the database" : clue.cmd.includes("argocd") ? "Check the GitOps state" : "Inspect the evidence"}</strong><span>$ {clue.cmd}</span></span>
                       </button>
                     ))}
                   </div>
 
                   <p className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground mb-2">
-                    remediate <span className="normal-case">(wrong: −12%)</span>
+                    Make your call <span className="normal-case">— wrong move: −12%</span>
                   </p>
                   <div className="space-y-1.5">
                     {fixes.map((fix, i) => (

@@ -35,7 +35,7 @@ export function RequestWaterfall() {
   const span = end - origin;
   const detail = visible.find(item => item.id === selected);
 
-  return <div className="waterfall">
+  return <div className="waterfall ink-surface">
     <header><div><span className="waterfall-led" data-paused={paused} />{paused ? "SNAPSHOT" : "RECORDING"} / THIS DOCUMENT</div><button type="button" onClick={() => setPaused(value => !value)} aria-pressed={paused}>{paused ? "Resume recording" : "Freeze view"}</button></header>
     <div className="waterfall-intro"><h3>The page leaves a trail.</h3><p>Scripts, fonts, images, queries. Every line below is a request your browser recorded. Select one to look closer.</p></div>
     <div className="waterfall-toolbar"><div aria-label="Filter requests">{["all", "code", "fetch"].map(value => <button type="button" key={value} aria-pressed={filter === value} onClick={() => {setFilter(value);setSelected(null);}}>{value === "all" ? "Everything" : value === "code" ? "Code & styles" : "Fetch / data"}</button>)}</div><span>{visible.length} shown / {requests.length} recorded</span></div>

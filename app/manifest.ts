@@ -7,8 +7,8 @@ export default function manifest(): MetadataRoute.Manifest {
     description: "Platform engineering, projects, and experiments by Jack Devlin.",
     start_url: "/",
     display: "browser",
-    background_color: "#141817",
-    theme_color: "#141817",
+    background_color: "#0c141b",
+    theme_color: "#0c141b",
     icons: [
       { src: "/icon.svg", sizes: "any", type: "image/svg+xml", purpose: "any" },
     ],

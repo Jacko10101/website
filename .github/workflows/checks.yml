@@ -42,7 +42,7 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Every route at four widths, clean console, no horizontal overflow
+      - name: Every route at five widths, clean console, no horizontal overflow
         run: |
           npx next start -p 3111 &
           for i in $(seq 1 30); do
