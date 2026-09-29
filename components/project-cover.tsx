@@ -22,8 +22,16 @@ function CoverDrawing({ id }: { id: string }) {
   return <div className="cover-flow">{items.map(([Icon, label]) => <div key={label}><span className="cover-node"><Icon size={19} strokeWidth={1.4} /></span><span>{label}</span></div>)}</div>;
 }
 
+// Real screens, with sample figures and neutral names where the source is internal.
+const SHOTS = {
+  heimdall: { src: "/heimdall/dashboard-2026.png", w: 1440, h: 718, bar: "Heimdall · delivery overview · sample figures", alt: "Heimdall’s delivery overview, with sample figures" },
+  clarity: { src: "/clarity/answer-with-sql.png", w: 2000, h: 1025, bar: "A question, with the answer behind it", alt: "Clarity’s answer and the SQL behind it" },
+  "pipeline-platform": { src: "/sentry/fleet-2026.png", w: 1456, h: 770, bar: "Sentry · post-deploy test results · sample names", alt: "Sentry’s fleet dashboard of post-deploy test results, with sample service names" },
+};
+
 export function ProjectCover({ id }: { id: string }) {
-  if (id === "heimdall" || id === "clarity") return <div className={`project-cover cover-${id}`}><div className="cover-browser"><div className="browser-bar"><span /><span /><span /><p>{id === "heimdall" ? "A clearer view of the release" : "A question, with the answer behind it"}</p></div><Image src={id === "heimdall" ? "/heimdall/dashboard.png" : "/clarity/answer-with-sql.png"} alt={id === "heimdall" ? "Heimdall’s release dashboard" : "Clarity’s answer and the SQL behind it"} width={id === "heimdall" ? 2192 : 2000} height={id === "heimdall" ? 1810 : 1025} sizes="(min-width: 1000px) 600px, 90vw" /></div></div>;
+  const shot = SHOTS[id as keyof typeof SHOTS];
+  if (shot) return <div className={`project-cover cover-${id} cover-shot`}><div className="cover-browser"><div className="browser-bar"><span /><span /><span /><p>{shot.bar}</p></div><Image src={shot.src} alt={shot.alt} width={shot.w} height={shot.h} sizes="(min-width: 1000px) 600px, 90vw" /></div></div>;
   const item = covers[id as keyof typeof covers] ?? covers.nightshift;
-  return <div className={`project-cover diagram-cover cover-${id}`} aria-hidden="true"><span className="cover-tag">{item.tag}</span><p className="cover-title">{item.title}</p><CoverDrawing id={id} /><p className="cover-note">{item.note}</p></div>;
+  return <div className={`project-cover diagram-cover cover-${id}`} aria-hidden="true"><span className="cover-tag">{item.tag}</span><CoverDrawing id={id} /><p className="cover-note">{item.note}</p></div>;
 }

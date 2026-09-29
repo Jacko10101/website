@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
-    <WorkCaseStudy id="pipeline-platform" titleStyle={{ viewTransitionName: "title-pipeline-platform" }}>
+    <WorkCaseStudy id="pipeline-platform" figures={[{ src: "/sentry/fleet-2026.png", width: 1456, height: 770, alt: "Sentry’s fleet dashboard: post-deploy test gates for each service", caption: "Sentry, the post-deploy test dashboard. Each card is a service’s latest PostSync run. Names are samples." }]} titleStyle={{ viewTransitionName: "title-pipeline-platform" }}>
       <PlatformPlayground compact />
     </WorkCaseStudy>
   );

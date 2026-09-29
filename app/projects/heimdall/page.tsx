@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
-    <WorkCaseStudy id="heimdall" titleStyle={{ viewTransitionName: "title-heimdall" }}>
+    <WorkCaseStudy id="heimdall" titleStyle={{ viewTransitionName: "title-heimdall" }} figures={[{ src: "/heimdall/environments-2026.png", width: 1400, height: 838, alt: "Heimdall’s environments page: a build matrix of every service across dev, QA, preprod and prod", caption: "The environments page: every service’s build in every environment, with drift flagged. Service names and hashes are samples." }]}>
       <HeimdallDemo />
     </WorkCaseStudy>
   );
