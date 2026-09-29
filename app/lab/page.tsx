@@ -4,6 +4,8 @@ import { SessionVitals } from "@/components/session-vitals";
 import { OncallInvite } from "@/components/oncall-invite";
 import { WorkConnections, QueryDrawer } from "@/components/work-connections";
 import { RequestWaterfall } from "@/components/request-waterfall";
+import { Whiteboard } from "@/components/whiteboard";
+import { PodName } from "@/components/pod-name";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/lab" },
@@ -40,11 +42,14 @@ export default function LabPage() {
             Open the tools.
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-            Take a shift. Follow a tool through the work. Watch this page arrive.
-            Three ways to get your hands on what’s underneath.
+            The whiteboard is the platform I work on, drawn the way I’d draw it
+            for you in an interview. Below it: take an on-call shift, break my
+            name, follow a tool through the work, or watch this page arrive.
           </p>
 
-          <nav className="lab-directory" aria-label="Lab instruments"><a href="#shift"><span>01 / Decide</span>Take the pager ↘</a><a href="#query"><span>02 / Inspect</span>Follow the connections ↘</a><a href="#measure"><span>03 / Observe</span>Watch the requests ↘</a></nav>
+          <div className="mt-12"><Whiteboard /></div>
+
+          <nav className="lab-directory lab-directory-four" aria-label="Lab instruments"><a href="#shift"><span>01 / Decide</span>Take the pager ↘</a><a href="#break"><span>02 / Break</span>Break my name ↘</a><a href="#query"><span>03 / Inspect</span>Follow the connections ↘</a><a href="#measure"><span>04 / Observe</span>Watch the requests ↘</a></nav>
 
           {/* 01 — the shift. */}
           <section id="shift" className="lab-station mt-20">
@@ -68,9 +73,24 @@ export default function LabPage() {
             </ul>
           </section>
 
-          {/* 02 — the artefact. */}
+          {/* 02 — the name as a cluster. */}
+          <section id="break" className="lab-station mt-20">
+            <p className="eyebrow mb-4">02 · break</p>
+            <h2 className="display mb-4 text-2xl text-foreground sm:text-3xl">
+              Break my name
+            </h2>
+            <p className="mb-8 max-w-2xl leading-relaxed text-muted-foreground">
+              Each letter is a node and each square is a pod. Knock a node over
+              and the surviving letters take the most important pods first; the
+              rest wait for room. It’s the rule from my MSc research, at the size
+              of a heading.
+            </p>
+            <PodName />
+          </section>
+
+          {/* 03 — the artefact. */}
           <section id="query" className="lab-station mt-20">
-            <p className="eyebrow mb-4">02 · query</p>
+            <p className="eyebrow mb-4">03 · query</p>
             <h2 className="display mb-4 text-2xl text-foreground sm:text-3xl">
               Follow the connections
             </h2>
@@ -83,9 +103,9 @@ export default function LabPage() {
             <QueryDrawer />
           </section>
 
-          {/* 03 — the instrument. */}
+          {/* 04 — the instrument. */}
           <section id="measure" className="lab-station mt-20">
-            <p className="eyebrow mb-4">03 · measure</p>
+            <p className="eyebrow mb-4">04 · measure</p>
             <h2 className="display mb-4 text-2xl text-foreground sm:text-3xl">
               Watch this page arrive
             </h2>
