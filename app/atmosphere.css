@@ -22,7 +22,7 @@
 .hero-intro h1 em { color: #d3e6ad; }
 .hero-description { max-width: 375px; color: #adbbbf; font-size: 16px; }
 .hero-footnote { display: flex; flex-wrap: wrap; gap: 9px 17px; color: #8fa6a6; }
-.hero-footnote > span + span::before { content: '↳'; margin-right: 9px; color: #bed197; }
+.hero-footnote > span + span::before { content: '·'; margin-right: 12px; color: #bed197; }
 .hero-bottom { margin-top: 20px; border-color: #48605860; padding-block: 24px; }
 .hero-bottom > span { display: flex; align-items: center; gap: 15px; }
 .hero-bottom a { flex-direction: column; align-items: flex-end; gap: 5px; }
@@ -339,3 +339,40 @@
 .project-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .project-card, .cover-signal-art, .cover-capacity-art, .capacity-node { min-width: 0; }
 @media (max-width: 600px) { .project-grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* Hero: the real Heimdall dashboard in place of the illustrative playground. */
+.hero-shot .project-cover { min-height: 0; padding: 40px 34px 52px; justify-content: center; }
+.hero-shot .cover-heimdall .cover-browser { max-height: none; }
+.hero-shot-caption { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 20px; margin-top: 14px; font-size: 13px; line-height: 1.6; color: #a2b4b5; }
+@media (max-width: 700px) { .hero-shot .project-cover { min-height: 300px; padding: 22px 18px 0; } }
+
+/* The lab's whiteboard (components/whiteboard.tsx): a sheet of graph paper
+   in an otherwise dark site, so it reads as a different room. */
+.whiteboard { margin: 0; border-radius: 10px; overflow: hidden; color: #1d3a31; color-scheme: light;
+  background-color: #eef2ea;
+  background-image: linear-gradient(#d3dfd6 1px, transparent 1px), linear-gradient(90deg, #d3dfd6 1px, transparent 1px);
+  background-size: 26px 26px; background-position: -1px -1px; }
+.whiteboard svg { display: block; width: 100%; height: auto; padding: 18px 18px 0; min-height: 200px; }
+.whiteboard svg text { font-family: var(--font-sans); font-weight: 600; font-size: 15px; letter-spacing: -.01em; fill: #1d3a31; }
+.whiteboard svg text.sub { font-weight: 400; font-size: 13px; }
+.whiteboard svg text.note { font-family: var(--hand), cursive; font-weight: 400; font-size: 26px; letter-spacing: 0; fill: #c2412d; }
+.whiteboard figcaption { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px 24px; padding: 14px 24px 16px; border-top: 1.5px solid #1d3a31; font-size: 14px; line-height: 1.5; color: #3d5a4e; }
+.whiteboard figcaption nav { display: flex; flex-wrap: wrap; gap: 4px 16px; }
+.whiteboard figcaption a { color: #1d3a31; text-decoration: underline; text-decoration-color: #1d3a3155; text-underline-offset: 4px; }
+.whiteboard figcaption a:hover { text-decoration-color: #c2412d; }
+.whiteboard figcaption a:focus-visible { outline-color: #c2412d; }
+.lab-directory-four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+@media (max-width: 767px) { .lab-directory-four { grid-template-columns: 1fr; } }
+
+/* Homepage work tiles: the two figures each story stands on. */
+.work-stats { display: flex; flex-wrap: wrap; gap: 14px 36px; margin: 22px 0 2px; }
+.work-stats div { display: flex; flex-direction: column-reverse; gap: 2px; min-width: 0; }
+.work-stats dd { margin: 0; font-size: 26px; font-weight: 500; letter-spacing: -.04em; color: #e9eee9; font-variant-numeric: tabular-nums; }
+.work-stats dt { font-size: 12px; color: #91aaa0; max-width: 22ch; }
+.hero-intro .hero-actions { row-gap: 10px; }
+
+/* Case-study figures: real screens under the story. */
+.case-figure { margin: 56px 0 0; }
+.case-figure img { display: block; width: 100%; height: auto; border-radius: 8px; border: 1px solid #2f4545; }
+.case-figure figcaption { margin-top: 12px; font-size: 13px; line-height: 1.6; color: #a2b4b5; max-width: 70ch; }
+.cover-pipeline-platform.cover-shot { padding: 32px 30px 0; justify-content: flex-start; }

@@ -1,15 +1,16 @@
 import Link from "next/link";
 import { ProjectCover } from "@/components/project-cover";
 import { caseStories } from "@/lib/case-studies";
+import { projects } from "@/lib/projects";
 
-const featured = ["nightshift", "heimdall", "clarity"];
+const featured = ["nightshift", "pipeline-platform", "clarity"];
 export function CaseIndex() {
   return <section id="selected-work" className="work-section container">
-    <div className="section-heading"><div><p className="overline">Selected work</p><h2>Things I’ve built.<br /><em>And learned from.</em></h2></div><p>Real projects, the decisions behind them, and what happened when people started using them.</p></div>
+    <div className="section-heading"><div><p className="overline">Selected work</p><h2>Three things I’ve built<br />that people use.</h2></div><p>All three run at Loweconex. Each story covers what I built, the calls I made and what I’d do differently.</p></div>
     <div className="featured-work">{featured.map((id, index) => { const item = caseStories[id]; return <article className={`work-feature work-feature-${id}`} key={id}>
       <Link href={`/projects/${id}`} className="work-art" aria-label={`Read the ${item.title} case study`}><ProjectCover id={id} /><span className="art-arrow" aria-hidden>↗</span></Link>
-      <div className="work-copy"><div className="work-meta"><span>0{index + 1} / {item.category}</span><span>{item.status}</span></div><h3><Link href={`/projects/${id}`}>{item.title}</Link></h3><p className="work-headline">{item.headline}</p><p>{item.intro}</p><Link href={`/projects/${id}`} className="text-link">Read the story <span aria-hidden>↗</span></Link></div>
+      <div className="work-copy"><div className="work-meta"><span>0{index + 1} / {item.category}</span><span>{item.status}</span></div><h3><Link href={`/projects/${id}`}>{item.title}</Link></h3><p className="work-headline">{item.headline}</p><p>{item.intro}</p><dl className="work-stats">{projects.find((p) => p.id === id)?.stats.filter((s) => /^~?\d/.test(s.value)).map((s) => <div key={s.label}><dt>{s.label}</dt><dd>{s.value}</dd></div>)}</dl><Link href={`/projects/${id}`} className="text-link">Read the story <span aria-hidden>↗</span></Link></div>
     </article>; })}</div>
-    <div className="work-index-link"><p>There’s more underneath: delivery, observability, AI infrastructure and a little research.</p><Link href="/projects" className="button-outline">All the work <span aria-hidden>↗</span></Link></div>
+    <div className="work-index-link"><p>Also: the delivery pipeline, the monitoring stack, the AI gateway, my MSc research and the homelab.</p><Link href="/projects" className="button-outline">All the work <span aria-hidden>↗</span></Link></div>
   </section>;
 }

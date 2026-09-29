@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function ProjectsPage() {
   return <div className="folio-surface"><div className="container interior-page work-index">
-    <header className="page-intro"><p className="overline">Work / A closer look</p><h1>Things I’ve<br /><em>put into the world.</em></h1><p>Platforms, developer tools and AI services. Here’s what I built, the decisions behind it, and what happened next.</p><span className="work-context">Professional projects at Loweconex, alongside MSc research and a slightly over-equipped home.</span></header>
+    <header className="page-intro"><p className="overline">Work / A closer look</p><h1>All the<br /><em>work.</em></h1><p>Eight case studies: six from Loweconex, my MSc research, and the homelab. Each one covers what I built, the calls I made and what I’d do differently.</p></header>
     <div className="project-grid">{inReadingOrder().map((project, index) => <article key={project.id} className="project-card"><Link href={project.href} className="project-tile-cover" aria-label={`Read about ${project.title}`}><ProjectCover id={project.id} /></Link><div className="work-meta"><span>{String(index + 1).padStart(2, "0")} / {project.docType}</span><span>{project.statusLabel}</span></div><h2><Link href={project.href} style={{ viewTransitionName: `title-${project.id}` }}>{project.title}<span aria-hidden>↗</span></Link></h2><p>{project.subtitle}</p><Link href={project.href} className="text-link">Read the story <span aria-hidden>↗</span></Link></article>)}</div>
     </div><ContactCTA /></div>;
 }

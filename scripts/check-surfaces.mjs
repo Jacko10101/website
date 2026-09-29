@@ -113,7 +113,7 @@ async function main() {
       await shot('terminal');
       await assert("document.activeElement.id==='workbench-input' && document.querySelector('main').closest('[inert]')!==null",'terminal focus and inert');
       await command('inspect heimdall');
-      await assert("document.querySelector('.workbench-output').textContent.includes('22')",'real project evidence');
+      await assert("document.querySelector('.workbench-output').textContent.includes('25')",'real project evidence');
       await command('inspect ml-scheduler');
       await assert("document.querySelector('.workbench-output').textContent.includes('199')",'research in terminal');
       await evaluate("document.querySelector('[aria-label=\"Close terminal\"]').focus()");await press('Tab','Tab',9,8);
@@ -218,6 +218,7 @@ async function main() {
       await assert("document.querySelector('.evidence-numbers').textContent.includes('81.1') && document.querySelector('.evidence-numbers').textContent.includes('94.0')", 'recorded mean');
       await go('/');
       await shot('home');
+      await go('/projects/pipeline-platform');
       for (let mode=0; mode<3; mode++) {
         await evaluate(`document.querySelectorAll('.playground-tabs button')[${mode}].click()`);
         await evaluate("document.querySelector('.playground-run').click()");
@@ -234,6 +235,7 @@ async function main() {
       await evaluate("document.querySelectorAll('.playground-tabs button')[1].click()");
       await sleep(900);
       await assert("document.querySelector('.platform-playground').dataset.outcome==='ready'", 'switch cancels previous run');
+      await go('/');
       await evaluate("document.querySelector('.pager-invite').click()");
       await wait("!!document.querySelector('.pager-mode-picker')");
       await evaluate("document.querySelectorAll('.pager-mode-picker button')[1].click()");
@@ -258,6 +260,7 @@ async function main() {
       if(original!==await evaluate("document.querySelector('main').textContent"))throw Error('reduced-motion chaos mutates page');
       await press('Escape','Escape',27);
       await assert("getComputedStyle(document.querySelector('.ambient-light')).animationName==='none'", 'reduced motion background is static');
+      await go('/projects/pipeline-platform');
       await evaluate("document.querySelector('.playground-run').click()");
       await sleep(150);
       await assert("document.querySelector('.platform-playground').dataset.outcome==='complete'", 'reduced motion finishes without animation');

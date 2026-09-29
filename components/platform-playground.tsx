@@ -8,7 +8,7 @@ type Mode = "release" | "nightshift" | "clarity";
 const flows = {
   release: {
     label: "Ship a change", project: "Delivery platform", href: "/projects/pipeline-platform", code: "git push origin main",
-    title: "From your laptop to somewhere useful.", core: "Ship it.", icon: GitBranch,
+    title: "What happens after git push.", core: "Ship it.", icon: GitBranch,
     steps: ["Build", "Deploy to dev", "Verify", "Promote to QA"], icons: [Package, Blocks, ShieldCheck, ArrowUpRight],
     notes: ["Build the image. Give this change a revision.", "ArgoCD picks up the revision and deploys it to dev.", "Run the checks against the service that is actually running.", "Checks passed. Promote that same revision to QA."],
     complete: "Same revision. Checked, deployed, ready for QA.", stopped: "A check failed. The change stays in dev.",
@@ -16,7 +16,7 @@ const flows = {
   },
   nightshift: {
     label: "Give AI a task", project: "Nightshift", href: "/projects/nightshift", code: "ticket → tested change → review",
-    title: "Let the agent work. Keep the judgement.", core: "On it.", icon: Sparkles,
+    title: "A ticket in. A draft PR out.", core: "On it.", icon: Sparkles,
     steps: ["Read the ticket", "Write the change", "Check the work", "Draft the PR"], icons: [HelpCircle, Braces, ShieldCheck, GitPullRequest],
     notes: ["Check the scope and choose the allowed repository.", "Work on the implementation in an isolated workspace.", "Rebuild the change from a clean baseline and run the checks.", "Open a draft, with the evidence attached. Your review comes next."],
     complete: "One reviewable change. An engineer makes the final call.", stopped: "Not enough detail. Ask a question before changing code.",
@@ -24,7 +24,7 @@ const flows = {
   },
   clarity: {
     label: "Ask the data", project: "Clarity", href: "/projects/clarity", code: '"Which sites are above their limit?"',
-    title: "A question in. An answer with its working.", core: "Ask away.", icon: Database,
+    title: "A question in. SQL and an answer out.", core: "Ask away.", icon: Database,
     steps: ["Understand", "Check the SQL", "Read the data", "Answer + report"], icons: [Sparkles, ShieldCheck, Database, ArrowUpRight],
     notes: ["Which example sites are above their temperature limit?", "Check that the SQL is read-only and stays in this customer’s data.", "Compare each sample site’s reading with its configured limit.", "North Quay: 9.2°C. Limit: 8°C. The query and report stay attached."],
     complete: "North Quay is above its limit. Here is the data behind it.", stopped: "Wrong customer’s data. Stop before the query runs.",

@@ -25,7 +25,7 @@ export default function ContactPage() {
             <div><dt>Work rights</dt><dd>{profile.lookingFor.workRights}</dd></div>
           </dl>
         </div>
-        {process.env.NEXT_PUBLIC_WEB3FORMS_KEY && <section className="contact-form-section"><div><p className="folio-label">Or write here</p><h2 className="ledger-heading mt-5">Leave<br /><em>a note.</em></h2></div><ContactForm /></section>}
+        {process.env.NEXT_PUBLIC_WEB3FORMS_KEY && <section className="contact-form-section"><div><p className="folio-label">Or write here</p><h2 className="ledger-heading mt-5">Or leave<br />a note</h2></div><ContactForm /></section>}
         <div className="contact-other-links">
           <a href="/cv.pdf" download="jack-devlin-cv.pdf"><span className="folio-label">Background</span><span>Download my CV <span aria-hidden>↓</span></span><p>Employers, dates, and the work.</p></a>
           <a href="https://github.com/Jacko10101" target="_blank" rel="noopener noreferrer"><span className="folio-label">Source</span><span>Find me on GitHub <span aria-hidden>↗</span></span><p>The homelab, the scripts, and this site.</p></a>

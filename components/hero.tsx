@@ -1,16 +1,15 @@
 import Link from "next/link";
-import { PlatformPlayground } from "@/components/platform-playground";
+import { ProjectCover } from "@/components/project-cover";
 
 export function Hero() {
   return <section className="new-hero container" aria-labelledby="hero-title">
     <div className="hero-intro">
       <p className="overline"><span className="status-dot" /> Jack Devlin · Platform engineer</p>
-      <h1 id="hero-title">Behind the<br />software.<br /><em>In my element.</em></h1>
-      <p className="hero-description">I build platforms that help people ship. Developer tools, reliable infrastructure, and AI that does useful work.</p>
-      <div className="hero-actions"><a href="#selected-work" className="button-primary">Step inside <span aria-hidden>↘</span></a><Link href="/about" className="text-link">Meet the engineer <span aria-hidden>↗</span></Link></div>
-      <p className="hero-footnote"><span>Northern Ireland</span><span>Building at Loweconex</span></p>
+      <h1 id="hero-title">I build what<br />a software team<br /><em>ships on.</em></h1>
+      <p className="hero-description">Three years at Loweconex, a UK IoT business. Shared pipelines, monitoring, a release dashboard, and lately the AI services on top.</p>
+      <div className="hero-actions"><a href="#selected-work" className="button-primary">See the work <span aria-hidden>↘</span></a><Link href="/about" className="text-link">About me <span aria-hidden>↗</span></Link><a href="/cv.pdf" download="jack-devlin-cv.pdf" className="text-link">CV (PDF) <span aria-hidden>↓</span></a></div>
+      <p className="hero-footnote"><span>Northern Ireland</span><span>MSc AI, Distinction</span><span>No sponsorship needed</span></p>
     </div>
-    <div className="hero-instrument"><PlatformPlayground /></div>
-    <div className="hero-bottom"><span><span className="hero-scroll-mark" aria-hidden>↓</span> A few things I’ve made. A few things you can try.</span><a href="/cv.pdf" download="jack-devlin-cv.pdf"><span>The one-page version ↗</span>Download my CV</a></div>
+    <div className="hero-instrument"><Link href="/projects/heimdall" className="work-art hero-shot" aria-label="Read the Heimdall case study"><ProjectCover id="heimdall" /><span className="art-arrow" aria-hidden>↗</span></Link><p className="hero-shot-caption"><span>Heimdall, the release dashboard I built and run.</span><span>Standup runs off it.</span></p></div>
   </section>;
 }
