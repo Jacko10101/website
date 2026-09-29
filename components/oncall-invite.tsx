@@ -21,6 +21,6 @@ export function OncallInvite() {
       </span>
       <span className="pager-hardware-bottom"><span className="pager-speaker"><i /><i /><i /><i /><i /></span><span className="pager-hardware-buttons"><i>−</i><i>+</i><i>↵</i></span></span>
     </span>
-    <span className="pager-invite-copy"><span><strong>Take the pager</strong><small>Five incidents. Your call.</small></span><span className="pager-start-arrow" aria-hidden>↗</span></span>
+    <span className="pager-invite-copy"><span><strong>Take the pager</strong><small>Five incidents, about five minutes.</small></span><span className="pager-start-arrow" aria-hidden>↗</span></span>
   </button>;
 }

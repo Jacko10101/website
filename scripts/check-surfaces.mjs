@@ -218,24 +218,6 @@ async function main() {
       await assert("document.querySelector('.evidence-numbers').textContent.includes('81.1') && document.querySelector('.evidence-numbers').textContent.includes('94.0')", 'recorded mean');
       await go('/');
       await shot('home');
-      await go('/projects/pipeline-platform');
-      for (let mode=0; mode<3; mode++) {
-        await evaluate(`document.querySelectorAll('.playground-tabs button')[${mode}].click()`);
-        await evaluate("document.querySelector('.playground-run').click()");
-        await wait("document.querySelector('.platform-playground').dataset.outcome==='complete'");
-        await assert("document.querySelectorAll('.playground-flow li[data-state=complete]').length===4", 'all workflow stages completed');
-        await evaluate("document.querySelector('.playground-failure input').click()");
-        await evaluate("document.querySelector('.playground-run').click()");
-        await wait("document.querySelector('.platform-playground').dataset.outcome==='stopped'");
-        await assert("document.querySelectorAll('.playground-flow li[data-state=stopped]').length===1 && document.querySelectorAll('.playground-flow li[data-state=waiting]').length>0", 'unsafe workflow stops before handover');
-      }
-      // Switching examples cancels a run instead of completing in the new mode.
-      await evaluate("document.querySelectorAll('.playground-tabs button')[0].click();document.querySelector('.playground-run').click()");
-      await sleep(200);
-      await evaluate("document.querySelectorAll('.playground-tabs button')[1].click()");
-      await sleep(900);
-      await assert("document.querySelector('.platform-playground').dataset.outcome==='ready'", 'switch cancels previous run');
-      await go('/');
       await evaluate("document.querySelector('.pager-invite').click()");
       await wait("!!document.querySelector('.pager-mode-picker')");
       await evaluate("document.querySelectorAll('.pager-mode-picker button')[1].click()");
@@ -260,13 +242,9 @@ async function main() {
       if(original!==await evaluate("document.querySelector('main').textContent"))throw Error('reduced-motion chaos mutates page');
       await press('Escape','Escape',27);
       await assert("getComputedStyle(document.querySelector('.ambient-light')).animationName==='none'", 'reduced motion background is static');
-      await go('/projects/pipeline-platform');
-      await evaluate("document.querySelector('.playground-run').click()");
-      await sleep(150);
-      await assert("document.querySelector('.platform-playground').dataset.outcome==='complete'", 'reduced motion finishes without animation');
       await assert("document.documentElement.scrollWidth<=document.documentElement.clientWidth",'no page overflow');
       if(errors.length)throw Error(errors.join('\n'));
-      listeners.delete(listener);await send('Target.closeTarget',{targetId});console.log(`PASS ${width}px: terminal, handoff, five incidents, pause, handover, breach/restart, connections, deferred SQL, request recorder, guard, grounding, schema, gateway, Heimdall, three workflow success/failure paths, cancellation, chaos, reduced motion`);
+      listeners.delete(listener);await send('Target.closeTarget',{targetId});console.log(`PASS ${width}px: terminal, handoff, five incidents, pause, handover, breach/restart, connections, deferred SQL, request recorder, guard, grounding, schema, gateway, Heimdall, chaos, reduced motion`);
     }
   } finally {
     ws?.close();

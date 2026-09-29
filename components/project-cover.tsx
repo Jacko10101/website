@@ -2,12 +2,12 @@ import Image from "next/image";
 import { GitBranch, Package, Container, ShieldCheck, Radio, Home, Lightbulb, Power, KeyRound, Network, Cpu, MessageSquare } from "lucide-react";
 
 const covers = {
-  nightshift: { tag: "NIGHTSHIFT", title: "A little less in the queue.", note: "From a well-scoped ticket to a change you can review." },
-  "pipeline-platform": { tag: "DELIVERY", title: "One path. Fewer surprises.", note: "A shared route from source to running software." },
-  observability: { tag: "OBSERVABILITY", title: "Follow the signal.", note: "Metrics, traces and logs. One investigation." },
-  "ai-gateway": { tag: "AI INFRASTRUCTURE", title: "Every call has a home.", note: "Access, budgets and usage in one place." },
-  "smart-home": { tag: "AFTER HOURS", title: "Yes, the lights need a cluster.", note: "A small platform with a very local user base." },
-  "ml-scheduler": { tag: "RESEARCH", title: "Room for what matters.", note: "Kubernetes recovery under limited capacity." },
+  nightshift: { tag: "NIGHTSHIFT" },
+  "pipeline-platform": { tag: "DELIVERY" },
+  observability: { tag: "OBSERVABILITY" },
+  "ai-gateway": { tag: "AI INFRASTRUCTURE" },
+  "smart-home": { tag: "AFTER HOURS" },
+  "ml-scheduler": { tag: "RESEARCH" },
 };
 
 function CoverDrawing({ id }: { id: string }) {
@@ -33,5 +33,5 @@ export function ProjectCover({ id }: { id: string }) {
   const shot = SHOTS[id as keyof typeof SHOTS];
   if (shot) return <div className={`project-cover cover-${id} cover-shot`}><div className="cover-browser"><div className="browser-bar"><span /><span /><span /><p>{shot.bar}</p></div><Image src={shot.src} alt={shot.alt} width={shot.w} height={shot.h} sizes="(min-width: 1000px) 600px, 90vw" /></div></div>;
   const item = covers[id as keyof typeof covers] ?? covers.nightshift;
-  return <div className={`project-cover diagram-cover cover-${id}`} aria-hidden="true"><span className="cover-tag">{item.tag}</span><CoverDrawing id={id} /><p className="cover-note">{item.note}</p></div>;
+  return <div className={`project-cover diagram-cover cover-${id}`} aria-hidden="true"><span className="cover-tag">{item.tag}</span><CoverDrawing id={id} /></div>;
 }

@@ -158,10 +158,9 @@ async function main() {
         }
         if (status !== wantStatus) problems.push(`status ${status} (wanted ${wantStatus})`);
 
-        // These controls need to work without a pointer, including when
-        // motion is reduced. Exercise the actual DOM and keyboard events.
-        const playgroundRoute = "/projects/pipeline-platform";
-        if ((route === "/" || route === playgroundRoute) && width === 390) {
+        // The mobile menu has to work without a pointer. Exercise the
+        // actual DOM and keyboard events.
+        if (route === "/" && width === 390) {
           const evaluate = async (expression) => {
             const result = await send("Runtime.evaluate", { expression, returnByValue: true, awaitPromise: true }, sessionId);
             if (result.exceptionDetails) throw new Error(result.exceptionDetails.text);
@@ -177,24 +176,11 @@ async function main() {
             if (!await evaluate(expression)) throw new Error(message);
           };
           try {
-            if (route === "/") {
             await evaluate("document.querySelector('.mobile-menu-toggle').focus()");
             await press(" ", "Space", 32);
             await assert("!document.querySelector('#mobile-menu').hidden", "keyboard could not open mobile navigation");
             await press("Escape", "Escape", 27);
             await assert("document.querySelector('#mobile-menu').hidden && document.activeElement.matches('.mobile-menu-toggle')", "Escape did not close the menu and restore focus");
-            }
-            if (route === playgroundRoute) {
-
-            await evaluate("document.querySelectorAll('.playground-tabs button')[1].focus()");
-            await press(" ", "Space", 32);
-            await assert("document.querySelector('.platform-playground').dataset.mode === 'nightshift'", "keyboard example selection failed");
-            await send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-motion", value: "reduce" }] }, sessionId);
-            await evaluate("document.querySelector('.playground-run').focus()");
-            await press(" ", "Space", 32);
-            await assert("document.querySelector('.platform-playground').dataset.outcome === 'complete'", "reduced-motion workflow failed");
-            await send("Emulation.setEmulatedMedia", { features: [] }, sessionId);
-            }
           } catch (error) {
             problems.push(`interaction: ${error.message}`);
           }

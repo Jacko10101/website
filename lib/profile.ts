@@ -33,7 +33,7 @@ export const profile = {
     /** The differentiator: no sponsorship question anywhere I'm applying. */
     workRightsShort: "UK · Ireland · EU — no sponsorship needed",
     workRights:
-      "Irish and British citizen — full right to work in Ireland, the UK and the EU, no sponsorship needed",
+      "Irish and British citizen, with the right to work in Ireland, the UK and the EU. No sponsorship needed.",
   },
 
   /**

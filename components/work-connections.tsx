@@ -27,7 +27,7 @@ export function WorkConnections() {
   }
 
   return <div className="connections ink-surface">
-    <header className="connections-header"><span>CONNECTION STUDY / 01</span><span>{work.length} projects · {tools.length} tools</span></header>
+    <header className="connections-header"><span>Shared tools</span><span>{work.length} projects · {tools.length} tools</span></header>
     <div className="connections-tools">
       <p className="folio-label">Pick a thread</p>
       <div>{visibleTools.map(item => <button type="button" key={item.name} aria-pressed={tool === item.name} onClick={() => trace(item.name)}>{item.name}<sup>{item.count}</sup></button>)}</div>
@@ -49,7 +49,7 @@ export function WorkConnections() {
 export function QueryDrawer() {
   const [opened, setOpened] = useState(false);
   return <details className="lab-query-drawer" onToggle={event => setOpened(event.currentTarget.open)}>
-    <summary><span>Go one level deeper</span><span>Open the SQL workbench +</span></summary>
+    <summary><span>Query the case studies with SQL</span><span>Open the workbench +</span></summary>
     <p>Write your own joins across projects, tools and reported results. This is a real SQLite database running in your browser, using the same read-only validator as the Clarity demo.</p>
     {opened && <CareerQuery />}
   </details>;

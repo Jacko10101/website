@@ -92,7 +92,7 @@ export const stackTiers = [
   {
     id: "production",
     label: "run-in-production/",
-    note: "Tools I use to build and operate services at Loweconex.",
+    note: "",
     items: [
       "Kubernetes",
       "EKS",
@@ -120,7 +120,7 @@ export const stackTiers = [
   {
     id: "homelab",
     label: "homelab/",
-    note: "Running in my flat, reconciled the same way as work. No pager.",
+    note: "Runs in my flat, deployed with ArgoCD the same way as work.",
     items: ["K3s", "Home Assistant", "Zigbee2MQTT", "Tailscale", "Raspberry Pi"],
   },
   {

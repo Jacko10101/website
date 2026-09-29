@@ -16,7 +16,7 @@ export function Footer() {
           <span>© {new Date().getFullYear()} Jack Devlin</span>
           <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
             {BUILD.commitUrl && <a href={BUILD.commitUrl} target="_blank" rel="noopener noreferrer" title="Source commit">Source / {BUILD.shortSha}</a>}
-            <button type="button" onClick={() => { window.__cliRequested = true; window.dispatchEvent(new Event("devlinops:cli")); }}>One more thing: the terminal <span aria-hidden>↗</span></button>
+            <button type="button" onClick={() => { window.__cliRequested = true; window.dispatchEvent(new Event("devlinops:cli")); }}>Open the terminal <span aria-hidden>↗</span></button>
           </div>
         </div>
       </div>

@@ -16,6 +16,6 @@ export function NotFoundClient() {
     <p className="folio-label">404 / Route lookup</p><h1 className="missing-heading">Nothing deployed<br /><span>at this address.</span></h1>
     <div className="missing-route"><span aria-hidden>↳</span><code>{pathname ?? "Looking up the requested route…"}</code><span>NO MATCH</span></div>
     <p className="missing-copy">This address doesn’t point to a page. The work is still here.</p>
-    <div className="missing-links"><Link href="/">Back to the surface ↗</Link><Link href="/projects">Explore the projects ↗</Link><Link href="/lab">Open the tools ↗</Link></div>
+    <div className="missing-links"><Link href="/">Home ↗</Link><Link href="/projects">Explore the projects ↗</Link><Link href="/lab">Open the tools ↗</Link></div>
   </div></div>;
 }

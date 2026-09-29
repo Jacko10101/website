@@ -43,9 +43,6 @@ export const caseStories: Record<string, CaseStory> = {
         'The first pilot took pen-test tickets on a Java service. The draft it produced passed Maven tests run independently of the agent, then branch and pull-request CI. A person reviewed it before anything merged.',
         'It also hit edge cases the first version missed. Those turned into review and regression work, and they shaped where the verification and handover boundaries sit now. Version maintenance and review-feedback workflows run on the same platform. Incident response is designed for, but not built yet.'
       ] },
-      { id: 'lesson', title: 'What I’d carry into the next agent', paragraphs: [
-        'Write down what the agent is allowed to do. Keep verification out of its hands. Leave enough evidence that the reviewer doesn’t have to trust it. Those mattered more than making the agent sound confident.'
-      ] },
     ], next: 'clarity',
   },
   clarity: {
@@ -71,9 +68,6 @@ export const caseStories: Record<string, CaseStory> = {
       ] },
       { id: 'result', title: 'In production', paragraphs: [
         'Clarity is live with natural-language questions and CSV exports, with tracing, usage attributed per customer and feature, and checks in the dev and QA delivery path. A customer can get a report without writing SQL or waiting on a ticket.'
-      ] },
-      { id: 'lesson', title: 'What took the time', paragraphs: [
-        'The chat box is the easy part to demo. Knowing the schema, locking down data access and failing honestly are what make it worth running, and they took most of the effort.'
       ] },
     ], next: 'heimdall',
   },
@@ -101,9 +95,6 @@ export const caseStories: Record<string, CaseStory> = {
         'The team stopped pasting kubectl output into Teams to ask whether a deploy had worked. Standup runs off Heimdall now, and it got shorter.',
         'Release management started using the same view as the engineers, so both sides of a release conversation are looking at the same evidence.'
       ] },
-      { id: 'lesson', title: 'What I took from it', paragraphs: [
-        'The first version was correct and unused. The second gets opened every morning because it answers a question people were already asking. When I build internal tools now, I start from that question and work back to the data.'
-      ] },
     ], next: 'pipeline-platform',
   },
   'pipeline-platform': {
@@ -122,16 +113,14 @@ export const caseStories: Record<string, CaseStory> = {
         'I split the shared logic into two versioned libraries, java-shared-pipeline and node-shared-pipeline. A service imports a pinned version and keeps only its own build settings in .ci/builds.yaml. The shared path runs the build, tests and security checks, publishes an image, and writes a build.json with the commit, image digest and tags that Heimdall and Sentry read downstream.',
         'Extra gates like Veracode, SourceClear and Jira fix-version checks are switched on per service with an environment variable. For dev, Image Updater writes the new image to the GitOps repo and ArgoCD rolls it out. Rolling back is a git revert. I’ve done one at 2am and gone back to sleep.'
       ] },
-      { id: 'decisions', title: 'Test what was actually deployed', paragraphs: [
+      { id: 'decisions', title: 'Test what was deployed', paragraphs: [
         'I moved our test framework into an ArgoCD PostSync hook for dev and QA, so the suites run against the service that is live. Results land in Sentry, the dashboard I built for them. I called it Sentry, which was a mistake given the error-tracking product, but it’s what everyone calls it now.',
-        'Automatic promotion from dev to QA checks that the tested image is still the one running. Missing results, all-skipped suites and ambiguous failures stop promotion instead of passing quietly. Preprod and production are still a person’s decision.'
+        'Most of the failures we’d been calling flaky were tests hitting a pod that had started but wasn’t serving yet. Automatic promotion from dev to QA checks that the tested image is still the one running. Missing results, all-skipped suites and ambiguous failures stop promotion instead of passing quietly. Preprod and production are still a person’s decision.'
       ] },
       { id: 'result', title: 'Where it is now', paragraphs: [
         'All 25 services build through the shared libraries, and a fix to the pipeline ships once, as a new version, instead of as 25 pull requests.',
-        'As the team grew, other engineers added to it. The path now also turns security findings into deduplicated Jira tickets and runs automated code review beside the build.'
-      ] },
-      { id: 'lesson', title: 'What made it stick', paragraphs: [
-        'Adoption was the real work. Any team could veto the migration by simply not moving, so the shared path had to be less effort than their own. A flaky gate gets worked around, so making failures easy to understand mattered as much as adding checks. I’d do it the same way again.'
+        'As the team grew, other engineers added to it. The path now also turns security findings into deduplicated Jira tickets and runs automated code review beside the build.',
+        'Adoption was the real work. Any team could veto the migration by simply not moving, so the shared path had to be less effort than their own. I’d do it the same way again.'
       ] },
     ], next: 'observability',
   },
@@ -152,15 +141,12 @@ export const caseStories: Record<string, CaseStory> = {
         'Each environment has its own stack, and a federated query layer joins them across AWS accounts. Older data moves to object storage, with retention set per signal.'
       ] },
       { id: 'decisions', title: 'Alerts people won’t learn to ignore', paragraphs: [
-        'I went through every alert rule against the metrics we actually had, and 72 alerts now link to a runbook. Thresholds for the monitoring pipeline came from its own history rather than round numbers.',
+        'I went through every alert rule against the metrics we had, and 72 alerts now link to a runbook. Thresholds for the monitoring pipeline came from its own history rather than round numbers.',
         'Routing depends on the environment: production pages on-call at any hour, QA goes to Teams, and dev waits for business hours. Inhibition rules stop one failure setting off a cascade of alerts. Without them, the first real incident would have taught everyone to ignore the pager.'
       ] },
       { id: 'result', title: 'Now', paragraphs: [
         'An incident usually starts with someone pasting a Grafana link. Engineers can follow a request across services and open the runbook straight from the alert.',
         'Self-hosting also means I own retention, upgrades, capacity and the monitoring system’s own failure modes. That’s part of the job, and it was from the start.'
-      ] },
-      { id: 'lesson', title: 'What I watch for', paragraphs: [
-        'A missing signal and a healthy service can look the same on a dashboard. I try to make the difference obvious, and to leave whoever is on call a runbook that says where to look first.'
       ] },
     ], next: 'ai-gateway',
   },
@@ -185,10 +171,8 @@ export const caseStories: Record<string, CaseStory> = {
       ] },
       { id: 'result', title: 'Dull, on purpose', paragraphs: [
         'Customer features, automated PR review and Nightshift all go through the same gateway. I built the PR review into the shared pipeline too. It’s advisory, so if the reviewer is down, the build carries on.',
-        'Our spend dashboard once read high for a while because its price variables were set for a different model. Nobody questioned it, because the number was on a dashboard. Token counts are measured; prices are config you have to keep current.'
-      ] },
-      { id: 'lesson', title: 'What it is now', paragraphs: [
-        'It’s dull infrastructure now, which is what I wanted. The proxy was the small part. Onboarding, identity and failure behaviour another engineer can understand are what make it a platform.'
+        'Our spend dashboard once read high for a while because its price variables were set for a different model. Nobody questioned it, because the number was on a dashboard. Tokens are measured. Prices are config, and config rots.',
+        'It’s dull infrastructure now, which is what I wanted.'
       ] },
     ], next: 'nightshift',
   },
@@ -196,7 +180,7 @@ export const caseStories: Record<string, CaseStory> = {
     id: 'smart-home', category: 'Personal project', title: 'The homelab',
     headline: 'A small platform, close to home.',
     intro: 'My flat runs on a K3s cluster on a Raspberry Pi. It’s where I try ideas on hardware I can reach, with the same GitOps habits I use at work.',
-    role: 'Personal design, build and operation', context: 'Home', status: 'Personal project',
+    role: 'Personal design, build and operation', context: 'Home', status: 'Running at home',
     stack: ['K3s', 'Home Assistant', 'Zigbee', 'MQTT', 'ArgoCD', 'Prometheus', 'Grafana', 'Tailscale'],
     takeaway: 'The test is whether the lights still work when the internet doesn’t.',
     sections: [
@@ -209,7 +193,7 @@ export const caseStories: Record<string, CaseStory> = {
       { id: 'decisions', title: 'Where AI fits', paragraphs: [
         'I’m experimenting with a local language model as another way to give commands. It’s a work in progress, and it’s an extra way in. Nothing depends on it, least of all the light switches.'
       ] },
-      { id: 'lesson', title: 'What’s next', paragraphs: [
+      { id: 'next', title: 'What’s next', paragraphs: [
         'Smart radiator valves, then presence detection. Motion sensors are fine for “is someone in the hallway” and useless for “is anyone home”, so that one needs a different approach.'
       ] },
     ], next: 'ml-scheduler',
@@ -224,7 +208,7 @@ export const caseStories: Record<string, CaseStory> = {
     sections: [
       { id: 'problem', title: 'A node fails and the rest can’t hold everything', paragraphs: [
         'Once the surviving nodes can’t fit every workload, recovery becomes a choice. Kubernetes recovers in priority order, which isn’t the same as recovering the most valuable set that fits.',
-        'I built a scheduler that treats it as a knapsack problem, plus a model that estimates from signals the kubelet already reports whether a workload is actually serving, so an importance label isn’t the only thing it trusts.'
+        'I built a scheduler that treats it as a knapsack problem, plus a model that estimates from signals the kubelet already reports whether a workload is serving, so an importance label isn’t the only thing it trusts.'
       ] },
       { id: 'approach', title: 'Real clusters, plan written first', paragraphs: [
         'I ran it on Amazon EKS with node failures induced on purpose, against the stock scheduler and PriorityClass preemption. Workloads came from the Alibaba 2018 cluster trace, with nine importance grades. I committed the analysis plan before collecting the confirmatory data, and recorded 199 runs.',
@@ -232,11 +216,7 @@ export const caseStories: Record<string, CaseStory> = {
       ] },
       { id: 'result', title: 'What it found', paragraphs: [
         'In the main comparison, the knapsack scheduler kept 84.9% of importance-weighted work running, against the stock scheduler’s 79.1%, without evicting a single healthy pod. PriorityClass recovered more, by evicting healthy workloads to do it.',
-        'A second experiment used services labelled important that weren’t actually serving. Choosing on measured behaviour instead of labels gained 12.9 points. My written prediction, made weeks before the run, was 12.7. The recorded pairs below come from that experiment.'
-      ] },
-      { id: 'lesson', title: 'What I’d take into production', paragraphs: [
-        'The cluster was small, the workloads were controlled, and some follow-up comparisons were descriptive. Those limits are part of the result.',
-        'The part I’d use at work is the discipline: check whether work is serving, make the capacity trade-off explicit, and count the disruption a recovery causes as well as what it brings back.'
+        'A second experiment used services labelled important that weren’t serving. Choosing on measured behaviour instead of labels gained 12.9 points. My written prediction, made weeks before the run, was 12.7. The recorded pairs below come from that experiment, and some of the follow-up comparisons are descriptive rather than confirmatory.'
       ] },
     ], next: 'heimdall',
   },

@@ -49,7 +49,7 @@ export default function LabPage() {
 
           <div className="mt-12"><Whiteboard /></div>
 
-          <nav className="lab-directory lab-directory-four" aria-label="Lab instruments"><a href="#shift"><span>01 / Decide</span>Take the pager ↘</a><a href="#break"><span>02 / Break</span>Break my name ↘</a><a href="#query"><span>03 / Inspect</span>Follow the connections ↘</a><a href="#measure"><span>04 / Observe</span>Watch the requests ↘</a></nav>
+          <nav className="lab-directory lab-directory-four" aria-label="Lab instruments"><a href="#shift"><span>01</span>Take the pager ↘</a><a href="#break"><span>02</span>Break my name ↘</a><a href="#query"><span>03</span>Follow the connections ↘</a><a href="#measure"><span>04</span>Watch the requests ↘</a></nav>
 
           {/* 01 — the shift. */}
           <section id="shift" className="lab-station mt-20">
@@ -66,11 +66,6 @@ export default function LabPage() {
               A full shift takes about five minutes.
             </p>
             <OncallInvite />
-            {/* Two of the fourteen lessons, for the reader who won't play. */}
-            <ul className="mt-8 max-w-2xl space-y-2 border-l border-border pl-4 font-mono text-xs leading-relaxed text-muted-foreground">
-              <li>When the spike starts at a deploy boundary, stop reading logs and start reading the deploy history.</li>
-              <li>Latency that hits every service at once is rarely in any of them. Check the shared dependencies.</li>
-            </ul>
           </section>
 
           {/* 02 — the name as a cluster. */}
