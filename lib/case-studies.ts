@@ -22,206 +22,222 @@ export const caseStories: Record<string, CaseStory> = {
   nightshift: {
     id: 'nightshift', category: 'Engineering automation', title: 'Nightshift',
     headline: 'A ticket goes in. A reviewable change comes out.',
-    intro: 'Nightshift picks up engineering tickets, version updates and security fixes, then prepares a tested change for review. I built the service and ran its first Jira delivery pilot.',
+    intro: 'Nightshift picks up well-scoped engineering tickets, version bumps and security fixes, and turns each one into a tested draft pull request. I built the service and ran its first pilot against real Jira tickets.',
     role: 'Service design, implementation and pilot', context: 'Loweconex', status: 'Working supervised pilot',
     stack: ['Python', 'Kubernetes', 'Jira', 'Bitbucket', 'LiteLLM'],
-    takeaway: 'The model proposes the change. The service checks whether it is allowed to leave the workspace.',
+    takeaway: 'The model writes the change. The harness decides whether it’s allowed to leave the workspace.',
     sections: [
-      { id: 'problem', title: 'Useful work, waiting in a queue', paragraphs: [
-        'A version update or a well-described engineering ticket can sit behind larger priorities. I wanted a way to pick up that work, produce a small change and leave it ready for an engineer to review.',
-        'The difficult part was the handover. A generated patch needs the right repository, a clear scope, a reproducible check and somewhere for the reviewer to understand what happened. That is the service I set out to build.'
+      { id: 'problem', title: 'Small tickets that never reach the top', paragraphs: [
+        'Every team has a queue of useful, small work: a dependency bump, a pen-test finding, a ticket someone described well and nobody had time for. It sits behind bigger priorities.',
+        'I wanted something that could pick that work up and leave a change ready for review. Generating a patch was the easy part. The hard part was the handover: the right repository, a clear scope, a check anyone can rerun, and a record a reviewer can follow.'
       ] },
-      { id: 'approach', title: 'Give the model a bounded job', paragraphs: [
-        'A Python harness selects eligible work, checks the scope, claims the ticket and prepares a workspace. The model works on the implementation. Verification and publishing remain separate steps controlled by the harness.',
-        'Version updates use deterministic edits where generation adds no value. Ticket delivery can ask for clarification when the request is incomplete. Each capability has its own access and budget, and each run leaves a record.',
-        'The execution design separates preparation, implementation, verification and publication. Repository credentials belong to the trusted stages. The verifier reconstructs the proposed change from a clean baseline before running the configured checks.'
+      { id: 'approach', title: 'A harness around the model', paragraphs: [
+        'A Python harness picks eligible tickets, checks their scope, claims them and prepares an isolated workspace. The model only works inside that workspace. Verifying and publishing are separate steps the harness controls, and the repository credentials never reach the model’s stage.',
+        'Version bumps use deterministic edits, because a model has nothing to add there. If a ticket is too vague to act on, Nightshift asks a question on the ticket instead of guessing. Each capability has its own access and budget, and every run leaves a record.'
       ] },
-      { id: 'decisions', title: 'A green test run is a handover point', paragraphs: [
-        'Nightshift opens draft pull requests. An engineer still reviews the implementation and decides whether to merge. Passing the configured tests is useful evidence, but it does not settle every acceptance criterion or prove that a security finding is resolved.',
-        'Failed checks prevent publication. Unclear requests should produce questions. A human edit or a changed ticket can invalidate an earlier decision, so the service checks the state again before writing.'
+      { id: 'decisions', title: 'Passing tests isn’t the same as done', paragraphs: [
+        'The verifier rebuilds the change from a clean checkout and runs the configured checks. If they fail, nothing is published. If they pass, Nightshift opens a draft pull request and an engineer decides whether to merge it.',
+        'A green run is good evidence, but it doesn’t prove every acceptance criterion, or that a security finding is really fixed. And if someone edits the ticket or pushes to the branch mid-run, earlier decisions may no longer hold, so the harness checks the state again before it writes anything.'
       ] },
-      { id: 'result', title: 'From a harness to a working pilot', paragraphs: [
-        'The Jira delivery pilot produced changes for pen-test tickets on a Java service. The recorded draft passed independently run Maven tests and branch and pull-request CI. Human review remained the acceptance step.',
-        'The pilot also exposed edge cases that the first implementation missed. Those cases became further review and regression work. They helped shape the verification and handover boundaries, rather than becoming a reason to trust the next generated change automatically.',
-        'The platform also supports version maintenance and review-feedback workflows. The reusable workflow is also designed to support incident response, with that capability still to develop beyond the delivery pilot.'
+      { id: 'result', title: 'The pilot', paragraphs: [
+        'The first pilot took pen-test tickets on a Java service. The draft it produced passed Maven tests run independently of the agent, then branch and pull-request CI. A person reviewed it before anything merged.',
+        'It also hit edge cases the first version missed. Those turned into review and regression work, and they shaped where the verification and handover boundaries sit now. Version maintenance and review-feedback workflows run on the same platform. Incident response is designed for, but not built yet.'
       ] },
-      { id: 'lesson', title: 'What I would carry into the next agent', paragraphs: [
-        'Make the permitted work explicit. Keep verification independent. Leave enough evidence for the next person to make a decision. Those choices have mattered more than making the agent sound confident.'
+      { id: 'lesson', title: 'What I’d carry into the next agent', paragraphs: [
+        'Write down what the agent is allowed to do. Keep verification out of its hands. Leave enough evidence that the reviewer doesn’t have to trust it. Those mattered more than making the agent sound confident.'
       ] },
     ], next: 'clarity',
   },
   clarity: {
     id: 'clarity', category: 'Applied AI', title: 'Clarity',
     headline: 'Ask a question. Get an answer from your data.',
-    intro: 'Clarity lets customers ask questions of their databases and download reports. I took the service from an early Java prototype into production, building the query, reporting and access controls around it.',
+    intro: 'Clarity lets our customers ask questions of their own data in plain English, and get back an answer, the SQL behind it, or a CSV report. A colleague built the first Java prototype. I took it to production and built the query, reporting and access controls around it.',
     role: 'Service development and production rollout', context: 'Loweconex', status: 'Production',
     stack: ['Java', 'Spring Boot', 'Spring AI', 'PostgreSQL', 'Kubernetes'],
-    takeaway: 'An answer needs a real query behind it, and that query needs to stay inside the customer’s data.',
+    takeaway: 'A wrong “no data” never gets escalated. People just stop using the tool.',
     sections: [
-      { id: 'problem', title: 'A question should not require a SQL request', paragraphs: [
-        'The data was already there: operational records in customer databases and telemetry in a shared store. Getting an answer often meant knowing the schema or asking someone who did.',
-        'Clarity lets a user ask in plain English. It explores the relevant schema, runs a query and returns an answer or a downloadable report. My work built on a colleague’s prototype and covered much of the service implementation and its rollout.'
+      { id: 'problem', title: 'A number used to mean a ticket', paragraphs: [
+        'Our customers run sites like supermarkets and warehouses, full of sensors and HVAC kit. The data about all of it was already in their databases. Getting a number out meant knowing the schema, or raising a ticket and waiting for someone who did.',
+        'Clarity lets them ask in English. It works out which tables matter, runs a query and returns the answer with the SQL attached. These users can read SQL, so they can check the working instead of taking the tool’s word for it.'
       ] },
-      { id: 'approach', title: 'Start with the database that actually exists', paragraphs: [
-        'A compiled schema document gives the model context about the customer’s tables and relationships. The service refreshes that context and can fall back to live discovery. It does not need a vector database to understand this schema.',
-        'Generated SQL passes through validation before execution. Tenant checks, a read-only database role, row limits and timeouts constrain the query. On the shared telemetry store, tenant isolation also depends on application-side checks.',
-        'Reports stream to storage instead of being assembled entirely in memory. That matters when a question produces a useful export rather than a handful of rows.'
+      { id: 'approach', title: 'Know the schema, guard the query', paragraphs: [
+        'A nightly job compiles a knowledge document for each customer’s schema, so the model starts with an accurate picture of the tables and how they join. It can fall back to live discovery. We didn’t need a vector database for any of this.',
+        'Generated SQL is lexed and validated before it runs. A check that only pattern-matched would let FROM/**/pg_tables straight past. Queries run under a read-only role with row limits and timeouts. If that role can’t connect, the request fails; there is no code path that falls back to the admin connection.',
+        'Reports stream to storage instead of being built in memory, because a useful answer is often an export rather than ten rows.'
       ] },
-      { id: 'decisions', title: 'Check the answer before showing it', paragraphs: [
-        'A plausible answer can still refer to a query that failed or a report that was never created. I added checks around the tool results and the final response so those failures could be handled before the answer reached the user.',
-        'The service also limits tool calls and request rates. These are controls in the application. A prompt asking the model to be careful would not provide the same boundary.'
+      { id: 'decisions', title: 'The failure that looked like success', paragraphs: [
+        'Someone asked which sites were running hottest. Clarity said there was no data. There was loads of data. That kind of wrong answer is worse than an error, because nobody reports it.',
+        'So I added checks between the tool results and the final response. An answer can’t claim a result from a query that failed, name something that isn’t in the data, or say it did something it didn’t. Tool calls and request rates are limited in the application code, where a prompt can’t talk its way around them.'
       ] },
-      { id: 'result', title: 'From prototype to a service people can use', paragraphs: [
-        'Clarity reached production with natural-language queries and CSV exports, supported by deployment configuration, tracing, usage attribution and checks in the dev and QA delivery path.',
-        'The useful outcome is straightforward: a customer can ask a question and obtain a report without writing SQL. The engineering underneath makes that simple interaction possible across separate customer databases.'
+      { id: 'result', title: 'In production', paragraphs: [
+        'Clarity is live with natural-language questions and CSV exports, with tracing, usage attributed per customer and feature, and checks in the dev and QA delivery path. A customer can get a report without writing SQL or waiting on a ticket.'
       ] },
-      { id: 'lesson', title: 'The interface is only the beginning', paragraphs: [
-        'The chat box is the easy part to demonstrate. Schema knowledge, constrained data access, report lifecycle and failure handling are the parts that make the service worth operating.'
+      { id: 'lesson', title: 'What took the time', paragraphs: [
+        'The chat box is the easy part to demo. Knowing the schema, locking down data access and failing honestly are what make it worth running, and they took most of the effort.'
       ] },
     ], next: 'heimdall',
   },
   heimdall: {
     id: 'heimdall', category: 'Developer tooling', title: 'Heimdall',
     headline: 'Where is that change, actually?',
-    intro: 'Heimdall brings tickets, code changes, deployments and test results into one view. I built it so engineers can follow a change from a ticket to the environment where it is running.',
+    intro: 'Heimdall answers the question engineers kept asking in Teams: has my change reached the environment I’m looking at? It joins Jira, Bitbucket, ArgoCD and test results on one page. I built it and I run it.',
     role: 'Service design, implementation and operation', context: 'Loweconex', status: 'Production',
-    stack: ['Python', 'Flask', 'TimescaleDB', 'ArgoCD', 'Prometheus'],
-    takeaway: 'A useful release view connects the ticket someone recognises to the revision that is actually running.',
+    stack: ['Python', 'Flask', 'TimescaleDB', 'ArgoCD', 'Prometheus', 'Thanos'],
+    takeaway: 'ArgoCD will report a service healthy while its new pods crashloop behind it.',
     sections: [
-      { id: 'problem', title: 'The answer was spread across several tools', paragraphs: [
-        'Jira knew about the work. Bitbucket knew about the pull request. GitOps described the intended deployment, while runtime metrics and test results said something about what happened next.',
-        'Engineers needed to join those pieces themselves to answer a simple question: is this change in the environment I am looking at? Heimdall brings those pieces together.'
+      { id: 'problem', title: 'Four tools, one question', paragraphs: [
+        'Jira knew about the ticket. Bitbucket knew about the pull request. The GitOps repo said what should be deployed, and Prometheus said what was running. To find out whether a change had reached QA, you opened all four, or you pasted kubectl output into Teams and asked.',
+        'My first attempt didn’t fix that. It was a small Python service that pushed the four DORA metrics into Prometheus. The numbers were correct, and nobody ever opened it.'
       ] },
-      { id: 'approach', title: 'Collect once, make the result easy to read', paragraphs: [
-        'The Python service collects release evidence across the configured service repositories and environments. It keeps event history in TimescaleDB and serves a shared snapshot to the UI, so opening the dashboard does not trigger a fresh round of upstream requests.',
-        'Tickets can be followed through pull requests and deployments. The same view highlights stale work, blocked releases and differences between the intended and running revisions.'
+      { id: 'approach', title: 'Collect in the background, answer from one page', paragraphs: [
+        'The collector pulls from the upstream sources every ten minutes and keeps the history in TimescaleDB. The UI reads a shared snapshot, so opening the dashboard doesn’t send a fresh round of requests to Jira, Bitbucket and ArgoCD.',
+        'From there you can follow a ticket to its pull request and on through each environment: PR merged, tag updated, pods healthy, tests passed. The same page shows stale work, blocked releases, and any environment where the running revision isn’t the one GitOps asked for.'
       ] },
-      { id: 'decisions', title: 'Be specific about what “healthy” means', paragraphs: [
-        'ArgoCD health is one input. Pod evidence can reveal that a new revision is failing while older pods keep the application looking healthy. Heimdall reads the ArgoCD and pod metrics through Prometheus and Thanos, and combines that evidence rather than treating one green status as the whole answer.',
-        'When evidence is missing, the UI needs to say so. An unavailable signal should not become a reassuring green state or a made-up deployment verdict.'
+      { id: 'decisions', title: 'One green tick isn’t enough', paragraphs: [
+        'ArgoCD reports on the application, and the old pods keep serving while the new ones fail. So Heimdall reads pod state through Prometheus and Thanos as well, and a deploy only counts once the new revision is up.',
+        'When a signal is missing, the page says so. A gap in the data shouldn’t turn into a reassuring green.'
       ] },
-      { id: 'result', title: 'A common place to look', paragraphs: [
-        'Heimdall gives the team one place to see where a change has reached, inspect the supporting evidence and investigate stalled work. It is a tool for both the person shipping a change and the person trying to understand a release.',
-        'Moving collection out of the request path and making the UI useful were as important as integrating the data sources. A correct answer still needs to be easy to find.'
+      { id: 'result', title: 'What changed', paragraphs: [
+        'The team stopped pasting kubectl output into Teams to ask whether a deploy had worked. Standup runs off Heimdall now, and it got shorter.',
+        'Release management started using the same view as the engineers, so both sides of a release conversation are looking at the same evidence.'
       ] },
-      { id: 'lesson', title: 'Treat the interface as part of the platform', paragraphs: [
-        'This project changed how I think about internal tooling. The collector, data model and UI all contribute to the result. Platform work succeeds when the next person can use it without needing the author beside them.'
+      { id: 'lesson', title: 'What I took from it', paragraphs: [
+        'The first version was correct and unused. The second gets opened every morning because it answers a question people were already asking. When I build internal tools now, I start from that question and work back to the data.'
       ] },
     ], next: 'pipeline-platform',
   },
   'pipeline-platform': {
     id: 'pipeline-platform', category: 'Software delivery', title: 'Delivery platform',
     headline: 'A shared path from commit to deployment.',
-    intro: 'Our services had accumulated their own pipeline logic. I helped replace that duplication with shared delivery tooling, and owned the integrations that connected builds, GitOps, security checks and post-deploy verification.',
-    role: 'Shared platform contributor and integration owner', context: 'Loweconex', status: 'Production',
+    intro: 'When I started, every service carried its own pipeline and they had drifted apart. I built the foundations of our shared pipeline library and CI/CD, and others added to it as the team grew. It now builds, checks and deploys 25 Java and Node services across four environments.',
+    role: 'Built the foundations; owner as the team grew', context: 'Loweconex', status: 'Production',
     stack: ['Bitbucket Pipelines', 'ArgoCD', 'Kubernetes', 'Bash', 'Java', 'Node.js'],
-    takeaway: 'Builds produce an image. Deployment and verification each have their own responsibility.',
+    takeaway: 'Most of the failures we’d been calling flaky were tests hitting a pod that had started but wasn’t serving yet.',
     sections: [
-      { id: 'problem', title: 'The same change, in another pipeline', paragraphs: [
-        'Each service carried its own build, scan and deployment configuration. Improvements were difficult to roll out consistently, and familiar pieces of shell and YAML drifted between repositories.',
-        'The shared pipeline library was a team effort. My ownership included GitOps integration, the Jira gate, security-finding automation, AI review, post-deploy verification and the rollout across services.'
+      { id: 'problem', title: 'Every change, in every repo', paragraphs: [
+        'Each service had its own bitbucket-pipelines.yml: hundreds of lines of shell and YAML, copied from the last service and edited. A change to the build pattern meant a pull request to every repository, so in practice it didn’t get made.',
+        'Stage notifications came from a bash reporter baked into the base image. It worked, and nobody wanted to touch it.'
       ] },
-      { id: 'approach', title: 'Keep the service configuration small', paragraphs: [
-        'Java and Node services import versioned shared pipelines and supply their own build configuration. The common path runs the build, tests and security checks, then publishes an image.',
-        'For dev deployment, Image Updater records the image in GitOps and ArgoCD reconciles the change. Other environment promotions keep their own reviewed path. Separating these responsibilities made the build pipeline easier to reason about.'
+      { id: 'approach', title: 'One import per service', paragraphs: [
+        'I split the shared logic into two versioned libraries, java-shared-pipeline and node-shared-pipeline. A service imports a pinned version and keeps only its own build settings in .ci/builds.yaml. The shared path runs the build, tests and security checks, publishes an image, and writes a build.json with the commit, image digest and tags that Heimdall and Sentry read downstream.',
+        'Extra gates like Veracode, SourceClear and Jira fix-version checks are switched on per service with an environment variable. For dev, Image Updater writes the new image to the GitOps repo and ArgoCD rolls it out. Rolling back is a git revert. I’ve done one at 2am and gone back to sleep.'
       ] },
-      { id: 'decisions', title: 'Verify the thing that was deployed', paragraphs: [
-        'I integrated our in-house test framework as an ArgoCD PostSync hook in dev and QA. It checks the deployed service, runs its configured suites and publishes the result.',
-        'Automatic dev-to-QA promotion checks that the tested image is still the one running. Missing results, all-skipped suites and ambiguous failures must stop promotion rather than produce a misleading pass. Preprod and production promotion remain human decisions.'
+      { id: 'decisions', title: 'Test what was actually deployed', paragraphs: [
+        'I moved our test framework into an ArgoCD PostSync hook for dev and QA, so the suites run against the service that is live. Results land in Sentry, the dashboard I built for them. I called it Sentry, which was a mistake given the error-tracking product, but it’s what everyone calls it now.',
+        'Automatic promotion from dev to QA checks that the tested image is still the one running. Missing results, all-skipped suites and ambiguous failures stop promotion instead of passing quietly. Preprod and production are still a person’s decision.'
       ] },
-      { id: 'result', title: 'Shared improvements, explicit ownership', paragraphs: [
-        'The shared platform supports the Java and Node service estate across four environments. Teams adopt versioned improvements instead of maintaining every integration independently.',
-        'Security findings can become deduplicated Jira tickets, and automated code review sits beside the usual build checks. Each integration has a specific place in the delivery path, rather than becoming another step that no one knows how to interpret.'
+      { id: 'result', title: 'Where it is now', paragraphs: [
+        'All 25 services build through the shared libraries, and a fix to the pipeline ships once, as a new version, instead of as 25 pull requests.',
+        'As the team grew, other engineers added to it. The path now also turns security findings into deduplicated Jira tickets and runs automated code review beside the build.'
       ] },
-      { id: 'lesson', title: 'A gate needs to earn its place', paragraphs: [
-        'A flaky gate makes engineers work around it. Tightening the verification rules and making failure states understandable was a large part of the work. The purpose of the platform is to help people release with confidence.'
+      { id: 'lesson', title: 'What made it stick', paragraphs: [
+        'Adoption was the real work. Any team could veto the migration by simply not moving, so the shared path had to be less effort than their own. A flaky gate gets worked around, so making failures easy to understand mattered as much as adding checks. I’d do it the same way again.'
       ] },
     ], next: 'observability',
   },
   observability: {
     id: 'observability', category: 'Platform operations', title: 'Observability',
     headline: 'Follow a problem from the symptom to the service.',
-    intro: 'I built and operated the metrics, logs and tracing platform for our Kubernetes environments. The goal was to give engineers a practical way to investigate problems, with alerts they could follow through to an action.',
+    intro: 'Too often, the first sign something was wrong came from outside the team. I built and run the metrics, logs and tracing platform for our Kubernetes environments, self-hosted on capacity we already had.',
     role: 'Platform implementation and operation', context: 'Loweconex', status: 'Production',
     stack: ['Kubernetes', 'Prometheus', 'Thanos', 'Loki', 'Tempo', 'Grafana'],
-    takeaway: 'The useful part is the connection: a metric leads to a trace, and the trace leads to the relevant logs.',
+    takeaway: 'Now an incident usually starts with someone pasting a Grafana link.',
     sections: [
-      { id: 'problem', title: 'Bring the signals into the same investigation', paragraphs: [
-        'A microservices estate produces plenty of telemetry. Engineers need a way to follow it across services and environments without starting again in each tool.',
-        'I built the self-hosted stack on Kubernetes: Prometheus and Thanos for metrics, Loki for logs, Tempo for traces, and Grafana as the place to explore them. Infrastructure and configuration live in version control.'
+      { id: 'problem', title: 'Finding out from someone else', paragraphs: [
+        'We had services across four environments and no shared way to see what they were doing.',
+        'A commercial platform was the obvious fix. We self-hosted instead: Prometheus and Thanos for metrics, Loki for logs, Tempo for traces and Grafana to explore them, on cluster capacity we already had, with the config in Git. That keeps it very cheap. It also means it’s mine to fix whatever the hour, because there’s no support contract behind it. At a three-person startup I’d make the opposite call.'
       ] },
-      { id: 'approach', title: 'Connect the views people already need', paragraphs: [
-        'Metric exemplars open the related trace. Trace details link to the service logs, and a log with a trace ID can lead back to the request. I also wrote the structured logging configuration that makes those connections possible across the Java services.',
-        'Each environment has its own telemetry stack. A federated query layer brings the exposed environments together across AWS accounts. Historical data moves to object storage, with retention set deliberately for each signal.'
+      { id: 'approach', title: 'From a spike to the line that caused it', paragraphs: [
+        'Metric exemplars open the matching trace, the trace links to the service’s logs, and a log line with a trace ID leads back to the request. That only works if the services log the same way, so I wrote the structured logging config and the OpenTelemetry conventions the Java services share.',
+        'Each environment has its own stack, and a federated query layer joins them across AWS accounts. Older data moves to object storage, with retention set per signal.'
       ] },
-      { id: 'decisions', title: 'An alert should come with a next step', paragraphs: [
-        'I audited alert rules against the metrics we actually had and linked actionable alerts to runbooks. For the monitoring pipeline, I checked thresholds against historical behaviour rather than selecting values in isolation.',
-        'Shared rules reduce duplication, while environment-specific thresholds and notification routing keep a development issue from pretending to be a production incident. The alerting configuration needs to be understandable to the person on call.'
+      { id: 'decisions', title: 'Alerts people won’t learn to ignore', paragraphs: [
+        'I went through every alert rule against the metrics we actually had, and 72 alerts now link to a runbook. Thresholds for the monitoring pipeline came from its own history rather than round numbers.',
+        'Routing depends on the environment: production pages on-call at any hour, QA goes to Teams, and dev waits for business hours. Inhibition rules stop one failure setting off a cascade of alerts. Without them, the first real incident would have taught everyone to ignore the pager.'
       ] },
-      { id: 'result', title: 'A platform the team can investigate through', paragraphs: [
-        'The service environments have a common set of metrics, logs and tracing tools. Engineers can follow requests through the stack and use runbooks to investigate alerts.',
-        'Self-hosting also means owning retention, upgrades, capacity and the monitoring system’s own failure modes. Those operational responsibilities are part of the project, not an afterthought to installing Grafana.'
+      { id: 'result', title: 'Now', paragraphs: [
+        'An incident usually starts with someone pasting a Grafana link. Engineers can follow a request across services and open the runbook straight from the alert.',
+        'Self-hosting also means I own retention, upgrades, capacity and the monitoring system’s own failure modes. That’s part of the job, and it was from the start.'
       ] },
-      { id: 'lesson', title: 'Make uncertainty visible', paragraphs: [
-        'A missing signal and a healthy service are different states. I want the monitoring to make that distinction clear, and the runbook to give the next engineer enough context to investigate it.'
+      { id: 'lesson', title: 'What I watch for', paragraphs: [
+        'A missing signal and a healthy service can look the same on a dashboard. I try to make the difference obvious, and to leave whoever is on call a runbook that says where to look first.'
       ] },
     ], next: 'ai-gateway',
   },
   'ai-gateway': {
     id: 'ai-gateway', category: 'AI infrastructure', title: 'AI gateway',
     headline: 'One place to connect, control and understand AI usage.',
-    intro: 'As AI features and engineering agents appeared, each needed model access and a way to account for usage. I took an existing LiteLLM proof of concept and made it a shared service for the product and delivery tooling.',
+    intro: 'Our first AI feature shipped with a provider key in its config. By the third, it was clear where that was heading. A colleague had stood up LiteLLM in dev. I moved it onto a dedicated platform cluster, made it the one way our services and tooling reach a model, and migrated the consumers.',
     role: 'Platform rollout, integrations and operation', context: 'Loweconex', status: 'Production',
     stack: ['LiteLLM', 'Kubernetes', 'AWS', 'Grafana', 'ArgoCD'],
-    takeaway: 'Access and usage belong to the workload that caused them.',
+    takeaway: 'Tokens are measured. Prices are config, and config rots.',
     sections: [
-      { id: 'problem', title: 'A provider key is a poor platform interface', paragraphs: [
-        'A feature can start with a model key in its configuration. As more features arrive, access, model selection and usage become harder to follow.',
-        'A colleague had stood up the initial gateway in dev. I moved it onto a dedicated platform cluster, made it reachable by the services and delivery tooling, and migrated the consumers.'
+      { id: 'problem', title: 'A key per feature', paragraphs: [
+        'A provider key in each service works until there are several. Then nobody can say who is using which model or what it costs, and switching model means editing every app.'
       ] },
-      { id: 'approach', title: 'Give each consumer its own identity', paragraphs: [
-        'Workloads use a shared endpoint with their own scoped virtual key. The model catalogue lives at the gateway, and services ask for the configured model alias.',
-        'Clarity tags usage by tenant and feature. Engineering agents carry their capability and run identity. That makes a model call something we can attribute to a particular piece of work.'
+      { id: 'approach', title: 'Every consumer gets its own identity', paragraphs: [
+        'Each workload calls one endpoint with its own scoped virtual key and asks for a model alias. The model catalogue lives at the gateway. Clarity tags its usage by customer, environment and feature, and engineering agents like Nightshift carry their capability and run ID, so every model call traces back to the work that caused it.',
+        'I didn’t write a proxy. I ran an existing one, and put the effort into onboarding, identity, deployment and usage records.'
       ] },
-      { id: 'decisions', title: 'Make limits an operational control', paragraphs: [
-        'Budgets, request limits and model access are enforced at the gateway. They complement the application’s own tool-call and rate limits.',
-        'Concurrent requests and delayed usage records can overshoot a budget threshold. I pair gateway controls with application limits and keep usage records available for investigation.'
+      { id: 'decisions', title: 'Fail loudly', paragraphs: [
+        'Ask for a model that isn’t on your key’s list and you get a 401. I once lost an afternoon to that with a model that was clearly deployed, and I still wouldn’t change it. A gateway that quietly substitutes another model is worse than one that breaks.',
+        'Budgets, rate limits and model access are enforced at the gateway and in each application, because concurrent requests and delayed usage records can overshoot a budget before the gateway notices.'
       ] },
-      { id: 'result', title: 'A common foundation for different kinds of AI work', paragraphs: [
-        'Customer-facing features, automated review and Nightshift use the same access point. Each consumer has a clearer boundary, and model configuration no longer needs to be scattered across every application.',
-        'I also built automated pull-request review into the shared delivery tooling. Its feedback is advisory: an unavailable reviewer should not block the service’s normal build.'
+      { id: 'result', title: 'Dull, on purpose', paragraphs: [
+        'Customer features, automated PR review and Nightshift all go through the same gateway. I built the PR review into the shared pipeline too. It’s advisory, so if the reviewer is down, the build carries on.',
+        'Our spend dashboard once read high for a while because its price variables were set for a different model. Nobody questioned it, because the number was on a dashboard. Token counts are measured; prices are config you have to keep current.'
       ] },
-      { id: 'lesson', title: 'The integration is the product', paragraphs: [
-        'Running a proxy is only one piece. The useful platform includes consumer onboarding, identity, deployment, usage records and failure behaviour that another engineer can understand.'
+      { id: 'lesson', title: 'What it is now', paragraphs: [
+        'It’s dull infrastructure now, which is what I wanted. The proxy was the small part. Onboarding, identity and failure behaviour another engineer can understand are what make it a platform.'
       ] },
     ], next: 'nightshift',
   },
   'smart-home': {
     id: 'smart-home', category: 'Personal project', title: 'The homelab',
     headline: 'A small platform, close to home.',
-    intro: 'My home automation setup is where I try ideas on hardware I can reach. It brings together Kubernetes, local device control and the same GitOps habits I use at work.',
+    intro: 'My flat runs on a K3s cluster on a Raspberry Pi. It’s where I try ideas on hardware I can reach, with the same GitOps habits I use at work.',
     role: 'Personal design, build and operation', context: 'Home', status: 'Personal project',
-    stack: ['K3s', 'Home Assistant', 'Zigbee', 'MQTT', 'ArgoCD', 'Prometheus', 'Grafana'],
-    takeaway: 'The useful test is whether the ordinary things still work when the internet does not.',
+    stack: ['K3s', 'Home Assistant', 'Zigbee', 'MQTT', 'ArgoCD', 'Prometheus', 'Grafana', 'Tailscale'],
+    takeaway: 'The test is whether the lights still work when the internet doesn’t.',
     sections: [
-      { id: 'problem', title: 'Keep everyday control local', paragraphs: ['I wanted home automation that I could understand and operate myself. Home Assistant connects the devices, a Zigbee mesh handles local communication, and MQTT carries messages between parts of the setup.'] },
-      { id: 'approach', title: 'Use the same habits on a smaller system', paragraphs: ['The services run on a bare-metal K3s cluster, with configuration reconciled through ArgoCD. Prometheus and Grafana provide a view of the system. Keeping the configuration in Git makes experiments easier to undo and changes easier to explain.'] },
-      { id: 'decisions', title: 'Try AI without making it a dependency', paragraphs: ['A local language model provides another way to issue commands. It is an additional interface to a working system, rather than a requirement for every light switch. Keeping that distinction makes the experiment useful without making basic control fragile.'] },
-      { id: 'lesson', title: 'A place to learn by operating', paragraphs: ['The homelab gives me a place to test deployment changes and explore unfamiliar components. It also provides a quick reminder that a system needs to be usable by someone who did not build it.'] },
+      { id: 'problem', title: 'Local first', paragraphs: [
+        'I didn’t want my motion sensor reporting to a server in another country. Home Assistant runs the devices, a Zigbee mesh talks to them locally, and MQTT carries the messages. There are twenty-plus devices: Hue bulbs, Innr plugs on the kitchen heater and the hallway lamp, motion and contact sensors, and a solar-powered camera.'
+      ] },
+      { id: 'approach', title: 'Work habits, smaller scale', paragraphs: [
+        'It runs on a Raspberry Pi 5 with a 1TB NVMe drive and a UPS, because Home Assistant restarting at 3am after a tripped fuse isn’t something I wanted twice. ArgoCD reconciles the config from Git, mostly because I already know how to debug it. Prometheus and Grafana watch it, Tailscale means no ports are open to the internet, and the IoT devices sit on their own VLAN.'
+      ] },
+      { id: 'decisions', title: 'Where AI fits', paragraphs: [
+        'I’m experimenting with a local language model as another way to give commands. It’s a work in progress, and it’s an extra way in. Nothing depends on it, least of all the light switches.'
+      ] },
+      { id: 'lesson', title: 'What’s next', paragraphs: [
+        'Smart radiator valves, then presence detection. Motion sensors are fine for “is someone in the hallway” and useless for “is anyone home”, so that one needs a different approach.'
+      ] },
     ], next: 'ml-scheduler',
   },
   'ml-scheduler': {
     id: 'ml-scheduler', category: 'MSc research', title: 'Kubernetes recovery',
     headline: 'When everything cannot fit, what should recover first?',
-    intro: 'For my MSc in Artificial Intelligence, awarded with Distinction, I studied recovery after Kubernetes node failure. The work asks how to use limited surviving capacity while avoiding unnecessary disruption to healthy services.',
+    intro: 'My MSc dissertation at Queen’s, “Evict the Guilty, Not the Innocent”, supervised by Prof. Javid Taheri. When a Kubernetes node dies and the survivors can’t hold everything, what should come back first, and what should you never evict to make room? Awarded with Distinction.',
     role: 'Dissertation design, implementation and evaluation', context: 'Queen’s University Belfast', status: 'Completed · Distinction',
     stack: ['Python', 'Kubernetes', 'Amazon EKS', 'Terraform', 'Optimisation'],
     takeaway: 'Priority is useful evidence. Measured serving behaviour can change what that priority is worth.',
     sections: [
-      { id: 'problem', title: 'A node fails. The remaining capacity is not enough.', paragraphs: ['Recovery becomes a selection problem when the surviving nodes cannot hold every workload. Choosing an order is not necessarily the same as choosing the most valuable set that fits.', 'I built a scheduler that treats that choice as a capacity-constrained optimisation problem. A further model estimates whether a workload is likely to serve, so an important label is not the only signal.'] },
-      { id: 'approach', title: 'Measure the behaviour on real clusters', paragraphs: ['The evaluation used Amazon EKS with induced node failure, alongside a stock Kubernetes scheduler and PriorityClass preemption. The analysis plan was committed before the confirmatory data was collected.', 'The campaign recorded 199 runs across the experimental conditions and instrument checks. The comparisons account for both recovered work and disruption to healthy pods. These are research workloads, not production performance claims.'] },
-      { id: 'result', title: 'Recovery has more than one cost', paragraphs: ['In the main capacity-constrained comparison, the knapsack scheduler kept 84.9% of importance-weighted work running against the stock scheduler’s 79.1%, without evicting healthy pods. PriorityClass recovered more, but did so by evicting healthy workloads.', 'A separate experiment examined services whose importance labels did not match their serving behaviour. The recorded pairs below show what changed when selection used measured behaviour. The result is specific to that experiment and its workload.'] },
-      { id: 'lesson', title: 'A result worth explaining with its limits', paragraphs: ['The live cluster was small, the workloads were controlled and some follow-up comparisons were descriptive. Those limits are part of the result.', 'What I would take into a production design is the discipline: measure whether work is serving, make the capacity trade-off explicit, and evaluate the disruption caused by recovery as well as the work it brings back.'] },
+      { id: 'problem', title: 'A node fails and the rest can’t hold everything', paragraphs: [
+        'Once the surviving nodes can’t fit every workload, recovery becomes a choice. Kubernetes recovers in priority order, which isn’t the same as recovering the most valuable set that fits.',
+        'I built a scheduler that treats it as a knapsack problem, plus a model that estimates from signals the kubelet already reports whether a workload is actually serving, so an importance label isn’t the only thing it trusts.'
+      ] },
+      { id: 'approach', title: 'Real clusters, plan written first', paragraphs: [
+        'I ran it on Amazon EKS with node failures induced on purpose, against the stock scheduler and PriorityClass preemption. Workloads came from the Alibaba 2018 cluster trace, with nine importance grades. I committed the analysis plan before collecting the confirmatory data, and recorded 199 runs.',
+        'These are controlled research workloads on a small cluster. They aren’t production performance claims.'
+      ] },
+      { id: 'result', title: 'What it found', paragraphs: [
+        'In the main comparison, the knapsack scheduler kept 84.9% of importance-weighted work running, against the stock scheduler’s 79.1%, without evicting a single healthy pod. PriorityClass recovered more, by evicting healthy workloads to do it.',
+        'A second experiment used services labelled important that weren’t actually serving. Choosing on measured behaviour instead of labels gained 12.9 points. My written prediction, made weeks before the run, was 12.7. The recorded pairs below come from that experiment.'
+      ] },
+      { id: 'lesson', title: 'What I’d take into production', paragraphs: [
+        'The cluster was small, the workloads were controlled, and some follow-up comparisons were descriptive. Those limits are part of the result.',
+        'The part I’d use at work is the discipline: check whether work is serving, make the capacity trade-off explicit, and count the disruption a recovery causes as well as what it brings back.'
+      ] },
     ], next: 'heimdall',
   },
 };

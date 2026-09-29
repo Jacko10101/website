@@ -27,9 +27,9 @@ export const READING_ORDER = [
 
 const evidence: Record<string, Project["stats"]> = {
   nightshift: [{ value: "Pilot", label: "Jira ticket delivery" }, { value: "Draft PR", label: "human review before merge" }],
-  heimdall: [{ value: "22", label: "service repositories" }, { value: "4", label: "environments" }],
+  heimdall: [{ value: "25", label: "services" }, { value: "4", label: "environments" }],
   clarity: [{ value: "SQL", label: "answers grounded in query results" }, { value: "CSV", label: "downloadable reports" }],
-  "pipeline-platform": [{ value: "~20", label: "Java and Node services" }, { value: "~400", label: "deployments per month" }],
+  "pipeline-platform": [{ value: "25", label: "services" }, { value: "~400", label: "deployments per month" }],
   observability: [{ value: "4", label: "environments" }, { value: "72", label: "alerts linked to runbooks" }],
   "ai-gateway": [{ value: "Shared", label: "model access point" }, { value: "Per consumer", label: "access and usage attribution" }],
   "ml-scheduler": [{ value: "199", label: "recorded experimental runs" }, { value: "Distinction", label: "MSc Artificial Intelligence" }],
