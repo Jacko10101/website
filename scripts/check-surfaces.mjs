@@ -233,13 +233,15 @@ async function main() {
       await assert("getComputedStyle(document.querySelector('.ambient-light')).animationPlayState==='paused'", 'background motion can pause');
       await evaluate("document.querySelector('.motion-toggle').click()");
       await assert("getComputedStyle(document.querySelector('.ambient-light')).animationPlayState==='running'", 'background motion resumes');
-      const original=await evaluate("document.querySelector('main').textContent");
+      // The hero's readout is a live region that changes on its own; leave it out of the comparison.
+      const MAIN_TEXT="(() => { const m = document.querySelector('main').cloneNode(true); m.querySelectorAll('[aria-live], .pod-readout').forEach((e) => e.remove()); return m.textContent; })()";
+      const original=await evaluate(MAIN_TEXT);
       await evaluate("window.dispatchEvent(new Event('devlinops:chaos'))");await sleep(1800);await press('Escape','Escape',27);
-      if(original!==await evaluate("document.querySelector('main').textContent"))throw Error('chaos did not restore text');
+      if(original!==await evaluate(MAIN_TEXT))throw Error('chaos did not restore text');
       await assert("!document.querySelector('[data-chaos-ui]')",'chaos dismissed');
       await send('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:'reduce'}]},sessionId);
       await evaluate("window.dispatchEvent(new Event('devlinops:chaos'))");await sleep(150);
-      if(original!==await evaluate("document.querySelector('main').textContent"))throw Error('reduced-motion chaos mutates page');
+      if(original!==await evaluate(MAIN_TEXT))throw Error('reduced-motion chaos mutates page');
       await press('Escape','Escape',27);
       await assert("getComputedStyle(document.querySelector('.ambient-light')).animationName==='none'", 'reduced motion background is static');
       await assert("document.documentElement.scrollWidth<=document.documentElement.clientWidth",'no page overflow');

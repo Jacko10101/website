@@ -16,7 +16,7 @@ export default function Page() {
     <WorkCaseStudy id="ml-scheduler" titleStyle={{ viewTransitionName: "title-ml-scheduler" }}>
       <RecoveryEvidence />
       <p className="mt-6 border-t border-border pt-4 text-sm text-muted-foreground">
-        Want to see the selection rule move? <Link href="/lab#break" className="text-primary underline underline-offset-4">Break my name in the lab →</Link>
+        Want to see the selection rule move? <Link href="/" className="text-primary underline underline-offset-4">Click a letter of my name on the homepage →</Link>
       </p>
     </WorkCaseStudy>
   );
