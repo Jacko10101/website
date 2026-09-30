@@ -63,7 +63,7 @@ html, body { background: var(--paper); color: var(--ink); }
 .work-meta, .work-context, .work-copy > p:not(.work-headline), .work-index-link p { color: var(--soft-ink); }
 .project-card h2 { font-weight: 500; }
 .project-card h2 a span { font-size: 20px; color: var(--rust); }
-.project-card .work-meta { font-size: 10px; line-height: 1.8; }
+.project-card .work-meta { font-size: 12px; line-height: 1.8; }
 .project-card .project-cover { height: 340px; min-height: 340px; border-radius: 3px; }
 .project-grid { margin-bottom: 0; }
 
@@ -82,7 +82,7 @@ html, body { background: var(--paper); color: var(--ink); }
 .cover-signal-art span, .cover-signal-art svg { color: #687953; }
 .cover-signal-art > div + div { border-color: #d1d8c5; }
 .capacity-node { background: #f5f3eb80; border-color: #aab99a; border-radius: 3px; }
-.capacity-node > span { color: #687953; }
+.capacity-node > span { color: #687953; font-size: 11px; }
 .capacity-node i { border-color: #aab99a; }
 .capacity-node i[data-filled=true] { background: #879b6b; border-color: #879b6b; }
 .capacity-lost i { background: #d18058; }
@@ -106,6 +106,14 @@ html, body { background: var(--paper); color: var(--ink); }
 .case-figure figcaption { color: var(--soft-ink); }
 .case-cover .cover-pipeline-platform { padding: 40px 12% 0; max-height: 510px; }
 
+/* Labels carry useful context, including on a narrow screen. */
+.cover-tag, .case-facts dt { font-size: 11px; }
+.case-status { font-size: 11px; }
+.case-contents a { font-size: 13px; }
+.cover-ticket > span, .cover-draft > span, .cover-draft small { font-size: 10px; }
+.cover-flow > div, .project-card .cover-flow > div, .case-cover .cover-flow > div,
+.case-contents a span { font-size: 11px; }
+
 /* Instruments sit in the shared page layout as contained forest panels. */
 .lab-surface .lab-directory { border-color: #aab49b; }
 .lab-station { border-color: var(--rule); scroll-margin-top: 110px; }
@@ -123,6 +131,20 @@ html, body { background: var(--paper); color: var(--ink); }
 .scheduler-experiment .pod-hero-body .pod-fine a { color: #e7be9c; }
 .lab-content > section:last-child { color: var(--soft-ink); }
 .lab-content > section:last-child a { color: var(--rust); }
+.instrument-switcher button > span { font-size: 11px; }
+.connections-header, .waterfall > header, .waterfall-toolbar { font-size: 12px; }
+.connections-tools sup, .connections-tools .connections-expand,
+.connections-projects button > span:first-child, .connections-evidence .folio-label,
+.connections-evidence dt, .connections-origin .folio-label, .waterfall-axis,
+.waterfall-row small { font-size: 11px; }
+.connections > footer, .waterfall > footer, .waterfall-detail,
+.waterfall-row > span:first-child > span { font-size: 12px; }
+.evidence-head { font-size: 11px; }
+.evidence-numbers > div > span { font-size: 13px; }
+.evidence-numbers > p, .evidence-controls button, .evidence-footnote { font-size: 12px; }
+.evidence-plot text { font-size: 14px; }
+.evidence-axis-labels { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; font: 12px/1.6 var(--font-mono); color: #9eafa3; }
+.evidence-axis-labels > span:last-child { text-align: right; color: #9adab1; }
 
 /* Modal tools restore their own contrast independently of the page theme. */
 .ink-surface, .workbench-shell, .pager-overlay, [data-chaos-ui] {
@@ -158,7 +180,8 @@ html, body { background: var(--paper); color: var(--ink); }
   .about-prose p, .case-intro { font-size: 15px; }
   .case-prose section > p:not(.overline) { font-size: 15px; }
   .case-cover .cover-pipeline-platform { padding: 23px 15px 0; max-height: 310px; }
-  .case-status { font-size: 9px; }
+  .connections-projects button { font-size: 13px; }
+  .evidence-plot text { font-size: 24px; }
   .scheduler-experiment .pod-hero-body { padding: 18px; }
   .lab-station h2 { font-size: 25px; }
   .lab-content .page-intro + p { font-size: 15px; }

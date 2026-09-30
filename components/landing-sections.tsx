@@ -20,10 +20,10 @@ export function LandingWork() {
         <Link href="/projects/nightshift" className="landing-project-art nightshift-art" aria-label="Read the Nightshift case study">
           <div className="project-art-top"><span>NIGHTSHIFT / ENGINEERING AUTOMATION</span><span>↗</span></div>
           <p className="project-art-headline">Picking up<br /><em>the next ticket.</em></p>
-          <div className="nightshift-workflow"><span className="nightshift-workflow-ticket"><span aria-hidden>≡</span><span>TAGGED JIRA TICKET<small>Fix a security finding.</small></span></span><span className="nightshift-workflow-path" aria-hidden>↓</span><span className="nightshift-workflow-agent"><span className="nightshift-asterisk" aria-hidden>✳</span><span>Nightshift<small>Investigate · implement · verify</small></span></span><span className="nightshift-workflow-path" aria-hidden>↓</span><span className="nightshift-workflow-draft"><span aria-hidden>⑂</span><span>DRAFT PULL REQUEST<small>Tests attached for review.</small></span><span className="nightshift-check" aria-hidden>✓</span></span></div>
+          <div className="nightshift-workflow"><span className="nightshift-workflow-ticket"><span aria-hidden>≡</span><span>TAGGED JIRA TICKET<small>Fix a security finding.</small></span></span><span className="nightshift-workflow-path" aria-hidden>↓</span><span className="nightshift-workflow-agent"><span className="nightshift-asterisk" aria-hidden>✳</span><span>Nightshift<small>Implement · verify</small></span></span><span className="nightshift-workflow-path" aria-hidden>↓</span><span className="nightshift-workflow-draft"><span aria-hidden>⑂</span><span>DRAFT PULL REQUEST<small>Tests attached.</small></span><span className="nightshift-check" aria-hidden>✓</span></span></div>
           <span className="landing-art-badge">Human review before merge.</span>
         </Link>
-        <div className="landing-project-meta"><span>Applied AI</span><span><i className="pilot-dot" /> Supervised pilot</span></div>
+        <div className="landing-project-meta"><span>Applied AI</span><span><i /> Running</span></div>
         <h3><Link href="/projects/nightshift">Nightshift <span aria-hidden>↗</span></Link></h3>
         <p>Engineering agents for tagged Jira tickets, PR reviews, security automation and incident response. Built around scoped workflows and human review.</p>
       </article>

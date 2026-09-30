@@ -222,7 +222,7 @@ export function HeimdallDemo() {
       <div className="flex flex-wrap items-center gap-3 border-b border-border bg-secondary/40 px-4 py-2.5">
         <span className="instrument-glyph" aria-hidden>⌁</span>
         <span className="font-mono text-xs text-muted-foreground">heimdall · environments</span>
-        <div className="ml-auto flex items-center gap-2 font-mono text-[11px] text-muted-foreground">
+        <div className="ml-auto flex items-center gap-2 font-mono text-xs text-muted-foreground">
           <span className="h-2 w-2 rounded-full bg-muted-foreground/50" aria-hidden />
           frozen snapshot
         </div>
@@ -325,7 +325,7 @@ export function HeimdallDemo() {
                             {reached ? "✓" : blockedHere ? "⏳" : "○"} {env}
                           </span>
                           {reach && (
-                            <span className="pl-0.5 font-mono text-[10px] text-muted-foreground">
+                            <span className="pl-0.5 font-mono text-xs text-muted-foreground">
                               {reach.via}
                             </span>
                           )}
@@ -352,9 +352,9 @@ export function HeimdallDemo() {
           <div className="min-w-[560px]">
             {/* header */}
             <div className="grid grid-cols-[150px_repeat(4,1fr)] gap-2 px-1 pb-2">
-              <div className="font-mono text-[11px] text-muted-foreground">service</div>
+              <div className="font-mono text-xs text-muted-foreground">service</div>
               {ENVS.map((env) => (
-                <div key={env} className="font-mono text-[11px] text-muted-foreground">
+                <div key={env} className="font-mono text-xs text-muted-foreground">
                   {env}
                 </div>
               ))}
@@ -405,11 +405,11 @@ export function HeimdallDemo() {
                               cell.status === "progressing" ? "animate-pulse" : ""
                             }`}
                           />
-                          <span className="truncate font-mono text-[11px] text-muted-foreground">
+                          <span className="truncate font-mono text-xs text-muted-foreground">
                             {cell.sha}
                           </span>
                         </div>
-                        <div className={`mt-0.5 font-mono text-[10px] ${meta.text}`}>
+                        <div className={`mt-0.5 font-mono text-xs ${meta.text}`}>
                           {cell.status === "nodata" ? "no data" : cell.status}
                         </div>
                       </button>
@@ -482,7 +482,7 @@ export function HeimdallDemo() {
         </AnimatePresence>
 
         {/* legend */}
-        <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-border pt-4 font-mono text-[11px] text-muted-foreground">
+        <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-border pt-4 font-mono text-xs text-muted-foreground">
           {(Object.keys(STATUS_META) as CellStatus[]).map((s) => (
             <span key={s} className="flex items-center gap-1.5">
               <span className={`h-1.5 w-1.5 rounded-full ${STATUS_META[s].dot}`} />

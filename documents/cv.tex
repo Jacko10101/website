@@ -1,0 +1,109 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[default]{sourcesanspro}
+\renewcommand{\familydefault}{\sfdefault}
+
+\usepackage[a4paper, top=1.4cm, bottom=1.4cm, left=1.6cm, right=1.6cm]{geometry}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{textcomp}
+\usepackage{etoolbox}
+\usepackage{ragged2e}
+
+\linespread{1.02}
+
+\definecolor{rule}{HTML}{C8C8C8}
+\definecolor{muted}{HTML}{6B6B6B}
+\definecolor{ink}{HTML}{1A1A1A}
+\definecolor{accent}{HTML}{0B6E4F}
+
+\hypersetup{
+  colorlinks=true, urlcolor=black, linkcolor=black,
+  pdftitle={Jack Devlin - Platform Engineer},
+  pdfauthor={Jack Devlin},
+  pdfsubject={Platform engineering, developer tooling and AI delivery}
+}
+
+\emergencystretch=1em
+
+\hyphenpenalty=10000
+\AtBeginDocument{\setlength{\RaggedRightRightskip}{0pt plus 4em}}
+
+\titleformat{\section}
+  {\normalsize\bfseries\color{ink}}
+  {}{0em}
+  {\MakeUppercase}[\vspace{-2pt}{\color{accent}\rule{\linewidth}{0.5pt}}]
+\titlespacing*{\section}{0pt}{10pt}{3pt}
+
+\setlist[itemize]{leftmargin=1em, topsep=3pt, itemsep=3pt, parsep=0pt}
+\renewcommand\labelitemi{\textcolor{muted}{$\cdot$}}
+
+\newcommand{\role}[4]{%
+  \par\vspace{4pt}\noindent
+  {\bfseries #1}\hfill\textcolor{muted}{#3 \textperiodcentered\ #4}\\[1pt]
+  \textit{#2}\par
+  \vspace{2pt}
+}
+
+\setlength{\parindent}{0pt}
+
+\newcommand{\lead}[1]{\textcolor{accent}{\textbf{#1}}}
+
+\begin{document}
+\pagestyle{empty}
+\RaggedRight
+
+\noindent
+\begin{minipage}[b]{0.66\textwidth}
+  {\fontsize{24pt}{27pt}\selectfont\bfseries Jack Devlin}\\[5pt]
+  \textcolor{muted}{Platform Engineer \textperiodcentered\ Northern Ireland}\\[2pt]
+  \textcolor{muted}{\small Irish \& British citizen \textperiodcentered\ UK \& EU work rights}
+\end{minipage}%
+\hfill
+\begin{minipage}[b]{0.30\textwidth}
+  \RaggedLeft\small
+  \href{tel:+447423281519}{+44 7423 281519}\\[2pt]
+  \href{mailto:jack@devlinops.com}{jack@devlinops.com}\\[2pt]
+  \href{https://devlinops.com}{devlinops.com}
+\end{minipage}
+\par\vspace{7pt}
+{\color{accent}\hrule height 0.8pt}
+
+\section*{Profile}
+Platform engineer who builds and runs services on Kubernetes and AWS. Experience spans Python and Java development, release automation, observability and production support. Work includes AI services that turn customer questions into database reports and engineering tickets into tested code changes.
+
+\section*{Experience}
+\role{Loweconex}{Platform \& Site Reliability Engineer}{Lisburn, UK}{Aug 2023 -- Present}
+{\small\textcolor{muted}{Platform infrastructure, developer tooling and incident response for an IoT software business.}}
+\vspace{4pt}
+
+\begin{itemize}
+  \item \lead{CI/CD \& GitOps.} Built the foundations of shared delivery pipelines for 25 Java and Node services and continued to own the platform as other engineers contributed. Supports $\sim$400 deployments a month across four environments, with ArgoCD reconciliation, post-deploy checks and dev-to-QA promotion.
+  \item \lead{AI-assisted engineering.} Built and run Nightshift, a Python service for tagged Jira tickets, pull-request reviews, security automation and incident response. Its supervised ticket-delivery pilot produced a draft passing independent Maven tests and CI, with engineer review before merge.
+  \item \lead{Natural-language analytics.} Took Clarity, a Java/Spring Boot service, from prototype to production so users can ask questions of their data and download reports without writing SQL. Added schema context, read-only database access and SQL validation to keep queries within each customer's data.
+  \item \lead{Developer tooling.} Built Heimdall, a Python service bringing together Jira tickets, pull requests, deployments and test results across 25 services. Gave engineers one place to see where a change is deployed, spot stalled releases and investigate deployment drift.
+  \item \lead{Observability \& reliability.} Built self-hosted metrics, logs and tracing across four environments using Prometheus, Thanos, Loki, Tempo and Grafana. Enabled investigations across AWS accounts and linked 72 alerts to runbooks. Checked monitoring-pipeline alert thresholds against historical metrics.
+  \item \lead{LLM infrastructure.} Took the shared language-model gateway from proof of concept to a service used by customer features and engineering agents, with access controls, budgets and usage tracking. Built automated code review into the shared CI/CD pipeline alongside build and security checks.
+\end{itemize}
+
+\role{OD3 Engineering}{Software Developer (Industrial Placement)}{Magherafelt, UK}{Aug 2021 -- Aug 2022}
+\begin{itemize}
+  \item Built C\#/.NET applications and integrations using the Tekla Structures API to automate structural design tasks and reduce manual drafting for in-house architects.
+\end{itemize}
+
+\section*{Technical}
+\lead{Platform \& IaC:} Kubernetes, EKS, ArgoCD, Helm, Kustomize, Terraform, AWS CDK, GitHub Actions, Bitbucket Pipelines. \\[2pt]
+\lead{AI Engineering:} LiteLLM, tool calling, text-to-SQL, agent workflows, guardrails, canary evaluations. \\[2pt]
+\lead{Observability \& Security:} Prometheus, Grafana, Loki, Thanos, Tempo, OpenTelemetry, Veracode, SourceClear. \\[2pt]
+\lead{Cloud, Data \& Languages:} Python, Java, TypeScript, C\#, Bash, SQL; AWS, PostgreSQL, TimescaleDB, Kafka, Redis.
+
+\section*{Education}
+\textbf{MSc Artificial Intelligence, Distinction}\hfill\textcolor{muted}{Queen's University Belfast \textperiodcentered\ 2026} \\[1pt]
+Completed alongside work. Dissertation: capacity-aware Kubernetes recovery scheduling, evaluated on real Amazon EKS clusters. \\[4pt]
+\textbf{BSc Computer Science, 2:1}\hfill\textcolor{muted}{Queen's University Belfast \textperiodcentered\ 2019 -- 2023} \\[1pt]
+First-class dissertation on deep learning for stock-price prediction.
+
+\end{document}

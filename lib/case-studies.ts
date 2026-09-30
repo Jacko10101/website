@@ -23,7 +23,7 @@ export const caseStories: Record<string, CaseStory> = {
     id: 'nightshift', category: 'Engineering automation', title: 'Nightshift',
     headline: 'Engineering agents for tickets, reviews and incidents.',
     intro: 'Nightshift is the service I built for engineering agents at Loweconex. It picks up tagged Jira tickets and handles pull-request reviews, security automation and incident response, with each workflow running under its own access and budget.',
-    role: 'Designed and built the service; ran the pilot', context: 'Loweconex', status: 'Supervised pilot',
+    role: 'Designed, built and run the service', context: 'Loweconex', status: 'Running',
     stack: ['Python', 'Kubernetes', 'Jira', 'Bitbucket', 'LiteLLM'],
     takeaway: 'A shared service for tagged Jira tickets, PR reviews, security automation and incident response. The delivery pilot produced a draft that passed independent Maven tests and CI.',
     sections: [
@@ -31,8 +31,8 @@ export const caseStories: Record<string, CaseStory> = {
         'I wanted a common way to run agents against our engineering tools. A Jira tag marks a ticket for Nightshift to pick up. Other workflows handle pull-request reviews, security work and incident response.',
         'For ticket delivery, the output fits our existing review process: a draft pull request, test results and a record of the run. That gives an engineer a change to assess in Bitbucket, linked back to the work in Jira.'
       ] },
-      { id: 'result', title: 'The first pilot', paragraphs: [
-        'The delivery pilot used penetration-test tickets on a Java service. Nightshift prepared the workspace, worked on the implementation and submitted the proposed change for verification.',
+      { id: 'result', title: 'The ticket-delivery pilot', paragraphs: [
+        'For the supervised delivery pilot, I started with penetration-test tickets on a Java service. A ticket gives the agent a specific finding to work on and gives the reviewer something concrete to check. Nightshift prepared the workspace, worked on the implementation and submitted the proposed change for verification.',
         'The resulting draft passed Maven tests run independently of the agent, then branch and pull-request CI. An engineer reviewed the change before merge. This exercised the full route from a Jira ticket to a tested draft in Bitbucket.',
         'Those checks cover the build and test suite. Reviewing whether the implementation actually resolves the security finding remains part of the engineer’s job.'
       ] },
@@ -41,7 +41,7 @@ export const caseStories: Record<string, CaseStory> = {
         'The verifier reconstructs the proposed change from a clean checkout and runs the configured checks. Failed checks prevent publication. A passing run can open a draft pull request, with the run record available to the reviewer.'
       ] },
       { id: 'decisions', title: 'Handling incomplete or changed work', paragraphs: [
-        'An incomplete ticket can trigger a clarification question on Jira. Before writing back, the service checks whether the ticket or branch has changed during the run. A previous decision may no longer apply after a human edit.',
+        'I didn’t want an agent guessing its way through an incomplete ticket. It can ask for clarification on Jira instead. Before writing back, Nightshift checks whether the ticket or branch has changed during the run; an engineer’s edit can change what needs doing.',
         'Version updates use deterministic edits where the change is mechanical. Each workflow has its own access and budget, so adding a capability does not automatically give it the permissions of every other workflow.'
       ] },
     ], next: 'clarity',
@@ -64,7 +64,7 @@ export const caseStories: Record<string, CaseStory> = {
         'CSV reports stream to storage rather than being assembled in memory, allowing the service to handle larger exports.'
       ] },
       { id: 'decisions', title: 'Checking the response against the query', paragraphs: [
-        'One question asked which sites were running hottest. Clarity replied that no data was available, although the database contained it. The request had completed without an obvious error, but the answer was wrong.',
+        '“Which sites are running hottest?” should have been a straightforward question. Clarity said no data was available, even though the database contained it. The request looked successful in the logs. The customer would still have received the wrong answer.',
         'I added checks that compare the final response with the tool results: whether the query succeeded, whether named items appear in the returned data, and whether a claimed action actually happened. The application also limits tool calls and request rates.'
       ] },
       { id: 'result', title: 'In production', paragraphs: [
@@ -114,7 +114,7 @@ export const caseStories: Record<string, CaseStory> = {
         'Veracode, SourceClear and Jira fix-version gates can be enabled per service. For dev deployments, Image Updater records the new image in GitOps and ArgoCD rolls it out. A Git revert restores the previous desired image.'
       ] },
       { id: 'decisions', title: 'Test what was deployed', paragraphs: [
-        'I integrated our test framework as an ArgoCD PostSync hook in dev and QA, with results in an internal dashboard called Sentry. Many failures previously treated as flaky came from tests reaching a pod before it was ready to serve requests.',
+        'Some of our “flaky” tests were simply too early: the pod had started, but it wasn’t ready to serve requests. I integrated our test framework as an ArgoCD PostSync hook in dev and QA, with results in an internal dashboard called Sentry.',
         'Promotion from dev to QA checks that the tested image is still running. Missing results, all-skipped suites and ambiguous failures stop promotion. Preprod and production remain human decisions.'
       ] },
       { id: 'result', title: 'Where it is now', paragraphs: [
@@ -170,7 +170,7 @@ export const caseStories: Record<string, CaseStory> = {
       ] },
       { id: 'result', title: 'The services using it', paragraphs: [
         'Clarity, Nightshift and automated pull-request review use the gateway. I also integrated the reviewer into the shared delivery pipeline. Its feedback is advisory; an unavailable reviewer does not block a build.',
-        'Operating the gateway includes checking the cost reporting. Our spend dashboard once overstated usage costs because its price variables referred to a different model. Token counts and configured prices need to be checked separately.'
+        'Our spend dashboard once made the gateway look more expensive than it was. The token counts were fine; the price variables referred to a different model. That is one of the less glamorous parts of running the gateway: checking that the cost figures match what we are actually calling.'
       ] },
     ], next: 'nightshift',
   },
@@ -184,7 +184,7 @@ export const caseStories: Record<string, CaseStory> = {
     sections: [
       { id: 'problem', title: 'Keeping device control local', paragraphs: [
         'I wanted the lights and sensors to work without relying on an internet connection. Home Assistant handles the automations, Zigbee connects the devices locally and MQTT carries messages.',
-        'There are more than twenty devices, including Hue bulbs, Innr plugs, motion and contact sensors, and a solar-powered camera.'
+        'There are more than twenty devices, including Hue bulbs, Innr plugs, motion and contact sensors, and a solar-powered camera. The kitchen heater and hallway lamp are part of it too: ordinary things I use every day, running on the little cluster.'
       ] },
       { id: 'approach', title: 'The hardware and cluster', paragraphs: [
         'The cluster runs on a Raspberry Pi 5 with a 1TB NVMe drive and a UPS. ArgoCD reconciles deployments from Git, and Prometheus and Grafana provide monitoring.',

@@ -53,7 +53,7 @@ export const inReadingOrder = (): (Project & { href: string })[] =>
   projects.filter((p): p is Project & { href: string } => typeof p.href === "string");
 export const firstSentence = (text: string) => text.match(/^.*?\.(?=\s|$)/)?.[0] ?? text;
 export const proofPoints = [
-  { value: "22", label: "service repositories in one deployment view", href: "/projects/heimdall" },
+  { value: "25", label: "services in one deployment view", href: "/projects/heimdall" },
   { value: "~400", label: "deployments a month through shared delivery tooling", href: "/projects/pipeline-platform" },
   { value: "Distinction", label: "MSc in Artificial Intelligence, completed alongside work", href: "/projects/ml-scheduler" },
 ];

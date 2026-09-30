@@ -253,7 +253,7 @@ export function GroundingDemo() {
                   <span className="font-mono text-xs text-primary">
                     {scenario.label}
                   </span>
-                  <span className="font-mono text-[11px] text-muted-foreground">
+                  <span className="font-mono text-xs text-muted-foreground">
                     {SEVERITY_COPY[scenario.severity]}
                   </span>
                 </div>

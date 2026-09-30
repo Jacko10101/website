@@ -5,7 +5,7 @@ export function Hero() {
   return (
     <section className="landing-hero landing-container" aria-labelledby="hero-title">
       <div className="landing-hero-top">
-        <p className="landing-label">Platform engineer <span>/</span> Northern Ireland</p>
+        <p className="landing-label hero-role"><strong>Platform engineer</strong> <span>/</span> Northern Ireland</p>
         <Link href="/contact" className="landing-availability"><span /> Open to a conversation <span aria-hidden>↗</span></Link>
       </div>
       <div className="landing-hero-grid">
