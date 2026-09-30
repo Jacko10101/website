@@ -6,8 +6,8 @@ import { ContactCTA } from "@/components/contact-cta";
 
 export const metadata: Metadata = {
   title: "Work", alternates: { canonical: "/projects" },
-  description: "The platforms, developer tools and AI services I build. Explore the work and the decisions behind it.",
-  openGraph: { title: "Work · Jack Devlin", description: "Real projects, a few experiments, and what I learned along the way.", url: "/projects" },
+  description: "Eight case studies covering my work at Loweconex, MSc research and homelab.",
+  openGraph: { title: "Work · Jack Devlin", description: "Delivery pipelines, monitoring, developer tools, AI services, Kubernetes research and the homelab.", url: "/projects" },
 };
 
 export default function ProjectsPage() {

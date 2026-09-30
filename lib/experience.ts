@@ -36,7 +36,7 @@ export const roles: Role[] = [
     endDate: null,
     dates: "Aug 2023 – present",
     summary:
-      "Platform infrastructure, developer tooling and production support for an IoT software business. My work spans shared delivery pipelines, observability, a deployment dashboard, and AI services for customers and engineers.",
+      "I build and run shared delivery pipelines, Kubernetes infrastructure, monitoring and developer tools for the software team. More recently, I’ve developed AI services for customers and engineering agents, alongside production support.",
     evidence: [
       { label: "Nightshift", href: "/projects/nightshift" },
       { label: "Clarity", href: "/projects/clarity" },
@@ -54,7 +54,7 @@ export const roles: Role[] = [
     endDate: "2022-08",
     dates: "Aug 2021 – Aug 2022",
     summary:
-      "A placement year building C#/.NET applications with the Tekla Structures API and design-platform integrations, automating drafting work for the in-house architects.",
+      "I built C#/.NET applications using the Tekla Structures API and integrated design tools to automate drafting tasks for the in-house architects.",
   },
 ];
 
@@ -72,7 +72,7 @@ export const education: Qualification[] = [
     result: "Distinction",
     institution: "Queen's University Belfast",
     dates: "2026 · alongside work",
-    note: "Dissertation: capacity-aware recovery scheduling for Kubernetes, measured on real EKS clusters under induced node failure.",
+    note: "My dissertation studied which workloads Kubernetes should recover when a failed node leaves too little capacity. I tested the scheduler on Amazon EKS.",
   },
   {
     award: "BSc Computer Science",

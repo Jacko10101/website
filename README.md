@@ -6,7 +6,7 @@ Jack Devlin’s platform engineering portfolio: [devlinops.com](https://www.devl
 
 ## The site
 
-The homepage introduces the work with an interactive delivery example. Visitors can ship a change, give Nightshift a ticket, or ask Clarity a question, then try a failure condition. These are illustrative workflows with sample data, with links to the real projects.
+The homepage opens with “Good software. Solid ground.” on a warm paper surface. A custom isometric illustration shows the three layers of the work: infrastructure, the developer platform, and AI services. Visitors can select a layer to find its related case study. Selected projects, experiment previews, and contact details follow.
 
 Eight case studies explain the problem, my contribution, the decisions and the result:
 
@@ -23,7 +23,7 @@ Eight case studies explain the problem, my contribution, the decisions and the r
 
 The stories distinguish production services, pilot results and research. Metrics describe evidenced scope or recorded experiments; there are no invented time-saving claims. Nightshift’s tested draft delivery is separate from human acceptance and merge. The MSc result is Distinction, completed alongside work.
 
-`/lab` contains the on-call simulator, a map of tools shared across projects, an optional SQLite workbench and a request waterfall recorded by the visitor’s browser. The on-call game offers untimed practice and a timed shift. Reading evidence is free; decisions affect the budget. Resolved incidents explain the lesson, and the handover includes an expandable debrief. The terminal and incident simulator are also available from any page. Press `/` for the terminal; try `inspect nightshift`, `compare`, `sql` or `oncall`.
+`/lab` contains the on-call simulator, a map of tools shared across projects, an optional SQLite workbench, a request waterfall recorded by the visitor’s browser, and the former homepage’s interactive Kubernetes name cluster. The on-call game offers untimed practice and a timed shift. Reading evidence is free; decisions affect the budget. Resolved incidents explain the lesson, and the handover includes an expandable debrief. The terminal and incident simulator are also available from any page. Press `/` for the terminal; try `inspect nightshift`, `compare`, `sql` or `oncall`.
 
 ## Implementation
 
@@ -32,8 +32,8 @@ Next.js 16 App Router, React 19, TypeScript and Tailwind 4. Content routes are p
 - `lib/case-studies.ts` holds the stories. `lib/projects.ts` derives the registry used by navigation, the sitemap, the terminal and the career database, with separately sourced scope figures.
 - `lib/profile.ts` holds availability and personal facts. `lib/experience.ts` feeds About and structured data.
 - `components/work-case-study.tsx` supplies the reading layout. Existing project demos retain their own behaviour; Clarity’s examples are selected individually to keep the page readable.
-- `components/platform-playground.tsx` owns the homepage workflow example. Mode changes cancel a running example; reduced motion returns the outcome immediately. The decorative background has a pause control and a static reduced-motion version.
-- `app/folio.css` and `app/atmosphere.css` define deep ink surfaces, soft lime accents and slow ambient contours. Fonts are Inter, a system serif and JetBrains Mono, with web fonts downloaded at build time and served locally.
+- `components/platform-sculpture.tsx` owns the homepage illustration and layer selection. `components/landing-sections.tsx` supplies the project and experiment previews. Layer motion respects reduced motion. The former homepage cluster lives in `/lab#scheduler`, with pointer and keyboard controls.
+- `app/design-system.css` supplies one paper, forest and terracotta theme across every route, with contained forest panels for interactive instruments. `app/landing.css` owns homepage composition; `app/folio.css` and `app/atmosphere.css` supply the inner layouts and instrument artwork. Fonts are Inter, a system serif and JetBrains Mono, with web fonts downloaded at build time and served locally.
 - `next.config.ts` captures build provenance and sets security headers. Production CSP allows the SQLite WebAssembly engine without general `unsafe-eval`.
 - Vercel deploys on a push to `main`; local edits and previews do not publish.
 
@@ -57,6 +57,6 @@ npm run check:surfaces
 node scripts/review-design.mjs http://localhost:3111
 ```
 
-Browser scripts use Chrome DevTools Protocol and accept a base URL and `CHROME_PATH`. Viewport checks cover every route at 320, 390, 768, 1024 and 1440 pixels, document status, console errors, mobile navigation, keyboard controls and reduced motion. Surface checks exercise the terminal, incident game, SQL workbench, project demos, recorded research, and success/failure/cancellation in all three homepage examples. The design script saves desktop and mobile page screenshots to the OS temporary directory.
+Browser scripts use Chrome DevTools Protocol and accept a base URL and `CHROME_PATH`. Viewport checks cover every route at 320, 390, 768, 1024 and 1440 pixels, document status, console errors and mobile navigation. Surface checks exercise the terminal, incident game, SQL workbench, project demos, recorded research, keyboard node failure in the lab, homepage layer selection, and reduced motion. The design script saves desktop and mobile page screenshots to the OS temporary directory.
 
 The contact form requires `NEXT_PUBLIC_WEB3FORMS_KEY`; without it, the contact page offers email. The site otherwise runs without configuration. `npm run build -- --webpack` is available when the local environment requires the alternative compiler.

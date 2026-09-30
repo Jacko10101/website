@@ -1,17 +1,15 @@
-import { HomeLab } from "@/components/home-lab";
 import { Hero } from "@/components/hero";
-import { CaseIndex } from "@/components/case-index";
-import { ContactCTA } from "@/components/contact-cta";
+import { LandingWork, LandingAfterHours, LandingContact } from "@/components/landing-sections";
 import { TestimonialBlock } from "@/components/testimonial";
 
 export default function Home() {
   return (
-    <div className="folio-surface home-page">
+    <div className="landing-page">
       <Hero />
-      <CaseIndex />
-      <HomeLab />
+      <LandingWork />
+      <LandingAfterHours />
       <TestimonialBlock />
-      <ContactCTA />
+      <LandingContact />
     </div>
   );
 }

@@ -24,13 +24,13 @@ interface Box { id: string; x: number; y: number; w: number; h: number; label: s
 
 const BOXES: Box[] = [
   { id: "clarity", x: 30, y: 40, w: 150, h: 58, label: "Clarity", href: "/projects/clarity", say: "Clarity: I took it from a prototype to production. The SQL is checked before it runs." },
-  { id: "nightshift", x: 30, y: 175, w: 150, h: 58, label: "Nightshift", href: "/projects/nightshift", say: "Nightshift: I built it. Tickets in, tested draft PRs out, an engineer decides." },
-  { id: "gateway", x: 260, y: 105, w: 160, h: 58, label: "AI gateway", href: "/projects/ai-gateway", say: "AI gateway: the one way our services reach a model, with an identity per consumer." },
+  { id: "nightshift", x: 30, y: 175, w: 150, h: 58, label: "Nightshift", href: "/projects/nightshift", say: "Nightshift: engineering agents for tagged Jira tickets, PR reviews, security automation and incidents." },
+  { id: "gateway", x: 260, y: 105, w: 160, h: 58, label: "AI gateway", href: "/projects/ai-gateway", say: "AI gateway: shared model access, with a separate key and usage records for each consumer." },
   { id: "models", x: 500, y: 105, w: 110, h: 58, label: "models", href: "/projects/ai-gateway", say: "AI gateway: ask for a model that isn’t on your list and you get a 401." },
-  { id: "pipe", x: 30, y: 470, w: 520, h: 64, label: "commit  →  shared pipeline  →  image  →  ArgoCD", href: "/projects/pipeline-platform", say: "Delivery: I built the foundations. 25 services now import it." },
+  { id: "pipe", x: 30, y: 470, w: 520, h: 64, label: "commit  →  shared pipeline  →  image  →  ArgoCD", href: "/projects/pipeline-platform", say: "Delivery: shared Java and Node pipelines, now used by 25 services." },
   { id: "envs", x: 640, y: 250, w: 190, h: 200, label: "", say: "Four environments. ArgoCD promotes the same image through each." },
   { id: "obs", x: 640, y: 40, w: 190, h: 120, label: "observability", href: "/projects/observability", say: "Observability: metrics, logs and traces I built and run, with 72 alerts linked to runbooks." },
-  { id: "heimdall", x: 330, y: 300, w: 170, h: 58, label: "Heimdall", href: "/projects/heimdall", say: "Heimdall: I built it and run it. Standup runs off it." },
+  { id: "heimdall", x: 330, y: 300, w: 170, h: 58, label: "Heimdall", href: "/projects/heimdall", say: "Heimdall: the deployment dashboard used by engineers and release managers, including in standup." },
 ];
 const ARROWS = [
   "M180 69 C 220 69, 220 120, 260 128", "M180 204 C 220 204, 220 150, 260 142", "M420 134 L 500 134",

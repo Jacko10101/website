@@ -5,16 +5,18 @@ import { OncallInvite } from "@/components/oncall-invite";
 import { WorkConnections, QueryDrawer } from "@/components/work-connections";
 import { RequestWaterfall } from "@/components/request-waterfall";
 import { Whiteboard } from "@/components/whiteboard";
+import { PodName } from "@/components/pod-name";
+import { ContactCTA } from "@/components/contact-cta";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/lab" },
-  title: "Experiments · follow the work",
+  title: "Lab",
   description:
     "Take an on-call shift, trace connections between projects, and inspect a live request waterfall from your own browser.",
   openGraph: {
     title: "Lab · Jack Devlin",
     description:
-      "Take the pager: an incident simulator drawn from real pages, plus a database of the work you can query in your browser.",
+      "An incident simulator, a map of the platform, a browser request waterfall and a Kubernetes recovery experiment.",
     url: "/lab",
   },
 };
@@ -31,38 +33,35 @@ export default function LabPage() {
   const buildDate = formatBuildDate(BUILD.time);
 
   return (
-    <div className="lab-surface folio-surface pb-28 pt-28 md:pt-36">
+    <div className="lab-surface folio-surface">
       {/* `.container` is unlayered CSS, so a `max-w-*` utility on the same
           element never wins — the cap has to live on a child. */}
       <div className="container">
         <div className="lab-content mx-auto max-w-6xl">
-          <p className="eyebrow mb-5">lab</p>
-          <h1 className="lab-heading">
-            Open the tools.
-          </h1>
+          <header className="page-intro"><p className="overline">Experiments / The lab</p><h1>A little further<br /><em>under the hood.</em></h1></header>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-            The whiteboard is the platform I work on, drawn the way I’d draw it
-            for you in an interview. Below it: take an on-call shift, follow a
-            tool through the work, or watch this page arrive.
+            The diagram shows how the projects at Loweconex connect. Below it,
+            you can work through an incident simulation, explore the tools used
+            across projects, inspect this page’s requests or try the Kubernetes recovery demo.
           </p>
 
           <div className="mt-12"><Whiteboard /></div>
 
-          <nav className="lab-directory" aria-label="Lab instruments"><a href="#shift"><span>01</span>Take the pager ↘</a><a href="#query"><span>02</span>Follow the connections ↘</a><a href="#measure"><span>03</span>Watch the requests ↘</a></nav>
+          <nav className="lab-directory" aria-label="Lab instruments"><a href="#shift"><span>01</span>Take the pager ↘</a><a href="#query"><span>02</span>Follow the connections ↘</a><a href="#measure"><span>03</span>Watch the requests ↘</a><a href="#scheduler"><span>04</span>Break a little cluster ↘</a></nav>
 
           {/* 01 — the shift. */}
           <section id="shift" className="lab-station mt-20">
             <p className="eyebrow mb-4">01 · the shift</p>
             <h2 className="display mb-4 text-2xl text-foreground sm:text-3xl">
-              One shift, five pages
+              Five incidents to work through
             </h2>
             <p className="mb-8 max-w-2xl leading-relaxed text-muted-foreground">
-              The failure modes are ones I&apos;ve been paged for: an
+              These scenarios are based on failures I&apos;ve investigated: an
               OOMKilled JVM, a poison message stuck on a Kafka partition, an
-              ArgoCD reconciler quietly undoing someone&apos;s manual scale.
-              The service names are made up. Reading the evidence is free. Wrong moves cost budget.
-              Take your time in practice mode, or choose a timed shift.
-              A full shift takes about five minutes.
+              ArgoCD reconciler undoing a manual scale change.
+              The service names are fictional. Inspect the evidence, then choose
+              an action; wrong decisions reduce your budget. Use practice mode
+              without a timer, or try a timed shift of about five minutes.
             </p>
             <OncallInvite />
           </section>
@@ -74,9 +73,10 @@ export default function LabPage() {
               Follow the connections
             </h2>
             <p className="mb-8 max-w-2xl leading-relaxed text-muted-foreground">
-              The same tools turn up in different places. Follow Prometheus from
-              the platform into my flat, or Kubernetes from production into the
-              research. Pick a thread and see the work it connects.
+              Select a tool to see which projects use it. Prometheus appears in
+              the monitoring stack and the homelab; Kubernetes connects the
+              production platform with my MSc research. You can also query the
+              project data in the SQL workbench.
             </p>
             <WorkConnections />
             <QueryDrawer />
@@ -89,13 +89,20 @@ export default function LabPage() {
               Watch this page arrive
             </h2>
             <p className="mb-8 max-w-2xl leading-relaxed text-muted-foreground">
-              A flight recorder for this visit. Freeze it, filter the requests,
-              and inspect the timings. Open the SQL workbench above and its
-              database engine will leave a trace here too.
+              These are the requests recorded by your browser during this visit.
+              Freeze the view, filter requests and inspect their timings. Opening
+              the SQL workbench above also loads its database engine, which appears here.
             </p>
             <RequestWaterfall />
             <p className="eyebrow mb-4 mt-10">The document at a glance</p>
             <SessionVitals />
+          </section>
+
+          <section id="scheduler" className="lab-station scheduler-experiment mt-20">
+            <p className="eyebrow mb-4">04 · recovery</p>
+            <h2 className="display mb-4 text-2xl text-foreground sm:text-3xl">Break a little cluster</h2>
+            <p className="mb-8 max-w-2xl leading-relaxed text-muted-foreground">Every letter is a node, every dot a pod. Click a letter to take it down. The surviving nodes take the most important work first; anything that doesn’t fit waits for room. This is an illustration of the recovery question behind my MSc research.</p>
+            <PodName />
           </section>
 
           {/* The provenance, as a footnote. It is the one claim this page makes
@@ -145,6 +152,7 @@ export default function LabPage() {
           </section>
         </div>
       </div>
+      <ContactCTA />
     </div>
   );
 }

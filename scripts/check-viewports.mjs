@@ -152,6 +152,8 @@ async function main() {
         const v = (await send("Runtime.evaluate", { expression: MEASURE, returnByValue: true }, sessionId)).result.value;
         const wantStatus = route === NOT_FOUND ? 404 : 200;
         const problems = [];
+        const palette = (await send("Runtime.evaluate", { expression: "({ paper: getComputedStyle(document.body).backgroundColor, nav: getComputedStyle(document.querySelector('.site-navigation')).backgroundColor, text: getComputedStyle(document.querySelector('h1')).color })", returnByValue: true }, sessionId)).result.value;
+        if (palette.paper !== "rgb(245, 243, 235)" || !palette.nav.includes("245, 243, 235") || palette.text !== "rgb(38, 53, 43)") problems.push(`inconsistent page theme: ${JSON.stringify(palette)}`);
         if (v.sw > v.cw) {
           const culprits = (await send("Runtime.evaluate", { expression: CULPRITS, returnByValue: true }, sessionId)).result.value;
           problems.push(`overflow ${v.sw} > ${v.cw}` + culprits.map((c) => `\n              ${c}`).join(""));

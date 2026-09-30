@@ -4,7 +4,8 @@ import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import "./folio.css";
 import "./atmosphere.css";
-import { AmbientField } from "@/components/ambient-field";
+import "./design-system.css";
+import "./landing.css";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { Extras } from "@/components/extras";
@@ -178,7 +179,6 @@ export default function RootLayout({
         >
           Skip to content
         </a>
-        <AmbientField />
         <ViewTransitions>
           <div className="relative flex min-h-screen flex-col">
             <Navigation />

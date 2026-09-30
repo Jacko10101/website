@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
 /**
- * The homepage hero: my name as a cluster. Each letter is a node, each
+ * The lab's recovery experiment: my name as a cluster. Each letter is a node, each
  * square a pod, and brightness is importance. Click a letter and that node
  * fails: its pods burst out into a pending strip, the surviving letters pull
  * the most important ones back in first, and whatever doesn't fit waits for
@@ -398,7 +398,7 @@ export function PodName({ children }: { children?: ReactNode }) {
     ? [["displaced", stats.displaced, "is-down"], ["rescheduled", stats.rescheduled, ""], ["waiting", stats.waiting, "is-waiting"]] as const
     : [["pods", stats.total, ""], ["nodes", 10, ""], ["free slots", stats.free, ""]] as const;
   return (
-    <div className="pod-hero-body" data-ready={ready}>
+    <div className="pod-hero-body ink-surface" data-ready={ready}>
       <div className="pod-top">
         <div className="pod-stage">
           <p className="pod-fallback" aria-hidden="true">JACK<br />DEVLIN</p>

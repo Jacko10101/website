@@ -192,6 +192,11 @@ async function main() {
       await assert("Array.from(document.querySelectorAll('.waterfall-row small')).every(b=>/fetch|xmlhttprequest/.test(b.textContent))",'request filter');
       await clickText('.waterfall button','Everything');
       await evaluate("document.querySelector('.waterfall').scrollIntoView({block:'center'})");await shot('waterfall');
+      await evaluate("document.querySelector('#scheduler').scrollIntoView({block:'center'})");
+      await wait("document.querySelector('#scheduler .pod-hero-body').dataset.ready==='true'");
+      await evaluate("document.querySelector('#scheduler .pod-keys button').focus()");await press(' ','Space',32);
+      await wait("document.querySelector('#scheduler .pod-readout-line').textContent.includes('J') && document.querySelector('#scheduler .pod-readout-line').textContent.includes('down')");
+      await assert("document.querySelector('#scheduler .pod-figures dd').textContent!=='0'", 'moved scheduler supports keyboard node failure');
       await go('/projects/clarity');
       await evaluate("document.querySelector('.grounding-toggle').click()");await sleep(350);
       await assert("document.querySelector('.grounding-toggle').getAttribute('aria-pressed')==='false'",'grounding toggle');
@@ -216,8 +221,7 @@ async function main() {
       await assert("document.querySelector('.evidence-numbers').textContent.includes('80.5') && document.querySelector('.evidence-numbers').textContent.includes('95.9')", 'recorded run selection');
       await evaluate("document.querySelectorAll('.evidence-controls button')[0].click()");
       await assert("document.querySelector('.evidence-numbers').textContent.includes('81.1') && document.querySelector('.evidence-numbers').textContent.includes('94.0')", 'recorded mean');
-      await go('/');
-      await shot('home');
+      await go('/lab');
       await evaluate("document.querySelector('.pager-invite').click()");
       await wait("!!document.querySelector('.pager-mode-picker')");
       await evaluate("document.querySelectorAll('.pager-mode-picker button')[1].click()");
@@ -229,11 +233,16 @@ async function main() {
       await wait("document.querySelector('.pager-overlay').dataset.phase==='resolved'");
       await evaluate("document.querySelector('[aria-label=\"Close game\"]').focus()");await press(' ','Space',32);
       await assert("!document.querySelector('.pager-overlay') && !document.querySelector('[inert]')", 'native close button works after resolution');
-      await evaluate("document.querySelector('.motion-toggle').click()");
-      await assert("getComputedStyle(document.querySelector('.ambient-light')).animationPlayState==='paused'", 'background motion can pause');
-      await evaluate("document.querySelector('.motion-toggle').click()");
-      await assert("getComputedStyle(document.querySelector('.ambient-light')).animationPlayState==='running'", 'background motion resumes');
-      // The hero's readout is a live region that changes on its own; leave it out of the comparison.
+      await assert("!document.querySelector('.ambient-field') && !document.querySelector('.motion-toggle')", 'clean shared page background');
+      await go('/');
+      await shot('home');
+      for (const [index, layer, href] of [[0, 'infrastructure', '/projects/observability'], [2, 'intelligence', '/projects/clarity'], [1, 'delivery', '/projects/heimdall']]) {
+        await evaluate(`document.querySelectorAll('.sculpture-controls button')[${index}].focus()`);await press(' ','Space',32);
+        await assert(`document.querySelector('.platform-sculpture').dataset.active==='${layer}' && document.querySelectorAll('.sculpture-controls button')[${index}].getAttribute('aria-pressed')==='true' && document.querySelector('.sculpture-detail a').getAttribute('href')==='${href}'`, 'platform layer selection updates evidence link');
+      }
+      await assert("document.querySelectorAll('.sculpture-controls [aria-pressed=true]').length===1", 'one selected platform layer');
+      await assert("document.querySelector('.landing-page a[href=\"/lab#scheduler\"]')!==null && !document.querySelector('.pod-canvas')", 'scheduler has moved into experiments');
+      // Live instrument descriptions are excluded from the chaos comparison.
       const MAIN_TEXT="(() => { const m = document.querySelector('main').cloneNode(true); m.querySelectorAll('[aria-live], .pod-readout').forEach((e) => e.remove()); return m.textContent; })()";
       const original=await evaluate(MAIN_TEXT);
       await evaluate("window.dispatchEvent(new Event('devlinops:chaos'))");await sleep(1800);await press('Escape','Escape',27);
@@ -243,10 +252,10 @@ async function main() {
       await evaluate("window.dispatchEvent(new Event('devlinops:chaos'))");await sleep(150);
       if(original!==await evaluate(MAIN_TEXT))throw Error('reduced-motion chaos mutates page');
       await press('Escape','Escape',27);
-      await assert("getComputedStyle(document.querySelector('.ambient-light')).animationName==='none'", 'reduced motion background is static');
+      await assert("getComputedStyle(document.querySelector('.sculpture-layer')).transitionDuration==='0s'", 'reduced motion platform is static');
       await assert("document.documentElement.scrollWidth<=document.documentElement.clientWidth",'no page overflow');
       if(errors.length)throw Error(errors.join('\n'));
-      listeners.delete(listener);await send('Target.closeTarget',{targetId});console.log(`PASS ${width}px: terminal, handoff, five incidents, pause, handover, breach/restart, connections, deferred SQL, request recorder, guard, grounding, schema, gateway, Heimdall, chaos, reduced motion`);
+      listeners.delete(listener);await send('Target.closeTarget',{targetId});console.log(`PASS ${width}px: terminal, handoff, five incidents, shared theme, handover, breach/restart, connections, deferred SQL, request recorder, scheduler, guard, grounding, schema, gateway, Heimdall, platform layers, chaos, reduced motion`);
     }
   } finally {
     ws?.close();

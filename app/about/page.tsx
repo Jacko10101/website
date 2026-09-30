@@ -15,9 +15,9 @@ export default function AboutPage() {
             <h1 className="interior-title">Hi, I’m<br /><em>Jack.</em></h1>
             <p className="about-lead">Platform engineer at Loweconex since 2023.<br className="hidden lg:block" /> Before that, a year writing C# for architects.</p>
             <div className="about-prose">
-              <p>I work on the systems behind the software: how it gets released, how we understand it when something breaks, and the tools engineers use along the way.</p>
-              <p>That has taken me from Kubernetes and shared delivery pipelines to Heimdall, our deployment dashboard. More recently, I took Clarity from an early prototype into a service customers can ask questions of, and built Nightshift to turn engineering tickets into reviewable changes.</p>
-              <p>I completed an MSc in Artificial Intelligence with Distinction alongside work. My dissertation involved deliberately breaking Kubernetes clusters to study how they recover. At home I run a small Kubernetes cluster for the lights and sensors in my flat.</p>
+              <p>At Loweconex, I build and run the platform our software team uses to release and monitor its services. That includes shared pipelines, Kubernetes, the monitoring stack and Heimdall, our deployment dashboard.</p>
+              <p>My work now includes AI services too. I took Clarity from a colleague’s prototype into production, where customers use it to query their data. I also built Nightshift for engineering agents working on Jira tickets, PR reviews, security automation and incidents.</p>
+              <p>Alongside work, I completed an MSc in Artificial Intelligence with Distinction. My dissertation studied how Kubernetes recovers after a node failure. At home, a Raspberry Pi cluster runs Home Assistant for the lights and sensors in my flat.</p>
             </div>
             <a href="/cv.pdf" download="jack-devlin-cv.pdf" className="editorial-link mt-6">Download my CV <span aria-hidden>↓</span></a>
           </div>
@@ -58,6 +58,6 @@ export default function AboutPage() {
 export const metadata: Metadata = {
   alternates: { canonical: "/about" },
   title: "About",
-  description: `Jack Devlin, platform engineer in Northern Ireland. Kubernetes, developer tools, and AI delivery. ${profile.availability.sentence}`,
+  description: `Jack Devlin, platform engineer at Loweconex in Northern Ireland. My experience, education and the tools I work with. ${profile.availability.sentence}`,
   openGraph: { title: "About · Jack Devlin", description: "Where I’ve worked, what I studied, and what I work with.", url: "/about" },
 };

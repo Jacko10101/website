@@ -16,7 +16,7 @@ export default function ContactPage() {
         <h1 className="interior-title">What are you<br /><em>working on?</em></h1>
         <div className="contact-opening">
           <div>
-            <p className="interior-lede">A role, a platform problem, or something that caught your eye. Send me a note.</p>
+            <p className="interior-lede">Get in touch about a role, a project, or a question about the work here.</p>
             <a className="contact-address" href="mailto:jack@devlinops.com">jack@devlinops.com <span aria-hidden>↗</span></a>
           </div>
           <dl className="contact-facts">

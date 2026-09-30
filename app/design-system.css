@@ -1,0 +1,174 @@
+/* One public theme, shared by the homepage, stories, lab and site chrome. */
+:root {
+  --paper: #f5f3eb;
+  --ink: #26352b;
+  --soft-ink: #666d61;
+  --rust: #bd492b;
+  --rule: #d8dbce;
+}
+:root, .folio-surface {
+  --color-background: var(--paper);
+  --color-foreground: var(--ink);
+  --color-primary: var(--rust);
+  --color-primary-foreground: #f8f7f0;
+  --color-secondary: #eaece1;
+  --color-secondary-foreground: var(--ink);
+  --color-muted: #e6e9de;
+  --color-muted-foreground: var(--soft-ink);
+  --color-accent: #e9dfd2;
+  --color-accent-foreground: var(--ink);
+  --color-border: var(--rule);
+  --color-card: #efefe5;
+  --color-warn: #996321;
+  --color-error: #ac3f2d;
+  --color-destructive: #ac3f2d;
+  color: var(--ink);
+  color-scheme: light;
+}
+html, body { background: var(--paper); color: var(--ink); }
+.site-navigation { background: #f5f3ebf2; border-color: var(--rule); }
+.site-footer, .mobile-navigation { background: var(--paper); border-color: var(--rule); }
+.nav-monogram, .footer-signature { color: var(--ink); }
+.nav-wordmark { color: var(--soft-ink); }
+.terminal-key { color: var(--soft-ink); border-color: #ced2c4; }
+.mobile-menu-toggle { margin-left: auto; }
+.footer-colophon { border-color: var(--rule); padding-bottom: 20px; }
+.container { padding-inline: 48px; }
+.overline, .eyebrow, .folio-label { color: var(--color-muted-foreground); font-weight: 400; letter-spacing: .08em; }
+.folio-line { border-color: var(--rule); color: var(--soft-ink); }
+.editorial-link, .quiet-link { color: var(--ink); }
+.text-link:hover, .editorial-link:hover, .quiet-link:hover { color: var(--rust); }
+.button-primary { color: var(--paper); background: var(--ink); border-radius: 3px; }
+.button-primary:hover { background: #3f5140; box-shadow: none; }
+.button-outline { border-color: #aab39b; border-radius: 3px; }
+.button-outline:hover { background: #eaece1; color: var(--ink); }
+
+/* The same typographic hierarchy and margins carry into every interior. */
+.interior-page, .lab-content { padding-top: 139px; padding-bottom: 65px; }
+.lab-content { max-width: none; }
+.interior-title, .page-intro h1 { font-size: clamp(48px, 6.05vw, 83px); font-weight: 500; line-height: 1.08; letter-spacing: -.065em; margin-top: 34px; }
+.interior-title em, .page-intro h1 em { color: var(--rust); font-family: Georgia, 'Times New Roman', serif; font-weight: 400; }
+.page-intro > p:not(.overline), .interior-lede, .story-summary, .project-card > p { color: var(--soft-ink); }
+.about-opening { gap: 75px; }
+.about-photo { padding: 10px; background: #e6e9de; border: 1px solid #d8dbce; box-shadow: 0 6px 22px #26352b12; }
+.about-photo img { border-radius: 3px; filter: saturate(.85); }
+.about-lead { font-size: 24px; font-weight: 400; line-height: 1.45; }
+.ledger-heading { font-weight: 500; }
+.experience-entry h3 { font-weight: 500; }
+.about-section .folio-label { color: var(--rust); }
+.contact-address { color: var(--ink); }
+.contact-facts dt, .contact-other-links .folio-label { color: var(--soft-ink); }
+.contact-form-section input, .contact-form-section textarea, .contact-form-section button { border-radius: 3px; }
+.contact-page { padding-bottom: 95px; }
+.work-meta, .work-context, .work-copy > p:not(.work-headline), .work-index-link p { color: var(--soft-ink); }
+.project-card h2 { font-weight: 500; }
+.project-card h2 a span { font-size: 20px; color: var(--rust); }
+.project-card .work-meta { font-size: 10px; line-height: 1.8; }
+.project-card .project-cover { height: 340px; min-height: 340px; border-radius: 3px; }
+.project-grid { margin-bottom: 0; }
+
+/* Project illustrations use the same paper, forest and terracotta palette. */
+.project-cover { background: #e6e9de; color: #44563c; border-color: #cdd4c2; border-radius: 3px; }
+.cover-nightshift { background: #27372c; color: #f4f1e6; border-color: #27372c; }
+.cover-ai-gateway { background: #edddd0; color: #95472d; }
+.cover-smart-home, .cover-ml-scheduler, .cover-observability, .cover-heimdall, .cover-clarity, .cover-pipeline-platform { background: #e6e9de; color: #44563c; }
+.cover-node { background: #f5f3eb; border-color: #b8c3aa; border-radius: 4px; }
+.cover-browser { border-color: #bdc5b2; border-radius: 4px; box-shadow: 0 15px 30px #26352b18; }
+.browser-bar { background: #eaece1; border-color: #cdd4c2; }
+.cover-ticket, .cover-draft { background: #344837; border-color: #7c896960; border-radius: 3px; }
+.cover-ticket > span, .cover-draft > span { color: #e7be9c; }
+.cover-ticket strong { color: #f4f1e6; }
+.cover-signal-art { background: #f5f3eb80; border-color: #b9c5ad; border-radius: 3px; }
+.cover-signal-art span, .cover-signal-art svg { color: #687953; }
+.cover-signal-art > div + div { border-color: #d1d8c5; }
+.capacity-node { background: #f5f3eb80; border-color: #aab99a; border-radius: 3px; }
+.capacity-node > span { color: #687953; }
+.capacity-node i { border-color: #aab99a; }
+.capacity-node i[data-filled=true] { background: #879b6b; border-color: #879b6b; }
+.capacity-lost i { background: #d18058; }
+
+/* Reading pages are quiet paper, with clear rules and comfortable prose. */
+.work-case { padding-top: 126px; }
+.case-back, .case-intro, .case-facts dt, .case-contents a, .case-next p, .exhibit-heading > p:last-child { color: var(--soft-ink); }
+.case-status { background: #eaece1; color: #576746; border-color: #cbd3be; border-radius: 3px; }
+.work-case h1 { font-size: clamp(54px, 7vw, 96px); font-weight: 500; }
+.work-case h1 > span { color: var(--rust); }
+.case-headline { color: var(--ink); }
+.case-facts, .case-contents nav, .case-contents a, .case-next, .case-figure img { border-color: var(--rule); }
+.case-contents a span { color: var(--rust); }
+.case-contents a:hover { color: var(--rust); }
+.case-prose section > p:not(.overline) { color: var(--soft-ink); font-size: 16px; line-height: 1.9; }
+.case-prose blockquote { color: var(--ink); border-color: var(--rust); }
+.case-next h2 { font-weight: 500; }
+.case-next > span { color: var(--rust); }
+.case-cover .project-cover, .case-figure img, .exhibit-frame { border-radius: 3px; }
+.case-exhibit .exhibit-frame { background: var(--color-background); border-color: var(--color-border); }
+.case-figure figcaption { color: var(--soft-ink); }
+.case-cover .cover-pipeline-platform { padding: 40px 12% 0; max-height: 510px; }
+
+/* Instruments sit in the shared page layout as contained forest panels. */
+.lab-surface .lab-directory { border-color: #aab49b; }
+.lab-station { border-color: var(--rule); scroll-margin-top: 110px; }
+.lab-station > .eyebrow { color: var(--rust); }
+.lab-station h2 { font-size: 32px; letter-spacing: -.045em; font-weight: 500; }
+.lab-surface .pager-invite { color: var(--ink); }
+.lab-surface .pager-invite-copy strong { color: var(--ink); }
+.lab-surface .pager-invite-copy .pager-start-arrow { color: var(--rust); border-color: #aab49b; }
+.lab-surface .pager-invite-copy small { color: var(--soft-ink); }
+.vitals-instrument > div > .text-primary { color: #587344; }
+.lab-query-drawer > summary > span:first-child, .lab-query-drawer > p { color: var(--soft-ink); }
+.lab-query-drawer, .whiteboard, .connections, .waterfall { border-radius: 3px; }
+.whiteboard { border: 1px solid #cbd3be; }
+.scheduler-experiment .pod-hero-body { padding: 30px; border-radius: 3px; }
+.scheduler-experiment .pod-hero-body .pod-fine a { color: #e7be9c; }
+.lab-content > section:last-child { color: var(--soft-ink); }
+.lab-content > section:last-child a { color: var(--rust); }
+
+/* Modal tools restore their own contrast independently of the page theme. */
+.ink-surface, .workbench-shell, .pager-overlay, [data-chaos-ui] {
+  --color-background: #182822; --color-foreground: #f2f4e9;
+  --color-primary: #b5dca7; --color-primary-foreground: #17251f;
+  --color-secondary: #263a30; --color-secondary-foreground: #f2f4e9;
+  --color-muted: #2e4137; --color-muted-foreground: #b0bdaf;
+  --color-accent: #31473a; --color-accent-foreground: #f2f4e9;
+  --color-border: #425348; --color-card: #23372c;
+  --color-warn: #f0c581; --color-error: #f6a096; --color-destructive: #f6a096;
+  color: var(--color-foreground); color-scheme: dark;
+}
+.ink-surface { background: var(--color-background); }
+.missing-surface { background: var(--paper); }
+.missing-heading span { color: var(--rust); font-family: Georgia, serif; font-style: italic; }
+.missing-route, .missing-links a { border-color: var(--rule); color: var(--ink); }
+.missing-route > span:last-child { color: var(--rust); }
+.missing-copy { color: var(--soft-ink); }
+@media (max-width: 800px) {
+  .container { padding-inline: 30px; }
+  .interior-page, .lab-content { padding-top: 117px; }
+  .about-opening { gap: 35px; }
+  .lab-station h2 { font-size: 28px; }
+  .project-card .project-cover { height: 300px; min-height: 300px; }
+}
+@media (max-width: 600px) {
+  .container { padding-inline: 23px; }
+  .interior-page, .lab-content { padding-top: 105px; padding-bottom: 40px; }
+  .interior-title, .page-intro h1 { font-size: clamp(42px, 10.9vw, 65px); margin-block: 26px; }
+  .work-case { padding-top: 105px; }
+  .work-case h1 { font-size: clamp(42px, 12vw, 65px); }
+  .about-lead { font-size: 22px; }
+  .about-prose p, .case-intro { font-size: 15px; }
+  .case-prose section > p:not(.overline) { font-size: 15px; }
+  .case-cover .cover-pipeline-platform { padding: 23px 15px 0; max-height: 310px; }
+  .case-status { font-size: 9px; }
+  .scheduler-experiment .pod-hero-body { padding: 18px; }
+  .lab-station h2 { font-size: 25px; }
+  .lab-content .page-intro + p { font-size: 15px; }
+  .footer-colophon { padding-bottom: 20px; }
+}
+@media (max-width: 360px) {
+  .container { padding-inline: 19px; }
+}
+@media print {
+  :root, .folio-surface { color: #26352b; background: white; }
+  .folio-surface { --color-background: #fff; --color-foreground: #26352b; --color-primary: #bd492b; --color-muted-foreground: #666d61; }
+  .case-prose section > p:not(.overline) { color: #26352b; }
+}

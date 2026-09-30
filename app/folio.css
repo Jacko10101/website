@@ -1,34 +1,4 @@
-/* Public portfolio: clear type, measured colour and working examples. */
-html, body { background: #0c141b; }
-.folio-surface {
-  --color-background: #0c141b;
-  --color-foreground: #e9eee9;
-  --color-primary: #d3e99d;
-  --color-primary-foreground: #17241e;
-  --color-secondary: #18252c;
-  --color-secondary-foreground: #e9eee9;
-  --color-muted: #223038;
-  --color-muted-foreground: #a8b6bb;
-  --color-accent: #23332f;
-  --color-accent-foreground: #e9eee9;
-  --color-border: #314046;
-  --color-card: #16232a;
-  --color-warn: #e5be83;
-  --color-error: #eaa597;
-  --color-destructive: #eaa597;
-  background: transparent;
-  color-scheme: dark;
-}
-.ink-surface {
-  --color-background: #182822; --color-foreground: #f2f4e9;
-  --color-primary: #b5dca7; --color-primary-foreground: #17251f;
-  --color-secondary: #263a30; --color-secondary-foreground: #f2f4e9;
-  --color-muted: #2e4137; --color-muted-foreground: #b0bdaf;
-  --color-accent: #31473a; --color-accent-foreground: #f2f4e9;
-  --color-border: #425348; --color-card: #23372c;
-  --color-warn: #f0c581; --color-error: #f6a096; --color-destructive: #f6a096;
-  color: var(--color-foreground); background: var(--color-background); color-scheme: dark;
-}
+/* Portfolio layouts; shared surface tokens live in design-system.css. */
 .container { max-width: 1320px; padding-left: 48px; padding-right: 48px; }
 :focus-visible { outline: 2px solid var(--color-primary); outline-offset: 5px; }
 a, button, summary { -webkit-tap-highlight-color: transparent; }

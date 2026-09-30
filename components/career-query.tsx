@@ -138,7 +138,7 @@ export function CareerQuery() {
     state.kind === "rows" && state.rows.length > 0 ? Object.keys(state.rows[0]) : [];
 
   return (
-    <div className="query-workstation instrument-surface">
+    <div className="query-workstation instrument-surface ink-surface">
       {/* Chrome */}
       <div className="flex items-center justify-between gap-3 px-4 py-2.5 border-b border-border bg-card/60">
         <span className="font-mono text-xs text-muted-foreground">

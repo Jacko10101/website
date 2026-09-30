@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { MotionToggle } from "@/components/ambient-field";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
@@ -45,7 +44,6 @@ export function Navigation() {
           {navItems.map((item) => <Link key={item.href} href={item.href} aria-current={active(item.href) ? "page" : undefined}>{item.name}</Link>)}
           <button type="button" onClick={openTerminal} className="terminal-key" aria-label="Open the terminal" title="Open terminal (/) ">/</button>
         </div>
-        <MotionToggle />
         <button ref={toggle} type="button" onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="mobile-menu-toggle" aria-expanded={mobileMenuOpen} aria-controls="mobile-menu">{mobileMenuOpen ? "Close −" : "Menu +"}</button>
       </div>
       <div id="mobile-menu" className="mobile-navigation" hidden={!mobileMenuOpen}>
